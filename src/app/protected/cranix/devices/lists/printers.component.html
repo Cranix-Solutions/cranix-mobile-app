@@ -1,0 +1,11 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'Manage printers' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="authService.isMD()">
+  <cranix-md-list objectType="printer" [context]="context"></cranix-md-list>
+</ion-content>

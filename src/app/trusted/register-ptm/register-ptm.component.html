@@ -1,0 +1,13 @@
+@if(selectedPTM){
+<ion-header>
+    <ion-toolbar class="page-toolbar">
+        <ion-title>{{'Event Registrations'|translate}} {{selectedPTM.start|date:'yyyy-MM-dd'}}
+            {{selectedPTM.start|date:'HH:mm'}} - {{selectedPTM.end|date:'HH:mm'}}
+            {{'student'|translate}}: {{student.surName}}, {{student.givenName}}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <cranix-ptm-view [id]="id"></cranix-ptm-view>
+</ion-content>
+}

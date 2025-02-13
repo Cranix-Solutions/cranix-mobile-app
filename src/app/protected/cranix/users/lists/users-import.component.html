@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'Manage user imports' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button size="small">
+      <ion-icon size="small" name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button *ngIf="!runningImport" (click)="startImport()"
+        matTooltip="{{'Start a new user import' | translate }}">
+        <ion-icon name="add-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="refreshImports()" matTooltip="{{'Refresh the import list' | translate }}">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-grid>
+    <ion-row style="background-color : {{authService.rowColors[2]}}">
+      <ion-col size=4>{{'Start time' | translate}}</ion-col>
+      <ion-col size=5></ion-col>
+      <ion-col size=3>{{'role' | translate}}</ion-col>
+    </ion-row>
+    <ion-row *ngIf="runningImport" [ngStyle]="{'color':'#eb445a'}">
+      <ion-col size=4>{{runningImport.startTime}}</ion-col>
+      <ion-col size=6>
+        <ion-button color="light" size="small" (click)="showImport($event,runningImport)"
+          matTooltip="{{'Import ist just running.'|translate}} {{'Show the import result.' | translate }}">
+          <ion-icon slot="icon-only" color="warning" name="cog"></ion-icon>
+        </ion-button>
+        <ion-button color="light" size="small" (click)="stopImport()"
+          matTooltip="{{'Stop the running user import' | translate }}">
+          <ion-icon slot="icon-only" name="stop-circle-outline" color="danger"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size=2>{{runningImport.role | translate}}</ion-col>
+    </ion-row>
+    <div *ngFor="let import of imports; index as i">
+      <ion-row *ngIf="!runningImport || runningImport.startTime != import.startTime"
+        style="background-color : {{authService.rowColors[i%2]}}">
+        <ion-col size=4>{{import.startTime}} </ion-col>
+        <ion-col size=5>
+          <ion-button color="light" size="small" (click)="showImport($event,import)"
+            matTooltip="{{'Show the import result.' | translate }}">
+            <ion-icon *ngIf="import.test" slot="icon-only" color="warning" name="eye-outline"></ion-icon>
+            <ion-icon *ngIf="!import.test" slot="icon-only" color="success" name="eye-outline"></ion-icon>
+          </ion-button>
+          <ion-button color="light" *ngIf="import.test && !runningImport" size="small"
+            (click)="restartImport(import.startTime)"
+            matTooltip="{{'Start the import as real import not test.' | translate }}">
+            <ion-icon slot="icon-only" color="warning" name="reload"></ion-icon>
+          </ion-button>
+          <ion-button color="light" *ngIf="!import.test" size="small" (click)="downloadImport(import.startTime,'pdf')"
+            matTooltip="{{'Download the password files as pdf files.' | translate }}">
+            <ion-icon slot="icon-only" color="success" name="download"></ion-icon>
+          </ion-button>
+          <ion-button color="light" *ngIf="!import.test" size="small" (click)="downloadImport(import.startTime,'txt')"
+            matTooltip="{{'Download the password files as txt files.' | translate }}">
+            <ion-icon slot="icon-only" color="warning" name="download"></ion-icon>
+          </ion-button>
+          <ion-button color="light" size="small" (click)="deleteImport(import.startTime)"
+            matTooltip="{{'Delete the import.' | translate }}">
+            <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size=3>{{import.role | translate}}</ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

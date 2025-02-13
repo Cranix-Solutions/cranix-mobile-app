@@ -1,0 +1,380 @@
+/*
+* File select design
+*/
+.button-file {
+  min-width            : 150px;
+  color                : #fff;
+  background-color     : lightskyblue;
+  font-weight          : bold;
+  border               : 1px #999 solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius   : 3px;
+  -o-border-radius     : 3px;
+  border-radius        : 3px;
+  filter               : progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#bb0000ff', EndColorStr='#990000ff');
+  padding              : 10px 5px;
+}
+
+.button-file:active {
+  filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#990000ff', EndColorStr='#bb0000ff');
+}
+
+.button-file:hover {
+  cursor: pointer;
+}
+
+/*
+* Ich möchte die Zahlen auf der Rechte seite haben.
+*/
+ion-input.number {
+  text-align: right;
+}
+
+/*
+* Ein anderes lookout 
+*/
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display : inline-block;
+}
+
+.btn {
+  min-width       : 150px;
+  border          : 2px solid gray;
+  color           : black;
+  background-color: rgb(89, 124, 153);
+  padding         : 8px 20px;
+  border-radius   : 1px;
+  //font-size: 20px;
+  font-weight     : bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 20px;
+  position : absolute;
+  left     : 0;
+  top      : 0;
+  opacity  : 0;
+}
+
+
+/*
+ * edited styling for ag-grid 
+ *
+ */
+$grid-breakpoints :(xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px);
+
+$breakpoints-keys  : map-keys($grid-breakpoints);
+$breakpoints-values: map-values($grid-breakpoints);
+
+.ok-row {
+  background: lightgreen;
+  color     : black;
+  text-align: center;
+  margin    : 6px;
+}
+
+.neutral-row {
+  background: lightblue;
+  color     : black;
+  text-align: center;
+  margin    : 6px;
+}
+
+.bad-row {
+  background: red;
+  color     : black;
+  text-align: center;
+  margin    : 6px;
+}
+
+.sub-header-row {
+  background: lightgray;
+  color     : black;
+  text-align: center;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  margin    : 6px;
+}
+
+@for $i from 1 to length($breakpoints-keys)+1 {
+  @if $i < length($breakpoints-keys) {
+    .hidden-#{nth($breakpoints-keys, $i)} {
+      @media (min-width: nth($breakpoints-values, $i)) and (max-width: #{nth($breakpoints-values, $i+1) - 1}) {
+        display: none !important;
+      }
+    }
+  }
+
+  @else {
+    .hidden-#{nth($breakpoints-keys, $i)} {
+      @media (min-width: nth($breakpoints-values, $i)) {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.ag-row .ag-cell {
+  display          : flex;
+  //justify-content: center; /* align horizontal *
+  align-items      : center;
+  justify-content  : space-between;
+  text-overflow    : ellipsis;
+  border-right     : 0px !important;
+  border-left-width: 0px !important;
+}
+
+.ag-theme-material .ag-checkbox .ag-input-wrapper,
+.ag-theme-material .ag-radio-button .ag-input-wrapper {
+  font-size : 15px;
+  box-shadow: none;
+}
+
+.ag-theme-material .ag-header-row:first-child .ag-header-cell {
+  padding-left: 4px;
+}
+
+
+.ag-theme-material .ag-checkbox-input-wrapper.ag-checked::after {
+  color: var(--ion-color-secondary);
+}
+
+.ag-theme-material .ag-checkbox-input-wrapper.ag-indeterminate::after {
+  color: gray;
+}
+
+.ag-cell-wrapper {
+  justify-content: space-between;
+}
+
+.uuid-flex {
+
+  display       : flex;
+  flex-direction: row;
+  align-items   : center;
+
+}
+
+.name-action {
+  display       : flex;
+  flex-direction: row;
+  align-items   : center;
+  padding-left  : 2px;
+  padding-right : 2px;
+
+  .name {
+    color: red
+  }
+
+  .actions {
+    color: blue
+  }
+}
+
+.ag-header-group-cell-label,
+.ag-header-cell-label {
+  justify-content: center;
+}
+
+input {
+  border      : none;
+  border-width: 0;
+  box-shadow  : aqua;
+}
+
+/*
+input[type=text] {
+  width: 250px;
+  padding: 4px 4px;
+  margin: 4px 4px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: aquamarine;
+}*/
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+.page-toolbar {
+  --ion-text-color: var(--ion-color-light-contrast);
+  --ion-background-color: var(--ion-color-light);
+  height: 54px;
+  border-color: var(--ion-color-primary-tint);
+  border-width: 2px;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  ion-title {
+      padding-inline-start: 1px;
+      padding-inline-end: 1px;
+      text-align: left;
+  }
+}
+.page-toolbar-medium {
+  --ion-text-color: var(--ion-color-medium-contrast);
+  --ion-background-color: var(--ion-color-medium);
+  height: 54px;
+  border-color: var(--ion-color-primary-tint);
+  border-width: 2px;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  ion-title {
+      padding-inline-start: 1px;
+      padding-inline-end: 1px;
+      text-align: left;
+  }
+}
+
+.rotate-header-class {
+  transform: rotate(90deg);
+  //display  : inline-block;
+  height: 150;
+  width: 200;
+  padding: 0;
+}
+
+.header-row {
+  padding-top      : 6px;
+  height           : 33px;
+  @media only screen and (min-width: 769px) {
+    display: none;
+  }
+}
+ion-card {
+  @media only screen and (max-width: 768px) {
+    margin-inline: 0;
+  }
+}
+
+ion-input{
+  --background: lightgrey;
+  }
+
+/*
+* ion-item should inherit background from its container for example ion-row
+*/
+ion-item::part(native) {
+  background: inherit;
+  margin: 0px;
+  padding-left: calc(var(--padding-start) + var(--ion-safe-area-left, 0px));
+  padding-right: var(--padding-end);
+  padding-top: var(--padding-top);
+  padding-bottom: var(--padding-bottom);
+  background: inherit;
+  overflow: inherit;
+  box-sizing: border-box;
+  z-index: 1;
+  border-radius: var(--border-radius);
+}
+
+/*
+ * layout for carded-pages
+ *
+ */
+#roomcontrol {
+  ion-content {
+    padding-top: 60px;
+  }
+}
+
+#carded {
+
+  margin-top      : 5px;
+  //  --background: #f5f5f5;
+  ion-card {
+    height               : 97%;
+      display             : flex;
+      flex-direction      : column;
+      //display           : grid;
+      //grid-template-rows: 12%;
+
+      ion-card-header {
+        align-items        : center;
+        //  grid-row       : 1/2;
+        //  height         : 100%;
+        /* border-style    : ridge;
+        border-top         : none;
+        border-left        : none;
+        border-right       : none;*/
+      }
+
+      ion-card-content {
+        padding-top    : 3px;
+        grid-row       : 2/2;
+        height         : 100%;
+        grid-column    : 1/1;
+        //overflow     : hidden;
+        border-style   : ridge;
+        border-bottom  : none;
+        border-left    : none;
+        border-right   : none;
+        border-width   : 1px;
+        overflow-y     : auto;
+
+        ::-webkit-scrollbar {
+          display: auto;
+        }
+      }
+    }
+  }
+
+ion-card-header{
+    padding : 6px;
+}
+ion-card-content{
+  padding : 0px;
+}
+ion-card-title{
+  font-size : 14px
+}
+.ion-card-content-md {
+  padding-left: 2px;
+  padding-inline-start: 2px;
+  padding-top: 2px;
+  padding-right: 2px;
+  padding-inline-end: 2px;
+  padding-bottom: 2px;
+}
+.card-content-ios {
+  padding-inline-start: 0%;
+  padding-inline-end: 0%;
+}
+/*
+ * error and short messages classes
+ *
+ *
+ */
+
+.error-text {
+  color    : red;
+  font-size: smaller;
+}
+
+/*
+* We need a small divieder between head and body
+*/
+ion-item-divider{
+  margin-top: 0px;
+  min-height: 1px!important;
+}
+
+.ql-editor {
+  padding: 0px
+}
+
+.white-background {
+  background-color: #fff;
+}
+

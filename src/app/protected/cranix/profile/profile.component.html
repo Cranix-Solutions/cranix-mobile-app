@@ -1,0 +1,20 @@
+<ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button *ngIf="authService.isAllowed('permitall')" tab="myself">
+        <ion-icon name="person"></ion-icon>
+        <ion-label>{{ 'mySelf' | translate }}</ion-label>
+      </ion-tab-button>
+      <ion-tab-button *ngIf="authService.isAllowed('permitall')" tab="mydevice">
+        <ion-icon name="desktop" ></ion-icon>
+        <ion-label>{{ 'myDevice' | translate }}</ion-label>
+      </ion-tab-button>
+      <ion-tab-button *ngIf="vpn && authService.isAllowed('permitall')" tab="myVPN" >
+        <ion-icon name="security" ></ion-icon>
+        <ion-label>{{ 'VPN' | translate }}</ion-label>
+      </ion-tab-button>
+      <ion-tab-button *ngIf="authService.isAllowed('2fa.use')" tab="crx2fa" >
+        <ion-icon name="key" ></ion-icon>
+        <ion-label>{{ 'CRX2fa' | translate }}</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>

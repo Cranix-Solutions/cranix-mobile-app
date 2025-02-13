@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'System status' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content id="carded">
+  @if(authService.isMD()) {
+    <ion-fab vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
+      <ion-fab-button>
+        <ion-icon name="arrow-forward-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="start">
+        <ion-fab-button>
+          <ion-icon name="help" (click)="support($event)"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button>
+          <ion-icon name="trending-up" color="tertiary" (click)="update($event)"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button>
+          <ion-icon name="arrow-redo" color="tertiary" (click)="restart($event)"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button>
+          <ion-icon name="power" color="danger" (click)="shutDown($event)"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+  } @else {
+    <ion-toolbar class="page-toolbar">
+      <ion-buttons slot="end">
+        <ion-button size="small" fill="solid" (click)="support($event)" matTooltip="{{'Add support' | translate }}">
+          <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+        </ion-button>
+        <ion-button size="small" fill="solid" (click)="update($event)" matTooltip="{{'Update the server.' | translate }}">
+          <ion-icon slot="icon-only" name="trending-up" color="tertiary"></ion-icon>
+        </ion-button>
+        <ion-button size="small" fill="solid" (click)="restart($event)"
+          matTooltip="{{'Restart the server.' | translate }}">
+          <ion-icon slot="icon-only" name="arrow-redo" color="tertiary"></ion-icon>
+        </ion-button>
+        <ion-button size="small" fill="solid" (click)="shutDown($event)"
+          matTooltip="{{'Shut down the server.' | translate }}">
+          <ion-icon slot="icon-only" color="danger" name="power"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-item-divider></ion-item-divider>
+  }
+  @if( chartsReady ) {
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let key of objectKeys">
+          <ion-card>
+            <ion-card-header>
+              <ion-title>{{ header[key] }}</ion-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ag-charts style="height: 270px" [options]="systemStatus[key]"></ag-charts>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  }
+</ion-content>

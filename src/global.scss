@@ -1,0 +1,116 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+/* AgGrifd */
+@import "~ag-grid-community/styles/ag-grid.css";
+@import "~ag-grid-community/styles/ag-theme-balham.css";
+@import "~ag-grid-community/styles/ag-theme-alpine.css";
+@import "~ag-grid-community/styles/ag-theme-material.css";
+/* do not import dark styles
+@import "~ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
+*/
+
+
+/*
+* ngx-quill settings
+*/
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+
+/* Custom * */
+@import "theme/ion-custom.scss";
+@import "theme/cranix-custom.scss";
+@import "theme/fonts.css";
+@import "theme/variables.scss";
+
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+
+@media only screen and (min-width: 768px) and (min-height: 768px) {
+  .modal-wrapper {
+    height: 85%;
+    width : 500px;
+  }
+
+  .big-modal {
+    &::part(content) {
+      height: 85%;
+      width : 80%;
+    }
+  }
+
+  .medium-modal {
+    &::part(content) {
+      height: 85%;
+      width : 500px;
+    }
+  }
+  .small-modal {
+    &::part(content) {
+      height: 400px;
+      width : 500px;
+    }
+  }
+
+  .fullscreen-modal {
+    &::part(content) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .ios .fullscreen-modal {
+    &::part(content) {
+      top: 26px;
+    }
+  }
+}
+
+ion-content ion-segment {
+  margin: 5px 0;
+}
+
+ion-select {
+  width: 100% ;
+  white-space: normal !important;
+
+}
+.sc-ion-alert-md{
+  white-space: normal !important;
+
+}

@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'Manage owned devices' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-button size="small" (click)="addDevice($event)" matTooltip="{{'Add Device' | translate }}">
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+        </ion-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ 'My Devices' | translate}}</ion-title>
+  </ion-toolbar>
+  <ion-list *ngIf="myDevs">
+    <ion-item *ngFor="let dev of myDevs | async">
+      <ion-icon slot="start" name="cube"></ion-icon>
+      <ion-label>
+        <h2>{{ dev.name }}</h2>
+        <h3>{{ dev.ip }}</h3>
+        <h3>{{ dev.mac }}</h3>
+      </ion-label>
+      <ion-button (click)="deleteDev(dev.id)" fill="clear">
+        <ion-icon color="danger" name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

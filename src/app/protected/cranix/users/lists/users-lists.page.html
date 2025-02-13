@@ -1,0 +1,21 @@
+<ion-tabs>
+    <ion-tab-bar translucent slot="bottom">
+      <ion-tab-button tab="all">
+        <ion-icon name="caret-back"></ion-icon>
+        <ion-label>{{ 'All users' | translate}}</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="import">
+        <ion-icon name="receipt"></ion-icon>
+        <ion-label>{{ 'Import users' | translate}}</ion-label>
+      </ion-tab-button>
+      <ion-tab-button *ngIf="authService.isAllowed('2fa.manage')" tab="crx2fa" >
+        <ion-icon name="key" ></ion-icon>
+        <ion-label>{{ 'CRX2fa' | translate }}</ion-label>
+      </ion-tab-button>
+      <ion-tab-button *ngIf="authService.isAllowed('parent.manage')" tab="parents" >
+        <ion-icon name="people-circle" ></ion-icon>
+        <ion-label>{{ 'Parents' | translate }}</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+</ion-tabs>
+

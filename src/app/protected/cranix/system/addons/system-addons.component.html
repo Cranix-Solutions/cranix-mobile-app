@@ -1,0 +1,49 @@
+<cranix-toolbar title="{{'System addons' | translate}}"></cranix-toolbar>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'System addons' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-label>{{'Select an addon' | translate}}</ion-label>
+            <ion-select [disabled]="disabled" [(ngModel)]="systemService.selectedAddon" (ionChange)="changeAddon()">
+                <ion-select-option *ngFor="let addon of systemService.addons" [value]="addon">{{addon}}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{'Select an action' | translate}}</ion-label>
+            <ion-select [disabled]="disabled" [(ngModel)]="action" (ionChange)="applyAction()">
+                <ion-select-option *ngFor="let action of systemService.addonActions[systemService.selectedAddon]"
+                    [value]="action">{{action}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{'Select a key' | translate}}</ion-label>
+            <ion-select [disabled]="disabled" [(ngModel)]="key" (ionChange)="getKey()">
+                <ion-select-option *ngFor="let key of systemService.addonKeys[systemService.selectedAddon]"
+                    [value]="key">{{key}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+    <ion-modal [isOpen]="isModalOpen">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>{{systemService.selectedAddon}} {{key}}</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="closeModal()">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+                <div [innerHTML]="modalContent"></div>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+</ion-content>

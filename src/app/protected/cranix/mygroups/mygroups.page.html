@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ 'My ' + segment + 's' | translate}}</ion-title>
+    <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="education/group">
+      <ion-segment-button value="education/group" layout="icon-start">
+        <ion-label class="hidden-xs hidden-sm">{{'Groups' | translate}}</ion-label>
+        <ion-icon name="people-circle"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="education/user" layout="icon-start">
+        <ion-label class="hidden-xs hidden-sm">{{'Students' | translate}}</ion-label>
+        <ion-icon name="people"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="education/guestUser" layout="icon-start">
+        <ion-label class="hidden-xs hidden-sm">{{'Guest Users' | translate}}</ion-label>
+        <ion-icon name="walk"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+<!-- ion-toolbar class="page-toolbar"></ion-toolbar -->
+@switch(segment) {
+  @case('education/user'){
+    <ion-content>
+      <cranix-md-list objectType="education/user" [context]="context"></cranix-md-list>
+    </ion-content>  
+  }
+  @case('education/group'){
+    <ion-content>
+    <cranix-md-list objectType="education/group" [context]="context"></cranix-md-list>
+  </ion-content>
+  }
+  @case('education/guestUser'){
+    <ion-content>
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button size="small">
+        <ion-icon name="arrow-forward-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="start">
+        <ion-fab-button (click)="openActions($event,null)">
+          <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="segment == 'education/guestUser'" (click)="addEditGuest(null)">
+          <ion-icon name="add-circle"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+    <ion-list>
+      @for(object of rowData; track object.id){
+        <ion-item-sliding>
+          <ion-item button (click)="redirectToEdit(object)">
+            <ion-note slot="start">
+              <ion-checkbox (click)="$event.stopPropagation()" (ionChange)="checkChange($event,object)"></ion-checkbox>
+            </ion-note>
+            <ion-label>
+              <h3>{{ object.name }}</h3>
+            </ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="redirectToDelete(object)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+            <ion-item-option (click)="openActions($event,object)">
+              <ion-icon slot="icon-only" name="ellipsis-vertical-sharp"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      }
+    </ion-list>
+  </ion-content>
+  }
+}
