@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GridApi } from 'ag-grid-community'
 
 import { LanguageService } from 'src/app/services/language.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { SecurityService } from 'src/app/services/security-service';
-import { CheckBoxBTNRenderer } from 'src/app/pipes/ag-checkbox-renderer';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
-import { ApplyCheckBoxBTNRenderer } from 'src/app/pipes/ag-apply-checkbox-renderer';
 
 @Component({
   standalone: false,
@@ -25,9 +22,7 @@ export class ProxyComponent implements OnInit {
   lists  = {};
   proxyOptions;
   context;
-  proxyApi: GridApi;
   proxySelected;
-  columnDefs: any[];
 
   constructor(
     public authService: AuthenticationService,
@@ -46,45 +41,13 @@ export class ProxyComponent implements OnInit {
     }
     console.log(this.lists);
     this.readDatas().then(val => {
-      this.rowData = val;
-      this.columnDefs = [{
-        field: 'name',
-        headerName: this.languageS.trans('name'),
-        suppressHeaderMenuButton: true,
-        sortable: true
-      },
-      {
-        field: 'applyForAll',
-        cellStyle: { 'justify-content': "center" },
-        headerName: this.languageS.trans('applyForAll'),
-        width: 100,
-        cellRenderer: ApplyCheckBoxBTNRenderer
-      }
-      ];
-      this.authService.log(this.rowData);
-      for (let key of Object.getOwnPropertyNames(val[0])) {
-        let col = {};
-        if (key != "name") {
-          col['cellStyle'] = { 'justify-content': "center" };
-          col['field'] = key;
-          col['minWidth'] = 100;
-          col['sortable'] = false;
-          col['suppressHeaderMenuButton'] = true;
-          col['headerName'] = this.languageS.trans(key);
-          col['cellRenderer'] = CheckBoxBTNRenderer;
-          this.columnDefs.push(col);
-        }
-      }
-      this.authService.log(this.columnDefs);
+      this.rowData = val
+      this.authService.log(this.rowData)
     });
     this.securityService.proxyChanged['basic'] =false;
     this.securityService.proxyChanged['good'] =false;
     this.securityService.proxyChanged['bad'] =false;
     this.securityService.proxyChanged['cephalix'] =false;
-  }
-
-  onQuickFilterChanged(){
-    this.proxyApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById('proxyQuickFilter')).value);
   }
   segmentChanged(event) {
     this.segment   = event.detail.value;
@@ -108,18 +71,10 @@ export class ProxyComponent implements OnInit {
     )});
   }
 
-  proxyGridReady(params) {
-    this.proxyApi = params.api;
-    this.authService.log("proxyGridReady");
-  }
-  
   setChanged(changed: boolean) {
     this.securityService.proxyChanged[this.segment] = changed
   }
 
-  redirectToEdit( positiveList) {
-    //TODO
-  }
   writeConfig() {
     let list: string[] = [];
     switch (this.segment) {

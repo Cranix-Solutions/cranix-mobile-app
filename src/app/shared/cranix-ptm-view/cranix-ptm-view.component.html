@@ -31,12 +31,9 @@
             </ion-header>
         </ng-template>
     </ionic-selectable>
+    <!-- TODO -->
     }
 </ion-item>
-<ag-grid-angular style="width: 100%; height: 90%;" class="{{authService.settings.agGridThema}}"
-    [rowHeight]="authService.settings.rowHeight" [rowData]="rowData" [columnDefs]="columnDefs"
-    [defaultColDef]="defaultColDef" [context]="context" (gridReady)="onGridReady($event)" id="agGridTable">
-</ag-grid-angular>
 }
 <ion-modal [isOpen]="isRegisterEventOpen">
     <ng-template>

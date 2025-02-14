@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { GridApi } from 'ag-grid-community'
-import { IncomingRules, OutgoingRule, RemoteRule } from 'src/app/shared/models/secutiry-model';
+import { OutgoingRule } from 'src/app/shared/models/secutiry-model';
 import { LanguageService } from 'src/app/services/language.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { SecurityService } from 'src/app/services/security-service';
@@ -19,12 +18,8 @@ import { SystemService } from 'src/app/services/system.service';
 export class FirewallComponent implements OnInit {
   segment: string = "in";
   defaultColDef;
-  outColumnDefs;
-  remoteColumnDefs;
   context;
-  outApi: GridApi;
   outSelected;
-  remoteApi: GridApi;
   remoteSelected;
   newPort = "";
   newService = "";
@@ -39,30 +34,6 @@ export class FirewallComponent implements OnInit {
     public systemService: SystemService
   ) {
     this.context = { componentParent: this };
-    this.defaultColDef = {
-      resizable: true,
-      sortable: true,
-      hide: false,
-      suppressHeaderMenuButton: true
-    };
-    this.outColumnDefs = [
-      {
-        field: 'name',
-        headerName: this.languageS.trans('name')
-      },
-      { field: 'type', headerName: this.languageS.trans('type') },
-      { field: 'dest', headerName: this.languageS.trans('dest') },
-      { field: 'protocol', headerName: this.languageS.trans('prot') },
-      { field: 'port', headerName: this.languageS.trans('port') }
-    ];
-    this.remoteColumnDefs = [
-      {
-        field: 'name',
-        headerName: this.languageS.trans('name')
-      },
-      { field: 'ext', headerName: this.languageS.trans('external port') },
-      { field: 'port', headerName: this.languageS.trans('internal port') }
-    ];
   }
 
   ngOnInit() {
@@ -131,7 +102,6 @@ export class FirewallComponent implements OnInit {
     modal.onDidDismiss().then((val) => {
       if (val.data) {
         this.authService.log(this.securityService.remoteRules);
-        this.remoteApi.setGridOption('rowData', this.securityService.remoteRules);
       }
     });
     (await modal).present();
@@ -164,21 +134,5 @@ export class FirewallComponent implements OnInit {
   }
   stopFirewall() {
     this.securityService.setFirewallStatus('stop')
-  }
-  outGridReady(params) {
-    this.outApi = params.api;
-    this.outApi.sizeColumnsToFit();
-    (<HTMLInputElement>document.getElementById("outGridTable")).style.height = Math.trunc(window.innerHeight * 0.63) + "px";
-  }
-  outSelectionChanged() {
-    this.outSelected = this.outApi.getSelectedRows();
-  }
-  remoteGridReady(params) {
-    this.remoteApi = params.api;
-    this.remoteApi.sizeColumnsToFit();
-    (<HTMLInputElement>document.getElementById("remoteGridTable")).style.height = Math.trunc(window.innerHeight * 0.63) + "px";
-  }
-  remoteSelectionChanged() {
-    this.remoteSelected = this.remoteApi.getSelectedRows();
   }
 }

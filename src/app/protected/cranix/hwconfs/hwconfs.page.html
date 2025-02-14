@@ -23,14 +23,6 @@
     </ion-button>
   </ion-buttons>
 </ion-toolbar>
-<ion-content *ngIf="!authService.isMD()">
-  <ag-grid-angular id="agGridTable" style="width: 100%; height: 100%;"
-    rowSelection="multiple" class="{{authService.settings.agGridThema}}"
-    [rowMultiSelectWithClick]="authService.settings.rowMultiSelectWithClick"
-    [rowHeight]="authService.settings.rowHeight" [rowData]="objectService.allObjects['hwconf']"
-    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [context]="context" (gridReady)="onGridReady($event)"
-    (selectionChanged)="selectionChanged()">
-  </ag-grid-angular>
 </ion-content>
 <ion-content *ngIf="authService.isMD()">
   <cranix-md-list objectType="hwconf" [context]="context"></cranix-md-list>

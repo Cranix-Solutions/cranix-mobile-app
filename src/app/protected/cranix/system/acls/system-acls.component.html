@@ -16,6 +16,13 @@
           <ion-input type="text" placeholder="{{'search' | translate }}" (input)="groupFilterChanged()"
             id="groupFilter"></ion-input>
         </ion-item>
+        <ion-list>
+          @for(group of groupsData; track by group.id ){
+            <ion-item>
+              <ion-button (click)="manageAcls('group',group)">{{group.name}}, {{group.description}}</ion-button>
+            </ion-item>
+          }
+        </ion-list>
         <ag-grid-angular [context]="context" style="width: 100%; height: 100%;"
           class="{{authService.settings.agGridThema}}" [rowHeight]="authService.settings.rowHeight"
           [rowData]="groupsData" [columnDefs]="groupColumnDefs" [defaultColDef]="defaultColDef"
@@ -29,11 +36,14 @@
           <ion-input type="text" placeholder="{{'search' | translate }}" (input)="userFilterChanged()" id="userFilter">
           </ion-input>
         </ion-item>
-        <ag-grid-angular [context]="context" style="width: 100%; height: 100%;"
-          class="{{authService.settings.agGridThema}}" [rowHeight]="authService.settings.rowHeight"
-          [rowData]="usersData" [columnDefs]="userColumnDefs" [defaultColDef]="defaultColDef"
-          (gridReady)="usersReady($event)" id="usersTable">
-        </ag-grid-angular>
+
+        <ion-list>
+          @for(user of usersData; track by user.id ){
+            <ion-item>
+              <ion-button (click)="manageAcls('user',user)">{{user.fullName}}</ion-button>
+            </ion-item>
+          }
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>

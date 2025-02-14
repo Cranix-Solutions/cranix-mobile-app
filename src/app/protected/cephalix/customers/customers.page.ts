@@ -1,11 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GridApi, ColDef } from 'ag-grid-community';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 
 //own modules
-import { DateCellRenderer } from 'src/app/pipes/ag-date-renderer';
-import { CustomerActionRenderer } from 'src/app/pipes/ag-customer-action-renderer';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -24,9 +21,6 @@ export class CustomersPage implements OnInit {
   objectKeys: string[] = [];
   displayedColumns: string[] = ['id', 'name', 'uuid', 'locality', 'ipVPN', 'regCode', 'validity'];
   sortableColumns: string[] = ['id', 'name', 'uuid', 'locality', 'ipVPN', 'regCode', 'validity'];
-  columnDefs: ColDef[] = [];
-  defaultColDef: ColDef = {};
-  gridApi: GridApi;
   context;
   selected: Customer[] = [];
   title = 'app';
@@ -43,77 +37,16 @@ export class CustomersPage implements OnInit {
   ) {
     this.context = { componentParent: this };
     this.objectKeys = Object.getOwnPropertyNames(new Customer());
-    this.createColumnDefs();
-    this.defaultColDef = {
-      resizable: true,
-      sortable: true,
-      hide: false,
-      suppressHeaderMenuButton: true
-    };
-
   }
+  //TODO
   ngOnInit() {
     this.storage.get('CustomersPage.displayedColumns').then((val) => {
       let myArray = JSON.parse(val);
       if (myArray) {
         this.displayedColumns = ['select'].concat(myArray).concat(['actions']);
-        this.createColumnDefs();
       }
     });
   }
-
-  createColumnDefs() {
-    this.columnDefs = [];
-    let action: ColDef = {
-      headerName: "",
-      minWidth: 130,
-      suppressSizeToFit: true,
-      cellStyle: { 'padding': '2px', 'line-height': '36px' },
-      field: 'actions',
-      pinned: 'left',
-      cellRenderer: CustomerActionRenderer
-
-    };
-    for (let key of this.objectKeys) {
-      let col = {};
-      col['field'] = key;
-      col['headerName'] = this.languageS.trans(key);
-      col['hide'] = (this.displayedColumns.indexOf(key) == -1);
-      col['sortable'] = (this.sortableColumns.indexOf(key) != -1);
-      switch (key) {
-        case 'name': {
-          col['headerCheckboxSelection'] = this.authService.settings.headerCheckboxSelection;
-          col['headerCheckboxSelectionFilteredOnly'] = true;
-          col['checkboxSelection'] = this.authService.settings.checkboxSelection;
-          col['suppressSizeToFit'] = true;
-          col['minWidth'] = 250;
-          col['pinned'] = 'left';
-          col['flex'] = '1';
-          col['colId'] = '1';
-          this.columnDefs.push(col);
-          this.columnDefs.push(action)
-          continue;
-        }
-        case 'created': {
-          col['cellRenderer'] = DateCellRenderer;
-          break;
-        }
-      }
-      this.columnDefs.push(col);
-    }
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridApi.sizeColumnsToFit();
-  }
-  onSelectionChanged() {
-  }
-
-  onQuickFilterChanged(quickFilter) {
-    this.gridApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById(quickFilter)).value);
-  }
-
   public redirectToDelete = (customer: Customer) => {
     this.objectService.deleteObjectDialog(customer, 'customer', '')
   }
@@ -122,7 +55,7 @@ export class CustomersPage implements OnInit {
  * @param ev 
  */
   async redirectToAddInstitute(ev: any) {
-    this.selected = this.gridApi.getSelectedRows();
+    this.selected = [];
     if (!this.selected) {
       this.objectService.selectObject();
       return;
@@ -194,7 +127,6 @@ export class CustomersPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.displayedColumns = (dataReturned.data).concat(['actions']);
-        this.createColumnDefs();
       }
     });
     (await modal).present().then((val) => {
@@ -220,20 +152,6 @@ export class CustomersPage implements OnInit {
 })
 export class EditInstitutes implements OnInit {
   context;
-  gridApi;
-  columnApi;
-  defaultColDef: ColDef = {
-    resizable: true,
-    sortable: true,
-    hide: false,
-    suppressHeaderMenuButton: true
-  }
-  columnDefs: ColDef[] = [
-    { field: 'id', checkboxSelection: true, headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true },
-    { field: 'name' },
-    { field: 'locality' },
-    { field: 'regCode' }
-  ];
   disabled: boolean = false;
   myInstituteIds: number[];
   myInstitutes: Institute[];
@@ -262,41 +180,11 @@ export class EditInstitutes implements OnInit {
     console.log(this.myInstituteIds)
   }
 
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.columnApi = params.columnApi;
-    this.selectMy();
-  }
-
-  onQuickFilterChanged() {
-    this.gridApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById('instituteFilter')).value);
-  }
-
-  showOwned() {
-    this.gridApi.setRowData(this.myInstitutes);
-    this.owned = true;
-    this.selectMy();
-  }
-  showAll() {
-    this.gridApi.setRowData(this.objectService.allObjects['institute']);
-    this.owned = false;
-    this.selectMy();
-  }
-  selectMy() {
-    var managedIds = this.myInstituteIds;
-    this.gridApi.forEachNode(
-      function (node, index) {
-        if (managedIds.indexOf(node.data.id) != -1) {
-          node.setSelected(true);
-        }
-      }
-    )
-  }
-
   async onSubmit() {
     this.disabled = true;
     let newMyInstituteIds: number[] = [];
-    for (let institute of this.gridApi.getSelectedRows()) {
+    let selected = [] //TODO
+    for (let institute of selected) {
       newMyInstituteIds.push(institute.id)
     }
     for (let i of newMyInstituteIds) {

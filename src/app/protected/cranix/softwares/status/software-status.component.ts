@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GridApi } from 'ag-grid-community';
 //Own stuff
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -14,9 +13,6 @@ import { SoftwareStatus } from 'src/app/shared/models/data-model';
 })
 export class SoftwareStatusComponent implements OnInit {
   context;
-  defaultColDef = {};
-  columnDefs = [];
-  softwareApi: GridApi;
   softwareData: SoftwareStatus[] = [];
   softwareDataBack: SoftwareStatus[] = [];
   selectedRooms = [];
@@ -31,30 +27,15 @@ export class SoftwareStatusComponent implements OnInit {
     private languageS: LanguageService
   ) {
     this.context = { componentParent: this };
-    this.defaultColDef = {
-      resizable: true,
-      sortable: true,
-      hide: false
-    };
   }
 
   ngOnInit() {
-    this.createColumnDefs();
     this.readSoftwareData();
   }
   public ngAfterViewInit() {
     while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
   }
 
-  exportSelected() {
-    this.softwareApi.exportDataAsCsv({ onlySelected: true, fileName: 'installation-status' });
-  }
-  softwareDataReady(params) {
-    this.softwareApi = params.api;
-  }
-  onQuickFilterChanged(quickFilter) {
-    this.softwareApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById(quickFilter)).value);
-  }
   readSoftwareData() {
     let subM = this.softwareService.getSoftwareStatus().subscribe(
       (val) => {
@@ -109,31 +90,5 @@ export class SoftwareStatusComponent implements OnInit {
         }
       }
     }
-  }
-
-  createColumnDefs() {
-    this.columnDefs = [
-      {
-        field: 'softwareName',
-        headerName: this.languageS.trans('software'),
-        headerCheckboxSelection: true
-      },
-      {
-        field: 'version',
-        headerName: this.languageS.trans('version'),
-      },
-      {
-        field: 'roomName',
-        headerName: this.languageS.trans('room')
-      },
-      {
-        field: 'deviceName',
-        headerName: this.languageS.trans('device')
-      },
-      {
-        field: 'status',
-        headerName: this.languageS.trans('status')
-      }
-    ];
   }
 }

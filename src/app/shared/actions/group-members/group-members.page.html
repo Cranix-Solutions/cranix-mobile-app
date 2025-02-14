@@ -23,19 +23,7 @@
               <ion-input type="text" placeholder="{{'search' | translate }}" (input)="onMemberFilterChanged()"
                 id="memberFilter"></ion-input>
             </ion-item>
-            <ag-grid-angular
-              style="width: 100%; height: 100%;"
-              class="{{authService.settings.agGridThema}}"
-              [context]="context"
-              rowSelection="multiple" 
-              [rowHeight]="authService.settings.rowHeight"
-              [rowMultiSelectWithClick]="authService.settings.rowMultiSelectWithClick"
-              [rowData]="memberData"
-              [columnDefs]="columnDefs"
-              (selectionChanged)="onMemberSelectionChanged()"
-              (gridReady)="onMemberReady($event)"
-              id="memberTable">
-            </ag-grid-angular>
+            <!-- TODO -->
           </ion-col>
           <ion-col size=12 sizeMd=12 sizeLg=6 sizeXl=6>
             <ion-title matTooltip="{{'Select the users to add to the group.'|translate}}">{{ 'Available members:' | translate }}</ion-title>
@@ -44,19 +32,7 @@
                 id="noMemberFilter">
               </ion-input>
             </ion-item>
-            <ag-grid-angular
-              style="width: 100%; height: 100%;"
-              class="{{authService.settings.agGridThema}}"
-              [context]="context"
-              rowSelection="multiple" 
-              [rowHeight]="authService.settings.rowHeight"
-              [rowMultiSelectWithClick]="authService.settings.rowMultiSelectWithClick"
-              [rowData]="noMemberData"
-              [columnDefs]="columnDefs"
-              (gridReady)="onNoMemberReady($event)"
-              (selectionChanged)="onNoMemberSelectionChanged()"
-              id="noMemberTable">
-            </ag-grid-angular>
+            <!-- TODO -->
           </ion-col>
         </ion-row>
       </ion-grid>

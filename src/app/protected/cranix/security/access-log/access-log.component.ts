@@ -10,18 +10,8 @@ import { SystemService } from 'src/app/services/system.service';
   styleUrls: ['./access-log.component.scss'],
 })
 export class AccessLogComponent implements OnInit {
-
-  gridApi;
-  columnApi;
-  rowData = [];
-  columnDefs = [];
   context;
-  defaultColDef = {
-    resizable: true,
-    sortable: true,
-    hide: false,
-    suppressHeaderMenuButton: true
-  }
+  rowData = []
   constructor(
     public authService: AuthenticationService,
     public languageS: LanguageService,
@@ -29,27 +19,6 @@ export class AccessLogComponent implements OnInit {
 
   ) {
     this.context = { componentParent: this };
-    this.columnDefs = [
-      {
-        field: 'time',
-        headerName: this.languageS.trans('time')
-      },{
-        field: 'user',
-        headerName: this.languageS.trans('user')
-      },{
-        field: 'sourceIp',
-        headerName: this.languageS.trans('sourceIp')
-      },{
-        field: 'destinationIp',
-        headerName: this.languageS.trans('destinationIp')
-      },{
-        field: 'protocol',
-        headerName: this.languageS.trans('protocol')
-      },{
-        field: 'port',
-        headerName: this.languageS.trans('port')
-      }
-    ]
     
   }
 
@@ -72,16 +41,5 @@ export class AccessLogComponent implements OnInit {
         (<HTMLInputElement>document.getElementById("logsTable")).style.height = Math.trunc(window.innerHeight * 0.63) + "px";
       }
     )
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.columnApi = params.columnApi;
-    this.gridApi.sizeColumnsToFit();
-  }
-
-  onQuickFilterChanged(quickFilter) {
-    let filter = (<HTMLInputElement>document.getElementById(quickFilter)).value.toLowerCase();
-    this.gridApi.setGridOption('quickFilterText', filter);
   }
 }

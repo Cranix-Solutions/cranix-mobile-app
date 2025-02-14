@@ -7,7 +7,6 @@ import { CephalixService } from 'src/app/services/cephalix.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { Institute, SynchronizedObject } from 'src/app/shared/models/cephalix-data-model';
-import { SyncObjectRenderer } from 'src/app/pipes/ag-sync-object-renderer';
 
 @Component({
   standalone: false,
@@ -17,13 +16,6 @@ import { SyncObjectRenderer } from 'src/app/pipes/ag-sync-object-renderer';
 export class InstituteSyncedObjectsComponent implements OnInit {
 
   context;
-  defaultColDef = {
-    resizable: true,
-    sortable: true,
-    hide: false
-  };
-  columnDefs = [];
-  memberApi: GridApi;
   memberSelection: SynchronizedObject[] = [];
   memberData: SynchronizedObject[] = [];
   modules = [];
@@ -40,55 +32,10 @@ export class InstituteSyncedObjectsComponent implements OnInit {
   ) {
     this.institute = <Institute>this.objectService.selectedObject;
     this.context = { componentParent: this };
-    this.columnDefs = [
-      {
-        field: 'objectType',
-        valueGetter: function (params) {
-          return params.context['componentParent'].languageS.trans(params.data.objectType);
-        },
-      },
-      {
-        headerName: this.languageS.trans('name'),
-        minsize: '300px',
-        field: 'objectName',
-      },
-      {
-        headerName: this.languageS.trans('lastSync'),
-        field: 'lastSync'
-      },
-      {
-        headerName: "",
-        field: 'cranixId',
-        cellRenderer: SyncObjectRenderer
-      }
-    ];
   }
 
   ngOnInit() {
     this.readMembers();
-  }
-
-  public ngAfterViewInit() {
-    while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
-  }
-
-  onMemberReady(params) {
-    this.memberApi = params.api;
-  }
-
-  onMemberFilterChanged() {
-    this.memberApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById("memberFilter")).value);
-  }
-
-  onResize($event) {
-    //this.sizeAll();
-  }
-  sizeAll() {
-    var allColumnIds = [];
-    this.memberApi.getColumns().forEach((column) => {
-      allColumnIds.push(column.getColId());
-    });
-    this.memberApi.autoSizeColumns(allColumnIds);
   }
   readMembers() {
     switch (this.segment) {

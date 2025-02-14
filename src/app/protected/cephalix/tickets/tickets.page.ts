@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GridApi } from 'ag-grid-community';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
@@ -7,10 +6,8 @@ import { Router } from '@angular/router';
 
 //own modules
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
-import { DateTimeCellRenderer } from 'src/app/pipes/ag-datetime-renderer';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
-import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { Ticket } from 'src/app/shared/models/cephalix-data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
@@ -27,9 +24,6 @@ import { CreateSupport } from 'src/app/shared/actions/create-support/create-supp
 export class TicketsPage implements OnInit {
   objectKeys: string[] = [];
   displayedColumns: string[] = ['id', 'title', 'cephalixInstituteId', 'modified', 'created', 'creatorId', 'ticketStatus'];
-  columnDefs = [];
-  defaultColDef = {};
-  gridApi: GridApi;
   context;
   title = 'app';
   alive: boolean;
@@ -57,20 +51,6 @@ export class TicketsPage implements OnInit {
 
     this.context = { componentParent: this };
     this.objectKeys = Object.getOwnPropertyNames(new Ticket());
-    this.createColumnDefs();
-    this.defaultColDef = {
-      resizable: true,
-      sortable: true,
-      minWidth: 150,
-      hide: false
-    };
-    this.storage.get('TicketsPage.displayedColumns').then((val) => {
-      let myArray = JSON.parse(val);
-      if (myArray) {
-        this.displayedColumns = (myArray).concat(['actions']);
-        this.createColumnDefs();
-      }
-    });
     console.log("Ticket Constructor called")
   }
 
@@ -79,10 +59,7 @@ export class TicketsPage implements OnInit {
     while (!this.objectService.isInitialized()) {
       await new Promise(f => setTimeout(f, 1000));
     }
-    if (this.authService.isMD()) {
-      this.rowData = this.objectService.allObjects['ticket'];
-    }
-    console.log("Ticket ngOnInit called")
+    this.rowData = this.objectService.allObjects['ticket'];
   }
 
   ngOnDestroy() {
@@ -100,73 +77,9 @@ export class TicketsPage implements OnInit {
     */
   }
 
-  createColumnDefs() {
-    this.columnDefs = [];
-    for (let key of this.objectKeys) {
-      let col = {};
-      col['field'] = key;
-      col['headerName'] = this.languageS.trans(key);
-      col['hide'] = (this.displayedColumns.indexOf(key) == -1);
-      col['cellStyle'] = params => params.data.ticketStatus == "N" ? { 'background-color': 'red' } :
-        params.data.ticketStatus == "R" ? { 'background-color': 'orange' } : { 'background-color': 'green' }
-      switch (key) {
-        case 'cephalixInstituteId': {
-          col['valueGetter'] = function (params) {
-            var institute = params.context['componentParent'].objectService.getObjectById('institute', params.data.cephalixInstituteId)
-            if (institute) {
-              return institute.name + " " + institute.locality
-            } else {
-              return ""
-            }
-          }
-          break;
-        }
-        case 'creatorId': {
-          col['valueGetter'] = function (params) {
-            return params.context['componentParent'].objectService.idToName('user', params.data.creatorId);
-          }
-          col['maxWidth'] = 200
-          break;
-        }
-        case 'modified': {
-          col['sort'] = 'desc',
-          col['cellRenderer'] = DateTimeCellRenderer;
-          col['minWidth'] = 180
-          col['maxWidth'] = 180
-          break;
-        }
-        case 'created': {
-          col['cellRenderer'] = DateTimeCellRenderer;
-          col['minWidth'] = 180
-          col['maxWidth'] = 180
-          break;
-        }
-        case 'ticketStatus': {
-          col['minWidth'] = 40
-          col['maxWidth'] = 50
-          break;
-        }
-        case 'id': {
-          col['headerCheckboxSelection'] = this.authService.settings.headerCheckboxSelection;
-          col['headerCheckboxSelectionFilteredOnly'] = true;
-          col['checkboxSelection'] = this.authService.settings.checkboxSelection;
-          col['maxWidth'] = 150
-          break;
-        }
-      }
-      this.columnDefs.push(col);
-    }
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridApi.sizeColumnsToFit();
-    //this.gridApi.addEventListener('rowClicked', this.ticketClickHandle);
-  }
 
   onQuickFilterChanged(quickFilter) {
     let filter = (<HTMLInputElement>document.getElementById(quickFilter)).value.toLowerCase();
-    if (this.authService.isMD()) {
       this.rowData = [];
       for (let obj of this.objectService.allObjects['ticket'].sort(this.objectService.sortByCreated)) {
         if (
@@ -178,9 +91,6 @@ export class TicketsPage implements OnInit {
           this.rowData.push(obj)
         }
       }
-    } else {
-      this.gridApi.setGridOption('quickFilterText', filter);
-    }
   }
 
   ticketClickHandle(event) {
@@ -197,7 +107,7 @@ export class TicketsPage implements OnInit {
  * @param ev
  */
   async openActions(ev: any, objId: number) {
-    let selected = this.gridApi.getSelectedRows();
+    let selected = [];
     var objectIds: number[] = [];
     if (selected.length == 0 && !objId) {
       this.objectService.selectObject();
@@ -217,8 +127,7 @@ export class TicketsPage implements OnInit {
       componentProps: {
         objectType: "ticket",
         objectIds: objectIds,
-        selection: selected,
-        gridApi: this.gridApi
+        selection: selected
       },
       animated: true,
       showBackdrop: true
@@ -252,38 +161,9 @@ export class TicketsPage implements OnInit {
       (await modal).present();
     }
   }
-
-  /**
-  * Function to Select the columns to show
-  * @param ev
-  */
-  async openCollums(ev: any) {
-    const modal = await this.modalCtrl.create({
-      component: SelectColumnsComponent,
-      componentProps: {
-        columns: this.objectKeys,
-        selected: this.displayedColumns,
-        objectPath: "TicketsPage.displayedColumns"
-      },
-      animated: true,
-      backdropDismiss: false
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.displayedColumns = (dataReturned.data).concat(['actions']);
-        this.createColumnDefs();
-      }
-    });
-    (await modal).present().then((val) => {
-      this.authService.log("most lett vegrehajtva.")
-    })
-  }
   reloadAllObjects() {
     this.objectService.okMessage(this.languageS.trans("Reloading all tickets"))
     this.objectService.getAllObject('ticket')
-    if (this.authService.isMD()) {
-      this.rowData = this.objectService.allObjects['ticket'];
-      (<HTMLInputElement>document.getElementById('ticketsFilterMD')).value = ""
-    }
+    this.rowData = this.objectService.allObjects['ticket'];
   }
 }

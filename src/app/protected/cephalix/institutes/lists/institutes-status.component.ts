@@ -6,17 +6,12 @@ import { Storage } from '@ionic/storage-angular';
 
 //own modules
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
-import { DateTimeCellRenderer } from 'src/app/pipes/ag-datetime-renderer';
-import { FileSystemUsageRenderer } from 'src/app/pipes/ag-filesystem-usage-renderer';
-import { InstituteStatusRenderer } from 'src/app/pipes/ag-institute-status-renderer';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { InstituteStatus } from 'src/app/shared/models/cephalix-data-model'
-import { UpdateRenderer } from 'src/app/pipes/ag-update-renderer';
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { DateCellRenderer } from 'src/app/pipes/ag-date-renderer';
 @Component({
   standalone: false,
   selector: 'cranix-institutes-status',
@@ -51,31 +46,7 @@ export class InstitutesStatusComponent implements OnInit {
     private storage: Storage
   ) {
     this.context = { componentParent: this };
-    this.rowSelection = 'multiple';
     this.objectKeys = Object.getOwnPropertyNames(new InstituteStatus());
-    this.createColumnDefs();
-    this.defaultColDef = {
-      flex: 1,
-      resizable: true,
-      wrapText: true,
-      autoHeight: true,
-      sortable: true,
-      width: 70,
-      headerComponentParams: {
-        template:
-          '<div class="ag-cell-label-container" role="presentation">' +
-          '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
-          '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
-          '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
-          '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
-          '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
-          '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
-          '    <span ref="eText" class="ag-header-cell-text" role="columnheader" style="white-space: normal;"></span>' +
-          '    <span ref="eFilter" class="ag-header-icon ag-filter-icon"></span>' +
-          '  </div>' +
-          '</div>',
-      }
-    };
   }
 
   ngOnInit() {
@@ -84,7 +55,6 @@ export class InstitutesStatusComponent implements OnInit {
       let myArray = JSON.parse(val);
       if (myArray) {
         this.displayedColumns = myArray;
-        this.createColumnDefs();
       }
     });
   }
@@ -103,123 +73,7 @@ export class InstitutesStatusComponent implements OnInit {
       complete: () => { subs.unsubscribe() }
     })
   }
-  createColumnDefs() {
-    this.columnDefs = [
-      {
-        field: 'count',
-        headerName: '#',
-        maxWidth: 30,
-        valueGetter: function (params) {
-          return params.node.id
-        }
-      }
-    ];
-    for (let key of this.objectKeys) {
-      let col = {};
-      col['field'] = key;
-      col['headerName'] = this.languageS.trans(key);
-      col['hide'] = (this.displayedColumns.indexOf(key) == -1);
-      col['sortable'] = (this.sortableColumns.indexOf(key) != -1);
-      switch (key) {
-        case 'cephalixInstituteId': {
-          //col['headerCheckboxSelection'] = this.authService.settings.headerCheckboxSelection;
-          //col['headerCheckboxSelectionFilteredOnly'] = true;
-          //col['checkboxSelection'] = this.authService.settings.checkboxSelection;
-          col['minWidth'] = 230;
-          col['cellStyle'] = { 'justify-content': "left", 'wrap-text': 1 };
-          col['valueGetter'] = function (params) {
-            let institute = params.context['componentParent'].objectService.getObjectById('institute', params.data.cephalixInstituteId);
-            return institute.name;
-          }
-          this.columnDefs.push(col);
-          this.columnDefs.push({
-            headerName: "",
-            editable: true,
-            width: 30,
-            cellRenderer: InstituteStatusRenderer
-          })
-          this.columnDefs.push({
-            headerName: this.languageS.trans('ipVPN'),
-            editable: true,
-            width: 100,
-            valueGetter: function (params) {
-              let institute = params.context['componentParent'].objectService.getObjectById('institute', params.data.cephalixInstituteId);
-              return institute.ipVPN;
-            }
-          })
-          continue;
-        }
-        case 'lastUpdate': {
-          col['cellRenderer'] = DateCellRenderer;
-          break;
-        }
-        case 'rootUsage': {
-          col['cellRenderer'] = FileSystemUsageRenderer;
-          break;
-        }
-        case 'homeUsage': {
-          col['cellRenderer'] = FileSystemUsageRenderer;
-          break;
-        }
-        case 'srvUsage': {
-          col['cellRenderer'] = FileSystemUsageRenderer;
-          break;
-        }
-        case 'varUsage': {
-          col['cellRenderer'] = FileSystemUsageRenderer;
-          break;
-        }
-        case 'runningKernel': {
-          col['valueGetter'] = function (params) {
-            let index = params.data.runningKernel.indexOf("-default");
-            let run = params.data.runningKernel.substring(0, index);
-            let inst = params.data.installedKernel.substring(0, index);
-            if (run == inst) {
-              return "OK"
-            } else {
-              return "reboot"
-            }
-          }
-          break;
-        }
-        case 'installedKernel': {
-          col['hide'] = true;
-          break;
-        }
-        case 'availableUpdates': {
-          col['cellRenderer'] = UpdateRenderer;
-          break;
-        }
-        case 'created': {
-          col['width'] = 160
-          col['maxWidth'] = 160
-          col['cellRenderer'] = DateTimeCellRenderer;
-          col['cellStyle'] = params => (this.now - params.value) > 36000000 ? { 'background-color': 'red' } : { 'background-color': '#2dd36f' }
-          break;
-        }
-        case 'errorMessages': {
-          col['cellStyle'] = function (params) {
-            if (params.value.startsWith("#W")) {
-              return { 'background-color': 'yellow' }
-            }
-            if (params.value.startsWith("#E")) {
-              return { 'background-color': 'red' }
-            }
-            if (params.value) {
-              return { 'background-color': 'red' }
-            }
-            return { 'background-color': '#2dd36f' }
-          }
-          break
-        }
-        default: {
-          col['width'] = 150
-        }
-      }
-      this.columnDefs.push(col);
-    }
-  }
-
+  
   errorStatus(status: InstituteStatus) {
     if (status.errorMessages) {
       return "danger";

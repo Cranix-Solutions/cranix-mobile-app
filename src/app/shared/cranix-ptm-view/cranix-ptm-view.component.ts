@@ -6,8 +6,6 @@ import { LanguageService } from 'src/app/services/language.service';
 import { ParentsService } from 'src/app/services/parents.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
-import { EventRenderer } from 'src/app/pipes/ag-ptm-event-renderer'
-import { RoomRenderer } from 'src/app/pipes/ag-ptm-room-renderer'
 import { WindowRef } from 'src/app/shared/models/ohters'
 import { SystemService } from 'src/app/services/system.service';
 import { interval, takeWhile } from 'rxjs';
@@ -33,16 +31,6 @@ export class CranixPtmViewComponent implements OnInit {
   isPtmManager: boolean = false
   isStudent: boolean = false
   instituteName: string
-  defaultColDef = {
-    resizable: true,
-    sortable: false,
-    hide: false,
-    minWidth: 80,
-    suppressHeaderMenuButton: true,
-    suppressMovable: true
-  }
-  columnDefs = []
-  gridApi
   isRegisterRoomOpen: boolean = false
   isRegisterEventOpen: boolean = false
   selectedEvent: PTMEvent
@@ -117,40 +105,11 @@ export class CranixPtmViewComponent implements OnInit {
       }
     )
   }
-  onQuickFilterChanged() {
-    let filter = (<HTMLInputElement>document.getElementById("teacherFilter")).value.toLowerCase();
-    this.gridApi.setGridOption('quickFilterText', filter);
-  }
-
   createData(doColdef: boolean) {
     let colDefIsReady = !doColdef
     let data = []
     let colDef = []
     this.eventsTimeStudent = {}
-    if (!colDefIsReady) {
-      colDef.push(
-        {
-          field: 'teacher',
-          pinned: 'left',
-          minWidth: 100,
-          lockPinned: true,
-          headerName: this.languageS.trans('Teacher'),
-          sortable: true
-        }
-      )
-      if (!this.authService.isMD()) {
-        colDef.push(
-          {
-            field: 'room',
-            pinned: 'left',
-            minWidth: 80,
-            lockPinned: true,
-            headerName: this.languageS.trans('Room'),
-            cellRenderer: RoomRenderer
-          }
-        )
-      }
-    }
     for (let ptmTeacherInRoom of this.ptm.ptmTeacherInRoomList) {
       this.eventsTeacherStudent[ptmTeacherInRoom.teacher.id] = {}
       if (this.selectedStudent) {
@@ -181,17 +140,13 @@ export class CranixPtmViewComponent implements OnInit {
             {
               field: time,
               headerName: time,
-              width: 80,
-              cellRenderer: EventRenderer
+              width: 80
             }
           )
         }
       }
       colDefIsReady = true
       data.push(roomEvents)
-    }
-    if (doColdef) {
-      this.columnDefs = colDef
     }
     for (let teacher of this.freeTeachers) {
       if (this.selectedStudent) {
@@ -210,11 +165,6 @@ export class CranixPtmViewComponent implements OnInit {
       )
     }
     this.rowData = data
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridApi.sizeColumnsToFit();
   }
 
   selectPTMinRoom(event: PTMEvent) {

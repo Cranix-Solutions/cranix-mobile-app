@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { GridApi } from 'ag-grid-community';
 //Own stuff
 import { SoftwareService } from 'src/app/services/softwares.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { Package } from 'src/app/shared/models/data-model';
-import { ServerResponse } from 'src/app/shared/models/server-models';
 import { LanguageService } from 'src/app/services/language.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 
@@ -16,7 +14,6 @@ import { AuthenticationService } from 'src/app/services/auth.service';
   styleUrls: ['./download-softwares.component.scss'],
 })
 export class DownloadSoftwaresComponent implements OnInit {
-  gridApi: GridApi;
   columns: any[] = [];
   context;
   selected: Package[];
@@ -42,19 +39,12 @@ export class DownloadSoftwaresComponent implements OnInit {
       headerName: this.languageS.trans('version'),
     }];
   }
-  tableReady(params) {
-    this.gridApi = params.api;
-  }
-
-  packagFilterChanged() {
-    this.gridApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById("packageFilter")).value);
-  }
   closeWindow() {
     this.modalController.dismiss();
   }
   async startDownload() {
-    ;
-    let selected = this.gridApi.getSelectedRows();
+    //TODO
+    let selected = [];
     console.log(selected)
     if (selected.length == 0) {
       console.log('not selected')

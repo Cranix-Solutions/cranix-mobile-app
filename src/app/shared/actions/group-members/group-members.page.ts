@@ -20,8 +20,6 @@ export class GroupMembersPage implements OnInit {
   memberOptions;
   noMemberOptions;
   columnDefs = [];
-  memberApi;
-  noMemberApi;
   memberSelection: User[] = [];
   noMemberSelection: User[] = [];
   memberData: User[] = [];
@@ -41,105 +39,12 @@ export class GroupMembersPage implements OnInit {
     console.log('innerWidth',window.innerWidth)
     this.context = { componentParent: this }
     this.group = <Group>this.objectS.selectedObject;
-    if( window.innerWidth < 500 ) {
-      this.mdColDef()
-    } else {
-      this.brColDef()
-    }
     this.readMembers();
-  }
-  mdColDef() {
-    this.columnDefs = [
-      {
-        headerName: this.languageS.trans('user'),
-        field: 'fullName',
-        sortable: true,
-        minWidth: 200,
-        headerCheckboxSelection: this.authService.settings.headerCheckboxSelection,
-        headerCheckboxSelectionFilteredOnly: true,
-        checkboxSelection: this.authService.settings.checkboxSelection,
-        suppressHeaderMenuButton: true
-      },
-      {
-        headerName: this.languageS.trans('role'),
-        sortable: true,
-        resizable: true,
-        field: 'role',
-        width: 100,
-        suppressHeaderMenuButton: true,
-        valueGetter: function (params) {
-          return params.context['componentParent'].languageS.trans(params.data.role);
-        }
-      }
-    ]
-  }
-  brColDef() {
-    this.columnDefs = [
-      {
-        headerName: this.languageS.trans('uid'),
-        field: 'uid',
-        sortable: true,
-        headerCheckboxSelection: this.authService.settings.headerCheckboxSelection,
-        headerCheckboxSelectionFilteredOnly: true,
-        checkboxSelection: this.authService.settings.checkboxSelection,
-        suppressHeaderMenuButton: true
-      },
-      {
-        headerName: this.languageS.trans('surName'),
-        sortable: true,
-        resizable: true,
-        field: 'surName'
-      },
-      {
-        headerName: this.languageS.trans('givenName'),
-        sortable: true,
-        resizable: true,
-        field: 'givenName'
-      },
-      {
-        headerName: this.languageS.trans('role'),
-        sortable: true,
-        resizable: true,
-        field: 'role',
-        width: 150,
-        suppressHeaderMenuButton: true,
-        valueGetter: function (params) {
-          return params.context['componentParent'].languageS.trans(params.data.role);
-        }
-      }
-    ]
   }
   public ngAfterViewInit() {
     while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
   }
-
-  onMemberReady(params) {
-    this.memberApi = params.api;
-    this.memberApi.sizeColumnsToFit();
-    (<HTMLInputElement>document.getElementById("memberTable")).style.height = Math.trunc(window.innerHeight * 0.60) + "px";
-  }
-  onMemberSelectionChanged() {
-    this.memberSelection = this.memberApi.getSelectedRows();
-  }
-
-  onMemberFilterChanged() {
-    this.memberApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById("memberFilter")).value);
-    this.memberApi.doLayout();
-  }
-
-  onNoMemberReady(params) {
-    this.noMemberApi = params.api;
-    this.noMemberApi.sizeColumnsToFit();
-    (<HTMLInputElement>document.getElementById("noMemberTable")).style.height = Math.trunc(window.innerHeight * 0.60) + "px";
-  }
-  onNoMemberSelectionChanged() {
-    this.noMemberSelection = this.noMemberApi.getSelectedRows();
-  }
-
-  onNoMemberFilterChanged() {
-    this.noMemberApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById("noMemberFilter")).value);
-    this.noMemberApi.doLayout();
-  }
+  //TODO
   applyChanges() {
     let members: number[] = [];
     let rmMembers: number[] = [];

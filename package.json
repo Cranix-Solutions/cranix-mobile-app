@@ -39,8 +39,6 @@
     "@ngx-translate/http-loader": "",
     "ag-charts-angular": "",
     "ag-charts-community": "",
-    "ag-grid-angular": "",
-    "ag-grid-community": "",
     "angular-csv-ext": "",
     "hammerjs": "",
     "ionic-selectable": "^5.0.0",

@@ -17,7 +17,6 @@ import {
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'src/app/pipes/pipe-modules';
-import { AgGridModule } from 'ag-grid-angular';
 import { ActionBTNRenderer } from 'src/app/pipes/ag-action-renderer';
 import { ApplyBTNRenderer } from 'src/app/pipes/ag-apply-renderer';
 import { ApplyCheckBoxBTNRenderer } from 'src/app/pipes/ag-apply-checkbox-renderer';
@@ -126,7 +125,6 @@ import { simpleToolbarOptions } from 'src/app/shared/models/constants'
     IonicSelectableHeaderTemplateDirective,
     IonicSelectableValueTemplateDirective,
     IonicSelectablePlaceholderTemplateDirective,
-    AgGridModule,
     FormsModule,
     IonicModule,
     MatDatepickerModule,
@@ -142,7 +140,6 @@ import { simpleToolbarOptions } from 'src/app/shared/models/constants'
   ], exports: [
     CommonModule,
     AgChartsModule,
-    AgGridModule,
     FormsModule,
     IonicModule,
     MatDatepickerModule,
