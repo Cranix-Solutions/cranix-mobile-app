@@ -23,7 +23,7 @@ export class AccessLogComponent implements OnInit {
   }
 
   ngOnInit() { 
-    let sub = this.systemService.getFile("/var/log/cranix-internet-access.log").subscribe(
+    this.systemService.getFile("/var/log/cranix-internet-access.log").subscribe(
       (val) => {
         for ( let line of val.split("\n")) {
           let lline = line.split(";")
@@ -38,8 +38,9 @@ export class AccessLogComponent implements OnInit {
             }
           )
         }
-        (<HTMLInputElement>document.getElementById("logsTable")).style.height = Math.trunc(window.innerHeight * 0.63) + "px";
       }
     )
   }
+
+  onQuickFilterChanged(filter: string){}
 }

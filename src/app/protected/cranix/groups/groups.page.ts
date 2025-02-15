@@ -41,7 +41,6 @@ export class GroupsPage implements OnInit {
       let myArray = JSON.parse(val);
       if (myArray) {
         this.displayedColumns = myArray.concat(['actions']);
-        this.createColumnDefs();
       }
     });
   }

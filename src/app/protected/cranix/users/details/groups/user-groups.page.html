@@ -22,12 +22,7 @@
         <ion-row>
           <ion-col size=12 sizeMd=12 sizeLg=6 sizeXl=6>
             <ion-title matTooltip="{{'Select the groups the user must be removed from.' | translate}}">{{ 'Member of groups:' | translate }}</ion-title>
-            <ion-item>
-              <!--ion-label position="stacked">{{ 'Member of groups:' | translate }}</ion-label-->
-              <ion-input type="text" placeholder="{{'search' | translate }}" (input)="onMemberFilterChanged()"
-                id="memberFilter"></ion-input>
-            </ion-item>
-            <ag-grid-angular
+            <!-- ag-grid-angular
               style="width: 100%; height: 100%;"
               class="{{authService.settings.agGridThema}}"
               rowSelection="multiple" 
@@ -58,7 +53,7 @@
               (gridReady)="onNoMemberReady($event)"
               (selectionChanged)="onNoMemberSelectionChanged()"
                id="noMemberTable">
-            </ag-grid-angular>
+            </ag-grid-angular -->
           </ion-col>
         </ion-row>
       </ion-grid>

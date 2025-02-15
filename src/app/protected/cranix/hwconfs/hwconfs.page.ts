@@ -24,6 +24,8 @@ export class HwconfsPage implements OnInit {
   title = 'app';
   selection:   Hwconf[] = [];
   selectedIds: number[] = [];
+  context;
+  
   constructor(
     public authService: AuthenticationService,
     public languageS: LanguageService,
@@ -32,6 +34,7 @@ export class HwconfsPage implements OnInit {
     public popoverCtrl: PopoverController,
     public route: Router
   ) {
+    this.context = { componentParent: this };
   }
   ngOnInit() {
   }

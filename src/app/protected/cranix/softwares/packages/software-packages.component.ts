@@ -124,4 +124,8 @@ export class SoftwarePackagesComponent implements OnInit {
     (await modal).present(); 
 
   }
+
+  onQuickFilterChanged(filter: string){
+    //TODO
+  }
 }

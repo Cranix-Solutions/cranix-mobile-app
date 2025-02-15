@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GridApi } from 'ag-grid-community'
 //own stuff
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -8,7 +7,6 @@ import { Hwconf, Device, Room } from 'src/app/shared/models/data-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CrxActionMap } from 'src/app/shared/models/server-models';
 import { DevicesService } from 'src/app/services/devices.service';
-import { RoomIdCellRenderer } from 'src/app/pipes/ag-roomid-render';
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
@@ -20,15 +18,6 @@ import { takeWhile } from 'rxjs/operators';
 })
 export class HwconfMembersPage implements OnInit {
   context;
-  columnDefs = [];
-  defaultColDef = {
-    cellStyle: { 'justify-content': "center" },
-    resizable: true,
-    sortable: true,
-    hide: false,
-    suppressHeaderMenuButton: true
-  }
-  memberApi: GridApi;
   memberData:  Device[] = [];
   memberDataB: Device[] = [];
   hwconf;
@@ -58,46 +47,7 @@ export class HwconfMembersPage implements OnInit {
   }
 
   ngOnInit() {
-    this.createColumnDef();
     this.readMembers();
-  }
-
-  createColumnDef() {
-      this.columnDefs = [
-        {
-          headerCheckboxSelection: this.authService.settings.headerCheckboxSelection,
-          headerCheckboxSelectionFilteredOnly: true,
-          checkboxSelection: this.authService.settings.checkboxSelection,
-          headerName: this.languageService.trans('name'),
-          field: 'name',
-        },
-        {
-          headerName: this.languageService.trans('room'),
-          field: 'roomId',
-          cellRenderer: RoomIdCellRenderer,
-        },
-        {
-          headerName: this.languageService.trans('ip'),
-          field: 'ip',
-        },
-        {
-          headerName: this.languageService.trans('mac'),
-          field: 'mac',
-        }
-      ]
-  }
-
-  public ngAfterViewInit() {
-    while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
-  }
-
-  onMemberReady(params) {
-    this.memberApi = params.api;
-    //this.memberApi.sizeColumnsToFit();
-  }
-
-  onQuickFilterChanged(quickFilter) {
-    this.memberApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById(quickFilter)).value);
   }
 
   readMembers() {
@@ -132,16 +82,20 @@ export class HwconfMembersPage implements OnInit {
       }
     }
   }
+
+  onQuickFilterChanged(filter: string){}
+  
   triggerClone(event, what) {
+    let actionMap = new CrxActionMap;
+    actionMap.name = what;
+    /* TODO
     if (this.memberApi.getSelectedRows().length == 0) {
       this.objectService.selectObject();
       return;
     }
-    let actionMap = new CrxActionMap;
-    actionMap.name = what;
     for (let dev of this.memberApi.getSelectedRows()) {
       actionMap.objectIds.push(dev.id);
-    }
+    } */
     this.objectService.requestSent();
     let sub = this.deviceService.executeAction(actionMap).subscribe(
       (val) => {

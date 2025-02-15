@@ -55,6 +55,16 @@ export class MyGroupsPage implements OnInit {
   public redirectToDelete = (tmp) => {
     this.objectService.deleteObjectDialog(tmp, this.segment, '')
   }
+
+  checkChange(ev, obj) {
+    if (ev.detail.checked) {
+      this.objectService.selectedIds.push(obj.id)
+      this.objectService.selection.push(obj)
+    } else {
+      this.objectService.selectedIds = this.objectService.selectedIds.filter(id => id != obj.id)
+      this.objectService.selection = this.objectService.selection.filter(obj => obj.id != obj.id)
+    }
+  }
   /**
   * Open the actions menu with the selected object ids.
   * @param ev

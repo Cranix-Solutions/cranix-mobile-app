@@ -1,15 +1,12 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>edit</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'Modify selected hwconf' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-row class="header-row">
-  <ion-col>
-    <ion-title color="primary">{{ 'Modify selected hwconf' | translate}}:"{{object.name}}"
-      {{object.deviceType | translate }} {{object.description}}
-    </ion-title>
-  </ion-col>
-</ion-row>
+
 <ion-content *ngIf="editForm">
   <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm.value)">
     <ion-card>

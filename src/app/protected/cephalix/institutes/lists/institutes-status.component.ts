@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { GridApi } from 'ag-grid-community';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
@@ -9,7 +8,6 @@ import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { LanguageService } from 'src/app/services/language.service';
-import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { InstituteStatus } from 'src/app/shared/models/cephalix-data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
 @Component({
@@ -22,10 +20,6 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 export class InstitutesStatusComponent implements OnInit {
   objectKeys: string[] = [];
   displayedColumns: string[] = ['cephalixInstituteId', 'created', 'uptime', 'version', 'lastUpdate', 'availableUpdates', 'errorMessages', 'rootUsage', 'srvUsage', 'homeUsage', 'runningKernel', 'installedKernel'];
-  sortableColumns: string[] = ['cephalixInstituteId', 'created', 'uptime', 'version', 'lastUpdate', 'availableUpdates', 'errorMessages', 'rootUsage', 'srvUsage', 'homeUsage', 'runningKernel', 'installedKernel'];
-  columnDefs = [];
-  defaultColDef = {};
-  gridApi: GridApi;
   rowSelection;
   context;
   title = 'app';
@@ -114,18 +108,6 @@ export class InstitutesStatusComponent implements OnInit {
   showStatus(status: InstituteStatus) {
     this.selectedStatus = status;
   }
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridApi.sizeColumnsToFit();
-  }
-  headerHeightSetter() {
-    var padding = 20;
-    var height = headerHeightGetter() + padding;
-    this.gridApi.setGridOption('headerHeight',height);
-  }
-  onQuickFilterChanged(quickFilter) {
-    this.gridApi.setGridOption('quickFilterText', (<HTMLInputElement>document.getElementById(quickFilter)).value);
-  }
 
   //TODO RESPONSE
   public redirectToUpdate = (cephalixInstituteId: number) => {
@@ -135,58 +117,9 @@ export class InstitutesStatusComponent implements OnInit {
       complete: () => { sub.unsubscribe(); }
     });
   }
-  /**
- * Open the actions menu with the selected object ids.
- * @param ev
- */
-  async openActions(ev: any) {
-    if (this.gridApi.getSelectedRows().length > 0) {
-      for (let i = 0; i < this.gridApi.getSelectedRows().length; i++) {
-        this.objectIds.push(this.gridApi.getSelectedRows()[i].id);
-      }
-    }
-    const popover = await this.popoverCtrl.create({
-      component: ActionsComponent,
-      event: ev,
-      componentProps: {
-        objectType: "sync-object",
-        objectIds: this.objectIds,
-        selection: this.gridApi.getSelectedRows(),
-        gridApi: this.gridApi
-      },
-      animated: true,
-      showBackdrop: true
-    });
-    (await popover).present();
-  }
   redirectToEdit(status: InstituteStatus) {
     this.objectService.selectedObject = this.objectService.getObjectById("institute", status.cephalixInstituteId);
     this.route.navigate([`/pages/cephalix/institutes/${status.cephalixInstituteId}`]);
-  }
-
-  /**
-  * Function to Select the columns to show
-  * @param ev
-  */
-  async openCollums(ev: any) {
-    const modal = await this.modalCtrl.create({
-      component: SelectColumnsComponent,
-      componentProps: {
-        columns: this.objectKeys,
-        selected: this.displayedColumns,
-        objectPath: "InstitutesStatusComponent.displayedColumns"
-      },
-      animated: true,
-      backdropDismiss: false
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.createColumnDefs();
-      }
-    });
-    (await modal).present().then((val) => {
-      this.authService.log("most lett vegrehajtva.")
-    })
   }
 
   sortStatus(status1: InstituteStatus, status2: InstituteStatus) {
@@ -198,18 +131,4 @@ export class InstitutesStatusComponent implements OnInit {
     }
     return 0
   }
-}
-
-function headerHeightGetter() {
-  var columnHeaderTexts = document.querySelectorAll('.ag-header-cell-text');
-
-  var columnHeaderTextsArray = [];
-
-  columnHeaderTexts.forEach(node => columnHeaderTextsArray.push(node));
-
-  var clientHeights = columnHeaderTextsArray.map(
-    headerText => headerText.clientHeight
-  );
-  var tallestHeaderTextHeight = Math.max(...clientHeights);
-  return tallestHeaderTextHeight;
 }

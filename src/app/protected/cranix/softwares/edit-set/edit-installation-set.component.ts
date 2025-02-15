@@ -74,11 +74,9 @@ export class EditInstallationSetComponent implements OnInit {
       }
     }
   }
-  public ngAfterViewInit() {
-    (<HTMLInputElement>document.getElementById("editSoftware")).style.height = Math.trunc(window.innerHeight * 0.90) + "px";
-    while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
+  softwaresFilterChanged(){
+    //TODO
   }
-
   segmentChanged(event) {
     this.toShow = event.detail.value;
   }

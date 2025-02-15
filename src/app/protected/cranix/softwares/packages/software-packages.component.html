@@ -1,4 +1,3 @@
-<cranix-toolbar title="{{'Available software packages:' | translate}}"></cranix-toolbar>
 <ion-fab vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
   <ion-fab-button>
     <ion-icon name="arrow-forward-circle"></ion-icon>
@@ -18,28 +17,5 @@
 <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('softwareFilterMD')"
   id="softwareFilterMD" showCancelButton="never" class="hidden-lg hidden-xl"></ion-searchbar>
 <ion-content id="carded">
-  <ion-toolbar class="page-toolbar">
-    <ion-item lines="none">
-      <ion-label *ngIf="gridApi">
-        #{{gridApi.getDisplayedRowCount()}}
-      </ion-label>
-      <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('softwareFilter')"
-        id="softwareFilter">
-      </ion-input>
-    </ion-item>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="authService.isAllowed('software.download')" size="small" fill="solid"
-        (click)="downloadSoftwares($event)" matTooltip="{{'Download software packages.' | translate }}">
-        <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
-      </ion-button>
-      <ion-button size="small" fill="solid" (click)="redirectToEdit(null)"
-        matTooltip="{{'Create a new software package' | translate }}">
-        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-      </ion-button>
-      <ion-button size="small" fill="solid" (click)="readInstallableSoftware()"
-        matTooltip="{{'Refresh package list.' | translate }}">
-        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar><!--TODO-->
+  <!--TODO-->
 </ion-content>

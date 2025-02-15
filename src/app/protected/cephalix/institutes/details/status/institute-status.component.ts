@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GridApi } from 'ag-grid-community';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
@@ -8,7 +7,6 @@ import { Storage } from '@ionic/storage-angular';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { LanguageService } from 'src/app/services/language.service';
-import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { Institute } from 'src/app/shared/models/cephalix-data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
 
@@ -51,5 +49,9 @@ export class InstituteStatusComponent implements OnInit {
       (err) => { this.authService.log(err) },
       () => { subs.unsubscribe() }
     )
+  }
+
+  onQuickFilterChanged(filter: string){
+    //TODO
   }
 }

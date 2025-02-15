@@ -48,6 +48,9 @@ export class InstitutesSyncObjectsComponent implements OnInit {
       (err) => { this.authService.log(err) },
       () => { subM.unsubscribe() });
   }
+  onMemberFilterChanged(){
+    //TODO
+  }
   startSync(en: Event) {
     let selected = [] //TODO
     this.objectService.requestSent();

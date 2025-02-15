@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 //Own stuff
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { LanguageService } from 'src/app/services/language.service';
 import { SoftwareService } from 'src/app/services/softwares.service'
 import { Installation, Category } from 'src/app/shared/models/data-model';
 import { EditInstallationSetComponent } from 'src/app/protected/cranix/softwares/edit-set/edit-installation-set.component';
@@ -22,7 +21,6 @@ export class InstallationSetsComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    private languageS: LanguageService,
     public modalCtrl: ModalController,
     public objectService: GenericObjectService,
     public router: Router,
@@ -33,6 +31,9 @@ export class InstallationSetsComponent implements OnInit {
   ngOnInit() {
     this.softwareService.readInstallationsSets();
     this.softwareService.readInstallableSoftwares();
+  }
+  setFilterChanged(){
+    //TODO
   }
   async redirectToEdit(installation: Category) {
     let action = "add"

@@ -6,7 +6,6 @@ import { Storage } from '@ionic/storage-angular';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
-import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { Customer, Institute } from 'src/app/shared/models/cephalix-data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
@@ -108,31 +107,6 @@ export class CustomersPage implements OnInit {
     });
     (await modal).present();
   }
-
-  /**
-* Function to Select the columns to show
-* @param ev 
-*/
-  async openCollums(ev: any) {
-    const modal = await this.modalCtrl.create({
-      component: SelectColumnsComponent,
-      componentProps: {
-        columns: this.objectKeys,
-        selected: this.displayedColumns,
-        objectPath: "CustomersPage.displayedColumns"
-      },
-      animated: true,
-      backdropDismiss: false
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.displayedColumns = (dataReturned.data).concat(['actions']);
-      }
-    });
-    (await modal).present().then((val) => {
-      this.authService.log("most lett vegrehajtva.")
-    })
-  }
   async editInstitutes(customer: Customer) {
     const modal = await this.modalCtrl.create({
       component: EditInstitutes,
@@ -180,6 +154,8 @@ export class EditInstitutes implements OnInit {
     console.log(this.myInstituteIds)
   }
 
+  showAll(){}
+  showOwned(){}
   async onSubmit() {
     this.disabled = true;
     let newMyInstituteIds: number[] = [];

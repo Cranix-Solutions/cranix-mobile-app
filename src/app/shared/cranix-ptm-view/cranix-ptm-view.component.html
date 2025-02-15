@@ -1,6 +1,5 @@
 @if(rowData) {
 <ion-item>
-    <ion-input placeholder="{{'Search for' | translate }} {{'Teacher'|translate}}" (input)="onQuickFilterChanged()" id="teacherFilter"></ion-input>
     @if(selectedStudent){
         <ion-button (click)="printEventForStudent()">
             <ion-icon color="success" name="print"></ion-icon>

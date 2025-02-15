@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GridApi } from 'ag-grid-community';
 
 //Own stuff
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
-import { LanguageService } from 'src/app/services/language.service';
 import { Institute, SynchronizedObject } from 'src/app/shared/models/cephalix-data-model';
 
 @Component({
@@ -27,8 +25,7 @@ export class InstituteSyncedObjectsComponent implements OnInit {
   constructor(
     public authService: AuthenticationService,
     public cephalixService: CephalixService,
-    public objectService: GenericObjectService,
-    private languageS: LanguageService
+    public objectService: GenericObjectService
   ) {
     this.institute = <Institute>this.objectService.selectedObject;
     this.context = { componentParent: this };
@@ -81,7 +78,9 @@ export class InstituteSyncedObjectsComponent implements OnInit {
     this.segment = event.detail.value;
     this.readMembers();
   }
-
+  onMemberFilterChanged(){
+    //TODO
+  }
   isSynced(obj, objectType) {
     for (let tmp of this.syncedObjects) {
       if (tmp.objectType == objectType && tmp.cranixId == obj.id) {

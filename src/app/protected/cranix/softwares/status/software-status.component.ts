@@ -32,9 +32,6 @@ export class SoftwareStatusComponent implements OnInit {
   ngOnInit() {
     this.readSoftwareData();
   }
-  public ngAfterViewInit() {
-    while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
-  }
 
   readSoftwareData() {
     let subM = this.softwareService.getSoftwareStatus().subscribe(
@@ -68,6 +65,12 @@ export class SoftwareStatusComponent implements OnInit {
       () => { subM.unsubscribe() });
   }
 
+  onQuickFilterChanged(filter: string){
+    //TODO
+  }
+  exportSelected(){
+    //TODO
+  }
   readFilteredSoftwareData() {
     if (this.softwareDataBack.length == 0) {
       this.softwareDataBack = this.softwareData;

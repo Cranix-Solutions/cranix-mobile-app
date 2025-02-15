@@ -1,4 +1,3 @@
-<cranix-toolbar title="{{ 'Manage software installation sets:' | translate}}"></cranix-toolbar>
 <ion-content id="carded">
   <ion-fab vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
     <ion-fab-button>
@@ -18,9 +17,6 @@
   </ion-fab>
   <ion-toolbar class="page-toolbar">
     <ion-item lines="none">
-      <ion-label *ngIf="installationSetApi">
-        #{{installationSetApi.getDisplayedRowCount()}}
-      </ion-label>
       <ion-input placeholder="{{'search' | translate }}" (input)="setFilterChanged()" id="installationSetFilter">
       </ion-input>
     </ion-item>

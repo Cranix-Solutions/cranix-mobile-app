@@ -48,5 +48,8 @@ export class InstitutesManage implements OnInit {
   }
 
   //TODO implement it with ionic-selectable
-  
+  showAll(){}
+  showSelected(){}
+  userList(){}
+  onQuickFilterChanged(filter: string){ }
 }

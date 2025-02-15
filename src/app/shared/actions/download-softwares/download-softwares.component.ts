@@ -42,6 +42,9 @@ export class DownloadSoftwaresComponent implements OnInit {
   closeWindow() {
     this.modalController.dismiss();
   }
+  packagFilterChanged(){
+    //TODO
+  }
   async startDownload() {
     //TODO
     let selected = [];

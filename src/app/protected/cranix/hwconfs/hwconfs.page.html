@@ -1,29 +1,11 @@
-<cranix-toolbar title="{{'Manage hwconfs' | translate}}"></cranix-toolbar>
-<ion-toolbar *ngIf="!authService.isMD()" class="page-toolbar">
-  <ion-item lines="none">
-    <ion-label *ngIf="gridApi">
-      #{{gridApi.getDisplayedRowCount()}}
-    </ion-label>
-    <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('hwconfsFilter')"
-      id="hwconfsFilter">
-    </ion-input>
-  </ion-item>
-  <ion-buttons slot="end">
-    <ion-button size="small" fill="solid" (click)="redirectToEdit(null)"
-      matTooltip="{{'Create a new hardware configuration' | translate }}">
-      <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-    </ion-button>
-    <ion-button size="small" fill="solid" (click)="openActions($event,null)"
-      matTooltip="{{'Apply actions on the selected objects' | translate }}">
-      <ion-icon slot="icon-only" name="ellipsis-vertical-sharp"></ion-icon>
-    </ion-button>
-    <ion-button size="small" fill="solid" (click)="openCollums($event)"
-      matTooltip="{{'Select the columns to show' | translate }}">
-      <ion-icon slot="icon-only" name="apps"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
-</ion-content>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'Manage hwconfs' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content *ngIf="authService.isMD()">
   <cranix-md-list objectType="hwconf" [context]="context"></cranix-md-list>
 </ion-content>
