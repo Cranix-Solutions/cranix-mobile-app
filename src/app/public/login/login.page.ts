@@ -6,7 +6,12 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { LoginForm } from 'src/app/shared/models/server-models';
 
-
+class server {
+    name: string = ""
+    url: string = ""
+    user: LoginForm = new LoginForm()
+    token: string = ""
+}
 
 @Component({
     standalone: false,
@@ -15,15 +20,13 @@ import { LoginForm } from 'src/app/shared/models/server-models';
     styleUrls: ['./login.page.scss'],
 })
 export class LoginPage{
-  institute: string = "";
-  isAddConnectionOpen: boolean = false
-  saveConnection: boolean = true;
-  url: string = "";
-  servers: any[] = [];
-    instituteName: string = "";
+    connection: server = new server
+    isAddConnectionOpen: boolean = false
+    saveConnection: boolean = true;
+    servers: server[] = [];
     totp: boolean = false;
     totppin: string = "";
-    user: LoginForm = new LoginForm();
+    newConnection: boolean = false;
 
     constructor(
         public authService: AuthenticationService,
@@ -32,10 +35,11 @@ export class LoginPage{
         private router: Router
     ) {
         this.servers = JSON.parse(localStorage.getItem("servers"))
+        console.log(this.servers)
     }
 
     login(): void {
-        this.authService.setUpSession(this.user, this.instituteName);
+        this.authService.setUpSession(this.connection.user, this.connection.name);
     }
 
     checkPin() {
@@ -52,26 +56,39 @@ export class LoginPage{
     }
 
     onLogin(modal: any) {
-        this.utilsService.url = this.url;
-        this.authService.setUpSession( this.user, this.institute )
+        this.utilsService.url = this.connection.url;
+        this.authService.authenticationState.next(false);
+        this.authService.setUpSession( this.connection.user, this.connection.name )
         this.authService.authenticationState.subscribe(state => {
+            console.log("Login ok")
             if(this.saveConnection){
-                this.servers.push({
-                    name: this.institute,
-                    url: this.url,
-                    token: this.authService.session.token,
-                    user:  this.user
-                  })
-                  localStorage.setItem("servers",JSON.stringify(this.servers))
+                console.log("save connection")
+                //this.connection.token = this.authService.session.token
+                if(this.newConnection){
+                    this.servers.push(this.connection)
+                }
+                console.log(this.servers)
+                localStorage.setItem("servers",JSON.stringify(this.servers))
             }
             modal.dismiss()
         })
         
     }
     
+    addEditConnection(i: number){
+        if(i==-1){
+            this.newConnection = true
+            this.connection = new server
+        }else{
+            this.connection = this.servers[i]
+            this.newConnection = false
+            this.saveConnection = true
+        }
+        this.isAddConnectionOpen = true
+    }
     connectServer(i: number){
-        let user = this.servers[i].user;
-        this.authService.setUpSession( user, this.institute )
+        this.utilsService.url = this.servers[i].url
+        this.authService.setUpSession( this.servers[i].user, this.servers[i].name )
         console.log(i)
         this.isAddConnectionOpen = false
         this.authService.authorized = true

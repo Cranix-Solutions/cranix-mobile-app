@@ -4,21 +4,21 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ 'My ' + segment + 's' | translate}}</ion-title>
-    <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="education/group">
-      <ion-segment-button value="education/group" layout="icon-start">
-        <ion-label class="hidden-xs hidden-sm">{{'Groups' | translate}}</ion-label>
-        <ion-icon name="people-circle"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="education/user" layout="icon-start">
-        <ion-label class="hidden-xs hidden-sm">{{'Students' | translate}}</ion-label>
-        <ion-icon name="people"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="education/guestUser" layout="icon-start">
-        <ion-label class="hidden-xs hidden-sm">{{'Guest Users' | translate}}</ion-label>
-        <ion-icon name="walk"></ion-icon>
-      </ion-segment-button>
-    </ion-segment>
   </ion-toolbar>
+  <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="education/group">
+    <ion-segment-button value="education/group" layout="icon-start">
+      <ion-label class="hidden-xs hidden-sm">{{'Groups' | translate}}</ion-label>
+      <ion-icon name="people-circle"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="education/user" layout="icon-start">
+      <ion-label class="hidden-xs hidden-sm">{{'Students' | translate}}</ion-label>
+      <ion-icon name="people"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="education/guestUser" layout="icon-start">
+      <ion-label class="hidden-xs hidden-sm">{{'Guest Users' | translate}}</ion-label>
+      <ion-icon name="walk"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 <!-- ion-toolbar class="page-toolbar"></ion-toolbar -->
 @switch(segment) {
@@ -72,3 +72,89 @@
   </ion-content>
   }
 }
+
+<ion-modal #addEitGuestModal [isOpen]="isAddEditGuestModalOpen">
+  <ng-template>
+  <form #addEditGuest="ngForm">
+    <ion-card-header translucent>
+        <ion-toolbar>
+            <ion-card-title>{{ 'guest users ' + action | translate }}</ion-card-title>
+            <ion-card-subtitle>{{ 'The name of the created users have the format groupnameNN' | translate }}</ion-card-subtitle>
+            <ion-buttons slot="end">
+                <ion-button class="ion-no-margin" (click)="doAddEditGuest(addEitGuestModal)" [disabled]="!addEditGuest.valid || disabled">
+                    <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="closeAddEditGuest(addEitGuestModal)">
+                    <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content fullscreen *ngIf="guest">
+        <ion-list>
+            <ion-item>
+                <ion-label position="stacked">{{'name' | translate}}</ion-label>
+                <ion-input [(ngModel)]="guest.name" name="name" pattern="\S+" required [disabled]="disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'description' | translate}}</ion-label>
+                <ion-input [(ngModel)]="guest.description" name="description" required [disabled]="disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'Count of accounts' | translate}}</ion-label>
+                <ion-input [(ngModel)]="guest.count" name="count" type="number" min=1 max=200 required [disabled]="disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'password' | translate}}</ion-label>
+                <ion-input [(ngModel)]="guest.password" name="password" required [disabled]="disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'Valid until' | translate}}</ion-label>
+                <input [(ngModel)]="guest.validUntil" name="validUntil" type="date" min="now" required [disabled]="disabled">
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'Private' | translate}}</ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="guest.privateGroup" name="privateGroup" [disabled]="disabled"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'Create AdHoc-Room' | translate}}</ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="guest.createAdHocRoom" name="createAdHocRoom" [disabled]="disabled"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'Room Control' | translate}}</ion-label>
+                <ion-select [(ngModel)]="guest.roomControl" name="roomControl" [disabled]="!guest.createAdHocRoom" [disabled]="disabled">
+                    <ion-select-option *ngFor="let ctrl of objectService.selects['roomControl']" value="ctrl">
+                        {{ ctrl | translate }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">{{'rooms' | translate}}</ion-label>
+                <ionic-selectable
+                    #ionicSelectable
+                    [disabled]="guest.createAdHocRoom || disabled"
+                    [isMultiple]="true"
+                    [(ngModel)]="selectedRooms"
+                    [ngModelOptions]="{standalone: true}"
+                    [items]="objectService.allObjects['room']"
+                    itemValueField="id"
+                    itemTextField="name"
+                    [canSearch]="true">
+                    <ng-template ionicSelectableHeaderTemplate>
+                        <ion-toolbar>
+                            <ion-title>
+                                {{ "Select Rooms for the Guest Users" | translate }}
+                            </ion-title>
+                            <ion-buttons slot="end">
+                                <ion-button ion-button (click)="ionicSelectable.close()">
+                                    <ion-icon color="danger" name="close"></ion-icon>
+                                </ion-button>
+                            </ion-buttons>
+                        </ion-toolbar>
+                    </ng-template>
+                </ionic-selectable>
+            </ion-item>
+        </ion-list>
+    </ion-card-content>
+</form>
+</ng-template>
+</ion-modal>

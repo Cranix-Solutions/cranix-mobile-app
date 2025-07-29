@@ -252,9 +252,9 @@ export class AuthenticationService {
                 this.session['instituteName'] = instituteName;
                 this.setUpHeaders();
                 this.loadSettings();
-                this.createMenu();
                 if (this.isAllowed("2fa.use")) {
                     if (this.session.crx2faSession) {
+                        this.createMenu();
                         this.authenticationState.next(true);
                     } else if (this.session.crx2fas && this.session.crx2fas.length > 0) {
                         this.crx2fa = this.session.crx2fas[0];
@@ -262,9 +262,11 @@ export class AuthenticationService {
                     } else {
                         this.session.mustSetup2fa = true;
                         this.session.acls = ["2fa.use"]
+                        this.createMenu();
                         this.authenticationState.next(true);
                     }
                 } else {
+                    this.createMenu();
                     this.authenticationState.next(true);
                 }
             },
@@ -310,6 +312,7 @@ export class AuthenticationService {
             next: (val) => {
                 this.utilsS.setCookie("crx2faSessionId", val.id.toString(), val.validHours)
                 console.log(val)
+                this.createMenu();
                 this.authenticationState.next(true)
             },
             error: async (err) => {
@@ -370,6 +373,7 @@ export class AuthenticationService {
                 complete: () => { this.router.navigate(['/']) }
             });
         }
+        this.appPages = []
         this.authenticationState.next(false);
         this.session = null;
         this.use2fa = false;
@@ -511,6 +515,7 @@ export class AuthenticationService {
     }
 
     createMenu() {
+        this.appPages = []
         for (let page of this.defAppPages) {
             if (this.isRouteAllowed(page.url)) {
               if (page.title == 'Lessons') {
@@ -522,6 +527,7 @@ export class AuthenticationService {
               }
               this.appPages.push(page);
             }
-          }
+        }
+        console.log(this.appPages)
     }
 }

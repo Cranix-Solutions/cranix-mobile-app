@@ -1,5 +1,4 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import { formatDate } from '@angular/common';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,6 +12,7 @@ import { Group, GuestUsers, Room, User } from 'src/app/shared/models/data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { GroupMembersPage } from 'src/app/shared/actions/group-members/group-members.page';
 import { EductaionService } from 'src/app/services/education.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   standalone: false,
@@ -25,6 +25,12 @@ export class MyGroupsPage implements OnInit {
   objectKeys: string[] = [];
   context;
   rowData = [];
+  guest: GuestUsers = new GuestUsers();
+  action: string = "modify";
+  now: string;
+  disabled: boolean = false;
+  isAddEditGuestModalOpen: boolean = false;
+  selectedRooms: Room[] = []
 
   constructor(
     public authService: AuthenticationService,
@@ -34,9 +40,11 @@ export class MyGroupsPage implements OnInit {
     public popoverCtrl: PopoverController,
     public languageS: LanguageService,
     public route: Router,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private utilsService: UtilsService
   ) {
     this.context = { componentParent: this };
+    this.now = this.utilsService.toIonDate(new Date());
   }
   async ngOnInit() {
     while ( !this.objectService.allObjects['education/user'] ) {
@@ -146,72 +154,39 @@ export class MyGroupsPage implements OnInit {
   }
 
   async addEditGuest(guest: GuestUsers) {
-    let action = 'modify';
     if (!guest) {
-      guest = new GuestUsers();
-      action = 'add';
+      this.guest = new GuestUsers();
+      this.action = 'add';
+    } else {
+      this.guest = guest;
+      this.action = 'modify';  
     }
-    const modal = await this.modalCtrl.create({
-      component: AddEditGuestPage,
-      cssClass: 'medium-modal',
-      componentProps: {
-        action: action,
-        guest: guest
-      },
-      animated: true,
-      showBackdrop: true
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.objectService.getAllObject('education/guestUser');
-        this.authService.log("Object was created or modified", dataReturned.data)
-      }
-    });
-    (await modal).present();
-  }
-}
-
-@Component({
-  standalone: false,
-  selector: 'cranix-add-edit-guest',
-  templateUrl: './add-edit-guest.html'
-})
-export class AddEditGuestPage implements OnInit {
-
-  now: string;
-  disabled: boolean = false;
-  selectedRooms: Room[] = []
-  @Input() guest: GuestUsers
-  @Input() action: string
-  constructor(
-    public educationService: EductaionService,
-    public modalCtrl: ModalController,
-    public objectService: GenericObjectService,
-    @Inject(LOCALE_ID) private locale: string
-  ) {
-    this.now = formatDate(Date.now(), 'yyyy-MM-dd', this.locale);
+    this.isAddEditGuestModalOpen = true;
   }
 
-  ngOnInit() {
+  closeAddEditGuest(modal){
+    modal.dismiss()
+    this.isAddEditGuestModalOpen = false;
   }
-
-  onSubmit() {
+  doAddEditGuest(modal) {
     this.objectService.requestSent();
     this.disabled = true;
     console.log(this.guest)
     for (let r of this.selectedRooms) {
       this.guest.roomIds.push(r.id)
     }
-    this.educationService.addGuestUsers(this.guest).subscribe(
-      (val) => {
+    this.educationService.addGuestUsers(this.guest).subscribe({
+     next: (val) => {
         console.log(val)
         this.objectService.responseMessage(val);
         if (val.code == "OK") {
-          this.modalCtrl.dismiss("OK")
+          modal.dismiss();
+          this.isAddEditGuestModalOpen = false;
         }
+      },
+      complete: () => {
         this.disabled = false;
       }
-    );
+  });
   }
 }
-

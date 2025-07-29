@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
+  <ion-toolbar color="primary">
+    <!-- ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>List of the servers</ion-title>
+    </ion-buttons -->
+    <ion-title>{{'List of the servers'|translate}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="isAddConnectionOpen = true">
+      <ion-button (click)="addEditConnection(-1)">
         <ion-icon slot="icon-only" color="success" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,14 +13,14 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-list>
-    <ion-list-header>
-      {{'Saved connections'|translate}}
-    </ion-list-header>
     @for(s of servers; track s; let i = $index){
       <ion-item>
         <ion-label>{{s.name}}</ion-label>
         <ion-button shape="round" (click)="connectServer(i)">
           <ion-icon slot="icon-only" color="success" name="enter"></ion-icon>
+        </ion-button>
+        <ion-button shape="round" (click)="addEditConnection(i)">
+          <ion-icon slot="icon-only" color="warning" name="build"></ion-icon>
         </ion-button>
         <ion-button shape="round" (click)="deleteServer(i)">
           <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
@@ -57,8 +57,7 @@
         }
     </ion-item>
     <ion-button style="margin: 10px;" expand="full" color="primary" (click)="checkPin()"
-      [disabled]="!crx2faForm.valid">{{'login' |
-      translate}}</ion-button>
+      [disabled]="!crx2faForm.valid">{{'login' | translate}}</ion-button>
   </ion-list>
 </form>
 </ng-template>
@@ -82,24 +81,25 @@
       <form #loginForm="ngForm">
         <ion-list>
         <ion-item>
-          <ion-input label="Institutename" type="text" [(ngModel)]="institute" name="institute" required></ion-input>
+          <ion-input labelPlacement="fixed" label="Institutename" type="text" [(ngModel)]="connection.name" name="institute" required></ion-input>
         </ion-item>
     
         <ion-item>
-          <ion-input label="Url" type="text" [(ngModel)]="url" name="url" required></ion-input>
+          <ion-input labelPlacement="fixed" label="Url" type="text" [(ngModel)]="connection.url" name="url" required></ion-input>
         </ion-item>
     
         <ion-item>
-          <ion-input label="Benutzername" type="text" [(ngModel)]="user.username" name="username" required></ion-input>
+          <ion-input labelPlacement="fixed" label="Benutzername" type="text" [(ngModel)]="connection.user.username" name="username" required></ion-input>
         </ion-item>
     
         <ion-item>
-          <ion-input label="Passwort" type="password" [(ngModel)]="user.password" name="password" required></ion-input>
+          <ion-input labelPlacement="fixed" label="Passwort" type="password" [(ngModel)]="connection.user.password" name="password" required></ion-input>
         </ion-item>
-    
+        @if(newConnection){
         <ion-item>
           <ion-toggle [(ngModel)]="saveConnection" name="saveConnection">{{'Save connection'|translate}}</ion-toggle>
         </ion-item>
+        }
         </ion-list>
         <ion-button expand="full" type="submit" (click)="onLogin(addConnectionModal)" [disabled]="!loginForm.valid">{{'login'|translate}}</ion-button>
       </form>

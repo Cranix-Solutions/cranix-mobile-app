@@ -8,7 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { CanActivateViaAcls } from 'src/app/services/auth-guard.service';
 import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
 import { PipesModule }        from 'src/app/pipes/pipe-modules';
-import { MyGroupsPage,AddEditGuestPage }       from './mygroups.page';
+import { MyGroupsPage }       from './mygroups.page';
 
 const routes: Routes = [
   {
@@ -26,7 +26,7 @@ const routes: Routes = [
     IonicModule,
     CranixSharedModule
   ],
-  declarations: [ MyGroupsPage, AddEditGuestPage],
+  declarations: [ MyGroupsPage ],
   providers: [TranslateService, PipesModule]
 })
 export class MyGroupsPageModule {}
