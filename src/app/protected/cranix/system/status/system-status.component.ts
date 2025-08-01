@@ -12,7 +12,7 @@ import { CreateSupport } from 'src/app/shared/actions/create-support/create-supp
 
 @Component({
   standalone: false,
-  selector: 'cranix-system-status',
+    selector: 'cranix-system-status',
   templateUrl: './system-status.component.html',
   styleUrls: ['./system-status.component.scss'],
 })

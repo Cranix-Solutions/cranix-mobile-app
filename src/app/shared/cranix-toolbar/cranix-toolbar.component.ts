@@ -17,11 +17,12 @@ import { Router } from '@angular/router';
 @Component({
   standalone: false,
   selector: 'cranix-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss'],
+  templateUrl: './cranix-toolbar.component.html',
+  styleUrls: ['./cranix-toolbar.component.scss'],
 })
-export class ToolbarComponent implements OnInit {
+export class CranixToolbarComponent  implements OnInit {
 
+  isPopoverOpen: boolean = false
   roomName: string = "";
   fullName: string = "";
   instituteName: string = "";
@@ -51,6 +52,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.isPopoverOpen = false
     this.alive = false;
   }
   ngAfterViewInit() {
@@ -130,11 +132,16 @@ export class ToolbarComponent implements OnInit {
       }
     });
     (await modal).present();
+    this.isPopoverOpen = false
   }
 
   reloadAllObjects() {
     this.objectService.okMessage(this.translateService.trans("Reloading all objects"))
     this.objectService.initialize(true)
+    this.isPopoverOpen = false
+  }
+
+  openPopover(){
+    this.isPopoverOpen = true;
   }
 }
-

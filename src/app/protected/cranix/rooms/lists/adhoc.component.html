@@ -1,11 +1,7 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Manage AdHoc rooms' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{'Manage AdHoc rooms' | translate}}"></cranix-toolbar>
 <ion-content>
-  <cranix-md-list objectType="adhocroom" [context]="context"></cranix-md-list>
-</ion-content>
+@if(authService.isMD()){
+<cranix-md-list objectType="adhocroom" [context]="context"></cranix-md-list>
+}@else{
+<cranix-list objectType="adhocroom"  [context]="context"></cranix-list>
+}

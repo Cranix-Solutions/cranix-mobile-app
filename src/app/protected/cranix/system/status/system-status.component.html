@@ -1,14 +1,7 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'System status' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{'System status' | translate}}"></cranix-toolbar>
 <ion-content id="carded">
   @if(authService.isMD()) {
-    <ion-fab vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
+    <ion-fab vertical="center" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
       <ion-fab-button>
         <ion-icon name="arrow-forward-circle"></ion-icon>
       </ion-fab-button>

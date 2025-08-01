@@ -10,7 +10,7 @@ import { Room } from 'src/app/shared/models/data-model';
 import { AccessInRoom } from 'src/app/shared/models/secutiry-model';
 @Component({
   standalone: false,
-  selector: 'cranix-add-edit-room-access',
+    selector: 'cranix-add-edit-room-access',
   templateUrl: './add-edit-room-access.component.html',
 })
 export class AddEditRoomAccessComponent implements OnInit {

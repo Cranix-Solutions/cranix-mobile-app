@@ -8,7 +8,7 @@ import { SystemService } from 'src/app/services/system.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 @Component({
   standalone: false,
-  selector: 'cranix-system-config',
+    selector: 'cranix-system-config',
   templateUrl: './system-config.component.html',
   styleUrls: ['./system-config.component.scss'],
 })

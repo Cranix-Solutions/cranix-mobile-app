@@ -1,12 +1,4 @@
 <cranix-toolbar title="{{'Status of the institute:' | translate}} {{ object.name }}"></cranix-toolbar>
-<ion-content id="carded">
-  <ion-toolbar>
-    <ion-title>{{'Status of the institute:' | translate}} {{ object.name }}</ion-title>
-    <ion-item lines="none">
-      <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('instituteStatusFilter')"
-        id="instituteStatusFilter">
-      </ion-input>
-    </ion-item>
-  </ion-toolbar>
-  <!-- TODO -->
+<ion-content color="light">
+  <cranix-list objectType="oneinstitutestatus" [context]="context" [rowData]="rowData"></cranix-list>
 </ion-content>

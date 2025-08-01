@@ -1,16 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Evaluate Internet Access Logs' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content id="carded">
-  <ion-item lines="none">
-    <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('logsFilter')" id="logsFilter">
-    </ion-input>
-  </ion-item>
-  <!-- TODO -->
+<cranix-toolbar title="{{ 'Evaluate Internet Access Logs' | translate}}"></cranix-toolbar>
+<ion-content color="light">
+  <cranix-list objectType="internetaccess" [rowData]="rowData" [context]="context"></cranix-list>
 </ion-content>

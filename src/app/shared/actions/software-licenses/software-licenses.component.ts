@@ -7,7 +7,7 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-software-licenses',
+    selector: 'cranix-software-licenses',
   templateUrl: './software-licenses.component.html',
   styleUrls: ['./software-licenses.component.scss'],
 })

@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-users-lists',
+    selector: 'cranix-users-lists',
   templateUrl: './users-lists.page.html'
 })
 export class UsersListsPage {

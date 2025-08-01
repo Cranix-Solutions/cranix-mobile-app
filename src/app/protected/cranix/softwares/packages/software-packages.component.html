@@ -1,21 +1,8 @@
-<ion-fab vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
-  <ion-fab-button>
-    <ion-icon name="arrow-forward-circle"></ion-icon>
-  </ion-fab-button>
-  <ion-fab-list side="start">
-    <ion-fab-button *ngIf="authService.isAllowed('software.download')">
-      <ion-icon name="cloud-download" (click)="downloadSoftwares($event)"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="add-circle" (click)="redirectToEdit(null)"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="refresh-outline" (click)="readInstallableSoftware()"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list>
-</ion-fab>
-<ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('softwareFilterMD')"
-  id="softwareFilterMD" showCancelButton="never" class="hidden-lg hidden-xl"></ion-searchbar>
+<cranix-toolbar title="{{'Available software packages:' | translate}}"></cranix-toolbar>
 <ion-content id="carded">
-  <!--TODO-->
+  @if(authService.isMD()){
+  <cranix-md-list objectType="package" [rowData]="softwareService.availableSoftwares" [context]="context"></cranix-md-list>
+  }@else{
+  <cranix-list objectType="package" [rowData]="softwareService.availableSoftwares" [context]="context"></cranix-list>
+  }
 </ion-content>

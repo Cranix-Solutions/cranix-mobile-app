@@ -1,11 +1,8 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Manage users' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content [fullscreen]="true" class="ion-padding">
-  <cranix-md-list objectType="user" [context]="context"></cranix-md-list>
+<cranix-toolbar title="{{'Manage users' | translate}}"></cranix-toolbar>
+<ion-content>
+@if(authService.isMD()){
+<cranix-md-list objectType="user" [context]="context"></cranix-md-list>
+}@else{
+<cranix-list objectType="user"  [context]="context"></cranix-list>
+}
 </ion-content>

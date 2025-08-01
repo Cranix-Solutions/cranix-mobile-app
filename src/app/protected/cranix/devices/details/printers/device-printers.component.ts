@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ToastController, ModalController } from '@ionic/angular';
 //own stuff
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -8,7 +8,7 @@ import { Printer, Device } from 'src/app/shared/models/data-model'
 
 @Component({
   standalone: false,
-  selector: 'cranix-device-printers',
+    selector: 'cranix-device-printers',
   templateUrl: './device-printers.component.html',
   styleUrls: ['./device-printers.component.scss'],
 })

@@ -1,17 +1,5 @@
+<cranix-toolbar title="{{ 'Software installation status:' | translate}}"></cranix-toolbar>
 <ion-content>
-  <ion-toolbar>
-    <ion-item lines="none">
-      <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('memberFilter')"
-        id="memberFilter">
-      </ion-input>
-    </ion-item>
-    <ion-buttons slot="end">
-      <ion-button size="small" fill="solid" (click)="exportSelected()"
-        matTooltip="{{'Export selected objects'|translate}}">
-        <ion-icon slot="icon-only" name="download"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
   <ion-row>
     <ion-col>
       <ion-item>
@@ -41,5 +29,5 @@
       </ion-item>
     </ion-col>
   </ion-row>
-  <!--TODO-->
+  <cranix-list objectType="softwarestatus" [context]="context" [rowData]="softwareData"></cranix-list>
 </ion-content>

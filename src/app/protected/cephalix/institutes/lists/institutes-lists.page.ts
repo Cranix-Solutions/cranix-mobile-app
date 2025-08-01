@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-institutes-lists',
+    selector: 'cranix-institutes-lists',
   templateUrl: './institutes-lists.page.html'
 })
 export class InstitutesListsPage {

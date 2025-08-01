@@ -1,92 +1,89 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ModalController } from '@ionic/angular';
 
 //own stuff
-import { LanguageService } from 'src/app/services/language.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { GroupsService } from 'src/app/services/groups.service';
 import { Group, User } from 'src/app/shared/models/data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { ModalController } from '@ionic/angular';
-
 @Component({
   standalone: false,
-  selector: 'cranix-group-members',
+    selector: 'cranix-group-members',
   templateUrl: './group-members.page.html',
   styleUrls: ['./group-members.page.scss'],
 })
 export class GroupMembersPage implements OnInit {
-  context;
-  memberOptions;
-  noMemberOptions;
-  columnDefs = [];
-  memberSelection: User[] = [];
-  noMemberSelection: User[] = [];
+  memberRawData: User[] = [];
+  noMemberRawData: User[] = [];
   memberData: User[] = [];
   noMemberData: User[] = [];
   group;
 
   constructor(
     public authService: AuthenticationService,
-    private objectS: GenericObjectService,
-    public modalCtrl: ModalController,
-    private languageS: LanguageService,
-    private groupS: GroupsService,
-    public translateServices: TranslateService
-  ) {}
+    private objectService: GenericObjectService,
+    private groupService: GroupsService,
+    public modalCtrl: ModalController
+  ) { }
 
   ngOnInit() {
-    console.log('innerWidth',window.innerWidth)
-    this.context = { componentParent: this }
-    this.group = <Group>this.objectS.selectedObject;
+    console.log('innerWidth', window.innerWidth)
+    this.group = <Group>this.objectService.selectedObject;
     this.readMembers();
   }
-  public ngAfterViewInit() {
-    while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
-  }
-  //TODO
-  applyChanges() {
-    let members: number[] = [];
-    let rmMembers: number[] = [];
-    for (let g of this.noMemberSelection) {
-      members.push(g.id);
-    }
-    for (let g of this.memberSelection) {
-      rmMembers.push(g.id);
-    }
-
-    for (let g of this.memberData) {
-      if (rmMembers.indexOf(g.id) == -1) {
-        members.push(g.id)
+  onMemberFilterChanged() {
+    let filter = (<HTMLInputElement>document.getElementById("memberFilter")).value.toLowerCase();
+    let tmp = []
+    for(let o of this.memberData){
+      if(o.fullName.toLowerCase().indexOf(filter) != -1 ){
+        tmp.push(o)
       }
     }
-    this.authService.log('groups');
-    this.authService.log(members);
-    this.noMemberSelection = [];
-    this.memberSelection = [];
-    this.objectS.requestSent();
-    let subM = this.groupS.setGroupMembers(this.group.id, members).subscribe(
+    this.memberRawData = tmp;
+  }
+
+  onNoMemberFilterChanged() {
+    let filter = (<HTMLInputElement>document.getElementById("noMemberFilter")).value.toLowerCase();
+    let tmp = []
+    for(let o of this.noMemberData){
+      if(o.fullName.toLowerCase().indexOf(filter) != -1 ){
+        tmp.push(o)
+      }
+    }
+    this.noMemberRawData = tmp;
+  }
+
+  addMember(id: number){
+    this.objectService.requestSent()
+    this.groupService.putUserToGroup(id, this.group.id).subscribe(
       (val) => {
-        this.objectS.responseMessage(val);
+        this.objectService.responseMessage(val)
         this.readMembers()
-      },
-      (err) => {
-        this.objectS.errorMessage(
-          this.languageS.trans("A server error accoured.")
-        )
-        this.authService.log(err)
-      },
-      () => { subM.unsubscribe() });
+      }
+    )
+  }
+  deleteMember(id: number){
+    this.objectService.requestSent()
+    this.groupService.deletUserFromGroup(id, this.group.id).subscribe(
+      (val) => {
+        this.objectService.responseMessage(val)
+        this.readMembers()
+      }
+    )
   }
 
   readMembers() {
-    let subM = this.groupS.getMembers(this.group.id).subscribe(
-      (val) => { this.memberData = val; this.authService.log(val) },
-      (err) => { this.authService.log(err) },
-      () => { subM.unsubscribe() });
-    let subNM = this.groupS.getAvailiableMembers(this.group.id).subscribe(
-      (val) => { this.noMemberData = val; this.authService.log(val) },
-      (err) => { this.authService.log(err) },
-      () => { subNM.unsubscribe() })
+    this.groupService.getMembers(this.group.id).subscribe(
+      (val) => {
+        this.memberData = val
+        this.memberRawData = val
+        this.groupService.getAvailiableMembers(this.group.id).subscribe(
+          (val) => {
+            this.noMemberData = val;
+            this.noMemberRawData = val;
+          }
+        )
+      }
+    );
   }
 }

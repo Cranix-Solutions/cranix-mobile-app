@@ -8,7 +8,7 @@ import { Software, Hwconf, Room, Device, Category, Installation } from 'src/app/
 import { SoftwareService } from 'src/app/services/softwares.service';
 @Component({
   standalone: false,
-  selector: 'cranix-edit-installation-set',
+    selector: 'cranix-edit-installation-set',
   templateUrl: './edit-installation-set.component.html',
   styleUrls: ['./edit-installation-set.component.scss'],
 })
@@ -17,6 +17,7 @@ export class EditInstallationSetComponent implements OnInit {
   submitted: boolean = false;
   context;
   installationSet: Category = new Category();
+
   softwares: Software[] = [];
   hwconfs: Hwconf[] = [];
   availableHwconfs: Hwconf[] = [];
@@ -24,7 +25,6 @@ export class EditInstallationSetComponent implements OnInit {
   availableRooms: Room[] = [];
   devices: Device[] = [];
   availableDevices: Device[] = [];
-  toShow = "overview";
 
   constructor(
     public authService: AuthenticationService,
@@ -73,12 +73,6 @@ export class EditInstallationSetComponent implements OnInit {
         this.devices.push(this.objectService.getObjectById('device', id));
       }
     }
-  }
-  softwaresFilterChanged(){
-    //TODO
-  }
-  segmentChanged(event) {
-    this.toShow = event.detail.value;
   }
   closeWindow() {
     this.modalCtrl.dismiss();

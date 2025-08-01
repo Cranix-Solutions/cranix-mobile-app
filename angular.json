@@ -36,7 +36,7 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": ["src/global.scss", "src/theme/ion-custom.scss", "src/theme/cranix-custom.scss", "src/theme/fonts.css", "src/theme/variables.scss"],
             "scripts": []
           },
           "configurations": {
@@ -116,7 +116,7 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": ["src/global.scss", "src/theme/ion-custom.scss", "src/theme/cranix-custom.scss", "src/theme/fonts.css", "src/theme/variables.scss"],
             "scripts": []
           },
           "configurations": {

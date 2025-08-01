@@ -9,7 +9,7 @@ import { WindowRef } from 'src/app/shared/models/ohters'
 
 @Component({
   standalone: false,
-  selector: 'cranix-roomdev',
+    selector: 'cranix-roomdev',
   templateUrl: './roomdev.component.html',
   styleUrls: ['./roomdev.component.scss'],
 })

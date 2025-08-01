@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 //Own stuff
 import { AuthenticationService } from 'src/app/services/auth.service';
@@ -8,12 +8,18 @@ import { Institute, SynchronizedObject } from 'src/app/shared/models/cephalix-da
 
 @Component({
   standalone: false,
-  selector: 'cranix-institute-synced-objects',
+    selector: 'cranix-institute-synced-objects',
   templateUrl: './institute-synced-objects.component.html'
 })
-export class InstituteSyncedObjectsComponent implements OnInit {
+export class InstituteSyncedObjectsComponent {
 
   context;
+  defaultColDef = {
+    resizable: true,
+    sortable: true,
+    hide: false
+  };
+  columnDefs = [];
   memberSelection: SynchronizedObject[] = [];
   memberData: SynchronizedObject[] = [];
   modules = [];
@@ -28,12 +34,13 @@ export class InstituteSyncedObjectsComponent implements OnInit {
     public objectService: GenericObjectService
   ) {
     this.institute = <Institute>this.objectService.selectedObject;
-    this.context = { componentParent: this };
-  }
-
-  ngOnInit() {
     this.readMembers();
   }
+
+  onMemberFilterChanged() {
+    let filter = (<HTMLInputElement>document.getElementById("memberFilter")).value.toLowerCase();
+  }
+
   readMembers() {
     switch (this.segment) {
       case 'to': {
@@ -49,26 +56,24 @@ export class InstituteSyncedObjectsComponent implements OnInit {
         break;
       }
       case 'from': {
-        let subS = this.cephalixService.getSynchronizedObjects(this.institute.id).subscribe({
+        this.cephalixService.getSynchronizedObjects(this.institute.id).subscribe({
           next: (val) => {
             console.log("readMembers to " + val.length + "object read")
             this.memberData = val;
             this.syncedObjects = val;
-            let subM = this.cephalixService.getObjectsFromInstitute(this.institute.id, 'hwconf').subscribe({
+            this.cephalixService.getObjectsFromInstitute(this.institute.id, 'hwconf').subscribe({
               next: (val) => {
                 this.memberData = []
                 console.log("readMembers from " + val.length + "object read")
+                var i = 0;
                 for (let obj of val) {
                   this.hwconfs[obj.id] = obj;
                   this.memberData.push(this.isSynced(obj, 'hwconf'))
                 }
-              },
-              error: (err) => { this.authService.log(err) },
-              complete: () => { subM.unsubscribe() }
+                console.log(this.memberData)
+              }
             })
-          },
-          error: (err) => { this.authService.log(err) },
-          complete: () => { subS.unsubscribe() }
+          }
         });
         break;
       }
@@ -78,9 +83,7 @@ export class InstituteSyncedObjectsComponent implements OnInit {
     this.segment = event.detail.value;
     this.readMembers();
   }
-  onMemberFilterChanged(){
-    //TODO
-  }
+
   isSynced(obj, objectType) {
     for (let tmp of this.syncedObjects) {
       if (tmp.objectType == objectType && tmp.cranixId == obj.id) {
@@ -89,6 +92,7 @@ export class InstituteSyncedObjectsComponent implements OnInit {
       }
     }
     return {
+      id: obj.id,
       objectType: 'hwconf',
       objectName: obj.name,
       lastSync: 0,
@@ -127,8 +131,8 @@ export class InstituteSyncedObjectsComponent implements OnInit {
       error: (err) => { this.objectService.errorMessage(err) }
     })
   }
-  stopSyncing(mappingId,direction){
-    this.cephalixService.stopSynching(mappingId,direction).subscribe(
+  stopSyncing(mappingId){
+    this.cephalixService.stopSynching(mappingId,this.segment).subscribe(
       (val) => {
         this.objectService.responseMessage(val)
         this.readMembers()

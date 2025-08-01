@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   standalone: false,
-  selector: 'cranix-devices-lists',
+    selector: 'cranix-devices-lists',
   templateUrl: './devices-lists.page.html'
 })      
 export class DevicesListsPage {

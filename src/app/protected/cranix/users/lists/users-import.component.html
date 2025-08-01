@@ -1,12 +1,120 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Manage user imports' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content [fullscreen]="true">
+<cranix-toolbar title="{{'Manage user imports' | translate}}"></cranix-toolbar>
+<ion-toolbar *ngIf="!authService.isMD()" class="page-toolbar">
+  <ion-buttons slot="end">
+    <ion-button *ngIf="!runningImport" size="small" fill="solid" (click)="startImport()"
+      matTooltip="{{'Start a new user import' | translate }}">
+      <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+    </ion-button>
+    <ion-button size="small" fill="solid" (click)="refreshImports()"
+      matTooltip="{{'Refresh the import list' | translate }}">
+      <ion-icon slot="icon-only" name="refresh"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content *ngIf="!authService.isMD()">
+  <ion-grid>
+    <ion-row style="background-color : {{authService.rowColors[2]}}">
+      <ion-col size=2>{{'Start time' | translate}}</ion-col>
+      <ion-col size=2></ion-col>
+      <ion-col size=1>{{'role' | translate}}</ion-col>
+      <ion-col size=1>{{'identifier' | translate}}</ion-col>
+      <ion-col size=1>{{'password' |translate}}</ion-col>
+      <ion-col size=1>{{'mustChange' |translate}}</ion-col>
+      <ion-col size=1>{{'resetPassword' |translate}}</ion-col>
+      <ion-col size=1>{{'full' |translate}}</ion-col>
+      <ion-col size=1>{{'allClasses' |translate}}</ion-col>
+      <ion-col size=1>{{'cleanClassDirs' |translate}}</ion-col>
+    </ion-row>
+    <ion-row *ngIf="runningImport" [ngStyle]="{'color':'#eb445a'}">
+      <ion-col size=2>{{runningImport.startTime}} </ion-col>
+      <ion-col size=2>
+        <ion-button color="light" size="small" (click)="showImport($event,runningImport)"
+          matTooltip="{{'Import ist just running.'|translate}} {{'Show the import result.' | translate }}">
+          <ion-icon slot="icon-only" color="warning" name="cog"></ion-icon>
+        </ion-button>
+        <ion-button color="light" size="small" (click)="stopImport()"
+          matTooltip="{{'Stop the running user import' | translate }}">
+          <ion-icon slot="icon-only" name="stop-circle-outline" color="danger"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size=1>{{runningImport.role | translate}}</ion-col>
+      <ion-col>{{runningImport.identifier | translate}} </ion-col>
+      <ion-col> {{runningImport.password}}</ion-col>
+      <ion-col>
+        <ion-icon *ngIf="runningImport.mustChange" color="success" name="checkmark-sharp" size="small"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-icon *ngIf="runningImport.resetPassword" color="success" name="checkmark-sharp" size="small">
+        </ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-icon *ngIf="runningImport.full" color="success" name="checkmark-sharp" size="small"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-icon *ngIf="runningImport.allClasses" color="success" name="checkmark-sharp" size="small"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-icon *ngIf="runningImport.cleanClassDirs" color="success" name="checkmark-sharp" size="small">
+        </ion-icon>
+      </ion-col>
+    </ion-row>
+    <div *ngFor="let import of imports; index as i">
+      <ion-row *ngIf="!runningImport || runningImport.startTime != import.startTime"
+        style="background-color : {{authService.rowColors[i%2]}}">
+        <ion-col size=2>{{import.startTime}} </ion-col>
+        <ion-col size=2>
+          <ion-button color="light" size="small" (click)="showImport($event,import)"
+            matTooltip="{{'Show the import result.' | translate }}">
+            <ion-icon *ngIf="import.test" slot="icon-only" color="warning" name="eye-outline"></ion-icon>
+            <ion-icon *ngIf="!import.test" slot="icon-only" color="success" name="eye-outline"></ion-icon>
+          </ion-button>
+          <ion-button color="light" *ngIf="import.test && !runningImport" size="small"
+            (click)="restartImport(import.startTime)"
+            matTooltip="{{'Start the import as real import not test.' | translate }}">
+            <ion-icon slot="icon-only" color="warning" name="reload"></ion-icon>
+          </ion-button>
+          <ion-button color="light" *ngIf="!import.test" size="small" (click)="downloadImport(import.startTime,'pdf')"
+            matTooltip="{{'Download the password files as pdf files.' | translate }}">
+            <ion-icon slot="icon-only" color="success" name="download"></ion-icon>
+          </ion-button>
+          <ion-button color="light" *ngIf="!import.test" size="small" (click)="downloadImport(import.startTime,'txt')"
+            matTooltip="{{'Download the password files as txt files.' | translate }}">
+            <ion-icon slot="icon-only" color="warning" name="download"></ion-icon>
+          </ion-button>
+          <ion-button color="light" size="small" (click)="deleteImport(import.startTime)"
+            matTooltip="{{'Delete the import.' | translate }}">
+            <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size=1>{{import.role | translate}}
+        </ion-col>
+        <ion-col>{{import.identifier | translate}} </ion-col>
+        <ion-col> {{import.password}}</ion-col>
+        <ion-col>
+          <ion-icon *ngIf="import.mustChange" color="success" name="checkmark-sharp" size="small"></ion-icon>
+          <ion-icon *ngIf="!import.mustChange" color="danger" name="close" size="small"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon *ngIf="import.resetPassword" color="success" name="checkmark-sharp" size="small"></ion-icon>
+          <ion-icon *ngIf="!import.resetPassword" color="danger" name="close" size="small"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon *ngIf="import.full" color="success" name="checkmark-sharp" size="small"></ion-icon>
+          <ion-icon *ngIf="!import.full" color="danger" name="close" size="small"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon *ngIf="import.allClasses" color="success" name="checkmark-sharp" size="small"></ion-icon>
+          <ion-icon *ngIf="!import.allClasses" color="danger" name="close" size="small"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon *ngIf="import.cleanClassDirs" color="success" name="checkmark-sharp" size="small"></ion-icon>
+          <ion-icon *ngIf="!import.cleanClassDirs" color="danger" name="close" size="small"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>
+<ion-content *ngIf="authService.isMD()">
   <ion-fab vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button size="small">
       <ion-icon size="small" name="arrow-forward-circle"></ion-icon>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { SecurityService } from 'src/app/services/security-service';
@@ -6,6 +6,7 @@ import { AccessInRoom } from 'src/app/shared/models/secutiry-model';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { ModalController } from '@ionic/angular';
 import { AddEditRoomAccessComponent } from './add-edit-room-access/add-edit-room-access.component';
+import { YesNoBTNRenderer } from 'src/app/pipes/ag-yesno-renderer';
 import { SystemService } from 'src/app/services/system.service';
 
 @Component({
@@ -15,13 +16,14 @@ import { SystemService } from 'src/app/services/system.service';
   styleUrls: ['./room-access.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class RoomAccessComponent implements OnInit {
+export class RoomAccessComponent {
   segment = 'list';
-  rowData: AccessInRoom[] = [];
+  rowData: AccessInRoom[];
+  allAccess: AccessInRoom[] = []
+  actStatus: AccessInRoom[] = []
   notActive: boolean = false;
   disabled: boolean = false;
   accessOptions = {};
-  context;
 
   constructor(
     public authService: AuthenticationService,
@@ -31,29 +33,40 @@ export class RoomAccessComponent implements OnInit {
     public systemService: SystemService,
     public securityService: SecurityService
   ) {
-    this.context = { componentParent: this };
+    this.getAllAccess();
   }
 
-  ngOnInit() {
-    this.readDatas();
+  getAllAccess() {
+    this.securityService.getAllAccess().subscribe(
+      (val) => {
+        this.allAccess = val
+        this.rowData = val
+      }
+    );
   }
-
-  toggle(data, field: string, value: boolean) {
-    if (this.segment == 'list') {
-      this.securityService.modifyAccessInRoom(data);
-    } else {
-      this.securityService.setAccessStatusInRoom(data);
-    }
+  getActualAccessStatus() {
+    this.objectService.okMessage(this.languageS.trans('Loading data ...'));
+    this.securityService.getActualAccessStatus().subscribe(
+      (val) => {
+        let i = 0;
+        for (let s of val) {
+          s['id'] = i++
+        }
+        this.actStatus = val
+        this.rowData = val
+      }
+    )
   }
-
   toggleButton(data, field: string) {
+    console.log(data)
     data[field] = !data[field]
-    if (this.segment == 'list') {
-      this.securityService.modifyAccessInRoom(data);
-    } else {
-      this.securityService.setAccessStatusInRoom(data);
-    }
-    this.securityService.getActualAccessStatus()
+    console.log(data)
+    this.securityService.setAccessStatusInRoom(data).subscribe(
+      (val) => {
+        this.objectService.responseMessage(val)
+        this.getActualAccessStatus()
+      }
+    )
   }
 
   apply(data: AccessInRoom, rowIndex: number) {
@@ -66,29 +79,39 @@ export class RoomAccessComponent implements OnInit {
       }
     }
     if (sent) {
-      this.securityService.getActualAccessStatus()
-    } else {
-      this.objectService.warningMessage(
-        this.languageS.trans("There is no default access status for this room.")
-      )
+      this.getActualAccessStatus()
     }
-  }
-  segmentChanged(event) {
-    console.log(event.detail.value)
-    if (event.detail.value == "status") {
-      this.securityService.getActualAccessStatus();
-      this.objectService.okMessage(this.languageS.trans('Loading data ...'));
-    }
-    this.segment = event.detail.value;
   }
 
-  readDatas() {
-    let sub = this.securityService.getAllAccess().subscribe(
-      (val) => { this.rowData = val },
-      (err) => { this.authService.log(err) },
-      () => { sub.unsubscribe(); }
-    );
+  onQuickFilterChanged() {
+    let filter = (<HTMLInputElement>document.getElementById('roomsAccessFilter')).value.toLowerCase()
+    let tmp = []
+    if (this.segment == 'list') {
+      for (let o of this.allAccess) {
+        if (this.objectService.idToName('room', o.roomId).toLowerCase().indexOf(filter) != -1) {
+          tmp.push(o)
+        }
+      }
+    } else {
+      for (let o of this.actStatus) {
+        if (this.objectService.idToName('room', o.roomId).toLowerCase().indexOf(filter) != -1) {
+          tmp.push(o)
+        }
+      }
+    }
+    this.rowData = tmp
   }
+
+  segmentChanged(event) {
+    this.segment = event.detail.value;
+    if (this.segment == "status") {
+      this.getActualAccessStatus();
+    } else {
+      this.getAllAccess()
+    }
+  }
+
+
   async redirectToAddEdit(roomAccess: AccessInRoom) {
     let action = "add";
     if (roomAccess) {
@@ -111,7 +134,7 @@ export class RoomAccessComponent implements OnInit {
       if (dataReturned.data) {
         this.authService.log("Object was created or modified or deleted", dataReturned.data)
       }
-      this.readDatas();
+      this.getAllAccess();
     });
     (await modal).present();
   }
@@ -120,19 +143,5 @@ export class RoomAccessComponent implements OnInit {
   }
   stopFirewall() {
     this.systemService.applyServiceState('cranix-firewall', 'activ', 'false')
-  }
-  delete() {
-    let accessSelected = []; //TODO
-    if (accessSelected.length == 0) {
-      this.objectService.selectObject();
-      return;
-    }
-    this.disabled = true;
-    for (let obj of accessSelected) {
-      this.securityService.deleteAccessInRoom(obj.id);
-      setTimeout(() => { this.authService.log("World!"); }, 1000);
-    }
-    this.readDatas();
-    this.disabled = false;
   }
 }

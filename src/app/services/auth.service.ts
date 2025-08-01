@@ -93,11 +93,11 @@ export class AuthenticationService {
         url: '/pages/cranix/devices',
         icon: 'desktop'
       },
-     /* {
+      {
         title: 'Softwares',
         url: '/pages/cranix/softwares',
         icon: 'software'
-      }, */
+      },
       {
         title: 'System',
         url: '/pages/cranix/system',
@@ -127,11 +127,6 @@ export class AuthenticationService {
         title: "Informations",
         url: '/pages/cranix/informations',
         icon: 'library'
-      },
-      {
-        title: "Logout",
-        url: '/logout',
-        icon: 'log-out'
       }
     ];
     

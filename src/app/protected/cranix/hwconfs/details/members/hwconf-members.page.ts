@@ -16,27 +16,28 @@ import { takeWhile } from 'rxjs/operators';
   templateUrl: './hwconf-members.page.html',
   styleUrls: ['./hwconf-members.page.scss'],
 })
-export class HwconfMembersPage implements OnInit {
+export class HwconfMembersPage {
   context;
-  memberData:  Device[] = [];
-  memberDataB: Device[] = [];
+  memberData: Device[];
+  memberDataB: Device[];
   hwconf;
-  modules = [];
-  sentImage=0;
+  selected = [];
+  sentImage = 0;
   sendingImage: boolean = false;
-  networkCard: string    = "eth0";
+  networkCard: string = "eth0";
   selectedRooms = [];
   rooms: Room[] = [];
   //TODO
-  networkCards: string[] = ["eth0","eth1"];
+  networkCards: string[] = ["eth0", "eth1"];
   constructor(
-    public  authService: AuthenticationService,
-    public  objectService: GenericObjectService,
+    public authService: AuthenticationService,
+    public objectService: GenericObjectService,
     private languageService: LanguageService,
     private hwconfService: HwconfsService,
     private deviceService: DevicesService
   ) {
     this.hwconf = <Hwconf>this.objectService.selectedObject;
+    this.readMembers();
     this.hwconfService.getMultiDevs().subscribe(
       (val) => {
         this.networkCards = val;
@@ -46,56 +47,52 @@ export class HwconfMembersPage implements OnInit {
     this.context = { componentParent: this };
   }
 
-  ngOnInit() {
-    this.readMembers();
-  }
 
   readMembers() {
-    let subM = this.hwconfService.getMembers(this.hwconf.id).subscribe(
+    this.hwconfService.getMembers(this.hwconf.id).subscribe(
       (val) => {
-        this.memberData  = val;
+        this.memberData = val;
         this.memberDataB = val;
         let roomIds: number[] = [];
-        for( let dev of val ) {
-          if( roomIds.indexOf(dev.roomId) == -1 ) {
+        for (let dev of val) {
+          if (roomIds.indexOf(dev.roomId) == -1) {
             roomIds.push(dev.roomId)
-            this.rooms.push(this.objectService.getObjectById('room',dev.roomId))
+            this.rooms.push(this.objectService.getObjectById('room', dev.roomId))
           }
         }
-        this.authService.log(val) },
-      (err) => { this.authService.log(err) },
-      () => { subM.unsubscribe() });
-  }
-  readFilteredMember() {
-    let sRooms: number[]= [];
-    for(let room of this.selectedRooms ){
-      sRooms.push(room.id);
-    }
-    if( sRooms.length == 0 ) {
-      this.memberData = this.memberDataB
-    } else {
-      this.memberData = [];
-      for( let dev of this.memberDataB ) {
-        if( sRooms.indexOf(dev.roomId) != -1 ) {
-          this.memberData.push(dev);
-        }
       }
-    }
+    );
   }
 
-  onQuickFilterChanged(filter: string){}
-  
+  readFilteredMember() {
+    let sRooms: number[] = [];
+    delete this.memberData
+    for (let room of this.selectedRooms) {
+      sRooms.push(room.id);
+    }
+    if (sRooms.length == 0) {
+      this.memberData = this.memberDataB
+    } else {
+      let tmp = [];
+      for (let dev of this.memberDataB) {
+        if (sRooms.indexOf(dev.roomId) != -1) {
+          tmp.push(dev);
+        }
+      }
+      this.memberData = tmp;
+    }
+    console.log(this.memberData)
+  }
   triggerClone(event, what) {
-    let actionMap = new CrxActionMap;
-    actionMap.name = what;
-    /* TODO
-    if (this.memberApi.getSelectedRows().length == 0) {
+    if (this.selected.length == 0) {
       this.objectService.selectObject();
       return;
     }
-    for (let dev of this.memberApi.getSelectedRows()) {
+    let actionMap = new CrxActionMap;
+    actionMap.name = what;
+    for (let dev of this.selected) {
       actionMap.objectIds.push(dev.id);
-    } */
+    }
     this.objectService.requestSent();
     let sub = this.deviceService.executeAction(actionMap).subscribe(
       (val) => {
@@ -104,7 +101,7 @@ export class HwconfMembersPage implements OnInit {
           response = response + "<br>" + this.languageService.transResponse(resp);
         }
         this.objectService.okMessage(response)
-        if(what == 'startmulticastclone' ) {
+        if (what == 'startmulticastclone') {
           this.sendingImage = true;
         } else {
           this.sendingImage = false;
@@ -115,14 +112,14 @@ export class HwconfMembersPage implements OnInit {
     )
   }
 
-  startSending(){
+  startSending() {
     console.log("startSending")
     this.sendingImage = true;
   }
 
-  sendImage(id: number){
-    this.sentImage=id;
-    this.hwconfService.startMultiCast(id,this.networkCard).subscribe(
+  sendImage(id: number) {
+    this.sentImage = id;
+    this.hwconfService.startMultiCast(id, this.networkCard).subscribe(
       (val) => {
         this.objectService.responseMessage(val);
         interval(5000).pipe(takeWhile(() => this.sentImage > 0)).subscribe(
@@ -132,13 +129,13 @@ export class HwconfMembersPage implements OnInit {
     )
   }
 
-  checkSending(){
+  checkSending() {
     this.hwconfService.getRunningMulticast().subscribe(
-      (val) => { if(!val) { this.sentImage = 0 }}
+      (val) => { if (!val) { this.sentImage = 0 } }
     )
   }
 
-  stopMulticast(){
+  stopMulticast() {
     this.sentImage = 0;
     this.sendingImage = false;
     this.hwconfService.stopMulticast().subscribe(

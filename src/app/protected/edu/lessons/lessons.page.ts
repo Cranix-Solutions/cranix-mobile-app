@@ -6,7 +6,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-lessons',
+    selector: 'cranix-lessons',
   templateUrl: './lessons.page.html',
 })
 export class LessonsPage{

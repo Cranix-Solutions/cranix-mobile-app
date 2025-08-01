@@ -53,10 +53,14 @@ export class Institute {
     constructor() {}
 }
 
-export class Ticket{
+export class Ticket {
     id?: number = 0;
     title: string = "";
+    ticketStatus: string = "";
+    modified: any = new Date();
+    created: any = new Date();
     cephalixInstituteId: number = 0;
+    cephalixCustomerId: number = 0;
     cranixUserId: number = 0;
     cranixDeviceId: number = 0;
     creatorId: number = 0;
@@ -65,13 +69,10 @@ export class Ticket{
     lastname: string = "";
     email: string = "";
     priority: number = 0;
-    modified: any = new Date();
-    created: any = new Date();
-    ticketStatus: string = "";
     constructor() {}
 }
 
-export class Article{
+export class Article {
     id?: number;
     cephalixTicketId: number = 0;
     title: string = "";
@@ -107,7 +108,7 @@ export class InstituteStatus {
     uptime: string ="";
     constructor() {}
 }
-export class Repository{
+export class Repository {
     id?: number;
     name: string = "";
     repositoryType: string = "";
@@ -116,7 +117,7 @@ export class Repository{
     constructor() {}
 }
 
-export class CephalixCare{
+export class CephalixCare {
     id?: number;
     cephalixInstituteId: number = 0;
     description: string = "";
@@ -137,7 +138,7 @@ export class DynDns {
     constructor() {}
 }
 
-export class Notice{
+export class Notice {
     id?: number;
     title:       string = "";
     noticeType:  string = "";
@@ -162,7 +163,7 @@ export interface SynchronizedObject {
     id?: number,
     instituteId: number,
     objectType: string,
-    objectName: number,
+    objectName: string,
     cephalixId: number,
     cranixId: number,
     lastSync: number,

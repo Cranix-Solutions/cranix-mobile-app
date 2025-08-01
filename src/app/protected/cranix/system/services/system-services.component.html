@@ -1,11 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Status of services' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{'Status of the Services' | translate}}"></cranix-toolbar>
 <ion-content>
   <ion-grid *ngIf="servicesStatus">
     <ion-row>

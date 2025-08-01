@@ -7,7 +7,7 @@ import { SafeSearch } from 'src/app/shared/models/secutiry-model';
 
 @Component({
   standalone: false,
-  selector: 'cranix-unbound',
+    selector: 'cranix-unbound',
   templateUrl: './unbound.component.html',
   styleUrls: ['./unbound.component.scss'],
 })

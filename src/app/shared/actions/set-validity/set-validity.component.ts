@@ -4,7 +4,7 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-set-validity',
+    selector: 'cranix-set-validity',
   templateUrl: './set-validity.component.html',
   styleUrls: ['./set-validity.component.scss'],
 })

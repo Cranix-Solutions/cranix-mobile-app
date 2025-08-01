@@ -34,7 +34,10 @@ export class LoginPage{
         private utilsService: UtilsService,
         private router: Router
     ) {
-        this.servers = JSON.parse(localStorage.getItem("servers"))
+        let tmp = JSON.parse(localStorage.getItem("servers"))
+        if( tmp ) {
+            this.servers = tmp
+        }
         console.log(this.servers)
     }
 
@@ -76,6 +79,7 @@ export class LoginPage{
     }
     
     addEditConnection(i: number){
+        console.log("addEditConncetion called", i)
         if(i==-1){
             this.newConnection = true
             this.connection = new server
@@ -87,8 +91,12 @@ export class LoginPage{
         this.isAddConnectionOpen = true
     }
     connectServer(i: number){
+        console.log("connectServer called", i)
         this.utilsService.url = this.servers[i].url
         this.authService.setUpSession( this.servers[i].user, this.servers[i].name )
+        this.authService.authenticationState.subscribe(state => {
+            console.log("Login OK")
+        })
         console.log(i)
         this.isAddConnectionOpen = false
         this.authService.authorized = true

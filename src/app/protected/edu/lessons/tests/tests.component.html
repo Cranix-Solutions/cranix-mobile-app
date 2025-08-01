@@ -1,11 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Todos' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{ 'Todos' | translate}}"></cranix-toolbar>
 <ion-toolbar *ngIf="!selectedChallenge" class="page-toolbar">
   {{'Reload tests to work on' | translate}}
   <ion-buttons slot="end">

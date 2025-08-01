@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { GenericObjectService } from 'src/app/services/generic-object.service'
 import { LanguageService } from '../services/language.service';
 @Pipe({
-  standalone: false,
-  name: 'userIdToName'
+  name: 'userIdToName',
+  standalone: false
 })
 export class UseridToNamePipe implements PipeTransform {
   constructor(

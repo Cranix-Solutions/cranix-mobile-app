@@ -21,7 +21,7 @@ import { SetValidityComponent } from './set-validity/set-validity.component';
 
 @Component({
   standalone: false,
-  selector: 'cranix-actions',
+    selector: 'cranix-actions',
   templateUrl: './actions.component.html',
   styleUrls: ['./actions.component.scss'],
 })
@@ -78,7 +78,7 @@ export class ActionsComponent implements OnInit {
     if (this.objectIds) {
       this.count = this.objectIds.length;
     } else {
-      this.count = this.objectService.selection.length;
+      this.count = this.objectService.selectedObjects.length;
     }
     if (this.objectType == "user") {
       this.menu = this.commonMenu.concat(userMenu).concat(this.commonLastMenu);
@@ -133,7 +133,7 @@ export class ActionsComponent implements OnInit {
     switch (ev) {
       case 'csv-export': {
         let header: string[] = [];
-        new AngularCsv(this.objectService.selection, this.objectType, { showLabels: true, headers: Object.getOwnPropertyNames(this.objectService.selection[0]) });
+        new AngularCsv(this.objectService.selectedObjects, this.objectType, { showLabels: true, headers: Object.getOwnPropertyNames(this.objectService.selection[0]) });
         this.popoverController.dismiss();
         break;
       }

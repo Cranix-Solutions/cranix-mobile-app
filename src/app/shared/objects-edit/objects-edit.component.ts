@@ -11,9 +11,10 @@ import { SupportRequest, SoftwareVersion, SoftwareFullName } from '../models/dat
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { UtilsService } from 'src/app/services/utils.service';
+import { selects } from '../models/constants';
 @Component({
   standalone: false,
-  selector: 'cranix-objects-edit',
+    selector: 'cranix-objects-edit',
   templateUrl: './objects-edit.component.html',
   styleUrls: ['./objects-edit.component.scss'],
 })
@@ -25,6 +26,8 @@ export class ObjectsEditComponent implements OnInit {
   objectId: number;
   objectActionTitle: string = "";
   fixedRole: string;
+  labelPlacement: string = "stacked"
+  toggleLabelPlacement: string = "start"
 
   patterns = {
     'room': {
@@ -74,7 +77,7 @@ export class ObjectsEditComponent implements OnInit {
     this.disabled = false;
     if (this.objectAction != 'add' && this.objectType != 'settings') {
       let url = this.utilsS.hostName() + "/" + this.objectType + "s/" + this.object.id;
-      let sub = this.http.get(url, { headers: this.authService.headers }).subscribe(
+      this.http.get(url, { headers: this.authService.headers }).subscribe(
         (val) => {
           for (let key of this.objectKeys) {
             if (this.objectService.typeOf(key, this.object, 'edit') == 'multivalued') {
@@ -87,6 +90,7 @@ export class ObjectsEditComponent implements OnInit {
             }
           }
           console.log(this.object)
+          console.log(this.objectKeys)
         }
       );
     }
@@ -116,7 +120,8 @@ export class ObjectsEditComponent implements OnInit {
     for (let key of this.objectKeys) {
       if (this.objectService.typeOf(key, this.object, 'edit') == 'multivalued') {
         let s: string = this.object[key];
-        this.object[key] = s.split(",")
+	      if(s) { this.object[key] = s.split(",") }
+       	else { this.object[key] = [] }
       }
     }
     this.disabled = true;
@@ -161,6 +166,7 @@ export class ObjectsEditComponent implements OnInit {
     this.fileToUpload = event.target.files.item(0);
     console.log(this.fileToUpload)
   }
+
   defaultAction(object) {
     let subs = this.objectService.applyAction(object, this.objectType, this.objectAction).subscribe(
       (val) => {

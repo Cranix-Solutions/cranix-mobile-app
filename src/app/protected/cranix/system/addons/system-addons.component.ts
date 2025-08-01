@@ -7,7 +7,7 @@ import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-system-addons',
+    selector: 'cranix-system-addons',
   templateUrl: './system-addons.component.html',
   styleUrls: ['./system-addons.component.scss'],
 })

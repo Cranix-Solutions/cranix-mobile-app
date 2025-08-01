@@ -1,11 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'System configuration' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{ 'System configuration' | translate}}"></cranix-toolbar>
 <ion-content *ngIf="!editingConfig">
   <ion-toolbar class="page-toolbar">
     <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="Basic">

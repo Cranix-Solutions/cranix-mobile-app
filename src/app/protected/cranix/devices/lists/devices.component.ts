@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, PopoverController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage-angular';
 
 //own modules
-import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -16,7 +14,7 @@ import { ManageDhcpComponent } from 'src/app/shared/actions/manage-dhcp/manage-d
 
 @Component({
   standalone: false,
-  selector: 'cranix-devices',
+    selector: 'cranix-devices',
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.scss'],
 })
@@ -53,19 +51,11 @@ export class DevicesComponent implements OnInit {
     public modalCtrl: ModalController,
     public objectService: GenericObjectService,
     public popoverCtrl: PopoverController,
-    public route: Router,
-    private storage: Storage
+    public route: Router
   ) {
-
     this.context = { componentParent: this };
   }
   ngOnInit() {
-    this.storage.get('DevicesComponent.displayedColumns').then((val) => {
-      let myArray = JSON.parse(val);
-      if (myArray) {
-        this.displayedColumns = myArray.concat(['actions']);
-      }
-    });
     if (this.objectService.selectedRoom) {
       this.selectedRoom = this.objectService.selectedRoom;
       this.rowData = [];
@@ -80,52 +70,13 @@ export class DevicesComponent implements OnInit {
     }
     delete this.objectService.selectedObject;
   }
+
   ngOnDestroy() {
     console.log("ngOnDestroy")
     delete this.objectService.selectedRoom;
     delete this.objectService.selectedObject;
   }
-
-  redirectToDelete(device: Device) {
-    this.objectService.deleteObjectDialog(device, 'device', '')
-  }
-  checkChange(ev, dev: Device) {
-    if (ev.detail.checked) {
-      this.objectService.selectedIds.push(dev.id)
-      this.objectService.selection.push(dev)
-    } else {
-      this.objectService.selectedIds = this.objectService.selectedIds.filter(id => id != dev.id)
-      this.objectService.selection = this.objectService.selection.filter(obj => obj.id != dev.id)
-    }
-  }
-
-  /**
- * Open the actions menu with the selected object ids.
- * @param ev
- */
-  async openActions(ev: any, object: Device) {
-    if (object) {
-      this.objectService.selectedIds.push(object.id)
-      this.objectService.selection.push(object)
-    } else {
-      if (this.objectService.selection.length == 0) {
-        this.objectService.selectObject();
-        return;
-      }
-    }
-    const popover = await this.popoverCtrl.create({
-      component: ActionsComponent,
-      event: ev,
-      componentProps: {
-        objectType: "device",
-        objectIds: this.objectService.selectedIds,
-        selection: this.objectService.selection
-      },
-      animated: true,
-      showBackdrop: true
-    });
-    (await popover).present();
-  }
+  
   async redirectToEdit(device: Device) {
     let action = "modify";
     if (!device) {
@@ -143,13 +94,9 @@ export class DevicesComponent implements OnInit {
       animated: true,
       showBackdrop: true
     });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.authService.log("Object was created or modified", dataReturned.data)
-      }
-    });
     (await modal).present();
   }
+
   async setDhcp(device: Device) {
     const modal = await this.modalCtrl.create({
       component: ManageDhcpComponent,
@@ -162,6 +109,7 @@ export class DevicesComponent implements OnInit {
     });
     (await modal).present();
   }
+
   async setPrinters(device: Device) {
     this.objectService.selectedObject = device;
     const modal = await this.modalCtrl.create({
@@ -170,14 +118,7 @@ export class DevicesComponent implements OnInit {
       animated: true,
       backdropDismiss: false
     });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.displayedColumns = dataReturned.data.concat(['actions']);
-      }
-    });
-    (await modal).present().then((val) => {
-      this.authService.log("most lett vegrehajtva.")
-    })
+    (await modal).present()
   }
   async addDevice(ev: Event) {
     const modal = await this.modalCtrl.create({
@@ -189,8 +130,6 @@ export class DevicesComponent implements OnInit {
       animated: true,
       backdropDismiss: false
     });
-    (await modal).present().then((val) => {
-      this.authService.log("most lett vegrehajtva.")
-    })
+    (await modal).present()
   }
 }

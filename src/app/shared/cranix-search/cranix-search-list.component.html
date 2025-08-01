@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="header">
+    <ion-item lines="none">
+      @if(multiple){
+      <ion-buttons slot="start">
+        <ion-button class="ion-no-margin" (click)="checkAll()">
+          @if(isAllSelected){
+          <ion-icon slot="icon-only" name="checkbox"></ion-icon>
+          }@else{
+          <ion-icon slot="icon-only" name="stop-outline"></ion-icon>
+          }
+        </ion-button>
+      </ion-buttons>
+      }
+      <ion-input type="text" placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()"
+        id="crxSearchFilter"></ion-input>
+      <ion-buttons slot="end">
+        @if(!multiple){
+        <ion-button class="ion-no-margin" (click)="clearSelection()" matTooltip="{{'Clear selection' | translate }}">
+          <ion-icon slot="icon-only" color="warning" name="trash"></ion-icon>
+        </ion-button>
+        }
+        <ion-button class="ion-no-margin" (click)="showChecked()">
+          <ion-icon slot="icon-only" color="success" name="eye"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </div>
+  <div class="list-container button-container">
+    @if(multiple){
+    <ul class="checklist">
+      @for(o of rowData; track o.id){
+      @if(!isShowChecked || isSelected(o.id)) {
+      <li>
+        <input type="checkbox" (click)="doSelect(o)" [id]="o.id" [checked]="isSelected(o.id)">
+        <label [for]="o.id">
+          @for(field of itemTextField; track field){ {{o[field]}} &nbsp; }
+        </label>
+      </li>
+      }
+      }
+    </ul>
+    }@else{
+    <ul class="radiolist">
+      @for(o of rowData; track o.id){
+      @if(!isShowChecked || isSelected(o.id)) {
+      <li>
+        <input type="radio" (click)="select(o)" [id]="o.id" name="cranixSearchList"
+          [checked]="selection && o.id == selection.id">
+        <label [for]="o.id">
+          @for(field of itemTextField; track field){ {{o[field]}} &nbsp; }
+        </label>
+      </li>
+      }
+      }
+    </ul>
+    }
+  </div>
+</div>

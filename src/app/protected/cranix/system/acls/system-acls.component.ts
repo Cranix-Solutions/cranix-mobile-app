@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { ModalController } from '@ionic/angular';
-import { LanguageService } from 'src/app/services/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ManageAclsComponent } from './manage-acls/manage-acls.component';
 
@@ -12,27 +11,24 @@ import { ManageAclsComponent } from './manage-acls/manage-acls.component';
   templateUrl: './system-acls.component.html',
   styleUrls: ['./system-acls.component.scss'],
 })
-export class SystemAclsComponent implements OnInit {
-  context;
+export class SystemAclsComponent {
+  segment: string = 'groups'
   groupsData = []
-  usersData  = []
+  usersData = []
+
   constructor(public authService: AuthenticationService,
     private objectService: GenericObjectService,
     public modalCtrl: ModalController,
-    private languageS: LanguageService,
-    public translateServices: TranslateService) { }
-
-  ngOnInit() {
-    this.context = { componentParent: this };
+    public translateServices: TranslateService)
+  {
     this.groupsData = this.objectService.allObjects['group'];
-    this.usersData  = this.objectService.allObjects['user'];
+    this.usersData = this.objectService.allObjects['user'];
   }
-
   async manageAcls(objectType, object) {
     const modal = await this.modalCtrl.create({
       component: ManageAclsComponent,
       animated: true,
-      showBackdrop: true,componentProps: {
+      showBackdrop: true, componentProps: {
         objectType: objectType,
         object: object
       }
@@ -44,10 +40,16 @@ export class SystemAclsComponent implements OnInit {
     });
     (await modal).present();
   }
+
+  segmentChanged(event) {
+      this.segment = event.detail.value;
+  }
   groupFilterChanged() {
-    //TODO filter groups
+    let filter = (<HTMLInputElement>document.getElementById('groupFilter')).value
+    this.groupsData = this.objectService.filterObject('group', filter.toLowerCase())
   }
   userFilterChanged() {
-    //TODO filte users
+    let filter = (<HTMLInputElement>document.getElementById('userFilter')).value
+    this.usersData = this.objectService.filterObject('user', filter.toLowerCase())
   }
 }

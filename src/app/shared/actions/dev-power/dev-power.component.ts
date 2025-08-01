@@ -7,7 +7,7 @@ import { takeWhile } from 'rxjs/operators';
 
 @Component({
   standalone: false,
-  selector: 'cranix-dev-power',
+    selector: 'cranix-dev-power',
   templateUrl: './dev-power.component.html',
   styleUrls: ['./dev-power.component.scss'],
 })

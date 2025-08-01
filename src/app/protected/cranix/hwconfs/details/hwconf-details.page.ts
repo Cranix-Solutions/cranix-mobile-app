@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   standalone: false,
-  selector: 'cranix-hwconf-details',
+    selector: 'cranix-hwconf-details',
   templateUrl: './hwconf-details.page.html',
   styleUrls: ['./hwconf-details.page.scss'],
 })

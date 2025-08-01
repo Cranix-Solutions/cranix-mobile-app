@@ -28,14 +28,13 @@ export class AddRemoteRuleComponent implements OnInit {
   ruleTypeChanged() { }
   ngOnInit() { }
 
-  addRemoteRule(rule) {
-    console.log(rule);
+  addRemoteRule() {
     this.securityService.addRemoteRule({
-        ext:  rule.ext,
-        id:   this.selectedDevice.key,
-        name: this.selectedDevice.name,
-        port: rule.port
-      });
+      ext: this.rule.ext,
+      id: this.selectedDevice.id,
+      name: this.selectedDevice.name,
+      port: this.rule.port
+    });
     this.modalCtrl.dismiss('success');
   }
 }

@@ -117,6 +117,7 @@ export class Group {
 export class Package {
 	name: string = "";
 	version: string = "";
+	weight: number = 0;
 	constructor() { }
 }
 export class SoftwareVersion {
@@ -450,7 +451,7 @@ export class PositivList {
 	id?: number = 0;
 	name: string = "";
 	description: string = "";
-	subject: string = "";
+	teachingSubject: string = "";
 	domains: string = "";
 	constructor() { }
 }
@@ -607,4 +608,61 @@ export class ParentTeacherMeeting {
 	released: boolean = false
 	templateId?: number
 	classes: Group[] = []
+}
+
+export class IdRequest {
+	id: number = 0
+	creator: User = new User
+	created: Date | string
+	modified: Date | string
+	uuid: string = ""
+	allowed: boolean = false
+	comment: string = ""
+	validUntil: string = ""
+	avatar: string = ""
+	picture: string = ""
+	googleUrl: string = ""
+	appleUrl: string = ""
+}
+
+export class CrxNotice {
+	id: number = 0
+	creator: User = new User()
+	created: Date | string = new Date()
+	modified: Date | string = new Date()
+	reminder: Date | string = ""
+	title: string = ""
+	noticeType: string = ""
+	text: string = ""
+	grading: number = 0
+	weighting: number = 1
+	objectType: string = ""
+	objectId: number = 0
+	issueType: string = ""
+	issueId: number = 0
+}
+
+export class CrxTicketArticle {
+	id: number = 0
+	creator: User = new User()
+	created: Date | string = new Date()
+	modified: Date | string = new Date()
+	reminder: Date | string = new Date()
+	seen: boolean = false
+	workTime: number = 0
+	text: string = ""
+}
+
+export class CrxTicket {
+	id: number = 0
+	creator: User = new User()
+	assignee: User = new User()
+	created: Date | string = new Date()
+	modified: Date | string = new Date()
+	title: string = ""
+	ticketStatus: string = "N"
+	rooms: Room[] = []
+	devices: Device[] = []
+	printers: Printer[] = []
+	text: string = ""
 }

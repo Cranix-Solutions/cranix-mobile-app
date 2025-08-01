@@ -4,7 +4,7 @@ import { SystemService } from 'src/app/services/system.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-setpassword',
+    selector: 'cranix-setpassword',
   templateUrl: './setpassword.component.html',
   styleUrls: ['./setpassword.component.scss'],
 })

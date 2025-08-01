@@ -6,13 +6,15 @@ import { LanguageService } from 'src/app/services/language.service';
 import { ParentsService } from 'src/app/services/parents.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
+import { EventRenderer } from 'src/app/pipes/ag-ptm-event-renderer'
+import { RoomRenderer } from 'src/app/pipes/ag-ptm-room-renderer'
 import { WindowRef } from 'src/app/shared/models/ohters'
 import { SystemService } from 'src/app/services/system.service';
 import { interval, takeWhile } from 'rxjs';
 
 @Component({
   standalone: false,
-  selector: 'cranix-ptm-view',
+    selector: 'cranix-ptm-view',
   templateUrl: './cranix-ptm-view.component.html',
   styleUrl: './cranix-ptm-view.component.css'
 })
@@ -28,11 +30,22 @@ export class CranixPtmViewComponent implements OnInit {
   events = {}
   eventsTeacherStudent = {}
   eventsTimeStudent = {}
+  isOpened: boolean = true
   isPtmManager: boolean = false
-  isStudent: boolean = false
-  instituteName: string
   isRegisterRoomOpen: boolean = false
   isRegisterEventOpen: boolean = false
+  isStudent: boolean = false
+  instituteName: string
+  defaultColDef = {
+    resizable: true,
+    sortable: false,
+    hide: false,
+    minWidth: 80,
+    suppressHeaderMenuButton: true,
+    suppressMovable: true
+  }
+  columnDefs = []
+  gridApi
   selectedEvent: PTMEvent
   selectedEventRegistered: boolean = false
   selectedPTMinRoom: PTMTeacherInRoom
@@ -63,6 +76,7 @@ export class CranixPtmViewComponent implements OnInit {
     }
     this.isPtmManager = this.authService.isAllowed('ptm.manage')
   }
+
   compare(a: any, b: any) {
     return new Date(a.start).getTime() - new Date(b.start).getTime()
   }
@@ -70,16 +84,15 @@ export class CranixPtmViewComponent implements OnInit {
     console.log(this.id)
     this.alive = true
     this.readData(true)
-    interval(3000).pipe(takeWhile(() => this.alive)).subscribe((func => {
-      this.refreshDatat();
+    interval(5000).pipe(takeWhile(() => this.alive && this.isOpened )).subscribe((func => {
+      this.refreshData();
     }))
   }
   ngOnDestroy(): void {
     this.alive = false
   }
-  refreshDatat(): void{
+  refreshData(): void{
     this.parentsService.getLastChange(this.id).subscribe((val) => {
-      console.log(val);
       let lastChange = new Date(val)
       console.log(lastChange.toISOString())
       if(val && lastChange.getTime() > this.parentsService.lastSeen[this.id]){
@@ -88,10 +101,18 @@ export class CranixPtmViewComponent implements OnInit {
     })
   }
   readData(doColdef: boolean) {
-    console.log("readData called: " + doColdef)
+    console.log(this.selectedStudent)
     this.parentsService.getPTMById(this.id).subscribe(
       (val) => {
         this.ptm = val
+        let now = new Date().getTime()
+        let endReg = new Date(this.ptm.endRegistration).getTime()
+        let startReg = new Date(this.ptm.startRegistration).getTime()
+        console.log(endReg)
+        console.log(now)
+        if(now > endReg || now < startReg) {
+          this.isOpened = false
+        }
         if (!this.isStudent) {
           this.parentsService.getFreeTeachers(this.id).subscribe(
             (val) => {
@@ -105,11 +126,40 @@ export class CranixPtmViewComponent implements OnInit {
       }
     )
   }
+  onQuickFilterChanged() {
+    let filter = (<HTMLInputElement>document.getElementById("teacherFilter")).value.toLowerCase();
+    this.gridApi.setGridOption('quickFilterText', filter);
+  }
+
   createData(doColdef: boolean) {
     let colDefIsReady = !doColdef
     let data = []
     let colDef = []
     this.eventsTimeStudent = {}
+    if (!colDefIsReady) {
+      colDef.push(
+        {
+          field: 'teacher',
+          pinned: 'left',
+          minWidth: 100,
+          lockPinned: true,
+          headerName: this.languageS.trans('Teacher'),
+          sortable: true
+        }
+      )
+      if (!this.authService.isMD()) {
+        colDef.push(
+          {
+            field: 'room',
+            pinned: 'left',
+            minWidth: 80,
+            lockPinned: true,
+            headerName: this.languageS.trans('Room'),
+            cellRenderer: RoomRenderer
+          }
+        )
+      }
+    }
     for (let ptmTeacherInRoom of this.ptm.ptmTeacherInRoomList) {
       this.eventsTeacherStudent[ptmTeacherInRoom.teacher.id] = {}
       if (this.selectedStudent) {
@@ -140,13 +190,17 @@ export class CranixPtmViewComponent implements OnInit {
             {
               field: time,
               headerName: time,
-              width: 80
+              width: 80,
+              cellRenderer: EventRenderer
             }
           )
         }
       }
       colDefIsReady = true
       data.push(roomEvents)
+    }
+    if (doColdef) {
+      this.columnDefs = colDef
     }
     for (let teacher of this.freeTeachers) {
       if (this.selectedStudent) {
@@ -167,6 +221,11 @@ export class CranixPtmViewComponent implements OnInit {
     this.rowData = data
   }
 
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridApi.sizeColumnsToFit();
+  }
+
   selectPTMinRoom(event: PTMEvent) {
     for (let tmp of this.ptm.ptmTeacherInRoomList) {
       for (let e of tmp.events) {
@@ -182,6 +241,10 @@ export class CranixPtmViewComponent implements OnInit {
     this.readData(false)
   }
   registerEvent(event: PTMEvent) {
+    if(!this.isOpened && !this.isPtmManager){
+      this.objectService.errorMessage(this.languageS.trans("Registration closed."))
+      return;
+    }
     this.selectedEvent = event
     this.selectedEventRegistered = this.selectedEvent.student != null
     if (this.selectedStudent) {
@@ -195,7 +258,6 @@ export class CranixPtmViewComponent implements OnInit {
       this.selectedPTMinRoom = this.selectPTMinRoom(event)
       this.isRegisterEventOpen = true
     }
-    console.log(event)
   }
 
   cancelEvent() {
@@ -213,7 +275,10 @@ export class CranixPtmViewComponent implements OnInit {
     })
   }
   registerRoom(teacherId: number, ptmId: number) {
-    console.log(teacherId, ptmId)
+    if(new Date(this.ptm.startRegistration).getTime() < new Date().getTime()){
+      this.objectService.errorMessage(this.languageS.trans("Registration started. No change is allowed."))
+      return
+    }
     this.parentsService.getFreeRooms(this.id).subscribe(
       (val) => {
         this.freeRooms = val

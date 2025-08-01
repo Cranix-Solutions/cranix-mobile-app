@@ -1,11 +1,12 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Manage devices' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+@if(selectedRoom){
+<cranix-toolbar title="{{'Manage devices in selected room:' | translate}} {{selectedRoom.name}}"></cranix-toolbar>
+}@else{
+<cranix-toolbar *ngIf="!selectedRoom" title="{{'Manage devices' | translate}}"></cranix-toolbar>
+}
 <ion-content>
-  <cranix-md-list objectType="device" [context]="context"></cranix-md-list>
+@if(authService.isMD()){
+<cranix-md-list objectType="device" [context]="context"></cranix-md-list>
+}@else{
+<cranix-list objectType="device"  [context]="context"></cranix-list>
+}
 </ion-content>

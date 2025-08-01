@@ -1,48 +1,111 @@
-<form #editSoftwareSet="ngForm" (ngSubmit)="onSubmit()">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title *ngIf="softwareService.selectedInstallationSet">{{ 'Edit installation set:' | translate}}
-        {{softwareService.selectedInstallationSet.name}}</ion-title>
-      <ion-title *ngIf="! softwareService.selectedInstallationSet">{{ 'Create installation set' | translate}}
-      </ion-title>
-      <ion-buttons slot="end">
-        <ion-button *ngIf="toShow == 'overview'" type="submit" class="ion-no-margin"
-          [disabled]="!editSoftwareSet.form.valid || submitted">
-          <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
-        </ion-button>
-        <ion-button *ngIf="softwareService.selectedInstallationSet" fill="clear" size="small" (click)="delete()"
-          [disabled]="submitted">
-          <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" size="small" (click)="closeWindow()" [disabled]="submitted">
-          <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-    <ion-segment (ionChange)="segmentChanged($event)" [disabled]="submitted" color="secondary" value="overview">
-      <ion-segment-button value="overview">
-        <ion-label>{{'Overview' | translate}}</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="selectObjects">
-        <ion-label>{{'Select objects' | translate}}</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </ion-header>
-  <ion-content id="editSoftware">
-    <ion-grid>
-      <ion-row *ngIf="toShow == 'overview'">
-        <ion-col size=12 sizeMd=3 sizeLg=3 sizeXl=3>
-          <ion-item>
-            <ion-label position="stacked">{{'name' | translate}}</ion-label>
-            <ion-input [(ngModel)]=installationSet.name name="name" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">{{'description' | translate}}</ion-label>
-            <ion-input [(ngModel)]=installationSet.description name="description" required></ion-input>
-          </ion-item>
-        </ion-col>
-        <!--TODO-->
-      </ion-row>
-    </ion-grid>
-  </ion-content>
-</form>
+<ion-header>
+  <ion-toolbar color="primary">
+    @if(softwareService.selectedInstallationSet){
+    <ion-title>{{ 'Edit installation set:' | translate}} {{softwareService.selectedInstallationSet.name}}</ion-title>
+    }@else{
+    <ion-title>{{ 'Create installation set' | translate}}</ion-title>
+    }
+    <ion-buttons slot="end">
+      <ion-button type="submit" class="ion-no-margin" [disabled]="!installationSet.name || submitted">
+        <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+      </ion-button>
+      @if(softwareService.selectedInstallationSet){
+      <ion-button fill="clear" size="small" (click)="delete()" [disabled]="submitted">
+        <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+      </ion-button>
+      }
+      <ion-button fill="clear" size="small" (click)="closeWindow()" [disabled]="submitted">
+        <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-accordion-group>
+    <ion-accordion value="base">
+      <ion-item slot="header">
+        <ion-label>{{'Base configuration'|translate}}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-item>
+          <ion-label position="stacked">{{'name' | translate}}</ion-label>
+          <ion-input [(ngModel)]=installationSet.name name="name" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{'description' | translate}}</ion-label>
+          <ion-input [(ngModel)]=installationSet.description name="description" required></ion-input>
+        </ion-item>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="softwares">
+      <ion-item slot="header">
+        <ion-label>{{'softwares'|translate}}</ion-label>{{softwares.length}}
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <cranix-search-list objectType="software" [items]="softwareService.availableSoftwares" [(ngModel)]="softwares"
+          name="selectSoftware" [multiple]="true"></cranix-search-list>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="hwconfs">
+      <ion-item slot="header">
+        <ion-label>{{'hwconfs'|translate}}</ion-label>{{hwconfs.length}}
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <cranix-search-list objectType="hwconf" [items]="availableHwconfs" [(ngModel)]="hwconfs" name="selectHwconfs"
+          [multiple]="true"></cranix-search-list>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="rooms">
+      <ion-item slot="header">
+        <ion-label>{{'rooms'|translate}}</ion-label>{{rooms.length}}
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <cranix-search-list objectType="room" [items]="availableRooms" [(ngModel)]="rooms" name="selectRooms"
+          [multiple]="true"></cranix-search-list>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="devices">
+      <ion-item slot="header">
+        <ion-label>{{'devices'|translate}}</ion-label>{{devices.length}}
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <cranix-search-list objectType="device" [items]="availableDevices" [(ngModel)]="devices" name="selectDevice"
+          [multiple]="true"></cranix-search-list>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+  <!-- ion-grid>
+    <ion-row>
+      <ion-col size=12 sizeMd=3 sizeLg=3 sizeXl=3>
+        <ion-item>
+          <ion-label position="stacked">{{'name' | translate}}</ion-label>
+          <ion-input [(ngModel)]=installationSet.name name="name" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{'description' | translate}}</ion-label>
+          <ion-input [(ngModel)]=installationSet.description name="description" required></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
+        {{'softwares'|translate}}
+        <cranix-search-list objectType="software" [items]="softwareService.availableSoftwares" [(ngModel)]="softwares"
+          name="selectSoftware" [multiple]="true"></cranix-search-list>
+      </ion-col>
+      <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
+        {{'hwconfs'|translate}}
+        <cranix-search-list objectType="hwconf" [items]="availableHwconfs" [(ngModel)]="hwconfs" name="selectHwconfs"
+          [multiple]="true"></cranix-search-list>
+      </ion-col>
+      <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
+        {{'rooms'|translate}}
+        <cranix-search-list objectType="room" [items]="availableRooms" [(ngModel)]="rooms" name="selectRooms"
+          [multiple]="true"></cranix-search-list>
+      </ion-col>
+      <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
+        {{'devices'|translate}}
+        <cranix-search-list objectType="device" [items]="availableDevices" [(ngModel)]="devices" name="selectDevices"
+          [multiple]="true"></cranix-search-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid -->
+</ion-content>

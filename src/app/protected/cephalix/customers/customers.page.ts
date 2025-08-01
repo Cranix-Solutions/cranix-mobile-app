@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { GridApi, ColDef } from 'ag-grid-community';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 
@@ -12,18 +13,15 @@ import { CephalixService } from 'src/app/services/cephalix.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-customers',
+    selector: 'cranix-customers',
   templateUrl: './customers.page.html',
   styleUrls: ['./customers.page.scss'],
 })
-export class CustomersPage implements OnInit {
+export class CustomersPage{
   objectKeys: string[] = [];
   displayedColumns: string[] = ['id', 'name', 'uuid', 'locality', 'ipVPN', 'regCode', 'validity'];
   sortableColumns: string[] = ['id', 'name', 'uuid', 'locality', 'ipVPN', 'regCode', 'validity'];
   context;
-  selected: Customer[] = [];
-  title = 'app';
-  objectIds: number[] = [];
   myInstitutes: Institute[] = [];
 
   constructor(
@@ -37,34 +35,13 @@ export class CustomersPage implements OnInit {
     this.context = { componentParent: this };
     this.objectKeys = Object.getOwnPropertyNames(new Customer());
   }
-  //TODO
-  ngOnInit() {
-    this.storage.get('CustomersPage.displayedColumns').then((val) => {
-      let myArray = JSON.parse(val);
-      if (myArray) {
-        this.displayedColumns = ['select'].concat(myArray).concat(['actions']);
-      }
-    });
-  }
-  public redirectToDelete = (customer: Customer) => {
-    this.objectService.deleteObjectDialog(customer, 'customer', '')
-  }
   /**
  * Open the actions menu with the selected object ids.
  * @param ev 
  */
-  async redirectToAddInstitute(ev: any) {
-    this.selected = [];
-    if (!this.selected) {
-      this.objectService.selectObject();
-      return;
-    }
-    if (this.selected.length > 1) {
-      //TODO Warning
-      return;
-    }
+  async redirectToAddInstitute(customer: Customer) {
     let institute = new Institute();
-    institute.cephalixCustomerId = this.selected[0].id;
+    institute.cephalixCustomerId = customer.id;
     const modal = await this.modalCtrl.create({
       component: ObjectsEditComponent,
       componentProps: {
@@ -107,6 +84,7 @@ export class CustomersPage implements OnInit {
     });
     (await modal).present();
   }
+
   async editInstitutes(customer: Customer) {
     const modal = await this.modalCtrl.create({
       component: EditInstitutes,
@@ -121,14 +99,13 @@ export class CustomersPage implements OnInit {
 
 @Component({
   standalone: false,
-  selector: 'edit-institutes-component',
+    selector: 'edit-institutes-component',
   templateUrl: 'edit-institutes.html'
 })
 export class EditInstitutes implements OnInit {
-  context;
   disabled: boolean = false;
-  myInstituteIds: number[];
-  myInstitutes: Institute[];
+  myInstituteIds: number[] = [];
+  myInstitutes: Institute[] = [];
   rowData: Institute[];
   owned: boolean = false;
   @Input() customer
@@ -139,7 +116,6 @@ export class EditInstitutes implements OnInit {
     public objectService: GenericObjectService
   ) {
     this.rowData = this.objectService.allObjects['institute'];
-    this.context = { componentParent: this };
   }
 
   ngOnInit(): void {
@@ -154,13 +130,10 @@ export class EditInstitutes implements OnInit {
     console.log(this.myInstituteIds)
   }
 
-  showAll(){}
-  showOwned(){}
   async onSubmit() {
-    this.disabled = true;
+    this.disabled = true
     let newMyInstituteIds: number[] = [];
-    let selected = [] //TODO
-    for (let institute of selected) {
+    for (let institute of this.myInstitutes) {
       newMyInstituteIds.push(institute.id)
     }
     for (let i of newMyInstituteIds) {

@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 //Own stuff
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { LanguageService } from 'src/app/services/language.service';
 import { SoftwareService } from 'src/app/services/softwares.service'
 import { SoftwareStatus } from 'src/app/shared/models/data-model';
 
 @Component({
   standalone: false,
-  selector: 'cranix-software-status',
+    selector: 'cranix-software-status',
   templateUrl: './software-status.component.html',
   styleUrls: ['./software-status.component.scss'],
 })
-export class SoftwareStatusComponent implements OnInit {
+export class SoftwareStatusComponent {
   context;
   softwareData: SoftwareStatus[] = [];
   softwareDataBack: SoftwareStatus[] = [];
@@ -23,13 +22,9 @@ export class SoftwareStatusComponent implements OnInit {
   stati: string[] = [];
   constructor(
     public authService: AuthenticationService,
-    public softwareService: SoftwareService,
-    private languageS: LanguageService
+    public softwareService: SoftwareService
   ) {
     this.context = { componentParent: this };
-  }
-
-  ngOnInit() {
     this.readSoftwareData();
   }
 
@@ -60,17 +55,9 @@ export class SoftwareStatusComponent implements OnInit {
         this.stati.sort()
         this.softwares.sort()
         this.rooms.sort()
-      },
-      (err) => { this.authService.log(err) },
-      () => { subM.unsubscribe() });
+      })
   }
 
-  onQuickFilterChanged(filter: string){
-    //TODO
-  }
-  exportSelected(){
-    //TODO
-  }
   readFilteredSoftwareData() {
     if (this.softwareDataBack.length == 0) {
       this.softwareDataBack = this.softwareData;

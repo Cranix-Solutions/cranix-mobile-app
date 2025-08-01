@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PopoverController, ModalController } from '@ionic/angular';
 
 //own modules
-import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -13,11 +12,12 @@ import { SystemService } from 'src/app/services/system.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-users',
+    selector: 'cranix-users',
   templateUrl: './users.component.html'
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent {
   objectKeys: string[] = [
+    "id",
     "uid",
     "uuid",
     "surName",
@@ -27,6 +27,9 @@ export class UsersComponent implements OnInit {
     "role",
     "mustChange",
     "classes",
+    "emailAddress",
+    "telefonNumber",
+    "mailAliases",
     "msQuota",
     "fsQuota",
     "msQuotaUsed",
@@ -34,10 +37,24 @@ export class UsersComponent implements OnInit {
     "created",
     "modified"
   ];
-  displayedColumns: string[] = ['uid', 'uuid', 'givenName', 'surName', 'role', 'classes', 'actions'];
+  newObjectKeys: string[] = [
+    "uid",
+    "uuid",
+    "surName",
+    "givenName",
+    "birthDay",
+    "password",
+    "role",
+    "mustChange",
+    "emailAddress",
+    "telefonNumber",
+    "mailAliases",
+    "msQuota",
+    "fsQuota"
+  ];
   context;
-  rowData = [];
   defaultMustChange: boolean = true;
+  useNotice: boolean = false;
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
@@ -54,51 +71,6 @@ export class UsersComponent implements OnInit {
         }
       }
     )
-  }
-
-  async ngOnInit() {
-    while (!this.objectService.allObjects['user']) {
-      await new Promise(f => setTimeout(f, 1000));
-    }
-    this.rowData = this.objectService.allObjects['user']
-  }
-
-  checkChange(ev, obj: User) {
-    if (ev.detail.checked) {
-      this.objectService.selectedIds.push(obj.id)
-      this.objectService.selection.push(obj)
-    } else {
-      this.objectService.selectedIds = this.objectService.selectedIds.filter(id => id != obj.id)
-      this.objectService.selection = this.objectService.selection.filter(obj => obj.id != obj.id)
-    }
-  }
-  redirectToDelete = (user: User) => {
-    this.objectService.deleteObjectDialog(user, 'user', '')
-  }
-
-  async openActions(ev: any, object: User) {
-    if (object) {
-      this.objectService.selectedIds.push(object.id)
-      this.objectService.selection.push(object)
-    } else {
-      if (this.objectService.selection.length == 0) {
-        this.objectService.selectObject();
-        return;
-      }
-    }
-    const popover = await this.popoverCtrl.create({
-      component: ActionsComponent,
-      event: ev,
-      componentProps: {
-        objectType: "user",
-        objectIds: this.objectService.selectedIds,
-        selection: this.objectService.selection
-      },
-      translucent: true,
-      animated: true,
-      showBackdrop: true
-    });
-    await popover.present();
   }
 
   async redirectToGroups(user: User) {
@@ -119,6 +91,7 @@ export class UsersComponent implements OnInit {
 
   async redirectToEdit(user: User) {
     let action = "modify";
+    let keys = this.objectKeys
     if (!user) {
       user = new User();
       user.mustChange = this.defaultMustChange;
@@ -126,6 +99,7 @@ export class UsersComponent implements OnInit {
       delete user.fsQuotaUsed;
       delete user.mailAliases;
       delete user.classes;
+      keys = this.newObjectKeys
       action = 'add';
     }
     const modal = await this.modalCtrl.create({
@@ -135,7 +109,7 @@ export class UsersComponent implements OnInit {
         objectType: "user",
         objectAction: action,
         object: user,
-        objectKeys: this.objectKeys
+        objectKeys: keys
       },
       animated: true,
       showBackdrop: true

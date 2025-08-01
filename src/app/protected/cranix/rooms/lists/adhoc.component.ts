@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 //Own stuff
 import { AdHocRoom } from 'src/app/shared/models/data-model'
@@ -9,30 +9,30 @@ import { LanguageService } from 'src/app/services/language.service';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 @Component({
   standalone: false,
-  selector: 'cranix-adhoc',
+    selector: 'cranix-adhoc',
   templateUrl: './adhoc.component.html',
   styleUrls: ['./adhoc.component.scss'],
 })
-export class AdhocComponent implements OnInit {
+export class AdhocComponent {
 
   objectKeys: string[] =Object.getOwnPropertyNames(new AdHocRoom());
   displayedColumns: string[] = ['name', 'description','devCount', 'devicesProUser','roomControl', 'groupIds', 'userIds', 'studentsOnly'];
+  sortableColumns:    string[] = ['name', 'description', 'devCount','devicesProUser', 'roomControl','groupIds', 'userIds',];
+  columnDefs = [];
+  defaultColDef = {};
+  gridApi;
+  columnApi;
   context;
 
   constructor(
     public authService: AuthenticationService,
     public languageS: LanguageService,
     public objectService: GenericObjectService,
-    public modalCtrl: ModalController,
-    public popoverCtrl: PopoverController
+    public modalCtrl: ModalController
   ) {
     this.context = { componentParent: this };
   }
 
-  ngOnInit() {
-    delete this.objectService.selectedObject;
-  }
-  
   async redirectToEdit(adhocroom: AdHocRoom) {
     let action = "";
     if (adhocroom) {
@@ -67,11 +67,6 @@ export class AdhocComponent implements OnInit {
       },
       animated: true,
       showBackdrop: true
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.authService.log("Object was created or modified", dataReturned.data)
-      }
     });
     (await modal).present();
   }

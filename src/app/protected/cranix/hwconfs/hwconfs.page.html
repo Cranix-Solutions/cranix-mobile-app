@@ -1,11 +1,8 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Manage hwconfs' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content *ngIf="authService.isMD()">
-  <cranix-md-list objectType="hwconf" [context]="context"></cranix-md-list>
+<cranix-toolbar title="{{'Manage hwconfs' | translate}}"></cranix-toolbar>
+<ion-content>
+@if(authService.isMD()){
+<cranix-md-list objectType="hwconf" [context]="context"></cranix-md-list>
+}@else{
+<cranix-list objectType="hwconf"  [context]="context"></cranix-list>
+}
 </ion-content>

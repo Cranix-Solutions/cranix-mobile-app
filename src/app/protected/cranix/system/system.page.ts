@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-system',
+    selector: 'cranix-system',
   templateUrl: './system.page.html'
 })
 export class SystemPage {

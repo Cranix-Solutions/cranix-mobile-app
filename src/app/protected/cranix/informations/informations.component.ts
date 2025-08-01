@@ -7,7 +7,7 @@ import { Announcenement, Contact, FAQ, TaskResponse } from 'src/app/shared/model
 
 @Component({
   standalone: false,
-  selector: 'cranix-informations',
+    selector: 'cranix-informations',
   templateUrl: './informations.component.html',
   styleUrls: ['./informations.component.scss'],
 })
@@ -200,7 +200,7 @@ export class InformationsComponent implements OnInit {
 
 @Component({
   standalone: false,
-  selector: 'add-edit-info-page',
+    selector: 'add-edit-info-page',
   templateUrl: 'add-edit-info.html'
 })
 export class AddEditInfoPage implements OnInit {
@@ -282,7 +282,7 @@ export class AddEditInfoPage implements OnInit {
 
 @Component({
   standalone: false,
-  selector: 'show-responses-page',
+    selector: 'show-responses-page',
   templateUrl: 'show-responses-page.html'
 })
 export class ShowResponses implements OnInit {

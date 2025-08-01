@@ -12,6 +12,7 @@ import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
 import { LessonsPage } from './lessons.page';
 import { RoomControlComponent } from './room-control/room-control.component';
 import { RoomDevComponent } from './room-control/device/roomdev.component';
+import { MypositiveComponent } from './mypositive/mypositive.component';
 import { ChallengesComponent } from './challenges/challenges.component'
 import { TestsComponent } from './tests/tests.component'
 import { PtmsComponent } from './ptms/ptms.component';
@@ -40,6 +41,11 @@ const routes: Routes = [
         path: 'roomcontrol',
         component: RoomControlComponent
       },
+
+      {
+        path: 'mypositive',
+        component: MypositiveComponent
+      },
       {
         path: '',
         redirectTo: 'tests', pathMatch: 'full'
@@ -63,6 +69,7 @@ const routes: Routes = [
     RoomControlComponent,
     ChallengesComponent,
     RoomDevComponent,
+    MypositiveComponent,
     PtmsComponent,
     TestsComponent
   ],

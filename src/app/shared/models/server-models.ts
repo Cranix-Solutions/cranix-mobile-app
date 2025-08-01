@@ -106,6 +106,7 @@ export class Settings {
         rowMultiSelectWithClick: boolean = true;
         checkboxSelection: boolean = true;
         headerCheckboxSelection: boolean = true;
+        labelPlacement: string = "fixed";
         debug: boolean = false;
         constructor() { }
 }
@@ -132,5 +133,11 @@ export class MailAccess {
         modified?: string = "";
         address: string = "";
         action: string = "";
+}
+
+export class CrxTicketStatus {
+        N: number = 0;
+        R: number = 0;
+        W: number = 0;
 }
 

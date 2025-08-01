@@ -9,7 +9,7 @@ import { takeWhile } from 'rxjs/internal/operators/takeWhile';
 
 @Component({
   standalone: false,
-  selector: 'cranix-files-upload',
+    selector: 'cranix-files-upload',
   templateUrl: './files-upload.component.html',
   styleUrls: ['./files-upload.component.scss'],
 })

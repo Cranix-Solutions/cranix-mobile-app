@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -16,16 +16,12 @@ import { User } from 'src/app/shared/models/data-model';
   templateUrl: './institutes.manage.html',
   styleUrls: ['./institutes.manage.scss'],
 })
-export class InstitutesManage implements OnInit {
-  managedIds:      number[] = [];
-  userKeys:        string[] = [ 'id','uid','givenName','surName','role'];
-  instituteKeys:   string[] = [ 'id','uuid','name','locality','validity'];
-  managerUsers:    User[]   = [];
-  selectedManager: User     = new User();
-  instituteView:   boolean = false;
+export class InstitutesManage {
+  managerUsers: User[] = []
+  manager: User
+  myInstitutes: Institute[] = []
+  isManageInstituteOpen: boolean = false
   context;
-  title = 'app';
-  rowData = [];
 
   constructor(
     public authService: AuthenticationService,
@@ -37,19 +33,37 @@ export class InstitutesManage implements OnInit {
     public route: Router
   ) {
     this.context = { componentParent: this };
-  }
-
-  ngOnInit() {
-    for (let user of this.objectService.allObjects['user'] ) {
+    let tmp = []
+    for (let user of this.objectService.allObjects['user']) {
       if (user.role.toLowerCase() == "reseller" || user.role == "sysadmins") {
-        this.managerUsers.push(user)
+        tmp.push(user)
       }
     }
+    this.managerUsers = tmp
   }
 
-  //TODO implement it with ionic-selectable
-  showAll(){}
-  showSelected(){}
-  userList(){}
-  onQuickFilterChanged(filter: string){ }
+  manageMyInstitute(user: User) {
+    this.manager = user
+    this.cephalixService.getInstitutesFromUser(user.id).subscribe(
+      (val) => {
+        this.myInstitutes = val
+        this.isManageInstituteOpen = true
+        console.log(this.myInstitutes)
+      }
+    )
+  }
+
+  applyChanges(modal) {
+    this.objectService.requestSent()
+    for (let institute of this.myInstitutes) {
+      this.cephalixService.addUserToInstitute(this.manager.id, institute.id)
+    }
+    modal.dismiss()
+    this.isManageInstituteOpen = false
+  }
+
+  closeModal(modal) {
+    modal.dismiss()
+    this.isManageInstituteOpen = false
+  }
 }

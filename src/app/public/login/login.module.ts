@@ -6,9 +6,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 
+import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
 @NgModule({
   imports: [
     CommonModule,
+    CranixSharedModule,
     FormsModule,
     IonicModule,
     LoginPageRoutingModule,

@@ -1,16 +1,6 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    @if(eduS.selectedRoom){
-      <ion-title>{{'Room control in' | translate}} {{eduS.selectedRoom.name}}</ion-title>
-    }@else{
-      <ion-title>{{'Room control' | translate}}</ion-title>
-    }
-  </ion-toolbar>
-</ion-header>
-
+<cranix-toolbar *ngIf="!eduS.selectedRoom" title="{{'Room control' | translate}}"></cranix-toolbar>
+<cranix-toolbar *ngIf="eduS.selectedRoom" title="{{'Room control in' | translate}} {{eduS.selectedRoom.name}}">
+</cranix-toolbar>
 <ion-toolbar class="page-toolbar" style="max-height: 54px">
   <ion-buttons *ngIf="eduS.room" slot="start">
     <ion-button matTooltip="{{ 'To login' | translate}}" (click)="setAccess('login')" [disabled]="eduS.disableChange">
@@ -93,6 +83,14 @@
         </ng-template>
         <ng-template ionicSelectableItemIconTemplate></ng-template>
       </ionic-selectable>
+    </div>
+    <div slot="end" *ngIf="!authS.isMD()" lines="none" matTooltip="{{'Select picture size' | translate}}">
+      <ion-label position="stacked">{{'Select picture size' | translate }}</ion-label>
+      {{gridSize}}
+      <ion-select *ngIf="eduS.selectedRoom" [(ngModel)]="gridSize" name="gridSize" (ionChange)="sizeChange($event)"
+        okText="{{'apply' | translate }}" cancelText="{{ 'Cancel' | translate}}">
+        <ion-select-option value="{{size}}" *ngFor="let size of gridSizes">{{size}}</ion-select-option>
+      </ion-select>
     </div>
   </ion-item>
 </ion-toolbar>

@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { PopoverController, ModalController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 //own modules
-import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
-import { LanguageService } from 'src/app/services/language.service';
 import { Room } from 'src/app/shared/models/data-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { RoomPrintersPage } from '../details/printers/room-printers.page';
@@ -14,57 +12,23 @@ import { ManageDhcpComponent } from 'src/app/shared/actions/manage-dhcp/manage-d
 
 @Component({
   standalone: false,
-  selector: 'cranix-rooms',
+    selector: 'cranix-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss'],
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent {
   objectKeys: string[] = [ 'id', 'name', 'ignoreNetbios', 'description', 'roomControl', 'hwconfId', 'startIP', 'devCount', 'roomType', 'network', 'places', 'rows' ]
   displayedColumns: string[] = ['name', 'description', 'roomType', 'roomControl', 'hwconfId', 'actions'];
+  sortableColumns: string[] = ['name', 'description', 'roomType', 'roomControl', 'hwconfId'];
   context;
 
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
     public modalCtrl: ModalController,
-    public popoverCtrl: PopoverController,
-    public languageS: LanguageService,
     public route: Router
   ) {
     this.context = { componentParent: this };
-  }
-  ngOnInit() {
-    delete this.objectService.selectedObject;
-  }
-  public redirectToDelete = (room: Room) => {
-    this.objectService.deleteObjectDialog(room, 'room', '')
-  }
-  /**
- * Open the actions menu with the selected object ids.
- * @param ev
- */
-  async openActions(ev: any, object: Room) {
-    if (object) {
-      this.objectService.selectedIds.push(object.id)
-      this.objectService.selection.push(object)
-    } else {
-      if (this.objectService.selection.length == 0) {
-        this.objectService.selectObject();
-        return;
-      }
-    }
-    const popover = await this.popoverCtrl.create({
-      component: ActionsComponent,
-      event: ev,
-      componentProps: {
-        objectType: "room",
-        objectIds: this.objectService.selectedIds,
-        selection: this.objectService.selection
-      },
-      animated: true,
-      showBackdrop: true
-    });
-    (await popover).present();
   }
 
   async redirectToEdit(room: Room) {
@@ -98,11 +62,6 @@ export class RoomsComponent implements OnInit {
       animated: true,
       showBackdrop: true
     });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.authService.log("Object was created or modified", dataReturned.data)
-      }
-    });
     (await modal).present();
   }
 
@@ -128,14 +87,7 @@ export class RoomsComponent implements OnInit {
       animated: true,
       backdropDismiss: false
     });
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        this.displayedColumns = dataReturned.data.concat(['actions']);
-      }
-    });
-    (await modal).present().then((val) => {
-      this.authService.log("most lett vegrehajtva.")
-    })
+    (await modal).present()
   }
 
   public devices(room: Room) {

@@ -1,39 +1,8 @@
-<ion-content id="carded">
-  <ion-fab vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
-    <ion-fab-button>
-      <ion-icon name="arrow-forward-circle"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="start">
-      <ion-fab-button>
-        <ion-icon name="add-circle" (click)="redirectToEdit(null)"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="pencil-outline" (click)="applyState()"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="refresh-outline" (click)="applyState()"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
-  <ion-toolbar class="page-toolbar">
-    <ion-item lines="none">
-      <ion-input placeholder="{{'search' | translate }}" (input)="setFilterChanged()" id="installationSetFilter">
-      </ion-input>
-    </ion-item>
-    <ion-buttons slot="end">
-      <ion-button size="small" fill="solid" (click)="redirectToEdit(null)"
-        matTooltip="{{'Create a new installation set' | translate }}">
-        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-      </ion-button>
-      <ion-button size="small" fill="solid" (click)="writeConfig()"
-        matTooltip="{{'Write state files for the devices' | translate }}">
-        <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
-      </ion-button>
-      <ion-button size="small" fill="solid" (click)="applyState()"
-        matTooltip="{{'Apply state on all running devices' | translate }}">
-        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-  <!--TODO-->>
+<cranix-toolbar title="{{ 'Manage software installation sets:' | translate}}"></cranix-toolbar>
+<ion-content>
+@if(authService.isMD()){
+<cranix-md-list objectType="category" [context]="context" [rowData]="softwareService.installationSetData"></cranix-md-list>
+}@else{
+<cranix-list objectType="category"  [context]="context" [rowData]="softwareService.installationSetData"></cranix-list>
+}
 </ion-content>

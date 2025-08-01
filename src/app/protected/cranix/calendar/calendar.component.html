@@ -1,13 +1,8 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>{{'Calendar' | translate}}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<!-- cranix-toolbar title="{{'Calendar' | translate}}"></cranix-toolbar -->
+<cranix-toolbar title="Calendar"></cranix-toolbar>
 <ion-content>
     <full-calendar #calendar [options]="calendarOptions" [events]="events"></full-calendar>
+    @if(authService.isMD()){
     <ion-fab slot="fixed" horizontal="start" vertical="center">
         <ion-fab-button (click)="calendarComponent.getApi().prev()" size="small">
             <ion-icon name="arrow-back"></ion-icon>
@@ -18,6 +13,12 @@
             <ion-icon name="arrow-forward"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+    <!-- ion-fab slot="fixed" horizontal="end" vertical="botton">
+        <ion-fab-button (click)="handleDateSelect(null)">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab -->
+    }
     <ion-modal #addEditEventModal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false">
         <ng-template>
             @if(selectedEvent){

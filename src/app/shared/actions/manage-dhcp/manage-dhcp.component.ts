@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 
 @Component({
   standalone: false,
-  selector: 'cranix-manage-dhcp',
+    selector: 'cranix-manage-dhcp',
   templateUrl: './manage-dhcp.component.html',
   styleUrls: ['./manage-dhcp.component.scss'],
 })

@@ -1,11 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Challenges: | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{ 'Challenges' | translate}}"></cranix-toolbar>
 <!-- List of the challenges -->
 <ion-content *ngIf="!htmlResult && !selectedChallenge && !challengeToAssign">
   <cranix-md-list objectType="challenge" [context]="context"></cranix-md-list>

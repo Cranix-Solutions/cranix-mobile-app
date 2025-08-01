@@ -1,26 +1,19 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Define synchronisation of objects for the selected institutes' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-title *ngIf="objectService.selection.length == 0">
+<cranix-toolbar title="{{'Define synchronisation of objects for the selected institutes' | translate}}">
+</cranix-toolbar>
+@if(objectService.selectedObjects.length == 0){
+<ion-title>
   {{'You have to select some institutes to be able to use this site.'}}
 </ion-title>
-<ion-segment  *ngIf="objectService.selection.length != 0" (ionChange)="segmentChanged($event)" color="secondary" value="User">
-  <ion-segment-button *ngFor="let seg of objectsToSync" [value]="seg">
+}@else{
+<ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="user">
+  @for( seg of objectsToSync; track seg){
+  <ion-segment-button [value]="seg">
     <ion-label>{{ seg | translate}}</ion-label>
   </ion-segment-button>
+  }
 </ion-segment>
-<ion-content *ngIf="objectService.selection.length != 0">
+<ion-content>
   <ion-toolbar class="page-toolbar">
-    <ion-item>
-      <ion-input placeholder="{{'search' | translate }}" (input)="onMemberFilterChanged()" id="memberFilter">
-      </ion-input>
-    </ion-item>
     <ion-buttons slot="end">
       <ion-button size="small" (click)="startSync($event)"
         matTooltip="{{'Start  synchronisation of selected objects to the selected institutes.' | translate }} {{ cephalixService.selectedList }}">
@@ -32,5 +25,9 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <!--TODO-->
+  @if(memberData[segment]){
+  <cranix-search-list objectType="synchronizedobject" [items]="memberData[segment]" [(ngModel)]="selectedObjects"
+    [itemTextField]="['objectName']" [multiple]="true"></cranix-search-list>
+  }
 </ion-content>
+}

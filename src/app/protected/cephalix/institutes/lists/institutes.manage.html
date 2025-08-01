@@ -1,35 +1,46 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Select institute managers' | translate}}</ion-title>
-    <ion-item lines="none">
-      <ion-label position="stacked" *ngIf="instituteView">{{'Select institutes to manage by:' | translate}}
-        {{selectedManager.fullName}}</ion-label>
-      <ion-label position="stacked" *ngIf="!instituteView">{{'Click on user to select managed institutes' | translate}}
-      </ion-label>
-      <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('managedInstitutesFilter')"
-        id="managedInstitutesFilter">
-      </ion-input>
-      <ion-label *ngIf="instituteView">{{ 'Count of managed institutes:' | translate}}</ion-label>
-      <ion-label *ngIf="instituteView">{{managedIds.length}}</ion-label>
+<cranix-toolbar title="{{'Manage institutes' | translate}}"></cranix-toolbar>
+<ion-content color="light">
+  <ion-list [inset]="true">
+    <ion-list-header>
+      {{'List of manager user'|translate}}
+    </ion-list-header>
+    <ion-item style="background-color : {{authService.rowColors[2]}}">
+      <div class="divclass">{{'id'|translate}}</div>
+      <div class="divclass">{{'uid'|translate}}</div>
+      <div class="divclass">{{'givenName'|translate}}</div>
+      <div class="divclass">{{'surName'|translate}}</div>
+      <div class="divclass">{{'role'|translate}}</div>
     </ion-item>
-  </ion-toolbar>
-</ion-header>
-<ion-content id="carded">
-  <ion-fab *ngIf="instituteView" vertical="top" horizontal="end" slot="fixed" class="hidden-lg hidden-xl">
-    <ion-fab-button>
-      <ion-icon name="arrow-forward-circle"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="start">
-      <ion-fab-button>
-        <ion-icon name="arrow-undo" (click)="userList()"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="checkmark" (click)="showSelected()"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
-  <!--TDOD-->
+    @for(obj of managerUsers; track obj.id; let i = $index){
+    <ion-item button (click)="manageMyInstitute(obj)" style="background-color : {{authService.rowColors[i%2]}}">
+      <div class="divclass">{{obj.id}}</div>
+      <div class="divclass">{{obj.uid}}</div>
+      <div class="divclass">{{obj.givenName}}</div>
+      <div class="divclass">{{obj.surName}}</div>
+      <div class="divclass">{{obj.role}}</div>
+    </ion-item>
+    }
+  </ion-list>
 </ion-content>
+<ion-modal #manageInstituteModal [isOpen]="isManageInstituteOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>
+          {{'Select institues for'|translate}} {{manager.fullName}}
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button size="small" fill="clear" (click)="applyChanges(manageInstituteModal)">
+            <ion-icon slot="icon-only" name="checkmark-sharp" color="success"></ion-icon>
+          </ion-button>
+          <ion-button size="small" fill="clear" (click)="closeModal(manageInstituteModal)">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <cranix-search-list objectType="institute" [multiple]="true" [(ngModel)]="myInstitutes"></cranix-search-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

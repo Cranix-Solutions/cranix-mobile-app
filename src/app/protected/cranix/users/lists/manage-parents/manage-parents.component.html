@@ -1,11 +1,4 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>{{'Manage PTMs' | translate}}</ion-title>
-    </ion-toolbar>
-</ion-header>
+<cranix-toolbar></cranix-toolbar>
 @if(isRegisterEventOpen){
 <ion-toolbar class="page-toolbar">
     <ion-title>{{'Event Registrations'|translate}} {{selectedPTM.start|date:'yyyy-MM-dd'}}
@@ -35,15 +28,25 @@
 </ion-segment>
 @if(segment == 'ptm'){
 <ion-content>
-    @if(selectedPTM){
     <form #addEditPTMForm="ngForm">
         <ion-toolbar class="page-toolbar">
+            @if(selectedPTM){
             @if(selectedPTM.id > 0){
             <ion-title>{{'Edit parent teacher meeting'|translate}} </ion-title>
             }@else{
             <ion-title>{{'Create parent teacher meeting'|translate}} </ion-title>
             }
+            }@else{
+            @if(loadingData){
+            <ion-title>{{'Loading data'|translate}} ...</ion-title>
+            }@else{
+            <ion-title>{{'Select or create parent teacher meeting'|translate}}</ion-title>
+            }
+            }
             <ion-buttons slot="end">
+                <ion-button (click)="getPTMSettings()" fill="solid" matTooltip="{{'Adapt PTM settings'|translate}}">
+                    <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+                </ion-button>
                 <ion-button (click)="isSelectPtmOpen = true" fill="solid" matTooltip="{{'Select PTM'|translate}}">
                     <ion-icon slot="icon-only" color="success" name="list-outline"></ion-icon>
                 </ion-button>
@@ -63,12 +66,13 @@
                     matTooltip="{{'Register students rooms and teachers for the PTM'|translate}}">
                     <ion-icon slot="icon-only" color="tertiary" name="people"></ion-icon>
                 </ion-button>
-                <ion-button (click)="isDeletePtmOpen" fill="solid" [disabled]="selectedPTM.id == 0"
+                <ion-button (click)="presentDeleteAlert()" fill="solid" [disabled]="!selectedPTM || selectedPTM.id == 0"
                     matTooltip="{{'Remove PTM'|translate}}">
                     <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
                 </ion-button>
             </ion-buttons>
         </ion-toolbar>
+        @if(selectedPTM){
         <ion-list>
             <ion-item>
                 <ion-input [(ngModel)]="selectedPTM.title" name="title" label="{{'Title'|translate}}*"
@@ -81,25 +85,28 @@
             <ion-item>
                 <ion-label>{{'From'|translate}}*</ion-label>
                 <input [(ngModel)]="selectedPTM.start" name="startTime" type="datetime-local" required
-                    (change)="startTimeSet()" [disabled]="selectedPTM.ptmTeacherInRoomList.length > 0"/>
+                    (change)="startTimeSet()" [disabled]="selectedPTM.ptmTeacherInRoomList.length > 0" />
             </ion-item>
             <ion-item>
                 <ion-label>{{'Until'|translate}}*</ion-label>
                 <input [(ngModel)]="selectedPTM.end" name="endTime" type="datetime-local" required
-                    [disabled]="selectedPTM.ptmTeacherInRoomList.length > 0"/>
+                    [disabled]="selectedPTM.ptmTeacherInRoomList.length > 0" />
             </ion-item>
             <ion-item>
                 <ion-label>{{'Duration of a Session'|translate}}*</ion-label>
                 <input [(ngModel)]="selectedPTM.duration" name="duration" type="number" required
-                    [disabled]="selectedPTM.ptmTeacherInRoomList.length > 0"/>{{'Minutes'|translate}}
+                    [disabled]="selectedPTM.ptmTeacherInRoomList.length > 0" />
+                <div slot="end">{{'Minutes'|translate}}</div>
             </ion-item>
             <ion-item>
                 <ion-label>{{'Start Parent Registration'|translate}}*</ion-label>
-                <input [(ngModel)]="selectedPTM.startRegistration" name="startRegistration" type="datetime-local" required/>
+                <input [(ngModel)]="selectedPTM.startRegistration" name="startRegistration" type="datetime-local"
+                    required />
             </ion-item>
             <ion-item>
                 <ion-label>{{'End Parent Registration'|translate}}*</ion-label>
-                <input [(ngModel)]="selectedPTM.endRegistration" name="endRegistration" type="datetime-local" required/>
+                <input [(ngModel)]="selectedPTM.endRegistration" name="endRegistration" type="datetime-local"
+                    required />
             </ion-item>
             @if(isUpcomming || selectedPTM.id == 0){
             <ion-item>
@@ -139,16 +146,16 @@
             </ion-item>
             }
         </ion-list>
+        }
     </form>
-    }@else{
-    <ion-toolbar class="page-toolbar">
-        <ion-title>{{'Loading data'|translate}} ...</ion-title>
-    </ion-toolbar>
-    }
 </ion-content>
 }@else{
 <ion-content>
-  <cranix-md-list [objectType]="segment" [context]="context"></cranix-md-list>
+    @if(authService.isMD()){
+    <cranix-md-list context="context" objectType="parent" [rowData]="rowData"></cranix-md-list>
+    }@else{
+    <cranix-list context="context" objectType="parent" [rowData]="rowData"></cranix-list>
+    }
 </ion-content>
 }
 }
@@ -188,7 +195,9 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>{{'Select children for the parent' | translate}}</ion-label>
-                    <ionic-selectable #ionicSelectChildren itemValueField="id" itemTextField="fullName"
+                    <cranix-search objectType="user" [(ngModel)]="selectedChildren" name="selectedChildren"
+                        [items]="children"></cranix-search>
+                    <!-- ionic-selectable #ionicSelectChildren itemValueField="id" itemTextField="fullName"
                         [isMultiple]="true" [(ngModel)]="selectedChildren" [ngModelOptions]="{standalone: true}"
                         [items]="children" [canSearch]="true" groupValueField="classes" groupTextField="classes">
                         <ng-template ionicSelectableHeaderTemplate>
@@ -205,7 +214,7 @@
                                 </ion-toolbar>
                             </ion-header>
                         </ng-template>
-                    </ionic-selectable>
+                    </ionic-selectable -->
                 </ion-item>
             </ion-list>
         </ion-content>
@@ -243,14 +252,71 @@
         </ion-content>
     </ng-template>
 </ion-modal>
-<ion-modal [isOpen]="isDeletePtmOpen">
+<ion-modal #ptmManagementSetting [isOpen]="isPtmSettingsOpen" [backdropDismiss]="false">
     <ng-template>
+        <ion-header>
+            <ion-toolbar color="primary">
+                <ion-title>{{'PTM Management settings'|translate}}</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button fill="clear" size="small" (click)="setPTMSettings(1,ptmManagementSetting)">
+                        <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+                    </ion-button>
+                    <ion-button fill="clear" size="small" (click)="setPTMSettings(0,ptmManagementSetting)">
+                        <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
         <ion-content>
-            {{'Do you realy want to delete?'|translate}}
-            <ion-item>
-                <ion-button (click)="isDeletePtmOpen = false">{{'Cancel'|translate}}</ion-button>
-                <ion-button (click)="deletePtm(selectedPTM.id)">OK</ion-button>
-            </ion-item>
+            <ion-list>
+                <ion-item>
+                    <ion-select [(ngModel)]="ptmSettings.ALLOW_MULTI_USE_OF_ROOMS" name="ALLOW_MULTI_USE_OF_ROOMS"
+                        label="{{'Allow multi use of rooms.'|translate}}">
+                        <ion-select-option value="yes">yes</ion-select-option>
+                        <ion-select-option value="no">no</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-select [(ngModel)]="ptmSettings.SEND_NOTIFICATION_TO_STUDENTS"
+                        name="SEND_NOTIFICATION_TO_STUDENTS"
+                        label="{{'Send notifications to the email addresses of the students.'|translate}}">
+                        <ion-select-option value="yes">yes</ion-select-option>
+                        <ion-select-option value="no">no</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-select [(ngModel)]="ptmSettings.DELAY_BETWEEN_EMAILS" name="DELAY_BETWEEN_EMAILS"
+                        label="{{'Delay between sending two emails.'|translate}}">
+                        <div slot="end">{{'second(s)'|translate}}</div>
+                        <ion-select-option value="1">1</ion-select-option>
+                        <ion-select-option value="2">2</ion-select-option>
+                        <ion-select-option value="3">3</ion-select-option>
+                        <ion-select-option value="4">4</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-input [(ngModel)]="ptmSettings.SENDER_ADDRESS" name="SENDER_ADDRESS" type="email"
+                        label="{{'Sender address'|translate}}:" inputmode="email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-input [(ngModel)]="ptmSettings.LetterSubjectTemplate" name="LetterSubjectTemplate"
+                        labelPlacement="stacked">
+                        <div slot="label"><b>{{'Mail subject template'|translate}}:</b></div>
+                    </ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-textarea [(ngModel)]="ptmSettings.LetterStudentTemplate" name="LetterStudentTemplate"
+                        labelPlacement="stacked" [autoGrow]="true">
+                        <div slot="label"><b>{{'Mail template for students'|translate}}:</b></div>
+                    </ion-textarea>
+                </ion-item>
+                <ion-item>
+                    <ion-textarea [(ngModel)]="ptmSettings.LetterParentTemplate" name="LetterParentTemplate"
+                        labelPlacement="stacked" [autoGrow]="true">
+                        <div slot="label"><b>{{'Mail template for parents'|translate}}:</b></div>
+                    </ion-textarea>
+                </ion-item>
+            </ion-list>
         </ion-content>
     </ng-template>
 </ion-modal>

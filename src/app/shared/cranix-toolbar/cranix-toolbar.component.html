@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    @if(authService.isMD()){
+      <ion-title>{{title}}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
+          <ion-icon color="tertiary" name="book"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="openPopover()">
+          <ion-icon name="person"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }@else{
+      <ion-title>
+        {{authService.session.fullName}} {{authService.session.instituteName}} {{authService.session.roomName}} <span class="title-class">{{title}}</span>
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button *ngIf="authService.isAllowed('cephalix.ticket')" fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
+          <div *ngIf="newTickets">
+            <ion-icon color="danger" name="ticket"></ion-icon>
+            <ion-badge color="danger">{{newTickets}}</ion-badge>
+          </div>
+          <div *ngIf="newTickets == 0">
+            <ion-icon color="success" name="ticket"></ion-icon>
+          </div>
+        </ion-button>
+        <ion-button fill="clear" (click)="reloadAllObjects()"
+          matTooltip="{{ 'Refresh all objects' | translate }}">
+          <ion-icon color="tertiary" name="refresh"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
+          <ion-icon color="tertiary" name="book"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="retirectToSettings($event)"
+          matTooltip="{{ 'Edit user preferences' | translate }}">
+          <ion-icon color="success" name="person"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="logOut($event)">
+          <ion-icon color="danger" name="log-out"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-popover [isOpen]="isPopoverOpen">
+  <ng-template>
+    <ion-list>
+      <ion-item button fill="clear" (click)="reloadAllObjects()">
+          <ion-label>{{ 'Refresh all objects' | translate }}</ion-label>
+          <ion-icon color="tertiary" name="refresh"></ion-icon>
+        </ion-item>
+        <ion-item button fill="clear" (click)="retirectToSettings($event)">
+          <ion-label>{{ 'Edit user preferences' | translate }}"</ion-label>
+          <ion-icon color="success" name="person"></ion-icon>
+        </ion-item>
+        <ion-item button fill="clear" (click)="logOut($event)">
+          <ion-label>{{'Log out'|translate}} </ion-label>
+          <ion-icon color="danger" name="log-out"></ion-icon>
+        </ion-item>
+    </ion-list>
+  </ng-template>
+</ion-popover>

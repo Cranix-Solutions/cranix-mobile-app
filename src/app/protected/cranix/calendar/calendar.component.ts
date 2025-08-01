@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { GestureController } from '@ionic/angular';
 import { CalendarOptions, DateSelectArg, EventChangeArg, EventClickArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -19,11 +19,11 @@ import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   standalone: false,
-  selector: 'crx-calendar',
+    selector: 'crx-calendar',
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   @ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;
   events: any[] = []
   calendarOptions: CalendarOptions = {
@@ -44,24 +44,18 @@ export class CalendarComponent {
       },
       addEvent: {
         text: "+",
-        hint: this.lanaguageS.trans('Add Event'),
         click: this.handleDateSelect.bind(this)
       },
       importTimetable: {
-        text: "++",
+        text: "Import",
         hint: this.lanaguageS.trans('Import timetable from WebUntis'),
         click: this.importTimetable.bind(this)
       }
     },
     headerToolbar: {
-      left: 'today',
+      left: 'prev,next today selectCalendar',
       center: 'title',
-      right: 'selectCalendar addEvent'
-    },
-    footerToolbar: {
-      left: '',
-      right: '',
-      center: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,listWeek addEvent'
     },
     buttonText: {
       year: this.lanaguageS.trans('year'),
@@ -121,6 +115,10 @@ export class CalendarComponent {
     private utilsService: UtilsService,
   ) {
     console.log("CalendarComponent constructor called")
+    if (this.authService.isAllowed('calendar.manage')) {
+    } else {
+
+    }
     if (this.roomsForEvents.length == 0) {
       for (let room of this.objectService.allObjects['room']) {
         if (room.roomType == 'AdHocAccess' || room.roomType == 'technicalRoom') {
@@ -130,6 +128,29 @@ export class CalendarComponent {
       }
     }
     this.loadData()
+  }
+
+  ngOnInit(): void {
+    console.log("CalendarComponent ngOnInit called")
+    if (this.authService.isMD()) {
+      this.initializeSwipeGesture();
+      this.calendarOptions.headerToolbar = {
+        left: 'today',
+        center: 'title',
+        right: 'selectCalendar addEvent'
+      }
+      this.calendarOptions.footerToolbar = {
+        left: '',
+        right: '',
+        center: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }
+    } else if (this.authService.isAllowed('calendar.manage')) {
+      this.calendarOptions.headerToolbar = {
+        left: 'prev,next today selectCalendar',
+        center: 'title',
+        right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,listWeek addEvent importTimetable'
+      }
+    }
   }
 
   selectCalendar() {

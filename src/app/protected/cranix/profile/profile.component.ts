@@ -5,7 +5,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-profile',
+    selector: 'cranix-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })

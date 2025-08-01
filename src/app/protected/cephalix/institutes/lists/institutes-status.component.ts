@@ -1,33 +1,34 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 
 //own modules
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
+import { DateTimeCellRenderer } from 'src/app/pipes/ag-datetime-renderer';
+import { FileSystemUsageRenderer } from 'src/app/pipes/ag-filesystem-usage-renderer';
+import { InstituteStatusRenderer } from 'src/app/pipes/ag-institute-status-renderer';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { LanguageService } from 'src/app/services/language.service';
+import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { InstituteStatus } from 'src/app/shared/models/cephalix-data-model'
+import { UpdateRenderer } from 'src/app/pipes/ag-update-renderer';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { DateCellRenderer } from 'src/app/pipes/ag-date-renderer';
 @Component({
   standalone: false,
-  selector: 'cranix-institutes-status',
+    selector: 'cranix-institutes-status',
   templateUrl: './institutes-status.component.html',
   styleUrls: ['./institutes-status.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class InstitutesStatusComponent implements OnInit {
-  objectKeys: string[] = [];
-  displayedColumns: string[] = ['cephalixInstituteId', 'created', 'uptime', 'version', 'lastUpdate', 'availableUpdates', 'errorMessages', 'rootUsage', 'srvUsage', 'homeUsage', 'runningKernel', 'installedKernel'];
-  rowSelection;
+export class InstitutesStatusComponent {
   context;
-  title = 'app';
-  rowData = [];
-  objectIds: number[] = [];
-  now: number = 0;
+  rowData: any[]
   selectedStatus: InstituteStatus = null;
-  disabled: boolean = false;
+  isStatusModalOpen: boolean = false;
+  now
 
   constructor(
     public authService: AuthenticationService,
@@ -36,23 +37,13 @@ export class InstitutesStatusComponent implements OnInit {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public languageS: LanguageService,
-    public route: Router,
-    private storage: Storage
+    public route: Router
   ) {
     this.context = { componentParent: this };
-    this.objectKeys = Object.getOwnPropertyNames(new InstituteStatus());
-  }
-
-  ngOnInit() {
     this.now = new Date().getTime();
-    this.storage.get('InstitutesStatusComponent.displayedColumns').then((val) => {
-      let myArray = JSON.parse(val);
-      if (myArray) {
-        this.displayedColumns = myArray;
-      }
-    });
+    this.readStatus()
   }
-  ionViewWillEnter() {
+  readStatus() {
     this.authService.log('WillEnter EVENT')
     let subs = this.cephalixService.getStatusOfInstitutes().subscribe({
       next: (val) => {
@@ -67,7 +58,6 @@ export class InstitutesStatusComponent implements OnInit {
       complete: () => { subs.unsubscribe() }
     })
   }
-  
   errorStatus(status: InstituteStatus) {
     if (status.errorMessages) {
       return "danger";
@@ -107,9 +97,14 @@ export class InstitutesStatusComponent implements OnInit {
   }
   showStatus(status: InstituteStatus) {
     this.selectedStatus = status;
+    this.isStatusModalOpen = true;
+  }
+  closeStatusModal(modal){
+    modal.dismiss()
+    this.selectedStatus = null
+    this.isStatusModalOpen = false
   }
 
-  //TODO RESPONSE
   public redirectToUpdate = (cephalixInstituteId: number) => {
     let sub = this.cephalixService.updateById(cephalixInstituteId).subscribe({
       next: (val) => { this.authService.log(val) },
@@ -117,6 +112,7 @@ export class InstitutesStatusComponent implements OnInit {
       complete: () => { sub.unsubscribe(); }
     });
   }
+  
   redirectToEdit(status: InstituteStatus) {
     this.objectService.selectedObject = this.objectService.getObjectById("institute", status.cephalixInstituteId);
     this.route.navigate([`/pages/cephalix/institutes/${status.cephalixInstituteId}`]);

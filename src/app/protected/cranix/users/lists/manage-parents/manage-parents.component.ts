@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -8,34 +9,45 @@ import { Group, PTMTeacherInRoom, ParentTeacherMeeting, User } from 'src/app/sha
 
 @Component({
   standalone: false,
-  selector: 'app-manage-parents',
+    selector: 'app-manage-parents',
   templateUrl: './manage-parents.component.html',
   styleUrl: './manage-parents.component.css'
 })
 export class ManageParentsComponent {
-  segment: string = "parents"
+
+  classes: Group[] = []
   rowData: any[] = []
   nextPtms: ParentTeacherMeeting[] = []
   formerPtms: ParentTeacherMeeting[] = []
   selectedPTM: ParentTeacherMeeting
+  isAddEditParentOpen: boolean = false
+  isPtmSettingsOpen: boolean = false
+  isRegisterEventOpen: boolean = false
+  isRegisterRoomOpen: boolean = false
+  isSelectPtmOpen: boolean = false
   isUpcomming: boolean = false;
   selectedParent: User
   selectedChildren: User[]
   children: User[] = []
   parents: User[] = []
-  classes: Group[] = []
-  isRegisterRoomOpen: boolean = false
-  isRegisterEventOpen: boolean = false
-  isAddEditParentOpen: boolean = false
-  isSelectPtmOpen: boolean = false
-  isDeletePtmOpen: boolean = false
+  ptmSettings = {
+	  "ALLOW_MULTI_USE_OF_ROOMS":"",
+	  'SEND_NOTIFICATION_TO_STUDENTS':"",
+	  "DELAY_BETWEEN_EMAILS":"",
+	  "SENDER_ADDRESS":"",
+	  "LetterSubjectTemplate":"",
+	  "LetterStudentTemplate":"",
+	  "LetterParentTemplate":""
+  };
+  loadingData: boolean = true
   objectKeys = []
   parentKeys = ['givenName', 'surName', 'emailAddress', 'telefonNummer']
   requestKeys = ['parentId', 'givenName', 'surName', 'birthDay', 'className']
+  segment: string = "parents"
   context
   ptmTeacherInRoom: PTMTeacherInRoom
-
   constructor(
+    private alertController: AlertController,
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
     private languageS: LanguageService,
@@ -56,6 +68,7 @@ export class ManageParentsComponent {
       }
     }
   }
+
   segmentChanged(event) {
     console.log(event)
     this.segment = event.detail.value
@@ -75,6 +88,7 @@ export class ManageParentsComponent {
         break;
       }
       case 'ptm': {
+        this.loadingData = true
         this.parentsService.get().subscribe(
           (val) => {
             this.nextPtms = [];
@@ -82,36 +96,28 @@ export class ManageParentsComponent {
               for (let o of val) {
                 this.nextPtms.push(o)
               }
-              if (val.length == 1) {
-                this.selectedPTM = this.parentsService.adaptPtmTimes(val[0])
-                this.isUpcomming = true;
-              }
-            }
-            if(!this.selectedPTM){
-              this.selectPtm(null)
             }
             this.parentsService.getFormer().subscribe(
               (val2) => {
                 this.formerPtms = val2
-                console.log("getFormer" + this.formerPtms.length)
+                this.loadingData = false
               }
             )
-            console.log(this.selectedPTM)
           }
         )
       }
     }
   }
-  startTimeSet(){
+  startTimeSet() {
     let start = new Date(this.selectedPTM.start)
     console.log(this.selectedPTM)
-    if(!this.selectedPTM.end) {
-      this.selectedPTM.end = new Date(start.getTime() + 3600000 *6)
+    if (!this.selectedPTM.end) {
+      this.selectedPTM.end = new Date(start.getTime() + 3600000 * 6)
     }
-    if(!this.selectedPTM.startRegistration) {
+    if (!this.selectedPTM.startRegistration) {
       this.selectedPTM.startRegistration = new Date(start.getTime() - (3600000 * 24 * 7))
     }
-    if(!this.selectedPTM.endRegistration) {
+    if (!this.selectedPTM.endRegistration) {
       this.selectedPTM.endRegistration = new Date(start.getTime() - (3600000 * 24 * 2))
     }
     this.selectedPTM = this.parentsService.adaptPtmTimes(this.selectedPTM)
@@ -120,47 +126,47 @@ export class ManageParentsComponent {
   }
 
   selectPtm(ptm: ParentTeacherMeeting) {
-    if(ptm) {
+    if (ptm) {
       this.selectedPTM = this.parentsService.adaptPtmTimes(ptm)
       let now = new Date().valueOf();
       let start = new Date(this.selectedPTM.start).valueOf()
-      this.isUpcomming = ( now < start )
+      this.isUpcomming = (now < start)
     } else {
       this.selectedPTM = new ParentTeacherMeeting()
-      for( let cl of this.classes) {
+      for (let cl of this.classes) {
         this.selectedPTM.classes.push(cl)
       }
       this.isUpcomming = true
     }
     this.isSelectPtmOpen = false
   }
-  checkPtmTimes(ptm: ParentTeacherMeeting){
+  checkPtmTimes(ptm: ParentTeacherMeeting) {
     let now = new Date().getTime();
     let start = new Date(ptm.start).getTime();
     let end = new Date(ptm.end).getTime();
     let startReg = new Date(ptm.startRegistration).getTime();
     let endReg = new Date(ptm.endRegistration).getTime();
     let messages = []
-    if(start < now) {
+    if (start < now) {
       messages.push(this.languageS.trans('The PTM must be in the future.'))
     }
-    if(end<start) {
+    if (end < start) {
       messages.push(this.languageS.trans('The PTM must ends later then start.'))
     }
-    if(endReg>start) {
+    if (endReg > start) {
       messages.push(this.languageS.trans('The registration must ends befor the PTM starts.'))
     }
-    if(endReg<startReg) {
+    if (endReg < startReg) {
       messages.push(this.languageS.trans('The registration must ends then starts.'))
     }
-    if(messages.length > 0){
+    if (messages.length > 0) {
       this.objectService.errorMessage(messages.join(" "))
       return false
     }
     return true
   }
   addEditPTM() {
-    if(!this.checkPtmTimes(this.selectedPTM)){
+    if (!this.checkPtmTimes(this.selectedPTM)) {
       return
     }
     this.parentsService.convertPtmTimes(this.selectedPTM)
@@ -177,7 +183,7 @@ export class ManageParentsComponent {
       console.log(this.selectedPTM)
       this.parentsService.addPtm(this.selectedPTM).subscribe((val) => {
         this.objectService.responseMessage(val)
-        if(val.code == "OK"){
+        if (val.code == "OK") {
           console.log(val)
           this.parentsService.getPTMById(val.objectId).subscribe((val2) => {
             this.nextPtms.push(val2)
@@ -188,10 +194,31 @@ export class ManageParentsComponent {
     }
   }
 
+  async presentDeleteAlert() {
+    const alert = await this.alertController.create({
+      header: this.languageS.trans('Confirm!'),
+      subHeader: this.languageS.trans('Do you realy want to delete?'),
+      message: this.selectedPTM.title,
+      buttons: [
+        {
+          text: this.languageS.trans('Cancel'),
+          role: 'cancel',
+        }, {
+          text: 'OK',
+          handler: () => {
+            this.deletePtm(this.selectedPTM.id)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
   deletePtm(ptmId: number) {
     this.objectService.requestSent();
     this.parentsService.deletePtm(ptmId).subscribe((val) => {
       this.objectService.responseMessage(val)
+      this.selectedPTM = null
       this.loadData()
     })
   }
@@ -204,7 +231,7 @@ export class ManageParentsComponent {
       }
     )
   }
-  sendMails(){
+  sendMails() {
     this.objectService.requestSent();
     this.parentsService.sendMails(this.selectedPTM.id).subscribe(
       (val) => {
@@ -217,9 +244,9 @@ export class ManageParentsComponent {
     if (parent) {
       this.selectedParent = parent
       this.selectedChildren = []
-      for(let childId of parent.childIds) {
+      for (let childId of parent.childIds) {
         this.selectedChildren.push(
-          this.objectService.getObjectById("user",childId)
+          this.objectService.getObjectById("user", childId)
         )
       }
     } else {
@@ -258,4 +285,28 @@ export class ManageParentsComponent {
     }
   }
 
+  getPTMSettings() {
+    this.parentsService.getPTMSettings().subscribe(
+      (val) => {
+        this.ptmSettings = val
+        this.isPtmSettingsOpen = true
+      }
+    )
+  }
+  setPTMSettings(save, modal) {
+    console.log(save)
+    if (save) {
+      console.log(this.ptmSettings)
+      this.parentsService.setPTMSettings(this.ptmSettings).subscribe(
+        (val) => {
+          this.objectService.responseMessage(val)
+          modal.dismiss();
+          this.isPtmSettingsOpen = false;
+        }
+      )
+    } else {
+      modal.dismiss();
+      this.isPtmSettingsOpen = false;
+    }
+  }
 }

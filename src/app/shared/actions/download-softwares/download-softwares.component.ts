@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 //Own stuff
 import { SoftwareService } from 'src/app/services/softwares.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { Package } from 'src/app/shared/models/data-model';
-import { LanguageService } from 'src/app/services/language.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
@@ -13,60 +12,37 @@ import { AuthenticationService } from 'src/app/services/auth.service';
   templateUrl: './download-softwares.component.html',
   styleUrls: ['./download-softwares.component.scss'],
 })
-export class DownloadSoftwaresComponent implements OnInit {
-  columns: any[] = [];
+export class DownloadSoftwaresComponent {
   context;
   selected: Package[];
-  title = 'app';
-  packages: Package[] = [];
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
     private softwareService: SoftwareService,
-    public modalController: ModalController,
-    private languageS: LanguageService,
-    public toastController: ToastController
+    public modalCtlr: ModalController
   ) {
     this.context = { componentParent: this };
   }
-
-  ngOnInit() {
-    this.columns = [{
-      field: 'name',
-      headerName: this.languageS.trans('name'),
-    }, {
-      field: 'version',
-      headerName: this.languageS.trans('version'),
-    }];
-  }
   closeWindow() {
-    this.modalController.dismiss();
-  }
-  packagFilterChanged(){
-    //TODO
+    this.modalCtlr.dismiss();
   }
   async startDownload() {
-    //TODO
-    let selected = [];
-    console.log(selected)
-    if (selected.length == 0) {
+    if (this.selected.length == 0) {
       console.log('not selected')
-       this.objectService.selectObject();
+      this.objectService.selectObject();
       return;
     } else {
       let toDownload: string[] = [];
-      for( let p of selected ) {
+      for (let p of this.selected) {
         toDownload.push(p.name);
       }
-      let subs = this.softwareService.downloadSoftwares(toDownload).subscribe(
-      (val) =>{
+      this.softwareService.downloadSoftwares(toDownload).subscribe(
+        (val) => {
           this.objectService.responseMessage(val);
-          if( val.code == "OK") {
+          if (val.code == "OK") {
             this.closeWindow();
           }
-        },
-        (err) => { this.objectService.errorMessage(err)},
-        () => { subs.unsubscribe()}
+        }
       )
     }
   }

@@ -7,7 +7,7 @@ import { Crx2fa } from 'src/app/shared/models/server-models';
 
 @Component({
   standalone: false,
-  selector: 'app-my-crx2fa',
+    selector: 'app-my-crx2fa',
   templateUrl: './my-crx2fa.component.html',
   styleUrls: ['./my-crx2fa.component.scss'],
 })

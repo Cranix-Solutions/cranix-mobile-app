@@ -13,7 +13,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-list>
-    @for(s of servers; track s; let i = $index){
+    @for(s of servers; track i; let i = $index){
       <ion-item>
         <ion-label>{{s.name}}</ion-label>
         <ion-button shape="round" (click)="connectServer(i)">

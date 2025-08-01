@@ -1,35 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/auth.service';
-import { LanguageService } from 'src/app/services/language.service';
+import { Component } from '@angular/core';
 import { SystemService } from 'src/app/services/system.service';
 
 @Component({
   standalone: false,
-  selector: 'cranix-access-log',
+    selector: 'cranix-access-log',
   templateUrl: './access-log.component.html',
   styleUrls: ['./access-log.component.scss'],
 })
-export class AccessLogComponent implements OnInit {
-  context;
-  rowData = []
+export class AccessLogComponent {
+  rowData;
+  context
   constructor(
-    public authService: AuthenticationService,
-    public languageS: LanguageService,
     private systemService: SystemService
 
   ) {
     this.context = { componentParent: this };
-    
-  }
-
-  ngOnInit() { 
     this.systemService.getFile("/var/log/cranix-internet-access.log").subscribe(
       (val) => {
+        let tmp= []
         for ( let line of val.split("\n")) {
           let lline = line.split(";")
-          this.rowData.push(
+          tmp.push(
             {
-              time: lline[0],
+              time: lline[0].substring(0,19),
               user: lline[1],
               sourceIp: lline[2],
               destinationIp: lline[3],
@@ -38,9 +31,8 @@ export class AccessLogComponent implements OnInit {
             }
           )
         }
+        this.rowData = tmp
       }
     )
   }
-
-  onQuickFilterChanged(filter: string){}
 }

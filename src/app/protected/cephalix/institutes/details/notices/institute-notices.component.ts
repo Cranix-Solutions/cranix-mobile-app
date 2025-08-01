@@ -10,7 +10,7 @@ import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.c
 
 @Component({
   standalone: false,
-  selector: 'cranix-institute-notices',
+    selector: 'cranix-institute-notices',
   templateUrl: './institute-notices.component.html',
   styleUrls: ['./institute-notices.component.scss'],
 })

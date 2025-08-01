@@ -1,44 +1,38 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{'Manage system acls for groups and users' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<cranix-toolbar title="{{ 'Manage system acls for groups and users' | translate}}"></cranix-toolbar>
 <ion-content id="carded">
-  <ion-grid>
-    <ion-row>
-      <ion-col size=12 sizeMd=12 sizeLg=6 sizeXl=6>
-        <ion-title matTooltip="{{'Click on a group to edit acls.'|translate}}">
-          {{ 'groups' | translate }}</ion-title>
-        <ion-item>
-          <ion-input type="text" placeholder="{{'search' | translate }}" (input)="groupFilterChanged()"
-            id="groupFilter"></ion-input>
-        </ion-item>
-        <ion-list>
-          @for(group of groupsData; track group.id ){
-            <ion-item>
-              <ion-button (click)="manageAcls('group',group)">{{group.name}}, {{group.description}}</ion-button>
-            </ion-item>
-          }
-        </ion-list>
-      </ion-col>
-      <ion-col size=12 sizeMd=12 sizeLg=6 sizeXl=6>
-        <ion-title matTooltip="{{'Click on a group to edit acls.'|translate}}">
-          {{ 'users' | translate }}</ion-title>
-        <ion-item>
-          <ion-input type="text" placeholder="{{'search' | translate }}" (input)="userFilterChanged()" id="userFilter">
-          </ion-input>
-        </ion-item>
-        <ion-list>
-          @for(user of usersData; track user.id ){
-            <ion-item>
-              <ion-button (click)="manageAcls('user',user)">{{user.fullName}}</ion-button>
-            </ion-item>
-          }
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-toolbar class="page-toolbar">
+    <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="groups">
+      <ion-segment-button value="groups">
+        <ion-label>{{'Groups' | translate}}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Settings">
+        <ion-label>{{'Users' | translate}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  @if(segment=='groups'){
+  <ion-list [inset]="true">
+    <ion-list-header>
+      <ion-input type="text" placeholder="{{'search' | translate }}" (input)="groupFilterChanged()"
+        id="groupFilter"></ion-input>
+    </ion-list-header>
+    <div class="button-container">
+      @for(o of groupsData; track o.id){
+      <button (click)="manageAcls('group',o)">{{o.name}} {{o.description}}</button>
+      }
+    </div>
+  </ion-list>
+  }@else{
+  <ion-list [inset]="true">
+    <ion-list-header>
+      <ion-input type="text" placeholder="{{'search' | translate }}" (input)="userFilterChanged()"
+        id="userFilter"></ion-input>
+    </ion-list-header>
+    <div class="button-container">
+      @for(o of usersData; track o.id){
+      <button (click)="manageAcls('user',o)">{{o.fullName}}</button>
+      }
+    </div>
+  </ion-list>
+  }
 </ion-content>

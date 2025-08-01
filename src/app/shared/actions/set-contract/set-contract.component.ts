@@ -6,7 +6,7 @@ import { CephalixCare, contracts } from 'src/app/shared/models/cephalix-data-mod
 
 @Component({
   standalone: false,
-  selector: 'cranix-set-contract',
+    selector: 'cranix-set-contract',
   templateUrl: './set-contract.component.html',
   styleUrls: ['./set-contract.component.scss'],
 })
