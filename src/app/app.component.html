@@ -11,9 +11,9 @@
           @if(authService.authorized) {
           @for (p of authService.appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
+              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected" style="background-color : {{ location.path().startsWith(p.url) ? 'var(--ion-color-secondary)' : 'var(--ion-color-primary-tint)' }};">
+                <ion-icon aria-hidden="true" size="small" style="margin-right: 10px;" color="#ffffff" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title|translate }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           }}

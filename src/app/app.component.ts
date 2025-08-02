@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular'
+import { Location } from '@angular/common'
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 //own services
@@ -18,6 +19,7 @@ export class AppComponent {
   error: string
   constructor(
     public authService: AuthenticationService,
+    public location: Location,
     private genericObjectS: GenericObjectService,
     private languageService: LanguageService,
     private platform: Platform,

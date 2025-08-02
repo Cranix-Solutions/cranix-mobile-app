@@ -16,6 +16,8 @@ import { QuillModule } from 'ngx-quill';
 //own modules
 import { CranixSharedModule } from './shared/cranix-shared.module';
 
+//own pages
+import { LoginPage } from './public/login/login.page';
 //own services
 import { CrxCalendarService } from './services/crx-calendar.service';
 import { CephalixService } from './services/cephalix.service';
@@ -43,7 +45,8 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginPage
   ],
   imports: [
     BrowserAnimationsModule,

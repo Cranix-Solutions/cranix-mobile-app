@@ -1,0 +1,10 @@
+ion-menu {
+    .list-md{
+          padding-top: 0px;
+    }
+    --ion-background-color: var(--ion-color-primary-tint);
+    --ion-text-color: var(--ion-color-primary-contrast);
+     max-width: 200px;
+     border-color : var(--ion-color-primary-tint);
+     border-width: 2px;
+ }
