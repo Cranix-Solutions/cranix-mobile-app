@@ -63,7 +63,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   listContext: any;
   objectKeys: string[] = [];
 
-  useNotice: boolean = false;
+  noticeUse: boolean = false;
   @Input({ required: true }) objectType: string;
   @Input() context;
   @Input() rowData;
@@ -82,7 +82,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilService.actMdList = this;
-    this.useNotice = this.authService.isAllowed('notice.use')
+    this.noticeUse = this.authService.isAllowed('notice.use')
   }
 
   async ngOnInit() {

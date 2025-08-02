@@ -17,11 +17,11 @@ import { GroupMembersPage } from 'src/app/shared/actions/group-members/group-mem
   styleUrls: ['./groups.page.scss'],
 })
 export class GroupsPage {
-  objectKeys: string[] = [];
   displayedColumns: string[] = ['name', 'description', 'groupType', 'actions'];
   sortableColumns: string[] = ['name', 'description', 'groupType'];
   context;
   mayGroupEdit: boolean = false
+  noticeUse: boolean = false
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
@@ -31,7 +31,7 @@ export class GroupsPage {
     public route: Router,
   ) {
     this.context = { componentParent: this };
-    this.objectKeys = Object.getOwnPropertyNames(new Group());
+    this.noticeUse = this.authService.isAllowed('notice.use')
     this.mayGroupEdit = this.authService.isOneOfAllowed(['group.modify','group.manage'])
   }
 

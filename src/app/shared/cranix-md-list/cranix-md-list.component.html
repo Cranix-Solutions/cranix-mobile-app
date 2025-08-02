@@ -51,7 +51,7 @@
     }
   </ion-fab-list>
 </ion-fab>
-<ion-list [inset]="true">
+<ion-list [inset]="false">
 <ion-item>
   @if( objectType == 'challenge' ) {
   <cranix-search objectType="teachingSubject" [(ngModel)]="authService.selectedTeachingSubject"
@@ -180,7 +180,7 @@
         <ion-icon slot="icon-only" name="people"></ion-icon>
       </ion-item-option>
       }
-      @if(useNotice && (objectType.indexOf('user') != -1 || objectType.indexOf('group') != -1)){
+      @if(noticeUse && (objectType.indexOf('user') != -1 || objectType.indexOf('group') != -1)){
       <ion-item-option (click)="openNotice(object)">
         <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
       </ion-item-option>

@@ -49,7 +49,7 @@ export const selects: any = {
     'agGridThema': ['ag-theme-material', 'ag-theme-alpine', 'ag-theme-balham'],
     'devCount': [0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
     'identifier': ['sn-gn-bd', 'uuid', 'uid'],
-    'labelPlacement': ['fixed', 'floating', 'stacked', undefined],
+    'labelPlacement': ['fixed', 'floating', 'stacked'],
     'lang': ['DE', 'EN'],
     'status': ['N', 'A', 'D'],
     'supporttype': ['Error', 'FeatureRequest', 'Feedback', 'ProductOrder']

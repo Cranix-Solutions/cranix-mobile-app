@@ -23,7 +23,7 @@ export class CranixMdListComponent implements OnInit {
   left1: string;
   left2: string;
   left3: string;
-  useNotice: boolean = false;
+  noticeUse: boolean = false;
   @Input() objectType: string;
   @Input() context;
   @Input() rowData: any[];
@@ -39,7 +39,7 @@ export class CranixMdListComponent implements OnInit {
   ) {
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilService.actMdList = this;
-    this.useNotice = this.authService.isAllowed('notice.use')
+    this.noticeUse = this.authService.isAllowed('notice.use')
   }
 
   ngAfterContentInit() {

@@ -24,7 +24,7 @@ export class MyGroupsPage implements OnInit {
   segment: string = 'education/group';
   context;
   rowData = [];
-  useNotice: boolean = false;
+  noticeUse: boolean = false;
   mayGroupEdit: boolean = false;
   constructor(
     public authService: AuthenticationService,
@@ -37,7 +37,7 @@ export class MyGroupsPage implements OnInit {
     public translateService: TranslateService
   ) {
 
-    this.useNotice = this.authService.isAllowed('notice.use')
+    this.noticeUse = this.authService.isAllowed('notice.use')
     this.mayGroupEdit = this.authService.isOneOfAllowed(['group.modify','group.manage'])
     this.context = { componentParent: this };
   }
