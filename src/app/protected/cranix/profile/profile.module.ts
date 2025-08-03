@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PipesModule } from 'src/app/pipes/pipe-modules';
 import { ProfileComponent } from './profile.component'
 import { MyselfComponent } from './tabs/myself/myself.component'
+import { MyDataComponent } from './tabs/my-data/my-data.component';
 import { MyDevicesComponent } from './tabs/my-devices/my-devices.component'
 import { MyVPNComponent } from './tabs/my-vpn/my-vpn.component'
 import { MyCrx2faComponent } from './tabs/my-crx2fa/my-crx2fa.component'
@@ -21,6 +22,10 @@ const routes: Routes = [
     canActivate: [CanActivateViaAcls],
     component: ProfileComponent,
     children: [
+      {
+        path: 'myFiles',
+        component: MyDataComponent
+      },
       {
         path: 'myself',
         component: MyselfComponent
@@ -39,7 +44,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'myself', pathMatch: 'full'
+        redirectTo: 'myFiles', pathMatch: 'full'
       }
     ]
   }
@@ -53,7 +58,7 @@ const routes: Routes = [
     IonicModule,
     CranixSharedModule
   ],
-  declarations: [ProfileComponent,MyselfComponent,MyDevicesComponent,MyVPNComponent,MyCrx2faComponent],
+  declarations: [ProfileComponent,MyselfComponent,MyDataComponent, MyDevicesComponent,MyVPNComponent,MyCrx2faComponent],
   providers: [TranslateService, PipesModule,SelfManagementService,AdHocLanService]
 })
 export class ProfileModule { }

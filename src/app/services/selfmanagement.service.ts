@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { AuthenticationService } from './auth.service';
 import { UtilsService } from './utils.service';
 import { Crx2fa, ServerResponse } from 'src/app/shared/models/server-models';
-import { User, Device, Room, IdRequest } from 'src/app/shared/models/data-model';
+import { User, Device, Room, IdRequest, DirEntry } from 'src/app/shared/models/data-model';
 
 @Injectable()
 export class SelfManagementService {
@@ -147,5 +147,17 @@ export class SelfManagementService {
         const url = `${this.hostname}/idRequests/${id}`;
         console.log(url);
         return this.http.delete<ServerResponse>(url, { headers: this.authService.headers });
+    }
+
+    getDir(path: string){
+        const url = this.hostname + "/selfmanagement/myFiles";
+        console.log(url);
+        return this.http.post<DirEntry[]>(url, {path: path, action: "list" }, { headers: this.authService.headers }); 
+    }
+
+    deleteFile(path: string){
+        const url = this.hostname + "/selfmanagement/myFiles";
+        console.log(url);
+        return this.http.post<ServerResponse>(url, {path: path, action: "delete" }, { headers: this.authService.headers }); 
     }
 }

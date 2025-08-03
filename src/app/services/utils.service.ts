@@ -123,5 +123,19 @@ export class UtilsService {
                 const cpath = path ? `; path=${path}` : '';
                 document.cookie = `${name}=${value}; ${expires}${cpath}; SameSite=Lax`;
         }
+
+	public formatFileSize(bytes: number): string {
+	    if (bytes === 0) return '0 Bytes';
+            if (!bytes) return '';
+
+	    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+	    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+	    const size = bytes / Math.pow(1024, i);
+
+	    // Formatieren auf zwei Dezimalstellen
+	    const formattedSize = size.toFixed(2);
+
+	    return `${formattedSize} ${sizes[i]}`;
+	}
 }
 

@@ -124,24 +124,24 @@ ul.radiolist input[type="radio"]:checked::before {
 	top:2px;
 }
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Vollbildhöhe */
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Vollbildhöhe */
+}
 
-  /* Obere Zeile */
-  .header {
-    flex: 0 0 auto; /* Nimmt nur so viel Platz wie nötig */
-    background-color: #f0f0f0;
-    padding: 0px;
-    border-bottom: 1px solid #ccc;
-  }
+/* Obere Zeile */
+.header {
+  flex: 0 0 auto; /* Nimmt nur so viel Platz wie nötig */
+  background-color: #f0f0f0;
+  padding: 0px;
+  border-bottom: 1px solid #ccc;
+}
 
-  /* Listenteil, der den verbleibenden Raum füllt */
-  .list-container {
-    flex: 1 1 auto; /* Füllt den verfügbaren Raum */
-    overflow-y: auto; /* Scrollbar bei Überfüllung */
-    padding: 0px;
-    background-color: #fff;
-  }
+/* Listenteil, der den verbleibenden Raum füllt */
+.list-container {
+  flex: 1 1 auto; /* Füllt den verfügbaren Raum */
+  overflow-y: auto; /* Scrollbar bei Überfüllung */
+  padding: 0px;
+  background-color: #fff;
+}

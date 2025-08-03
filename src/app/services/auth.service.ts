@@ -457,6 +457,7 @@ export class AuthenticationService {
             case "/pages/cranix/mygroups": { return this.isAllowed('education.groups') }
             case "/pages/cranix/myusers": { return this.isAllowed('education.users') }
             case "/pages/cranix/profile": { return this.isOneOfAllowed(['permitall', '2fa.use']) }
+            case "/pages/cranix/profile/myFiles": { return this.isAllowed('permitall') }
             case "/pages/cranix/profile/myself": { return this.isAllowed('permitall') }
             case "/pages/cranix/profile/mydevice": { return this.isAllowed('permitall') }
             case "/pages/cranix/profile/crx2fa": { return this.isAllowed('2fa.use') }

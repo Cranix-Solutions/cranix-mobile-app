@@ -666,3 +666,20 @@ export class CrxTicket {
 	printers: Printer[] = []
 	text: string = ""
 }
+
+export class DirEntry {
+	name: string = ""
+	last_modified: string = ""
+	type: string = "d"
+	owner: string = ""
+	perm: string = ""
+	size: number = 0
+	path: string = ""
+	may_rm: boolean = false
+}
+
+export class FileActionsMap {
+	path: string = ""
+	action: string = "list"
+	data: string = ""
+}

@@ -463,3 +463,18 @@ ion-item-divider{
   background-color: #fff;
 }
 
+
+.text-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  font-size: small;
+  gap: 2px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.text-row {
+  display: flex;
+  justify-content: space-between; /* A links, B rechts */
+}
