@@ -53,6 +53,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     if (this.multiple) {
       this.selection = []
     }
+    console.log(this.items)
     this.rowData = this.items
   }
 

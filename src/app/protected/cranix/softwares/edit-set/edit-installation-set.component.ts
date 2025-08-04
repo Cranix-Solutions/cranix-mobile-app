@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 import { GenericObjectService } from 'src/app/services/generic-object.service';
@@ -12,7 +12,7 @@ import { SoftwareService } from 'src/app/services/softwares.service';
   templateUrl: './edit-installation-set.component.html',
   styleUrls: ['./edit-installation-set.component.scss'],
 })
-export class EditInstallationSetComponent implements OnInit {
+export class EditInstallationSetComponent {
 
   submitted: boolean = false;
   context;
@@ -34,10 +34,6 @@ export class EditInstallationSetComponent implements OnInit {
     public softwareService: SoftwareService
   ) {
     this.context = { componentParent: this };
-  }
-
-  ngOnInit() {
-    this.submitted = false;
 
     for (let tmp of this.objectService.allObjects['hwconf']) {
       if (tmp.deviceType == 'FatClient') {
@@ -64,15 +60,19 @@ export class EditInstallationSetComponent implements OnInit {
       }
       this.installationSet = this.softwareService.selectedInstallationSet;
       for (let id of this.installationSet.hwconfIds) {
-        this.hwconfs.push(this.objectService.getObjectById('hwconf', id));
+        let tmp = this.objectService.getObjectById('hwconf', id);
+        if(tmp) this.hwconfs.push(tmp);
       }
       for (let id of this.installationSet.roomIds) {
-        this.rooms.push(this.objectService.getObjectById('room', id));
+        let tmp = this.objectService.getObjectById('room', id)
+        if(tmp) this.rooms.push(tmp);
       }
       for (let id of this.installationSet.deviceIds) {
-        this.devices.push(this.objectService.getObjectById('device', id));
+        let tmp = this.objectService.getObjectById('device', id)
+        if(tmp) this.devices.push(tmp);
       }
     }
+    console.log(this.rooms)
   }
   closeWindow() {
     this.modalCtrl.dismiss();
@@ -82,7 +82,7 @@ export class EditInstallationSetComponent implements OnInit {
     this.objectService.deleteObjectDialog(this.softwareService.selectedInstallationSet, "categorie", '');
   }
 
-  onSubmit() {
+  saveInstallation() {
     this.submitted = true;
     this.installationSet.deviceIds = [];
     for (let dev of this.devices) {

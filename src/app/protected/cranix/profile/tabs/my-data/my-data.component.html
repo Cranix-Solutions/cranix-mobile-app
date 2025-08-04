@@ -12,7 +12,7 @@
         @if(entry.type == "d"){
           <ion-icon name="folder"></ion-icon>
         }@else{
-          <ion-icon name="reader"></ion-icon>
+          <ion-icon [name]="getIcon(entry)"></ion-icon>
         }
          <div class="text-container">
             <div class="text-row">
@@ -52,18 +52,18 @@
       <ion-list>
         <ion-item>
           <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Name'|translate}}" value="{{selectedEntry.name}}"></ion-input>
-	</ion-item>
+	      </ion-item>
         <ion-item>
           <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Full path'|translate}}" value="{{selectedEntry.path}}"></ion-input>
-	</ion-item>
+	      </ion-item>
         <ion-item>
           <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Last modified'|translate}}" value="{{selectedEntry.last_modified}}"></ion-input>
-	</ion-item>
-	@if(selectedEntry.type != 'd'){
+	      </ion-item>
+	      @if(selectedEntry.type != 'd'){
         <ion-item>
           <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Size'|translate}}" value="{{utilService.formatFileSize(selectedEntry.size)}}"></ion-input>
-	</ion-item>
-	}
+	      </ion-item>
+	      }
         <ion-item>
           <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Owner'|translate}}" value="{{selectedEntry.owner}}"></ion-input>
 	</ion-item>

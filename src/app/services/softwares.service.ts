@@ -45,6 +45,7 @@ export class SoftwareService {
 	}
 
 	readInstallationsSets() {
+		this.installationSetData = undefined
 		this.url = this.hostname + "/softwares/installations";
 		console.log(this.url);
 		this.http.get<Category[]>(this.url, { headers: this.authService.headers }).subscribe(

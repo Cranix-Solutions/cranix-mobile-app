@@ -1,8 +1,10 @@
 <cranix-toolbar title="{{ 'Manage software installation sets:' | translate}}"></cranix-toolbar>
 <ion-content>
+@if(softwareService.installationSetData){
 @if(authService.isMD()){
 <cranix-md-list objectType="category" [context]="context" [rowData]="softwareService.installationSetData"></cranix-md-list>
 }@else{
 <cranix-list objectType="category"  [context]="context" [rowData]="softwareService.installationSetData"></cranix-list>
+}
 }
 </ion-content>

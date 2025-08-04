@@ -30,7 +30,7 @@
     @if(multiple){
     <ul class="checklist">
       @for(o of rowData; track o.id){
-      @if(!isShowChecked || isSelected(o.id)) {
+      @if(o && (!isShowChecked || isSelected(o.id))) {
       <li>
         <input type="checkbox" (click)="doSelect(o)" [id]="o.id" [checked]="isSelected(o.id)">
         <label [for]="o.id">
@@ -43,7 +43,7 @@
     }@else{
     <ul class="radiolist">
       @for(o of rowData; track o.id){
-      @if(!isShowChecked || isSelected(o.id)) {
+      @if(o && (!isShowChecked || isSelected(o.id))) {
       <li>
         <input type="radio" (click)="select(o)" [id]="o.id" name="cranixSearchList"
           [checked]="selection && o.id == selection.id">

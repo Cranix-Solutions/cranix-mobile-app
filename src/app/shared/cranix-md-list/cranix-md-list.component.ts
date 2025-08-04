@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { ChallengesService } from 'src/app/services/challenges.service';
@@ -15,7 +15,7 @@ import { ActionsComponent } from '../actions/actions.component';
   templateUrl: './cranix-md-list.component.html',
   styleUrls: ['./cranix-md-list.component.scss'],
 })
-export class CranixMdListComponent implements OnInit {
+export class CranixMdListComponent implements OnInit, OnChanges {
 
   min: number;
   step: number;
@@ -98,6 +98,7 @@ export class CranixMdListComponent implements OnInit {
           break
         }
         case 'device': {
+          let tmp: any[] = []
           for (let dev of this.objectService.allObjects[this.objectType]) {
             if (dev.hwconfId == 2) {
               continue
@@ -105,8 +106,9 @@ export class CranixMdListComponent implements OnInit {
             if (this.objectService.selectedRoom && dev.roomId != this.objectService.selectedRoom) {
               continue
             }
-            this.rowData.push(dev);
+            tmp.push(dev);
           }
+          this.rowData = tmp;
           break
         }
         default: {
@@ -120,6 +122,10 @@ export class CranixMdListComponent implements OnInit {
     this.authService.log("CranixMdListComponent ngOnInit", this.rowData)
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+    this.ngOnInit()
+  }
   initSteps() {
     this.step = Number(this.authService.settings.lineProPageMD);
     this.min = -1;
@@ -180,6 +186,9 @@ export class CranixMdListComponent implements OnInit {
   subjectChanged(event) {
     console.log(event)
     let path = "/" + this.objectType + "s/all";
+    if(this.objectType == 'category') {
+      path = "/categories/all";
+    }
     //We do not read all challenges only the challenges from the selected
     if (this.objectType == 'challenge' && this.authService.selectedTeachingSubject) {
       path = "/challenges/subjects/" + this.authService.selectedTeachingSubject.id

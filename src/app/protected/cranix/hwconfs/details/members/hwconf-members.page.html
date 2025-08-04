@@ -86,7 +86,7 @@
 </ion-toolbar>
 <ion-content>
   @if(memberData){
-  <cranix-search-list objectType="device" [multiple]="true" [items]="memberData" [(ngModel)]="selected">
+  <cranix-search-list objectType="device" [multiple]="true" [items]="memberData" [(selectedItems)]="selected">
   </cranix-search-list>
   }@else{
   "Loading data ..."

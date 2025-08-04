@@ -64,4 +64,16 @@ export class MyDataComponent  implements OnInit {
       }
     )
   }
+
+  getIcon(entry: DirEntry){
+    if (entry.type.startsWith('image')) return 'image'
+    if (entry.type.startsWith('video')) return 'film'
+    if (entry.type.startsWith('audio')) return 'recording'
+    if (entry.type.startsWith('text')) return 'document-text'
+    switch(entry.type){
+      case ('application/x-sh'): return 'terminal'
+      case ('application/pdf'): return 'document'
+    }
+    return 'reader'
+  }
 }

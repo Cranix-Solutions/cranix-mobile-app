@@ -6,7 +6,7 @@
     <ion-title>{{ 'Create installation set' | translate}}</ion-title>
     }
     <ion-buttons slot="end">
-      <ion-button type="submit" class="ion-no-margin" [disabled]="!installationSet.name || submitted">
+      <ion-button class="ion-no-margin" [disabled]="!installationSet.name || submitted" (click)="saveInstallation()">
         <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
       </ion-button>
       @if(softwareService.selectedInstallationSet){
@@ -42,7 +42,7 @@
         <ion-label>{{'softwares'|translate}}</ion-label>{{softwares.length}}
       </ion-item>
       <div class="ion-padding" slot="content">
-        <cranix-search-list objectType="software" [items]="softwareService.availableSoftwares" [(ngModel)]="softwares"
+        <cranix-search-list objectType="software" [items]="softwareService.availableSoftwares" [(selectedItems)]="softwares"
           name="selectSoftware" [multiple]="true"></cranix-search-list>
       </div>
     </ion-accordion>
@@ -51,7 +51,7 @@
         <ion-label>{{'hwconfs'|translate}}</ion-label>{{hwconfs.length}}
       </ion-item>
       <div class="ion-padding" slot="content">
-        <cranix-search-list objectType="hwconf" [items]="availableHwconfs" [(ngModel)]="hwconfs" name="selectHwconfs"
+        <cranix-search-list objectType="hwconf" [items]="availableHwconfs" [(selectedItems)]="hwconfs" name="selectHwconfs"
           [multiple]="true"></cranix-search-list>
       </div>
     </ion-accordion>
@@ -60,7 +60,7 @@
         <ion-label>{{'rooms'|translate}}</ion-label>{{rooms.length}}
       </ion-item>
       <div class="ion-padding" slot="content">
-        <cranix-search-list objectType="room" [items]="availableRooms" [(ngModel)]="rooms" name="selectRooms"
+        <cranix-search-list objectType="room" [items]="availableRooms" [(selectedItems)]="rooms" name="selectRooms"
           [multiple]="true"></cranix-search-list>
       </div>
     </ion-accordion>
@@ -69,7 +69,7 @@
         <ion-label>{{'devices'|translate}}</ion-label>{{devices.length}}
       </ion-item>
       <div class="ion-padding" slot="content">
-        <cranix-search-list objectType="device" [items]="availableDevices" [(ngModel)]="devices" name="selectDevice"
+        <cranix-search-list objectType="device" [items]="availableDevices" [(selectedItems)]="devices" name="selectDevice"
           [multiple]="true"></cranix-search-list>
       </div>
     </ion-accordion>

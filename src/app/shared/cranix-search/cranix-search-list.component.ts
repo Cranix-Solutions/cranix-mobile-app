@@ -7,23 +7,25 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   selector: 'cranix-search-list',
   templateUrl: './cranix-search-list.component.html',
   styleUrl: './cranix-search.component.css',
-  providers: [{
+  /*providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => CranixSearchListComponent),
     multi: true
-  }]
+  }]*/
 })
-export class CranixSearchListComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class CranixSearchListComponent implements OnInit, OnChanges {
   isAllSelected: boolean = false
   isShowChecked: boolean = false
   rowData = []
   selection: any | any[]
 
   @Output() callback = new EventEmitter<any>();
-  @Output() onChange: EventEmitter<{ value: any }> = new EventEmitter();
+  @Output() selectedItemsChange = new EventEmitter();
   @Input({ required: true }) objectType: string
   @Input() context
   @Input() items: any[]
+  @Input() selectedItem: any
+  @Input() selectedItems: any[]
   @Input() itemTextField: string | string[]
   @Input() multiple: boolean
   @Input() emptyLabel: string
@@ -34,6 +36,7 @@ export class CranixSearchListComponent implements ControlValueAccessor, OnInit, 
 
   ngOnInit(): void {
     console.log("CranixSearchListComponent")
+    console.log(this.selectedItems)
     if (typeof this.items == "undefined") {
       this.items = this.objectService.allObjects[this.objectType]
     }
@@ -52,20 +55,25 @@ export class CranixSearchListComponent implements ControlValueAccessor, OnInit, 
       this.selectedLabel = this.objectType + ' selected.'
     }
     if (this.multiple) {
-      this.selection = []
+      this.selection = this.selectedItems
+    }else{
+      this.selection = this.selectedItem
     }
     this.setupItems()
-
   }
+
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes)
     if (changes['items']) {
       this.setupItems()
       console.log('items haben sich geändert:', this.items);
     }
+    if (changes['selectedItems']) {
+      this.selection = [...this.selectedItems]
+    }
   }
-  private propagateOnChange = (_: any) => { };
-  private propagateOnTouched = () => { };
+  //private propagateOnChange = (_: any) => { };
+  //private propagateOnTouched = () => { };
 
   showChecked() {
     this.isShowChecked = !this.isShowChecked
@@ -87,25 +95,26 @@ export class CranixSearchListComponent implements ControlValueAccessor, OnInit, 
       }
     }
     this.isAllSelected = !this.isAllSelected
-    this.propagateOnChange(this.selection);
+    this.selectedItemsChange.emit(this.selection)
   }
-  writeValue(value: any) {
-    console.log("write value called")
-    console.log(value)
-    this.selection = value;
-  }
-  registerOnChange(method: any): void {
-    this.propagateOnChange = method;
-  }
-  registerOnTouched(method: () => void) {
-    this.propagateOnTouched = method;
-  }
+    //this.propagateOnChange(this.selection);
+  
+  //writeValue(value: any) {
+  //  console.log(this.objectType, value)
+    //if(value) this.selection = value;
+  //}
+  //registerOnChange(method: any): void {
+  //  this.propagateOnChange = method;
+  //}
+  //registerOnTouched(method: () => void) {
+  //  this.propagateOnTouched = method;
+  //}
   isSelected(id: number) {
     if (this.selection) {
       if (this.multiple) {
-        return this.selection.filter(o => o.id == id).length == 1
+        return this.selection.filter(o => (o && o.id == id)).length == 1
       } else {
-        return this.selection.id == id;
+        return (this.selection && this.selection.id == id )
       }
     }
     return false;
@@ -116,12 +125,14 @@ export class CranixSearchListComponent implements ControlValueAccessor, OnInit, 
     } else {
       this.selection = null
     }
-    this.propagateOnChange(this.selection);
+    this.selectedItemsChange.emit(this.selection)
+    //this.propagateOnChange(this.selection);
   }
   select(o: any) {
     console.log(o)
     this.selection = o;
-    this.propagateOnChange(this.selection);
+    this.selectedItemsChange.emit(this.selection)
+    //this.propagateOnChange(this.selection);
   }
   doSelect(o: any) {
     if (this.selection.filter(obj => obj.id == o.id).length == 1) {
@@ -129,14 +140,16 @@ export class CranixSearchListComponent implements ControlValueAccessor, OnInit, 
     } else {
       this.selection.push(o)
     }
-    this.propagateOnChange(this.selection);
+    this.selectedItemsChange.emit(this.selection)
+    //this.propagateOnChange(this.selection);
   }
   returnValues(modal) {
-    this.propagateOnChange(this.selection);
+    //this.propagateOnChange(this.selection);
     if (this.callback) {
       this.callback.emit();
     }
-    this.onChange.emit({ value: this.selection })
+    this.selectedItemsChange.emit(this.selection)
+    //this.onChange.emit({ value: this.selection })
   }
   onQuickFilterChanged() {
     let filter = (<HTMLInputElement>document.getElementById('crxSearchFilter')).value;
@@ -158,13 +171,13 @@ export class CranixSearchListComponent implements ControlValueAccessor, OnInit, 
       default: return ['name', 'description']
     }
   }
-  _emitValueChange() {
+  /*_emitValueChange() {
     this.propagateOnChange(this.selection);
 
     this.onChange.emit({
       value: this.selection
     });
-  }
+  }*/
   hashStringToInt(str: string): number {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
