@@ -59,7 +59,7 @@ export class LoginPage{
     }
 
     onLogin(modal: any) {
-        this.utilsService.url = this.connection.url;
+        this.utilsService.savedUrl = this.connection.url;
         this.authService.authenticationState.next(false);
         this.authService.setUpSession( this.connection.user, this.connection.name )
         this.authService.authenticationState.subscribe(state => {
@@ -92,7 +92,7 @@ export class LoginPage{
     }
     connectServer(i: number){
         console.log("connectServer called", i)
-        this.utilsService.url = this.servers[i].url
+        this.utilsService.savedUrl = this.servers[i].url
         this.authService.setUpSession( this.servers[i].user, this.servers[i].name )
         this.authService.authenticationState.subscribe(state => {
             console.log("Login OK")

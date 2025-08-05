@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage-angular';
 import { AuthenticationService } from './services/auth.service';
 import { GenericObjectService } from './services/generic-object.service';
 import { LanguageService } from './services/language.service';
+import { UtilsService } from './services/utils.service';
 
 @Component({
   standalone: false,
@@ -24,11 +25,8 @@ export class AppComponent {
     private languageService: LanguageService,
     private platform: Platform,
     private router: Router,
-    private storage: Storage
+    private storage: Storage,
   ) {
-  }
-
-  ngOnInit() {
     console.log("AppComponenet ngOnInit");
     this.storage.create();
     this.initializeApp();

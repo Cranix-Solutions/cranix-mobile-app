@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
   templateUrl: './cranix-toolbar.component.html',
   styleUrls: ['./cranix-toolbar.component.scss'],
 })
-export class CranixToolbarComponent  implements OnInit {
+export class CranixToolbarComponent  implements OnDestroy {
 
   isPopoverOpen: boolean = false
   roomName: string = "";
@@ -46,9 +46,6 @@ export class CranixToolbarComponent  implements OnInit {
     this.roomName = authService.session.roomName;
     this.instituteName = authService.session.instituteName;
     this.url = this.utilsService.hostName() + "/tickets/all";
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {

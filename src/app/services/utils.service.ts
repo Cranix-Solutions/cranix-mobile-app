@@ -5,7 +5,7 @@ import { isDevMode } from '@angular/core';
 @Injectable()
 export class UtilsService {
 
-
+        savedUrl = ""
         url = ""
         double = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
         public okBrowser: boolean = true;
@@ -20,8 +20,8 @@ export class UtilsService {
 
         public hostName(): string {
 		console.log(this.url)
-                if(this.url != ""){
-                        return this.url + "/api";
+                if(this.savedUrl != ""){
+                        return this.savedUrl + "/api";
                 }
                 var hostname = window.location.hostname;
                 var protocol = window.location.protocol;
