@@ -13,9 +13,9 @@ export class CrxObjectService {
     constructor(
         private authService: AuthenticationService,
         private http: HttpClient,
-        private utils: UtilsService,
+        private utilsService: UtilsService,
     ) {
-        this.hostname = this.utils.hostName();
+        this.hostname = this.utilsService.hostName();
     }
 
     getSubjects() {

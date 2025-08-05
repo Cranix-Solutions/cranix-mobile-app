@@ -19,10 +19,10 @@ export class SoftwareService {
 
 	constructor(
 		private http: HttpClient,
-		private utilsS: UtilsService,
+		private utilsService: UtilsService,
 		private authService: AuthenticationService,
 		private objectService: GenericObjectService) {
-		this.hostname = this.utilsS.hostName();
+		this.hostname = this.utilsService.hostName();
 		this.authService.log('Constructor Users completed');
 	};
 

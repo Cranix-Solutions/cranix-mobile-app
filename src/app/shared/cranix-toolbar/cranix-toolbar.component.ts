@@ -40,12 +40,12 @@ export class CranixToolbarComponent  implements OnInit {
     public objectService: GenericObjectService,
     public modalConroller: ModalController,
     public route: Router,
-    public utilService: UtilsService
+    public utilsService: UtilsService
   ) {
     this.fullName = authService.session.fullName;
     this.roomName = authService.session.roomName;
     this.instituteName = authService.session.instituteName;
-    this.url = this.utilService.hostName() + "/tickets/all";
+    this.url = this.utilsService.hostName() + "/tickets/all";
   }
 
   ngOnInit() {
@@ -125,8 +125,8 @@ export class CranixToolbarComponent  implements OnInit {
         }
         this.storage.set("myCranixSettings", JSON.stringify(this.authService.settings));
         this.translateService.saveLanguage(this.authService.settings.lang);
-        if (this.utilService.actMdList) {
-          this.utilService.actMdList.ngOnInit();
+        if (this.utilsService.actMdList) {
+          this.utilsService.actMdList.ngOnInit();
         }
         this.authService.log("ToolbarComponent", "Settings was modified", this.authService.settings)
       }

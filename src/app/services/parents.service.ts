@@ -14,12 +14,11 @@ export class ParentsService {
 
 
 	constructor(
-		private utils: UtilsService,
 		private http: HttpClient,
 		private authService: AuthenticationService,
 		private utilsService: UtilsService
 	) {
-		this.hostname = this.utils.hostName();
+		this.hostname = this.utilsService.hostName();
 	}
 
 	addPtm(ptm: ParentTeacherMeeting) {

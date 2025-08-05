@@ -39,7 +39,7 @@ export class GenericObjectService {
     public authService: AuthenticationService,
     private http: HttpClient,
     private languageS: LanguageService,
-    private utilsS: UtilsService,
+    private utilsService: UtilsService,
     private crxObjectService: CrxObjectService,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
@@ -71,7 +71,7 @@ export class GenericObjectService {
       this.getAllObject(key);
     }
     for (let key of enumerates) {
-      let url = this.utilsS.hostName() + "/system/enumerates/" + key;
+      let url = this.utilsService.hostName() + "/system/enumerates/" + key;
       subs[key] = this.http.get<string[]>(url, { headers: this.authService.headers }).subscribe({
         next: (val) => { selects[key] = val; },
         error: (err) => { },
@@ -87,19 +87,19 @@ export class GenericObjectService {
 
   initializeCephalixObjects() {
     this.objects.push('institute');
-    let url = this.utilsS.hostName() + "/institutes/defaults/";
+    let url = this.utilsService.hostName() + "/institutes/defaults/";
     let sub1 = this.http.get<string[]>(url, { headers: this.authService.headers }).subscribe({
       next: (val) => { this.cephalixDefaults = val; },
       error: (err) => { },
       complete: () => { sub1.unsubscribe() }
     });
-    url = this.utilsS.hostName() + "/institutes/ayTemplates/";
+    url = this.utilsService.hostName() + "/institutes/ayTemplates/";
     let sub2 = this.http.get<string[]>(url, { headers: this.authService.headers }).subscribe({
       next: (val) => { selects['ayTemplate'] = val; },
       error: (err) => { },
       complete: () => { sub2.unsubscribe() }
     });
-    url = this.utilsS.hostName() + "/institutes/objects/";
+    url = this.utilsService.hostName() + "/institutes/objects/";
     let sub3 = this.http.get<string[]>(url, { headers: this.authService.headers }).subscribe({
       next: (val) => { selects['objects'] = val; },
       error: (err) => { },
@@ -107,7 +107,7 @@ export class GenericObjectService {
     });
   }
   getSoftwaresToDowload() {
-    let url = this.utilsS.hostName() + "/softwares/available";
+    let url = this.utilsService.hostName() + "/softwares/available";
     let sub = this.http.get<Package[]>(url, { headers: this.authService.headers }).subscribe({
       next: (val) => { this.packagesAvailable = val; },
       error: (err) => {
@@ -120,10 +120,10 @@ export class GenericObjectService {
 
 
   getObjects(objectType: string) {
-    let url = this.utilsS.hostName() + "/" + objectType + "s/all";
+    let url = this.utilsService.hostName() + "/" + objectType + "s/all";
     //We do not read all challenges only the challenges from the selected
     if (objectType == 'challenge' && this.authService.selectedTeachingSubject) {
-      url = this.utilsS.hostName() + "/challenges/subjects/" + this.authService.selectedTeachingSubject.id
+      url = this.utilsService.hostName() + "/challenges/subjects/" + this.authService.selectedTeachingSubject.id
     }
     console.log("getObjects " + url)
     return fetch(url, {
@@ -167,7 +167,7 @@ export class GenericObjectService {
 
 
   getSubscribe(path) {
-    let url = this.utilsS.hostName() + path
+    let url = this.utilsService.hostName() + path
     return this.http.get<any[]>(url, { headers: this.authService.headers })
   }
 
@@ -265,16 +265,16 @@ export class GenericObjectService {
 
   addObject(object, objectType) {
     const body = object;
-    let url = this.utilsS.hostName() + "/" + objectType + "s/add";
+    let url = this.utilsService.hostName() + "/" + objectType + "s/add";
     return this.http.post<ServerResponse>(url, body, { headers: this.authService.headers });
   }
   modifyObject(object, objectType) {
     const body = object;
-    let url = this.utilsS.hostName() + "/" + objectType + "s/" + object.id;
+    let url = this.utilsService.hostName() + "/" + objectType + "s/" + object.id;
     return this.http.post<ServerResponse>(url, body, { headers: this.authService.headers })
   }
   deleteObject(object, objectType) {
-    let url = this.utilsS.hostName() + "/" + objectType + "s/" + object.id;
+    let url = this.utilsService.hostName() + "/" + objectType + "s/" + object.id;
     console.log(url)
     return this.http.delete<ServerResponse>(url, { headers: this.authService.headers })
   }

@@ -62,9 +62,9 @@ export class ActionsComponent implements OnInit {
     private languageService: LanguageService,
     public objectService: GenericObjectService,
     private http: HttpClient,
-    private utilsS: UtilsService,
+    private utilsService: UtilsService,
     private authS: AuthenticationService) {
-    this.hostname = this.utilsS.hostName();
+    this.hostname = this.utilsService.hostName();
     this.token = this.authS.getToken();
     this.headers = new HttpHeaders({
       'Content-Type': "application/json",

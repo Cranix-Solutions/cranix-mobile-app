@@ -77,11 +77,11 @@ export class CranixListComponent implements OnInit, OnChanges {
     public route: Router,
     public softwareService: SoftwareService,
     private storage: Storage,
-    public utilService: UtilsService
+    public utilsService: UtilsService
   ) {
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
-    this.utilService.actMdList = this;
+    this.utilsService.actMdList = this;
     this.noticeUse = this.authService.isAllowed('notice.use')
   }
 

@@ -12,10 +12,10 @@ export class SelfManagementService {
     url: string;
 
     constructor(
-        private utils: UtilsService,
+        private utilsService: UtilsService,
         private authService: AuthenticationService,
         private http: HttpClient) {
-        this.hostname = this.utils.hostName();
+        this.hostname = this.utilsService.hostName();
     }
 
     //GET 

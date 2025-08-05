@@ -135,7 +135,7 @@ export class AuthenticationService {
         private storage: Storage,
         private plt: Platform,
         private toastController: ToastController,
-        private utilsS: UtilsService,
+        private utilsService: UtilsService,
         private languageService: LanguageService,
         private router: Router
     ) {
@@ -146,7 +146,7 @@ export class AuthenticationService {
 
     login(user: LoginForm) {
         console.log("auth.services.login called:", user)
-        this.url = this.utilsS.hostName() + "/sessions/create";
+        this.url = this.utilsService.hostName() + "/sessions/create";
         return this.http.post<UserResponse>(this.url, user, { headers: this.anonHeaders });
     }
 
@@ -211,7 +211,7 @@ export class AuthenticationService {
         });
     }
     setupSessionByToken(token: string) {
-        this.http.get<UserResponse>(this.utilsS.hostName() + "/sessions/byToken/" + token).subscribe({
+        this.http.get<UserResponse>(this.utilsService.hostName() + "/sessions/byToken/" + token).subscribe({
             next: (val) => {
                 this.session = val
                 this.setUpHeaders();
@@ -238,7 +238,7 @@ export class AuthenticationService {
     setUpSession(user: LoginForm, instituteName: string) {
         this.session = null;
         this.authenticationState.next(false);
-        user.crx2faSessionId = this.utilsS.getCookie("crx2faSessionId");
+        user.crx2faSessionId = this.utilsService.getCookie("crx2faSessionId");
         let subscription = this.login(user).subscribe({
             next: (val) => {
                 console.log('login respons is', val);
@@ -286,7 +286,7 @@ export class AuthenticationService {
     }
 
     sendPin(id: string) {
-        let url = this.utilsS.hostName() + `/2fas/sendpin`;
+        let url = this.utilsService.hostName() + `/2fas/sendpin`;
         let headers = new HttpHeaders({
             'Content-Type': "application/json",
             'Accept': "application/json"
@@ -297,7 +297,7 @@ export class AuthenticationService {
     }
 
     checkTotPin(id: string, otPin: string) {
-        let url = this.utilsS.hostName() + `/2fas/checkpin`;
+        let url = this.utilsService.hostName() + `/2fas/checkpin`;
         let headers = new HttpHeaders({
             'Content-Type': "application/json",
             'Accept': "application/json"
@@ -305,7 +305,7 @@ export class AuthenticationService {
         let data = { crx2faId: id, pin: otPin, token: this.session.token }
         this.http.post<Crx2faSession>(url, data, { headers: headers }).subscribe({
             next: (val) => {
-                this.utilsS.setCookie("crx2faSessionId", val.id.toString(), val.validHours)
+                this.utilsService.setCookie("crx2faSessionId", val.id.toString(), val.validHours)
                 console.log(val)
                 this.createMenu();
                 this.authenticationState.next(true)
@@ -326,7 +326,7 @@ export class AuthenticationService {
 
     public loadSession() {
         console.log('loadSession', sessionStorage.getItem('shortName'))
-        let url = this.utilsS.hostName() + `/sessions`;
+        let url = this.utilsService.hostName() + `/sessions`;
         console.log(url);
         this.headers = new HttpHeaders({
             'Content-Type': "application/json",
@@ -359,7 +359,7 @@ export class AuthenticationService {
     public logout() {
         if (!sessionStorage.getItem('shortName')) {
             console.log('logout', this.session.token)
-            this.http.delete(this.utilsS.hostName() + `/sessions/${this.session.token}`, { headers: this.headers }).subscribe({
+            this.http.delete(this.utilsService.hostName() + `/sessions/${this.session.token}`, { headers: this.headers }).subscribe({
                 next: (val) => {
                     this.authenticationState.next(false);
                     this.router.navigate(['/'])

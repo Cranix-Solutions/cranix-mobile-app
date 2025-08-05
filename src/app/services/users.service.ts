@@ -31,9 +31,9 @@ export class UsersService {
 
 	constructor(
 		private http: HttpClient,
-		private utilsS: UtilsService,
+		private utilsService: UtilsService,
 		private authService: AuthenticationService) {
-		this.hostname = this.utilsS.hostName();
+		this.hostname = this.utilsService.hostName();
 	};
 
 	addUserToGroup(uid: number, gid: number) {

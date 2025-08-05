@@ -21,7 +21,7 @@
             </div>
             <div class="text-row">
               <span class="left">{{entry.last_modified}}</span>
-              <span class="right">{{utilService.formatFileSize(entry.size)}}</span>
+              <span class="right">{{utilsService.formatFileSize(entry.size)}}</span>
             </div>
           </div>
         <ion-button slot="end" fill="clear" size="small" (click)="delete(entry)" [disabled]="!entry.may_rm">
@@ -61,7 +61,7 @@
 	      </ion-item>
 	      @if(selectedEntry.type != 'd'){
         <ion-item>
-          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Size'|translate}}" value="{{utilService.formatFileSize(selectedEntry.size)}}"></ion-input>
+          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Size'|translate}}" value="{{utilsService.formatFileSize(selectedEntry.size)}}"></ion-input>
 	      </ion-item>
 	      }
         <ion-item>

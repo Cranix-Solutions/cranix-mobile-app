@@ -39,11 +39,11 @@ export class EductaionService {
 
 	constructor(
 		public objectService: GenericObjectService,
-		private utils: UtilsService,
+		private utilsService: UtilsService,
 		private http: HttpClient,
 		private languageService: LanguageService,
 		private authService: AuthenticationService) {
-		this.hostname = this.utils.hostName();
+		this.hostname = this.utilsService.hostName();
 	}
 
 

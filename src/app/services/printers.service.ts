@@ -12,10 +12,10 @@ export class PrintersService {
 	url:      string;
 
 	constructor(
-		private utils: UtilsService,
+		private utilsService: UtilsService,
 		private http: HttpClient,
 		private authService: AuthenticationService) {
-		this.hostname = this.utils.hostName();
+		this.hostname = this.utilsService.hostName();
 	}
 	add(imp: FormData) {
 		this.url = this.hostname + `/printers/add`;

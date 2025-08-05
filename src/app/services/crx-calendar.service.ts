@@ -17,9 +17,9 @@ export class CrxCalendarService {
 
   constructor(
     private http: HttpClient,
-    private utilsS: UtilsService,
+    private utilsService: UtilsService,
     private authService: AuthenticationService) {
-    this.hostname = this.utilsS.hostName();
+    this.hostname = this.utilsService.hostName();
   }
 
   add(event: CrxCalendar) {

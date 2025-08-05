@@ -39,9 +39,9 @@ export class SecurityService {
     public modalCtrl: ModalController,
     public objectService: GenericObjectService,
     public toastController: ToastController,
-    private utilsS: UtilsService
+    private utilsService: UtilsService
   ) {
-    this.hostname = this.utilsS.hostName();
+    this.hostname = this.utilsService.hostName();
   }
 
   getAllAccess() {

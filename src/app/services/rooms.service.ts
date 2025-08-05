@@ -12,10 +12,10 @@ export class RoomsService {
 
 
 	constructor(
-		private utils: UtilsService,
+		private utilsService: UtilsService,
 		private http: HttpClient,
 		private authService: AuthenticationService) {
-		this.hostname = this.utils.hostName();
+		this.hostname = this.utilsService.hostName();
 	}
 
 	setPrinters(dId: number, printers: any) {

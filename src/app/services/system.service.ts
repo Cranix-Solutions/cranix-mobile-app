@@ -22,14 +22,14 @@ export class SystemService {
 
 	constructor(
 		private http: HttpClient,
-		private utilsS: UtilsService,
+		private utilsService: UtilsService,
 		public languageS: LanguageService,
 		private authService: AuthenticationService,
 		private objectService: GenericObjectService) {
 		this.initModule();
 	}
 	initModule() {
-		this.hostname = this.utilsS.hostName();
+		this.hostname = this.utilsService.hostName();
 	}
 
 	getStatus() {

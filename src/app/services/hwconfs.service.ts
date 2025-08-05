@@ -21,10 +21,10 @@ export class HwconfsService {
 	url: string;
 
 	constructor(
-		private utilsS: UtilsService,
+		private utilsService: UtilsService,
 		private http: HttpClient,
 		private authService: AuthenticationService) {
-		this.hostname = this.utilsS.hostName();
+		this.hostname = this.utilsService.hostName();
 	}
 
 	startCloning(clone: CloneCommand, hwconfId: number) {

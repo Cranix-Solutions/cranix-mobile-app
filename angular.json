@@ -40,6 +40,30 @@
             "scripts": []
           },
           "configurations": {
+	    "android": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/public/login/login.page.html",
+                  "with": "src/app/public/login/mobile-login.page.html"
+                },
+                {
+                  "replace": "src/app/public/login/login.page.ts",
+                  "with": "src/app/public/login/mobile-login.page.ts"
+                }
+              ],
+	    },
+	    "ios": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/public/login/login.page.html",
+                  "with": "src/app/public/login/mobile-login.page.html"
+                },
+                {
+                  "replace": "src/app/public/login/login.page.ts",
+                  "with": "src/app/public/login/mobile-login.page.ts"
+                }
+              ],
+	    },
             "production": {
               "budgets": [
                 {

@@ -33,12 +33,12 @@ export class CranixMdListComponent implements OnInit, OnChanges {
     public crxObjectService: CrxObjectService,
     public languageService: LanguageService,
     public objectService: GenericObjectService,
-    public utilService: UtilsService,
+    public utilsService: UtilsService,
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController
   ) {
     this.authService.log("CranixMdListComponent constructor was called")
-    this.utilService.actMdList = this;
+    this.utilsService.actMdList = this;
     this.noticeUse = this.authService.isAllowed('notice.use')
   }
 

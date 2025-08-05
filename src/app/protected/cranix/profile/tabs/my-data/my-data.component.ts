@@ -21,7 +21,7 @@ export class MyDataComponent  implements OnInit {
     private selfService: SelfManagementService,
     private objService: GenericObjectService,
     public authService: AuthenticationService,
-    public utilService: UtilsService
+    public utilsService: UtilsService
   ) {
     console.log('MyDataComponment called')
   }

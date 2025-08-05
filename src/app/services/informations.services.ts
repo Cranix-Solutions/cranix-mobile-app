@@ -24,12 +24,12 @@ export class InformationsService {
     categories: Category[] = [];
     categoryIds: number[] = [];
     constructor(
-        private utilsS: UtilsService,
+        private utilsService: UtilsService,
         private http: HttpClient,
         private authService: AuthenticationService,
         private objectService: GenericObjectService
     ) {
-        this.hostname = this.utilsS.hostName();
+        this.hostname = this.utilsService.hostName();
     }
 
     getInfos(infoType: string) {

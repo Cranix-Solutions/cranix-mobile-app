@@ -43,7 +43,7 @@ export class ObjectsEditComponent implements OnInit {
   @Input() objectAction: string
   @Input() objectKeys: string[]
   constructor(
-    private utilsS: UtilsService,
+    private utilsService: UtilsService,
     public authService: AuthenticationService,
     private http: HttpClient,
     public cephalixService: CephalixService,
@@ -76,7 +76,7 @@ export class ObjectsEditComponent implements OnInit {
     }
     this.disabled = false;
     if (this.objectAction != 'add' && this.objectType != 'settings') {
-      let url = this.utilsS.hostName() + "/" + this.objectType + "s/" + this.object.id;
+      let url = this.utilsService.hostName() + "/" + this.objectType + "s/" + this.object.id;
       this.http.get(url, { headers: this.authService.headers }).subscribe(
         (val) => {
           for (let key of this.objectKeys) {
