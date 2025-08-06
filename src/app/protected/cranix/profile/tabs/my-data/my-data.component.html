@@ -3,12 +3,12 @@
   <ion-list [inset]="true">
     <ion-list-header lines="full">
       <ion-label>{{actDir}}</ion-label>
-      <ion-button fill="clear" size="small" (click)="createNewDir()">
+      <ion-button fill="clear" size="small" (click)="createNewDir()" [disabled]="disabled">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
     </ion-list-header>
     @for(entry of dirList; track entry.path){
-      <ion-item [button]="true" (click)="open(entry)" [detail]="entry.type == 'd'">
+      <ion-item [button]="true" (click)="open(entry)" [detail]="entry.type == 'd'" [disabled]="disabled">
         @if(entry.type == "d"){
           <ion-icon name="folder"></ion-icon>
         }@else{
@@ -30,6 +30,9 @@
       </ion-item>
     }
   </ion-list>
+  @if(disabled){
+    {{'Loading data'|translate}}
+  }
 </ion-content>
 <ion-modal #deleteModal [isOpen]="isDeleteOpen" (didDissmiss)="isDeleteOpen = false">
   <ng-template>

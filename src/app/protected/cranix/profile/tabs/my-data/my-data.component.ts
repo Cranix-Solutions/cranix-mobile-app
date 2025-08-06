@@ -15,6 +15,7 @@ export class MyDataComponent  implements OnInit {
 
   actDir: string = ""
   dirList: DirEntry[] = []
+  disabled: boolean = true
   isDeleteOpen: boolean = false
   selectedEntry: DirEntry;
   constructor(
@@ -31,19 +32,24 @@ export class MyDataComponent  implements OnInit {
       (val) => {
         console.log(val)
         this.dirList = val
+        this.disabled = false
       }
     )
   }
 
   open(entry: DirEntry) {
+    this.disabled = true
     if(entry.type == "d") {
       this.selfService.getDir(entry.path).subscribe(
         (val) => {
           console.log(val)
           this.dirList = val
           this.actDir = entry.path
+          this.disabled = false
         }
       )
+    }else{
+      this.disabled = false
     }
   }
   createNewDir(){
