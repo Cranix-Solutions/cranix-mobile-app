@@ -3,12 +3,23 @@
   {{authService.error}}
 } @else {
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <ion-split-pane contentId="main-content" [disabled]="disabled">
+    @if(authService.authorized) {
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>CRANIX</ion-list-header>
-          @if(authService.authorized) {
+            <ion-item lines="none" button (click)="disabled = !disabled">
+              <ion-img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;"></ion-img>
+              <ion-label>
+                <h3>
+                @if(authService.isAllowed('cephalix.manage')){
+                  CEPHALIX
+                }@else{
+                  CRANIX
+                }
+                </h3>
+              </ion-label>
+            </ion-item>
           @for (p of authService.appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
               <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected" style="background-color : {{ location.path().startsWith(p.url) ? 'var(--ion-color-secondary)' : 'var(--ion-color-primary-tint)' }};">
@@ -16,15 +27,16 @@
                 <ion-label>{{ p.title|translate }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
-          }}
+          }
         </ion-list>
       </ion-content>
       <ion-footer collapse="fade">
         <ion-button fill="clear" (click)="authService.showInfo()">
-          <ion-img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;"></ion-img>
+          <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
         </ion-button>
       </ion-footer>
     </ion-menu>
+    }
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
