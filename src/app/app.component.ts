@@ -18,6 +18,7 @@ import { UtilsService } from './services/utils.service';
 export class AppComponent {
   token: string
   error: string
+  disabled: boolean = false
   constructor(
     public authService: AuthenticationService,
     public location: Location,
