@@ -6,8 +6,8 @@
     </ion-label>
     }
     <ion-label> </ion-label>
-    <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="quickFilter">
-    </ion-input>
+    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="quickFilter">
+    </ion-searchbar>
   </ion-item>
   <ion-buttons slot="end">
     <ion-button size="small" fill="solid" (click)="redirectToEdit(null)" [matTooltip]="addToolTip">
