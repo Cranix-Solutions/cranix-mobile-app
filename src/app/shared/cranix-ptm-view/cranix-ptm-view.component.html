@@ -8,30 +8,6 @@
     }
     @if(isPtmManager){
         <cranix-search  objectType="user" [(ngModel)]="selectedStudent" [ngModelOptions]="{standalone: true}" [items]="students" itemTextField="fullName" (callback)="readData(false)"></cranix-search>
-    <!-- ion-label style="min-width: 300;">{{'Select student for the event'|translate}}</ion-label -->
-    <!-- ionic-selectable #selectStudent itemValueField="id" itemTextField="fullName" [isMultiple]="false"
-        [(ngModel)]="selectedStudent" [ngModelOptions]="{standalone: true}" [items]="students" [canSearch]="true"
-        (onChange)="readData(false)"
-        style="min-width: 300;">
-        <ng-template ionicSelectablePlaceholderTemplate>{{ "Select student for the event" | translate }}</ng-template>
-        <ng-template ionicSelectableHeaderTemplate>
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-title>
-                        {{ "Select student for the event" | translate }}
-                    </ion-title>
-                    <ion-buttons slot="end">
-                        <ion-button (click)="deselectStudent(selectStudent)" matTooltip="{{'Deselect student'}}">
-                            <ion-icon color="success" name="trash"></ion-icon>
-                        </ion-button>
-                        <ion-button ion-button (click)="selectStudent.close()">
-                            <ion-icon color="danger" name="close"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                </ion-toolbar>
-            </ion-header>
-        </ng-template>
-    </ionic-selectable -->
     }
 </ion-item>
 <ag-grid-angular style="width: 100%; height: 90%;" class="{{authService.settings.agGridThema}}"
@@ -77,24 +53,6 @@
                 <ion-item>
                     <ion-label>{{'Select student for the event'|translate}}</ion-label>
                     <cranix-search  objectType="user" [(ngModel)]="selectedEvent.student" [ngModelOptions]="{standalone: true}" [items]="students" itemTextField="fullName"></cranix-search>
-                    <!-- ionic-selectable #selectEventStudent itemValueField="id" itemTextField="fullName" [isMultiple]="false"
-                        [(ngModel)]="selectedEvent.student" [ngModelOptions]="{standalone: true}" [items]="students"
-                        [canSearch]="true">
-                        <ng-template ionicSelectableHeaderTemplate>
-                            <ion-header>
-                                <ion-toolbar color="primary">
-                                    <ion-title>
-                                        {{ "Select student for the event" | translate }}
-                                    </ion-title>
-                                    <ion-buttons slot="end">
-                                        <ion-button ion-button (click)="selectEventStudent.close()">
-                                            <ion-icon color="danger" name="close"></ion-icon>
-                                        </ion-button>
-                                    </ion-buttons>
-                                </ion-toolbar>
-                            </ion-header>
-                        </ng-template>
-                    </ionic-selectable -->
                 </ion-item>
             </ion-list>
         </ion-content>
@@ -130,10 +88,6 @@
                 <ion-item>
                     <ion-label>{{'Select your child for the event' | translate}}</ion-label>
                     <cranix-search  objectType="user" [(ngModel)]="selectedEvent.student" [ngModelOptions]="{standalone: true}" [items]="students" itemTextField="fullName"></cranix-search>
-                    <!-- ionic-selectable #ionicSelectUsers itemValueField="id" itemTextField="fullName"
-                        [isMultiple]="false" [(ngModel)]="selectedEvent.student" [ngModelOptions]="{standalone: true}"
-                        [items]="students" [canSearch]="true">
-                    </ionic-selectable -->
                 </ion-item>
             </ion-list>
         </ion-content>
@@ -165,25 +119,6 @@
             <ion-item>
                 <ion-label>{{'Select room for the PTM' | translate}}</ion-label>
                 <cranix-search objectType="room" [(ngModel)]="ptmTeacherInRoom.room" [ngModelOptions]="{standalone: true}" [items]="freeRooms" itemTextField="description"></cranix-search>
-                    
-                <!-- ionic-selectable #ionicSelectRoom itemValueField="id" itemTextField="description" [isMultiple]="false"
-                    [(ngModel)]="ptmTeacherInRoom.room" [ngModelOptions]="{standalone: true}" [items]="freeRooms"
-                    [canSearch]="true">
-                    <ng-template ionicSelectableHeaderTemplate>
-                        <ion-header>
-                            <ion-toolbar color="primary">
-                                <ion-title>
-                                    {{ "Select room for the PTM" | translate }}
-                                </ion-title>
-                                <ion-buttons slot="end">
-                                    <ion-button ion-button (click)="ionicSelectRoom.close()">
-                                        <ion-icon color="danger" name="close"></ion-icon>
-                                    </ion-button>
-                                </ion-buttons>
-                            </ion-toolbar>
-                        </ion-header>
-                    </ng-template>
-                </ionic-selectable -->
             </ion-item>
         </ion-content>
     </ng-template>

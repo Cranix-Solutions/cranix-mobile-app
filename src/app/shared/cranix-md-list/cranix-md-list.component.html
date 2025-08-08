@@ -44,7 +44,10 @@
     </ion-fab-button>
     }
     @if(objectType == 'challenge'){
-    <ion-fab-button (click)="getCephalixChallenges()"
+    <ion-fab-button (click)="context.componentParent.redirectToReload()">
+        <ion-icon name="refresh-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button (click)="context.componentParent.getCephalixChallenges()"
       matTooltip="{{'Get challenges from CEPHALIX server to the selected subject.' | translate }}">
       <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
     </ion-fab-button>
@@ -53,11 +56,6 @@
 </ion-fab>
 <ion-list [inset]="false">
 <ion-item>
-  @if( objectType == 'challenge' ) {
-  <cranix-search objectType="teachingSubject" [(ngModel)]="authService.selectedTeachingSubject"
-    [items]="crxObjectService.subjects" name="searchTeachingSubject" emptyLabel="teachingSubject">
-  </cranix-search>
-  }
   <ion-button expand="block" (click)="back()" [disabled]="min <= 0">
     <ion-icon slot="start" name="arrow-back"></ion-icon>
     {{ min + 2 }}
@@ -68,7 +66,7 @@
     <ion-icon slot="end" name="arrow-forward"></ion-icon>
   </ion-button>
 </ion-item>
-  @for(object of rowData.sort(objectService.sortByModified); track object.id; let i = $index; ){
+  @for(object of rowData.sort(objectService.sortByModified); let i = $index; track i){
   @if(i > min && i < max) { <ion-item-sliding>
     <ion-item [style]="getStyle(object,i)" lines="none">
     <!-- ion-item [class]="i%2 ? 'odd' : 'pair'" -->
@@ -77,8 +75,13 @@
       </ion-note>
       <div style="display: flex; width: 100%;">
         <div class="divclass" (click)="context.componentParent.redirectToEdit(object)">
-          <p>{{ object[left1] }}</p>
-          <p>{{ object[left2] }} {{ object[left3] }}</p>
+          @if(objectType == 'challenge'){
+            <p>{{object.description}}</p>
+            @if(object.teachingSubject){<p>{{object.teachingSubject.name}}</p>}
+          }@else{
+            <p>{{ object[left1] }}</p>
+            <p>{{ object[left2] }} {{ object[left3] }}</p>
+          }
         </div>
         <div class="divclass">
           @if(objectType == 'customer'){

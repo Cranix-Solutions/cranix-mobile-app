@@ -44,7 +44,6 @@ export class CranixMdListComponent implements OnInit, OnChanges {
 
   ngAfterContentInit() {
     console.log(this.objectType)
-    this.subjectChanged(null)
     console.log("CranixMdListComponent ngAfterContentInit")
   }
 
@@ -183,49 +182,6 @@ export class CranixMdListComponent implements OnInit, OnChanges {
     }
   }
 
-  subjectChanged(event) {
-    console.log(event)
-    let path = "/" + this.objectType + "s/all";
-    if(this.objectType == 'category') {
-      path = "/categories/all";
-    }
-    //We do not read all challenges only the challenges from the selected
-    if (this.objectType == 'challenge' && this.authService.selectedTeachingSubject) {
-      path = "/challenges/subjects/" + this.authService.selectedTeachingSubject.id
-    }
-    this.authService.saveSelectedSubject()
-    this.objectService.allObjects[this.objectType] = null
-    this.objectService.getSubscribe(path).subscribe(
-      (val) => {
-        this.rowData = val
-        this.objectService.allObjects[this.objectType] = val
-        this.objectService.selectedObjects = []
-        this.objectService.selectedIds = [];
-        this.initSteps()
-      }
-    )
-    if (this.context.componentParent.subjectChanged && this.authService.selectedTeachingSubject) {
-      this.context.componentParent.subjectChanged(this.authService.selectedTeachingSubject.id)
-    }
-  }
-
-  getCephalixChallenges() {
-    if (!this.authService.selectedTeachingSubject) {
-      this.objectService.warningMessage(this.languageService.trans("Select one teaching subject"))
-      return
-    }
-
-    this.objectService.warningMessage(
-      this.languageService.trans("Check all questions and answers for accuracy! We do not guarantee that the solutions are correct.")
-    )
-    this.challengeService.getChallengesFromCephalix(this.authService.selectedTeachingSubject).subscribe({
-      next: (val) => {
-        this.rowData = val
-        console.log(this.rowData)
-      },
-      error: (error) => { this.objectService.errorMessage(error) }
-    })
-  }
 
   async openNotice(object) {
     const modal = await this.modalCtrl.create({

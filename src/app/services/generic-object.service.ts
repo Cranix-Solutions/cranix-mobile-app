@@ -122,9 +122,6 @@ export class GenericObjectService {
   getObjects(objectType: string) {
     let url = this.utilsService.hostName() + "/" + objectType + "s/all";
     //We do not read all challenges only the challenges from the selected
-    if (objectType == 'challenge' && this.authService.selectedTeachingSubject) {
-      url = this.utilsService.hostName() + "/challenges/subjects/" + this.authService.selectedTeachingSubject.id
-    }
     console.log("getObjects " + url)
     return fetch(url, {
       method: 'get', headers: new Headers({
@@ -564,18 +561,7 @@ export class GenericObjectService {
   }
 
   filterObject(objectType: string, filter: string) {
-    let rowData = []
-    let lowerFilter = filter.toLowerCase();
-    for (let o of this.allObjects[objectType]) {
-      //TODO split filter also
-      for (let field of this.getDefaultSearchFields(objectType)) {
-        if (o[field] && o[field].toLowerCase().indexOf(lowerFilter) > -1) {
-          rowData.push(o)
-          break;
-        }
-      }
-    }
-    return rowData
+    return this.filterItemsOfObject(objectType, filter, this.allObjects[objectType])
   }
 
   filterItemsOfObject(objectType: string, filter: string, items: any[]) {
@@ -583,10 +569,16 @@ export class GenericObjectService {
     let lowerFilter = filter.toLowerCase();
     for (let o of items) {
       //TODO split filter also
+      switch(objectType){
+        case 'challenge': {
+          if(o['teachingSubject'] && o['teachingSubject']['name'].toLowerCase().indexOf(lowerFilter) > -1) {
+            rowData.push(o); continue;
+          }
+        }
+      }
       for (let field of this.getDefaultSearchFields(objectType)) {
         if (o[field] && o[field].toLowerCase().indexOf(lowerFilter) > -1) {
-          rowData.push(o)
-          break;
+          rowData.push(o); break;
         }
       }
     }

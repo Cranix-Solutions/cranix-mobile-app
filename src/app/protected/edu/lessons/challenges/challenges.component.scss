@@ -1,11 +1,19 @@
 .question {
-  margin-left: 2px;
+  margin: 2px;
   font-size: 18px;
 }
 .answer {
-  margin-left: 42px;
+  margin: 2px 2px 2px 22px;
   font-size: 14px;
 }
 .counter {
   margin-right: 14px;
+}
+ion-item {
+  margin: 0;
+  padding: 0;
+  max-height: 30;
+}
+p {
+  margin: 0;
 }

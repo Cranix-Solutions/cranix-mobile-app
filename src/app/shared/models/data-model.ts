@@ -513,15 +513,15 @@ export class CrxQuestion {
 }
 
 export class CrxChallenge {
-	id?: number
-	creatorId: number;
+	id?: number = 0
+	creatorId: number = 0;
 	description: string = ""
 	questions: CrxQuestion[] = []
 	groups: Group[] = []
 	users: User[] = []
 	studentsOnly?: boolean = false;
 	released: boolean = false;
-	teachingSubject: TeachingSubject
+	teachingSubject: TeachingSubject = new TeachingSubject();
 }
 
 export class CrxChallengeAnswer {

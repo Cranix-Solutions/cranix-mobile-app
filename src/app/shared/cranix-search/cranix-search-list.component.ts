@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, OnChanges, Output, EventEmitter, forwardRef, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   standalone: false,
@@ -17,15 +16,15 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
   isAllSelected: boolean = false
   isShowChecked: boolean = false
   rowData = []
-  selection: any | any[]
 
   @Output() callback = new EventEmitter<any>();
-  @Output() selectedItemsChange = new EventEmitter();
+  @Output() selectedItemChange = new EventEmitter<any>();
+  @Output() selectedItemsChange = new EventEmitter<any[]>();
   @Input({ required: true }) objectType: string
   @Input() context
   @Input() items: any[]
   @Input() selectedItem: any
-  @Input() selectedItems: any[]
+  @Input() selectedItems: any[] = []
   @Input() itemTextField: string | string[]
   @Input() multiple: boolean
   @Input() emptyLabel: string
@@ -54,11 +53,6 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
     if (typeof this.selectedLabel == "undefined") {
       this.selectedLabel = this.objectType + ' selected.'
     }
-    if (this.multiple) {
-      this.selection = this.selectedItems
-    }else{
-      this.selection = this.selectedItem
-    }
     this.setupItems()
   }
 
@@ -67,9 +61,6 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
     if (changes['items']) {
       this.setupItems()
       console.log('items haben sich geändert:', this.items);
-    }
-    if (changes['selectedItems']) {
-      this.selection = [...this.selectedItems]
     }
   }
   //private propagateOnChange = (_: any) => { };
@@ -88,68 +79,44 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
     this.rowData = this.items
   }
   checkAll() {
-    this.selection = []
+    this.selectedItems = []
     if (!this.isAllSelected) {
       for (let obj of this.rowData) {
-        this.selection.push(obj)
+        this.selectedItems.push(obj)
       }
     }
     this.isAllSelected = !this.isAllSelected
-    this.selectedItemsChange.emit(this.selection)
+    this.selectedItemsChange.emit(this.selectedItems)
   }
-    //this.propagateOnChange(this.selection);
-  
-  //writeValue(value: any) {
-  //  console.log(this.objectType, value)
-    //if(value) this.selection = value;
-  //}
-  //registerOnChange(method: any): void {
-  //  this.propagateOnChange = method;
-  //}
-  //registerOnTouched(method: () => void) {
-  //  this.propagateOnTouched = method;
-  //}
+
   isSelected(id: number) {
-    if (this.selection) {
-      if (this.multiple) {
-        return this.selection.filter(o => (o && o.id == id)).length == 1
+    if (this.multiple) {
+        return this.selectedItems.filter(o => (o && o.id == id)).length == 1
       } else {
-        return (this.selection && this.selection.id == id )
+        return (this.selectedItem && this.selectedItem.id == id )
       }
-    }
-    return false;
   }
   clearSelection() {
     if (this.multiple) {
-      this.selection = []
+      this.selectedItems = []
+      this.selectedItemsChange.emit(this.selectedItems)
     } else {
-      this.selection = null
+      this.selectedItem = null
+      this.selectedItemChange.emit(this.selectedItem)
     }
-    this.selectedItemsChange.emit(this.selection)
-    //this.propagateOnChange(this.selection);
   }
   select(o: any) {
     console.log(o)
-    this.selection = o;
-    this.selectedItemsChange.emit(this.selection)
-    //this.propagateOnChange(this.selection);
+    this.selectedItem = o;
+    this.selectedItemChange.emit(this.selectedItem)
   }
   doSelect(o: any) {
-    if (this.selection.filter(obj => obj.id == o.id).length == 1) {
-      this.selection = this.selection.filter(obj => obj.id != o.id)
+    if (this.selectedItems.filter(obj => obj.id == o.id).length == 1) {
+      this.selectedItems = this.selectedItems.filter(obj => obj.id != o.id)
     } else {
-      this.selection.push(o)
+      this.selectedItems.push(o)
     }
-    this.selectedItemsChange.emit(this.selection)
-    //this.propagateOnChange(this.selection);
-  }
-  returnValues(modal) {
-    //this.propagateOnChange(this.selection);
-    if (this.callback) {
-      this.callback.emit();
-    }
-    this.selectedItemsChange.emit(this.selection)
-    //this.onChange.emit({ value: this.selection })
+    this.selectedItemsChange.emit(this.selectedItems)
   }
   onQuickFilterChanged() {
     let filter = (<HTMLInputElement>document.getElementById('crxSearchFilter')).value;

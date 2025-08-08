@@ -1,5 +1,5 @@
 import { ChallengesService } from 'src/app/services/challenges.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CrxChallenge, CrxQuestion, CrxQuestionAnswer, TeachingSubject } from 'src/app/shared/models/data-model';
@@ -15,7 +15,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
   templateUrl: './challenges.component.html',
   styleUrls: ['./challenges.component.scss'],
 })
-export class ChallengesComponent implements OnInit {
+export class ChallengesComponent {
 
   title: String = "Tests"
   answerToEdit = ""
@@ -24,6 +24,7 @@ export class ChallengesComponent implements OnInit {
   context;
   htmlResult;
   selectedArchive: string;
+  selectedTeachingSubject: TeachingSubject = new TeachingSubject();
   selectedChallenge: CrxChallenge;
   selectedChallengeId: number;
   questionToEdit: number = -1;
@@ -31,6 +32,7 @@ export class ChallengesComponent implements OnInit {
   isOpen: boolean = false;
   modalGetArchiveIsOpen: boolean = false;
   modalAddNewQuestionIsOpen: boolean = false;
+  modalGetCepahlixChallengesIsOpen: boolean = false;
   popoverDeleteChallengeIsOpen: boolean = false;
   popoverStopAndArchiveIsOpen: boolean = false;
   challengeToDelete: number;
@@ -38,6 +40,7 @@ export class ChallengesComponent implements OnInit {
   questions: CrxQuestion[] = [];
   questionsToAdd: CrxQuestion[] = [];
   questionListPlaceHolder: string = 'List of questions';
+  rowData: CrxChallenge[];
   editorStyles = {
     height: '80px',
     backgroundColor: 'whitesmoke'
@@ -54,13 +57,12 @@ export class ChallengesComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {
     this.context = { componentParent: this };
+    this.rowData = this.objectService.allObjects['challenge']
   }
 
-  ngOnInit() {}
-
   getQuestionsFromServer() {
-    if (this.authService.selectedTeachingSubject) {
-      this.challengesService.getQuestions(this.authService.selectedTeachingSubject.id).subscribe(
+    if (this.selectedTeachingSubject.id) {
+      this.challengesService.getQuestions(this.selectedTeachingSubject.id).subscribe(
         (val) => {
           this.questions = val
           this.questionListPlaceHolder = 'List of questions'
@@ -70,10 +72,27 @@ export class ChallengesComponent implements OnInit {
   }
 
   changeTeachingSubject(){
-    this.authService.selectedTeachingSubject = this.selectedChallenge.teachingSubject
+    this.selectedTeachingSubject = this.selectedChallenge.teachingSubject
     this.getQuestionsFromServer()
   }
-  
+
+    getCephalixChallenges() {
+      console.log('getCephalixChallenges called')
+      this.modalGetCepahlixChallengesIsOpen = true;
+    }
+  getCephalixChallengesRealy(){
+      this.objectService.warningMessage(
+        this.languageService.trans("Check all questions and answers for accuracy! We do not guarantee that the solutions are correct.")
+      )
+      this.challengesService.getChallengesFromCephalix(this.selectedTeachingSubject).subscribe({
+        next: (val) => {
+          console.log(val)
+          this.rowData = val
+          this.modalGetCepahlixChallengesIsOpen = false
+        },
+        error: (error) => { this.objectService.errorMessage(error) }
+      })
+    }
   private cleanUpIds(){
     for (let i = 0; i < this.selectedChallenge.questions.length; i++) {
       this.selectedChallenge.questions[i].id = null;
@@ -84,10 +103,13 @@ export class ChallengesComponent implements OnInit {
   }
 
   getQuestionsFromCephalix() {
+    if( !this.selectedChallenge.teachingSubject || !this.selectedChallenge.teachingSubject.id){
+      this.objectService.errorMessage('Please select a teaching subject for your challenge!')
+    }
     this.objectService.warningMessage(
       this.languageService.trans("Check all questions and answers for accuracy! We do not guarantee that the solutions are correct.")
     )
-    this.challengesService.getQuestionsFromCephalix(this.authService.selectedTeachingSubject).subscribe({
+    this.challengesService.getQuestionsFromCephalix(this.selectedChallenge.teachingSubject).subscribe({
       next: (val) => {
         this.questions = val
         this.questionListPlaceHolder = 'Questions from the CEPHALIX Server'
@@ -130,19 +152,17 @@ export class ChallengesComponent implements OnInit {
     }
   }
 
+  redirectToReload() {
+    this.rowData = this.objectService.allObjects['challenge']
+  }
+
   redirectToEdit(data) {
     if (data) {
       this.selectedChallenge = data;
-      if (!this.selectedChallenge.teachingSubject.id) {
-        this.selectedChallenge.teachingSubject = this.authService.selectedTeachingSubject;
-        this.challengesService.modified = true;
-      } else {
-        this.authService.selectedTeachingSubject = this.selectedChallenge.teachingSubject
-      }
     } else {
       this.selectedChallenge = new CrxChallenge();
-      this.selectedChallenge.teachingSubject = this.authService.selectedTeachingSubject;
     }
+    this.changeTeachingSubject()
     console.log(data)
   }
 

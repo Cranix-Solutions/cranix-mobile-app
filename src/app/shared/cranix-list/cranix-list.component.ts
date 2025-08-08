@@ -157,6 +157,27 @@ export class CranixListComponent implements OnInit, OnChanges {
       col['headerName'] = this.languageService.trans(key);
       col['hide'] = (this.hiddenColumns.indexOf(key) != -1);
       switch (key) {
+        case 'description':{
+          if(this.objectType == 'challenge'){
+            col['minWidth'] = 170;
+          col['suppressSizeToFit'] = true;
+          col['pinned'] = 'left';
+          col['flex'] = '1';
+          col['colId'] = '1';
+          columnDefs.push(col);
+          columnDefs.push({
+            field: 'actions',
+            headerName: "",
+            //minWidth: 200,
+            //suppressSizeToFit: true,
+            cellStyle: { 'padding': '2px' },
+            pinned: 'left',
+            cellRenderer: cellRenderer
+          });
+          continue;
+          }
+          break;
+        }
         case 'title':
         case 'name':
         case 'uid': {
@@ -180,7 +201,7 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'moday': case 'tuesday': case 'wednesday': case 'thursday': case 'friday': case 'saturday': case 'sunday':
         case 'holiday': case 'apply_default':
         case 'direct': case 'login': case 'portal': case 'printing': case 'proxy':
-        case 'ignoreNetbios':
+        case 'ignoreNetbios': case 'released':
         case 'createAdHocRoom': case 'privateGroup': case 'studentsOnly': {
             col['cellRenderer'] = YesNoBTNRenderer; break
         }
@@ -228,6 +249,9 @@ export class CranixListComponent implements OnInit, OnChanges {
             return { 'background-color': '#2dd36f' }
           }
           break
+        }
+        case 'creatorId': {
+          col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('user', params.data.creatorId); break;
         }
         case 'groupId': {
           col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('group', params.data.groupId); break;
@@ -308,6 +332,14 @@ export class CranixListComponent implements OnInit, OnChanges {
               return "OK"
             } else {
               return "reboot"
+            }
+          }
+          break;
+        }
+        case 'teachingSubject': {
+          col['valueGetter'] = function (params) {
+            if(params.data.teachingSubject && params.data.teachingSubject.name){
+              return params.data.teachingSubject.name
             }
           }
           break;

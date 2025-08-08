@@ -1,9 +1,16 @@
 <cranix-toolbar title="{{ 'Challenges' | translate}}"></cranix-toolbar>
 <!-- List of the challenges -->
 @if(!htmlResult && !selectedChallenge && !challengeToAssign){
-<ion-content>
-  <cranix-md-list objectType="challenge" [context]="context"></cranix-md-list>
-</ion-content>
+  @if(authService.isMD()){
+    <ion-content>
+      <cranix-md-list objectType="challenge" [context]="context" [rowData]="rowData"></cranix-md-list>
+    </ion-content>
+  }@else{
+    <ion-content>
+      <cranix-list objectType="challenge" [context]="context" [rowData]="rowData"></cranix-list>
+    </ion-content>
+
+  }
 }
 <!---- Show results -->
 @if(htmlResult){
@@ -46,30 +53,13 @@
   <ion-list>
     <ion-item>
       <ion-label>{{'Groups' | translate}}:</ion-label>
-      <ionic-selectable id="selectGroup" [(ngModel)]="challengeToAssign.groups"
-        [items]="objectService.allObjects['group']" itemValueField="id" itemTextField="description" [canSearch]="true"
-        [isMultiple]="true">
-        <ng-template ionicSelectableCloseButtonTemplate>
-          <ion-icon name="close" color="danger"></ion-icon>
-        </ng-template>
-        <ng-template ionicSelectableValueTemplate let-ports="value">
-          <div class="ionic-selectable-value-item">{{objectService.formatGroups(ports)}}</div>
-        </ng-template>
-      </ionic-selectable>
+      <cranix-search objectType="group" [multiple]="true" [(ngModel)]="challengeToAssign.groups"></cranix-search>
       {{'studentsOnly' | translate}}:
       <ion-toggle [(ngModel)]="challengeToAssign.studentsOnly"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>{{'Users' | translate}}:</ion-label>
-      <ionic-selectable [(ngModel)]="challengeToAssign.users" [items]="objectService.allObjects['user']"
-        itemValueField="id" itemTextField="fullName" [canSearch]="true" [isMultiple]="true">
-        <ng-template ionicSelectableCloseButtonTemplate>
-          <ion-icon name="close" color="danger"></ion-icon>
-        </ng-template>
-        <ng-template ionicSelectableValueTemplate let-ports="value">
-          <div class="ionic-selectable-value-item">{{objectService.formatUsers(ports)}}</div>
-        </ng-template>
-      </ionic-selectable>
+      <cranix-search objectType="group" [multiple]="true" [(ngModel)]="challengeToAssign.users"></cranix-search>
     </ion-item>
   </ion-list>
 </ion-content>
@@ -88,15 +78,9 @@
     }
   </ion-item>
   <ion-item [disabled]="selectedChallenge.released" slot="end" lines="none">
-    <ion-label position="floating">{{'teachingSubject'|translate}}:</ion-label>
-    <ionic-selectable id="selectTeachingSubject" [(ngModel)]="selectedChallenge.teachingSubject"
-      [items]="crxObjectService.subjects" itemValueField="id" itemTextField="name" [canSearch]="true"
-      (onChange)="changeTeachingSubject()">
-      <ng-template ionicSelectableCloseButtonTemplate>
-        <ion-icon name="close" color="danger"></ion-icon>
-      </ng-template>
-      <ng-template ionicSelectablePlaceholderTemplate>{{'select'|translate}}</ng-template>
-    </ionic-selectable>
+    <cranix-search objectType="teachingSubject" [(ngModel)]="selectedChallenge.teachingSubject"
+      [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()">
+    </cranix-search>
   </ion-item>
   @if( !authService.isMD() ) {
   <ion-buttons slot="end">
@@ -193,7 +177,8 @@
     </ion-fab-list>
   </ion-fab>
   }
-  <div class="question" *ngFor="let question of selectedChallenge.questions; index as i">
+  @for(question of selectedChallenge.questions; let i = $index; track i;){
+  <div class="question">
     @if( questionToEdit == i ){
     <ion-item style="background-color: lightgray;" [disabled]="selectedChallenge.released">
       <quill-editor [styles]="editorStyles" [(ngModel)]="selectedChallenge.questions[i].question" name="description">
@@ -263,7 +248,7 @@
       <input style="margin-right: 10px;"
         [type]="question.answerType == 'One' ? 'radio' : 'checkbox'" name="answer-{{i}}" [value]="answer.answer"
         [checked]="answer.correct" (click)="toggle(i, j)">
-      <div [innerHTML]="answer.answer" (click)="toggleEditAnswer(i,j)"></div>
+      <div style="margin: 0;" [innerHTML]="answer.answer" (click)="toggleEditAnswer(i,j)"></div>
       @if(!answer.answer){
       <div (click)="toggleEditAnswer(i,j)">{{'Answer text.'|translate}}</div>
       }
@@ -281,26 +266,27 @@
     </ion-item>
     }
   </div>
+  }
 </ion-content>
 }
 <!-- modal available on more pages -->
 <ion-modal #modalAddNewQuestion [isOpen]="modalAddNewQuestionIsOpen">
   <ng-template>
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="primary">
         <ion-title>{{'New question' | translate }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="modalAddNewQuestionIsOpen = false">
-            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
-          </ion-button>
           <ion-button (click)="addNewQuestion()">
             <ion-icon slot="icon-only" name="checkmark" color="success"></ion-icon>
+          </ion-button>
+          <ion-button (click)="modalAddNewQuestionIsOpen = false">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-list>
+      <ion-list [inset]="true">
         <ion-list-header lines="full">
           <ion-label><b>{{'Insert new own question'|translate}}</b></ion-label>
         </ion-list-header>
@@ -316,53 +302,25 @@
           <ion-input [(ngModel)]="questionValue" type="number" min="1"></ion-input>
         </ion-item>
       </ion-list>
-      <ion-list>
+      <ion-list [inset]="true">
         <ion-list-header lines="full">
-          <ion-label><b>{{'Insert existing questions'|translate}}</b></ion-label>
+          <ion-label>{{'Insert existing questions'|translate}}</ion-label>
+          @if( questionListPlaceHolder.indexOf('CEPHALIX') == -1 ){
+            <ion-button size="small" fill="clear"
+              (click)="getQuestionsFromCephalix()"
+              matTooltip="{{'Get challenge questions from CEPHALIX server to the selected subject.' | translate }}">
+              <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
+            </ion-button>
+          }@else{
+            <ion-button size="small" fill="clear"
+              (click)="getQuestionsFromServer()"
+              matTooltip="{{'Get challenge questions from your server to the selected subject.' | translate }}">
+              <ion-icon slot="icon-only" name="download" color="success"></ion-icon>
+            </ion-button>
+          }
         </ion-list-header>
         <ion-item>
-          <ionic-selectable #selectQuestions [(ngModel)]="questionsToAdd" [items]="questions" itemValueField="id"
-            itemTextField="question" [canSearch]="true" [isMultiple]="true" (onChange)="addQuestions()">
-            <ng-template ionicSelectableHeaderTemplate>
-              <ion-toolbar style="margin: 10px;;">
-                <b style="font-size:large;">{{ questionListPlaceHolder | translate }}</b><br>
-                <b style="font-size:small">{{ 'teachingSubject'|translate}}: {{ selectedChallenge.teachingSubject.name
-                  }}</b><br>
-                <i style="font-size:small">{{ 'Select one or more questions!' | translate}}</i>
-                <ion-buttons slot="end">
-                  <ion-button ion-button (click)="selectQuestions.close()">
-                    <ion-icon color="danger" name="close"></ion-icon>
-                  </ion-button>
-		  @if( questionListPlaceHolder.indexOf('CEPHALIX') == -1 ){
-                  <ion-button size="small" fill="solid"
-                    (click)="getQuestionsFromCephalix()"
-                    matTooltip="{{'Get challenge questions from CEPHALIX server to the selected subject.' | translate }}">
-                    <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
-                  </ion-button>
-		  }@else{
-                  <ion-button size="small" fill="solid"
-                    (click)="getQuestionsFromServer()"
-                    matTooltip="{{'Get challenge questions from your server to the selected subject.' | translate }}">
-                    <ion-icon slot="icon-only" name="download" color="success"></ion-icon>
-                  </ion-button>
-		  }
-                </ion-buttons>
-              </ion-toolbar>
-            </ng-template>
-            <ng-template ionicSelectablePlaceholderTemplate>{{questionListPlaceHolder|translate}}</ng-template>
-            <ng-template ionicSelectableItemIconTemplate let-port="item"></ng-template>
-            <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-	      @if( port.answerType == 'One' ){
-              <ion-icon [name]="isPortSelected ? 'checkmark-circle-outline' : 'radio-button-off'"></ion-icon>
-	      }@else{
-              <ion-icon [name]="isPortSelected ? 'checkbox-outline' : 'stop-outline'"> </ion-icon>
-	      }
-	      @if( port.id != 0 ){
-              <div [innerHTML]="port.question"></div>
-	      }
-            </ng-template>
-            <ng-template ionicSelectableValueTemplate></ng-template>
-          </ionic-selectable>
+          <cranix-search objectType="question" [(ngModel)]="questionsToAdd" [items]="questions" itemTextField="question" [multiple]="true" (onChange)="addQuestions()"></cranix-search>
         </ion-item>
       </ion-list>
     </ion-content>
@@ -412,6 +370,28 @@
       <p>{{'Stop and evaluate challenge and archive the results.' | translate }}</p>
       <p>{{'The results of this challenge will be archived and removed from the database.'| translate}}</p>
       <p>{{'The challenge itself will stand and can be reused.'|translate}}</p>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+<ion-modal #getCephalixChallenges [isOpen]="modalGetCepahlixChallengesIsOpen" (onDidDismiss)="modalGetCepahlixChallengesIsOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>
+          {{'Select a teaching subject'|translate}}
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button size="small" fill="clear" (click)="getCephalixChallengesRealy()">
+            <ion-icon slot="icon-only" name="checkmark-sharp" color="success"></ion-icon>
+          </ion-button>
+          <ion-button size="small" fill="clear" (click)="getCephalixChallenges.dismiss()">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <cranix-search-list objectType="teachingSubject" [(selectedItem)]="selectedTeachingSubject" [items]="crxObjectService.subjects" itemTextField="name"></cranix-search-list>
     </ion-content>
   </ng-template>
 </ion-modal>

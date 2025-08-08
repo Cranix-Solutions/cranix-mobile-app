@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { Room } from 'src/app/shared/models/data-model';
 import { EductaionService } from 'src/app/services/education.service';
 import { takeWhile } from 'rxjs/operators';
-import { PopoverController, IonSelect, ModalController } from '@ionic/angular';
+import { PopoverController, ModalController } from '@ionic/angular';
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { FilesCollectComponent } from 'src/app/shared/actions/files-collect/files-collect.component';
@@ -22,10 +22,8 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
   proxy: boolean;
   setExceptionsModalIsOpen: boolean = false;
   allowedDomains: string;
-
+  selectRoomOpen: boolean = false
   gridSize: number = 2;
-  @ViewChild('selectRoom') selectRef: IonSelect;
-
   gridSizes = [1, 2, 3, 4, 6, 12]
 
   constructor(
@@ -58,7 +56,7 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
       this.eduS.getEduRoomStatus(true);
       this.eduS.statusTimer();
     } else {
-      this.selectRef.open();
+      this.selectRoomOpen = true
     }
   }
 
@@ -74,6 +72,7 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
       this.eduS.getEduRoomStatus(true);
       this.eduS.statusTimer();
     }
+    this.selectRoomOpen = false
   }
 
   /**

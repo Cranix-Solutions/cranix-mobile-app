@@ -22,7 +22,6 @@ export class AuthenticationService {
     authenticationState = new BehaviorSubject(false);
     use2fa: boolean = false;
     crx2fa: string = "";
-    selectedTeachingSubject: TeachingSubject
     url: string;
     //Token will be used only for CEPHALIX connections to overhand the CRANIX session
     token: string;
@@ -152,7 +151,6 @@ export class AuthenticationService {
 
     loadSettings() {
         console.log(this.settings)
-        this.readSelectedTeachingSubject()
         this.storage.get('myCranixSettings').then((myCranixSettings) => {
             if (myCranixSettings && myCranixSettings != "") {
                 console.log("myCranixSettings");
@@ -171,19 +169,6 @@ export class AuthenticationService {
             }
         });
         this.languageService.setCustomLanguage();
-    }
-
-    readSelectedTeachingSubject() {
-        this.storage.get('selectedTeachingSubject').then((val2) => {
-            if (val2 && val2 != "") {
-                this.selectedTeachingSubject = JSON.parse(val2)
-            }
-            console.log("readSelectedTeachingSubject:", this.selectedTeachingSubject)
-        })
-    }
-
-    saveSelectedSubject() {
-        this.storage.set('selectedTeachingSubject', JSON.stringify(this.selectedTeachingSubject))
     }
 
     setUpHeaders() {
@@ -369,6 +354,7 @@ export class AuthenticationService {
             });
         }
         this.appPages = []
+        this.authorized = false
         this.authenticationState.next(false);
         this.session = null;
         this.use2fa = false;

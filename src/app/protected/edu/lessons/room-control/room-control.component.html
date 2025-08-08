@@ -65,24 +65,10 @@
     </ion-button>
   </ion-buttons>
   <ion-item lines="none" slot="end" style="max-height: 54px">
-    <div slot="start" matTooltip="{{'Select the room to control' | translate}}">
+    <div #selectRoom slot="start" matTooltip="{{'Select the room to control' | translate}}">
       <ion-label position="stacked">{{'Select a Room' | translate }}</ion-label>
-      <ionic-selectable #selectRoom item-content [(ngModel)]="eduS.selectedRoom" [ngModelOptions]="{standalone: true}"
-        [items]="eduS.myRooms" itemValueField="id" itemTextField="name" [canSearch]="true" (onChange)="roomSelected()">
-        <ng-template ionicSelectableHeaderTemplate>
-          <ion-toolbar>
-            <ion-title>
-              {{ "Select a Room" | translate }}
-            </ion-title>
-            <ion-buttons slot="end">
-              <ion-button ion-button (click)="selectRoom.close()">
-                <ion-icon color="danger" name="close"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ng-template>
-        <ng-template ionicSelectableItemIconTemplate></ng-template>
-      </ionic-selectable>
+      <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
+      itemTextField="name" (onChange)="roomSelected()"></cranix-search>
     </div>
     <div slot="end" *ngIf="!authS.isMD()" lines="none" matTooltip="{{'Select picture size' | translate}}">
       <ion-label position="stacked">{{'Select picture size' | translate }}</ion-label>
@@ -104,3 +90,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+<ion-modal [isOpen]="selectRoomOpen">
+  <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
+  itemTextField="name" (onChange)="roomSelected()"></cranix-search>
+</ion-modal>

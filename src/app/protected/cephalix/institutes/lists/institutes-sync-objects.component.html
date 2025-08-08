@@ -26,8 +26,7 @@
     </ion-buttons>
   </ion-toolbar>
   @if(memberData[segment]){
-  <cranix-search-list objectType="synchronizedobject" [items]="memberData[segment]" [(selectedItems)]="selectedObjects"
-    [itemTextField]="['objectName']" [multiple]="true"></cranix-search-list>
+  <cranix-search-list objectType="synchronizedobject" [items]="memberData[segment]" [(selectedItems)]="selectedObjects" [itemTextField]="['objectName']" [multiple]="true"></cranix-search-list>
   }
 </ion-content>
 }
