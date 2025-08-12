@@ -23,11 +23,11 @@
   <ion-content fullscreen>
     <ion-list lines="full">
       <ion-item *ngIf="action == 'add'">
-        <ion-label position="stacked">{{'roomId'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'roomId'| translate}}</ion-label>
 	      <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect" [multiple]="false" name="room"></cranix-search>
       </ion-item>
       <ion-item *ngIf="action == 'queue'">
-        <ion-label position="stacked">{{'device'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'device'| translate}}</ion-label>
         <ion-select type="text" [(ngModel)]="printer.deviceId" name="deviceId" required
           [compareWith]="objectService.compareFn" [disabled]="submitted">
           <ion-select-option *ngFor="let device of printerDevices" value="{{device.id}}">{{device.name}}
@@ -35,45 +35,45 @@
         </ion-select>
       </ion-item>
       <ion-item *ngIf="action == 'add'">
-        <ion-label position="stacked">{{'ip'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'ip'| translate}}</ion-label>
         <ion-select type="text" [(ngModel)]="printer.ip" name="ip" required [disabled]="!room || submitted">
           <ion-select-option *ngFor="let ip of  ipAdresses" value="{{ip}}">{{ip}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">{{'name'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'name'|translate}}</ion-label>
         <ion-input type="text" text-right [(ngModel)]="printer.name" name="name" required
           [disabled]="(!printer.deviceId && !room ) || submitted || action == 'modify'"
           pattern="^([0-9a-z][-0-9a-z]+[0-9a-z])$">
         </ion-input>
       </ion-item>
       <ion-item *ngIf="action == 'modify'">
-        <ion-label position="stacked">{{'ip'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'ip'| translate}}</ion-label>
         <ion-input type="text" text-right [value]="printer.ip" disabled="true"></ion-input>
       </ion-item>
       <ion-item *ngIf="action != 'queue'">
-        <ion-label position="stacked">{{'mac'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'mac'|translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="printer.mac" name="mac" required [disabled]="submitted"
         pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">{{'manufacturer'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'manufacturer'| translate}}</ion-label>
         <cranix-search objectType="manufacturer" [(ngModel)]="manufacturer" [items]="manufacturers" [multiple]="false" name="manufacturer"></cranix-search>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">{{'model'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'model'| translate}}</ion-label>
 	      <cranix-search objectType="model" [(ngModel)]="model" [items]="models[manufacturer.id]" [multiple]="false" name="model"></cranix-search>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">{{ driverFile | translate }}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{ driverFile | translate }}</ion-label>
         <input type="file" id="printerDriverFile" (change)="handleFileInput($event)" [disabled]="submitted">
       </ion-item>
       <ion-item *ngIf="action == 'add'">
-        <ion-label position="stacked">{{'serial'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'serial'|translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="printer.serial" name="serial" [disabled]="!room || submitted"></ion-input>
       </ion-item>
       <ion-item *ngIf="action == 'add'">
-        <ion-label position="stacked">{{'inventary'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'inventary'|translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="printer.inventary" name="inventary" [disabled]="!room || submitted">
         </ion-input>
       </ion-item>

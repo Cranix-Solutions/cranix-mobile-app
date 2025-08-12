@@ -78,7 +78,7 @@
       @case("string") {
       <ion-item>
         @if(editForm.controls[key] && editForm.controls[key].hasError('required') && editForm.controls[key].touched){
-        <ion-label position="stacked" color="danger">{{ 'This field is required!' | translate }}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement" color="danger">{{ 'This field is required!' | translate }}</ion-label>
         }
         @if(objectService.selects[key]){
         <ion-select type="text" [(ngModel)]="object[key]" name="{{key}}" [compareWith]="objectService.compareFn"
@@ -131,7 +131,7 @@
       @case("idPipe") {
       <ion-item>
         @if(editForm.controls[key] && editForm.controls[key].hasError('required') && editForm.controls[key].touched){
-        <ion-label position="stacked" color="danger">{{ 'This field is required!' | translate }}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement" color="danger">{{ 'This field is required!' | translate }}</ion-label>
         }
         @if(objectService.selects[key]){
         <ion-select type="text" [(ngModel)]="object[key]" name="{{key}}" [compareWith]="objectService.compareFn"

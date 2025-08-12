@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label position="stacked">{{'licenseType' | translate}}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{'licenseType' | translate}}</ion-label>
           <ion-select [(ngModel)]="licenseType" name="licenseType">
             <ion-select-option value="C">{{'Parameter license'|translate}}</ion-select-option>
             <ion-select-option value="F">{{'File license'|translate}}</ion-select-option>
@@ -27,14 +27,14 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="stacked">{{'count' | translate}}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{'count' | translate}}</ion-label>
           <ion-input type="number" [(ngModel)]="count" name="count"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col size=3>
         @if(licenseType == 'C'){
         <ion-item [disabled]="file">
-          <ion-label position="stacked">{{'value' | translate}}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{'value' | translate}}</ion-label>
           <ion-input type="text" [(ngModel)]="value" name="value"></ion-input>
         </ion-item>
         }@else{

@@ -24,21 +24,21 @@
 	        <cranix-search objectType="category" [(ngModel)]="categories" [items]="informationsService.categories" [multiple]="true"></cranix-search>
             </ion-item>
             <ion-item *ngIf="owned">
-                <ion-label position="stacked">{{'title' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'title' | translate}}</ion-label>
                 <ion-input [(ngModel)]="info.title" name="title" required [readonly]="!owned"></ion-input>
             </ion-item>
             <div *ngIf="infoType != 'contact'">
                 <ion-item *ngIf="infoType != 'taskResponse'">
-                    <ion-label position="stacked">{{'keywords' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'keywords' | translate}}</ion-label>
                     <ion-input autoGrow="true" [(ngModel)]="info.keywords" name="keywords" required [readonly]="!owned">
                     </ion-input>
                 </ion-item>
                 <ion-item *ngIf="infoType != 'taskResponse' && infoType != 'faq'">
-                    <ion-label position="stacked">{{'validFrom' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'validFrom' | translate}}</ion-label>
                     <input [(ngModel)]="info.validFrom" name="validFrom" type="datetime-local" [readonly]="!owned">
                 </ion-item>
                 <ion-item *ngIf="infoType != 'faq'">
-                    <ion-label position="stacked">{{'validUntil' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'validUntil' | translate}}</ion-label>
                     <input [(ngModel)]="info.validUntil" name="validUntil" type="datetime-local" [readonly]="!owned">
                 </ion-item>
                 <quill-editor *ngIf="owned || infoType == 'taskResponse'; else elseBlock" [styles]="{height: '450px'}"
@@ -87,25 +87,25 @@
                     <quill-view-html #elseBlock [content]="info.text" format="text" theme="snow"></quill-view-html>
                 </ng-template>
                 <ion-item *ngIf="infoType == 'taskResponse'">
-                    <ion-label position="stacked">{{'rating' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'rating' | translate}}</ion-label>
                     <quill-view-html [content]="info.rating" format="text" theme="snow"></quill-view-html>
                 </ion-item>
             </div>
             <div *ngIf="infoType == 'contact'">
                 <ion-item>
-                    <ion-label position="stacked">{{'issue' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'issue' | translate}}</ion-label>
                     <ion-input [(ngModel)]="info.issue" name="issue"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label position="stacked">{{'name' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'name' | translate}}</ion-label>
                     <ion-input [(ngModel)]="info.name" name="name"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label position="stacked">{{'email' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'email' | translate}}</ion-label>
                     <ion-input [(ngModel)]="info.email" name="email"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label position="stacked">{{'phone' | translate}}</ion-label>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'phone' | translate}}</ion-label>
                     <ion-input [(ngModel)]="info.phone" name="phone"></ion-input>
                 </ion-item>
             </div>

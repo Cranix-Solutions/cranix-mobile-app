@@ -39,40 +39,40 @@
     <ion-content fullscreen>
       <ion-list>
         <ion-item>
-          <ion-label position="stacked">{{ 'errorMessages' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'errorMessages' | translate }}</ion-label>
           <ion-label [color]="errorStatus(selectedStatus)">{{ selectedStatus.errorMessages }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'version' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'version' | translate }}</ion-label>
           <ion-label>{{ selectedStatus.version }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'rootUsage' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'rootUsage' | translate }}</ion-label>
           <ion-label [color]="fileSystemError(selectedStatus.rootUsage) ? 'danger' : 'success'">
             {{ selectedStatus.rootUsage }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'homeUsage' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'homeUsage' | translate }}</ion-label>
           <ion-label [color]="fileSystemError(selectedStatus.homeUsage) ? 'danger' : 'success'">
             {{ selectedStatus.homeUsage }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'varUsage' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'varUsage' | translate }}</ion-label>
           <ion-label [color]="fileSystemError(selectedStatus.varUsage) ? 'danger' : 'success'">
             {{ selectedStatus.varUsage }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'srvUsage' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'srvUsage' | translate }}</ion-label>
           <ion-label [color]="fileSystemError(selectedStatus.srvUsage) ? 'danger' : 'success'">
             {{ selectedStatus.srvUsage }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'created' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'created' | translate }}</ion-label>
           <ion-label [color]="connectStatus(selectedStatus)">
             {{ selectedStatus.created | date:'yyyy-MM-dd HH:mm:ss' }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'availableUpdates' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'availableUpdates' | translate }}</ion-label>
           @if(selectedStatus.availableUpdates == ''){
           <ion-label>
             {{ 'No updates' | translate }}
@@ -88,7 +88,7 @@
           }
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">{{ 'lastUpdate' | translate }}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{ 'lastUpdate' | translate }}</ion-label>
           <ion-label>{{ selectedStatus.lastUpdate | date:'yyyy-MM-dd HH:mm:ss' }}</ion-label>
         </ion-item>
       </ion-list>

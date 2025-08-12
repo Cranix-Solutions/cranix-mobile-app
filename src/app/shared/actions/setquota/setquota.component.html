@@ -14,7 +14,7 @@
 <ion-content fullscreen>
   <ion-list>
     <ion-item>
-      <ion-label position="stacked">{{'New quota in MB'| translate}}</ion-label>
+      <ion-label [position]="authService.settings.labelPlacement">{{'New quota in MB'| translate}}</ion-label>
       <ion-input type="number" [(ngModel)]="quota" name="quota" required>
       </ion-input>
     </ion-item>

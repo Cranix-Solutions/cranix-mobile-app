@@ -14,7 +14,7 @@
 <ion-content fullscreen>
   <ion-list>
     <ion-item>
-      <ion-label position="stacked">{{ 'validity' | translate }}</ion-label>
+      <ion-label [position]="authService.settings.labelPlacement">{{ 'validity' | translate }}</ion-label>
       <input [(ngModel)]="institute.validity" name="validity" type="date">
     </ion-item>
   </ion-list>

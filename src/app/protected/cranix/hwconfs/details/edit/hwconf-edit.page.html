@@ -15,7 +15,7 @@
           <ion-row style="background-color : {{authService.rowColors[2]}}">
             <ion-col size=8 sizeMd=2 sizeLg=2 sizeXl=2>
               <ion-item lines="none">
-                <ion-label position="stacked">{{ 'id' | translate }}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{ 'id' | translate }}</ion-label>
                 <ion-input color="tertiary" type="text" formControlName="id" value="{{object.id}}" readonly>
                 </ion-input>
               </ion-item>
@@ -41,21 +41,21 @@
             }
             <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
               <ion-item>
-                <ion-label position="stacked">{{ 'name' | translate }}*</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{ 'name' | translate }}*</ion-label>
                 <ion-input type="text" formControlName="name" value="{{object.name}}" required>
                 </ion-input>
               </ion-item>
             </ion-col>
             <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
               <ion-item>
-                <ion-label position="stacked">{{ 'description' | translate }}*</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{ 'description' | translate }}*</ion-label>
                 <ion-input type="text" formControlName="description" value="{{object.description}}" required>
                 </ion-input>
               </ion-item>
             </ion-col>
             <ion-col size=12 sizeMd=2 sizeLg=2 sizeXl=2>
               <ion-item>
-                <ion-label position="stacked">{{ 'deviceType' | translate }}*</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{ 'deviceType' | translate }}*</ion-label>
                 <ion-select type="text" formControlName="deviceType" [compareWith]="objectService.compareFn" required>
                   <ion-select-option *ngFor="let option of  objectService.selects['deviceType']" value="{{option}}">
                     {{option | translate}}</ion-select-option>

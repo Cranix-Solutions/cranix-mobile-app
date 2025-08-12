@@ -45,7 +45,7 @@
     <ion-content fullscreen>
         <ion-list>
             <ion-item>
-                <ion-label position="stacked">{{'supporttype' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'supporttype' | translate}}</ion-label>
                 <ion-select [(ngModel)]="support.supporttype" name="title" required>
                     <ion-select-option value="Error">{{'Error' | translate}}</ion-select-option>
                     <ion-select-option value="Feedback">{{'Feedback' | translate}}</ion-select-option>
@@ -54,15 +54,15 @@
                 </ion-select>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'email' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'email' | translate}}</ion-label>
                 <ion-input [(ngModel)]="support.email" name="email" required></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'name' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'name' | translate}}</ion-label>
                 <ion-input [(ngModel)]="support.lastname" name="lastname" required></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'subject' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'subject' | translate}}</ion-label>
                 <ion-input [(ngModel)]="support.subject" name="subject" required></ion-input>
             </ion-item>
             <quill-editor [styles]="{height: '250px'}" [(ngModel)]="support.description" name="description"

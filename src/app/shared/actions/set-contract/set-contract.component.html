@@ -14,7 +14,7 @@
 <ion-content fullscreen>
   <ion-list>
     <ion-item>
-      <ion-label position="stacked">{{ 'description' | translate}}</ion-label>
+      <ion-label [position]="authService.settings.labelPlacement">{{ 'description' | translate}}</ion-label>
       <ion-select [(ngModel)]="care.description" name="carDescription">
         <ion-select-option *ngFor="let contract of myContracts" [value]="contract">{{ contract | translate }}</ion-select-option>
       </ion-select>

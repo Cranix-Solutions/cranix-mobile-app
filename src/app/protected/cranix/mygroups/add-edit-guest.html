@@ -18,42 +18,42 @@
             {{ 'The name of the created users have the format groupnameNN' | translate }}
 	    </ion-list-header>
             <ion-item>
-                <ion-label position="stacked">{{'name' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'name' | translate}}</ion-label>
                 <ion-input [(ngModel)]="guest.name" name="name" pattern="\S+" required [disabled]="disabled"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'description' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'description' | translate}}</ion-label>
                 <ion-input [(ngModel)]="guest.description" name="description" required [disabled]="disabled"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'Count of accounts' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Count of accounts' | translate}}</ion-label>
                 <ion-input [(ngModel)]="guest.count" name="count" type="number" min=1 max=200 required [disabled]="disabled"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'password' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'password' | translate}}</ion-label>
                 <ion-input [(ngModel)]="guest.password" name="password" required [disabled]="disabled"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'Valid until' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Valid until' | translate}}</ion-label>
                 <input [(ngModel)]="guest.validUntil" name="validUntil" type="date" min="now" required [disabled]="disabled">
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'Private' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Private' | translate}}</ion-label>
                 <ion-checkbox slot="end" [(ngModel)]="guest.privateGroup" name="privateGroup" [disabled]="disabled"></ion-checkbox>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'Create AdHoc-Room' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Create AdHoc-Room' | translate}}</ion-label>
                 <ion-checkbox slot="end" [(ngModel)]="guest.createAdHocRoom" name="createAdHocRoom" [disabled]="disabled"></ion-checkbox>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'Room Control' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Room Control' | translate}}</ion-label>
                 <ion-select [(ngModel)]="guest.roomControl" name="roomControl" [disabled]="!guest.createAdHocRoom" [disabled]="disabled">
                     <ion-select-option *ngFor="let ctrl of objectService.selects['roomControl']" value="ctrl">
                         {{ ctrl | translate }}</ion-select-option>
                 </ion-select>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">{{'rooms' | translate}}</ion-label>
+                <ion-label [position]="authService.settings.labelPlacement">{{'rooms' | translate}}</ion-label>
 		<cranix-search objectType="room" [(ngModel)]="selectedRooms" [disabled]="guest.createAdHocRoom || disabled" [multiple]="true" name="rooms"></cranix-search>
             </ion-item>
         </ion-list>

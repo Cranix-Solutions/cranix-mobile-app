@@ -38,21 +38,21 @@
     <ion-row>
       <ion-col style="padding: 0px;">
         <ion-item lines="none">
-          <ion-label position="stacked">{{'Ticket Owner'| translate}}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Ticket Owner'| translate}}</ion-label>
           <cranix-search objectType="user" [items]="workers" [(ngModel)]="ticketCreator" name="selecteWorker"
             (onChange)="setCreator()" itemTextField="fullName"></cranix-search>
         </ion-item>
       </ion-col>
       <ion-col style="padding: 0px;">
         <ion-item lines="none">
-          <ion-label position="stacked">{{'Institute'| translate}}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Institute'| translate}}</ion-label>
           <cranix-search objectType="institute" [(ngModel)]="institute" name="selecteInstitue"
             (onChange)="setInstitute()" [itemTextField]="['name','locality']"></cranix-search>
         </ion-item>
       </ion-col>
       <ion-col style="padding: 0px;">
         <ion-item lines="none">
-          <ion-label position="stacked">{{'Customer'| translate}}</ion-label>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Customer'| translate}}</ion-label>
           <cranix-search objectType="customer" [(ngModel)]="customer" name="selectedCustomer" (onChange)="setCustomer()"
             [itemTextField]="['name','locality']">
           </cranix-search>
