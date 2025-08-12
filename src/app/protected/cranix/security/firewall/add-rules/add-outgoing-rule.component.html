@@ -15,7 +15,7 @@
   <ion-content fullscreen>
     <ion-list lines="full">
       <ion-item>
-        <ion-label position="authService.settings.labelPlacement">{{'Rule type'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'Rule type'| translate}}</ion-label>
         <ion-select type="text" [(ngModel)]="rule.type" name="type">
           <ion-select-option value="room">{{'room'| translate}}</ion-select-option>
           <ion-select-option value="device">{{'device'| translate}}</ion-select-option>
@@ -23,22 +23,22 @@
       </ion-item>
       @if(rule.type == 'room'){
       <ion-item>
-        <ion-label position="authService.settings.labelPlacement">{{'Room'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'Room'| translate}}</ion-label>
         <cranix-search objectType="room" [(ngModel)]="selectedSource" [items]="securityService.firewallRooms"
           name="selectRoomSource"></cranix-search>
       </ion-item>
       }@else{
       <ion-item>
-        <ion-label position="authService.settings.labelPlacement">{{'Device'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'Device'| translate}}</ion-label>
         <cranix-search objectType="device" [(ngModel)]="selectedSource" name="selectDeviceSource"></cranix-search>
       </ion-item>
       }
       <ion-item>
-        <ion-label position="authService.settings.labelPlacement">{{'dest'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'dest'|translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="rule.dest" name="dest"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="authService.settings.labelPlacement">{{'Protocol'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'Protocol'|translate}}</ion-label>
         <ion-select type="text" [(ngModel)]="rule.protocol" name="protocol">
           <ion-select-option value="all">{{'all'| translate}}</ion-select-option>
           <ion-select-option value="tcp">{{'TCP'| translate}}</ion-select-option>
@@ -46,7 +46,7 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="authService.settings.labelPlacement">{{'Port'|translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{'Port'|translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="rule.port" name="port" [disabled]="rule.protocol == 'all'"
           [required]="rule.protocol != 'all'"></ion-input>
       </ion-item>
