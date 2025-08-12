@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixCare, contracts } from 'src/app/shared/models/cephalix-data-model';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -18,7 +19,8 @@ export class SetContractComponent implements OnInit {
   constructor(
     private cephalixService: CephalixService,
     public modalController: ModalController,
-    public objectService: GenericObjectService
+    public objectService: GenericObjectService,
+    public authService: AuthenticationService
   ) { 
 
   }

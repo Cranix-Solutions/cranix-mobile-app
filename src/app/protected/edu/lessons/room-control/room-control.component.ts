@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/auth.service';
 import { Room } from 'src/app/shared/models/data-model';
 import { EductaionService } from 'src/app/services/education.service';
 import { takeWhile } from 'rxjs/operators';
@@ -8,6 +7,7 @@ import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { FilesCollectComponent } from 'src/app/shared/actions/files-collect/files-collect.component';
 import { FilesUploadComponent } from 'src/app/shared/actions/files-upload/files-upload.component';
+import { AuthenticationService } from 'src/app/services/auth.service';
 @Component({
   standalone: false,
     selector: 'cranix-room-control',
@@ -27,25 +27,25 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
   gridSizes = [1, 2, 3, 4, 6, 12]
 
   constructor(
-    public authS: AuthenticationService,
     public eduS: EductaionService,
     public popoverCtrl: PopoverController,
     public modalController: ModalController,
-    private objectS: GenericObjectService
+    private objectS: GenericObjectService,
+    public authService: AuthenticationService
   ) {
     this.eduS.getMyRooms();
   }
   ngOnInit() {
     this.eduS.selectedRoom = null;
-    if (this.authS.isMD()) {
+    if (this.authService.isMD()) {
       this.gridSize = 12
     }
   }
 
 
   ngAfterViewInit() {
-    if (this.authS.session.roomId) {
-      let room: Room = this.objectS.getObjectById('room', this.authS.session.roomId);
+    if (this.authService.session.roomId) {
+      let room: Room = this.objectS.getObjectById('room', this.authService.session.roomId);
       if (room.roomControl == 'inRoom') {
         this.eduS.selectedRoom = room;
       }

@@ -9,10 +9,10 @@ import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.c
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { Group, GuestUsers, Room, User } from 'src/app/shared/models/data-model'
-import { AuthenticationService } from 'src/app/services/auth.service';
 import { GroupMembersPage } from 'src/app/shared/actions/group-members/group-members.page';
 import { EductaionService } from 'src/app/services/education.service';
 import { CranixNoticesComponent } from 'src/app/shared/cranix-notices/cranix-notices.component';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -146,6 +146,7 @@ export class AddEditGuestPage {
   @Input() guest: GuestUsers
   @Input() action: string
   constructor(
+    public authService: AuthenticationService,
     public educationService: EductaionService,
     public modalCtrl: ModalController,
     public objectService: GenericObjectService,

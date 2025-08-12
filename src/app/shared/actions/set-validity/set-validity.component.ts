@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -18,6 +19,7 @@ export class SetValidityComponent implements OnInit {
   @Input() objectIds;
   constructor(
     public modalController: ModalController,
+    public authService: AuthenticationService,
     public objectService: GenericObjectService
   ) { }
 

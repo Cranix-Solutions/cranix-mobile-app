@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -14,7 +15,8 @@ export class SetquotaComponent implements OnInit {
   quota = 500;
   title = "Set filesystemquota for the selected users";
   constructor(
-    public modalController: ModalController
+    public modalController: ModalController,
+    public authService: AuthenticationService
   ) {
   }
 

@@ -3,6 +3,7 @@ import { RemoteRule } from 'src/app/shared/models/secutiry-model';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { ModalController } from '@ionic/angular';
 import { SecurityService } from 'src/app/services/security-service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -16,6 +17,7 @@ export class AddRemoteRuleComponent implements OnInit {
   deviceIps: any[] = [];
   selectedDevice: any;
   constructor(
+    public authService: AuthenticationService,
     public objectService: GenericObjectService,
     public securityService: SecurityService,
     public modalCtrl: ModalController

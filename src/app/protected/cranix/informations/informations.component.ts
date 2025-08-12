@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/auth.service';
 import { InformationsService } from 'src/app/services/informations.services';
 import { ModalController } from '@ionic/angular';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { Announcenement, Contact, FAQ, TaskResponse } from 'src/app/shared/models/data-model';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -211,6 +211,7 @@ export class AddEditInfoPage implements OnInit {
   @Input() infoId
   @Input() owned
   constructor(
+    public authService: AuthenticationService,
     public modalCtrl: ModalController,
     public informationsService: InformationsService,
     public objectService: GenericObjectService
@@ -290,6 +291,7 @@ export class ShowResponses implements OnInit {
   response: TaskResponse;
   @Input() task
   constructor(
+    public authService: AuthenticationService,
     public modalCtrl: ModalController,
     public informationsService: InformationsService,
     public objectService: GenericObjectService

@@ -387,6 +387,9 @@ export class CranixListComponent implements OnInit, OnChanges {
   redirectToDelete = (object) => {
     this.objectService.deleteObjectDialog(object, this.objectType, '')
   }
+  redirectToEdit = (object) => {
+    this.context.componentParent.redirectToEdit(object)
+  }
 
   editInstitutes(object) {
     this.context.componentParent.editInstitutes(object)

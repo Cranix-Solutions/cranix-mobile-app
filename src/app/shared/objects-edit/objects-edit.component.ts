@@ -26,7 +26,6 @@ export class ObjectsEditComponent implements OnInit {
   objectId: number;
   objectActionTitle: string = "";
   fixedRole: string;
-  labelPlacement: string = "stacked"
   toggleLabelPlacement: string = "start"
 
   patterns = {

@@ -8,6 +8,7 @@ import { RoomsService } from 'src/app/services/rooms.service';
 import { SecurityService } from 'src/app/services/security-service';
 import { Room } from 'src/app/shared/models/data-model';
 import { AccessInRoom } from 'src/app/shared/models/secutiry-model';
+import { AuthenticationService } from 'src/app/services/auth.service';
 @Component({
   standalone: false,
     selector: 'cranix-add-edit-room-access',
@@ -28,7 +29,8 @@ export class AddEditRoomAccessComponent implements OnInit {
     private modalController: ModalController,
     public securityService: SecurityService,
     public translateService: TranslateService,
-    public roomService: RoomsService
+    public roomService: RoomsService,
+    public authService: AuthenticationService
   ) {
   }
   ngOnInit() {

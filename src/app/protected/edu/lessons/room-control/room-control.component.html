@@ -8,19 +8,19 @@
         size="large">
       </ion-icon>
     </ion-button>
-    <ion-button *ngIf="authS.isAllowed('education.proxy')" [disabled]="eduS.disableChange"
+    <ion-button *ngIf="authService.isAllowed('education.proxy')" [disabled]="eduS.disableChange"
       matTooltip="{{ 'Filtered internet access' | translate}}" (click)="setAccess('proxy')">
       <ion-icon [ngStyle]="{'color': eduS.room.accessInRooms.proxy  ? '#2dd36f' : '#eb445a'}" name="globe-sharp"
         size="large">
       </ion-icon>
     </ion-button>
-    <ion-button *ngIf="authS.isAllowed('room.direct')" matTooltip="{{ 'Direct internet access' | translate}}"
+    <ion-button *ngIf="authService.isAllowed('room.direct')" matTooltip="{{ 'Direct internet access' | translate}}"
       (click)="setAccess('direct')" [disabled]="eduS.disableChange">
       <ion-icon [ngStyle]="{'color': eduS.room.accessInRooms.direct  ? '#2dd36f' : '#eb445a'}" name="nuclear-sharp"
         size="large">
       </ion-icon>
     </ion-button>
-    <ion-button *ngIf="authS.isAllowed('room.direct')" matTooltip="{{ 'Insert allowed domains' | translate}}"
+    <ion-button *ngIf="authService.isAllowed('room.direct')" matTooltip="{{ 'Insert allowed domains' | translate}}"
       [disabled]="eduS.disableChange || eduS.room.accessInRooms.direct" (click)="setExceptionsModalIsOpen = true">
       <ion-icon name="arrow-redo-circle-outline" size="large"></ion-icon>
       <ion-modal [isOpen]="setExceptionsModalIsOpen" #setExceptionsModal>
@@ -70,7 +70,7 @@
       <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
       itemTextField="name" (onChange)="roomSelected()"></cranix-search>
     </div>
-    <div slot="end" *ngIf="!authS.isMD()" lines="none" matTooltip="{{'Select picture size' | translate}}">
+    <div slot="end" *ngIf="!authService.isMD()" lines="none" matTooltip="{{'Select picture size' | translate}}">
       <ion-label [position]="authService.settings.labelPlacement">{{'Select picture size' | translate }}</ion-label>
       {{gridSize}}
       <ion-select *ngIf="eduS.selectedRoom" [(ngModel)]="gridSize" name="gridSize" (ionChange)="sizeChange($event)"

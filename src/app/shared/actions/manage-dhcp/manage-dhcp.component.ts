@@ -26,9 +26,9 @@ export class ManageDhcpComponent implements OnInit {
 
   constructor(
     private utilsService: UtilsService,
-    private authService: AuthenticationService,
     private http: HttpClient,
     private objectService: GenericObjectService,
+    public authService: AuthenticationService,
     public  modalController: ModalController
   ) {
     let id = 0;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { SystemService } from 'src/app/services/system.service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -19,7 +20,8 @@ export class SetpasswordComponent implements OnInit {
   @Input() type;
   constructor(
     public modalController: ModalController,
-    public systemService: SystemService
+    public systemService: SystemService,
+    public authService: AuthenticationService
   ) {
     console.log('type is:', this.type);
     this.systemService.getSystemConfigValue("DEFAULT_MUST_CHANGE").subscribe(

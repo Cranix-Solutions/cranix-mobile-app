@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { SystemService } from 'src/app/services/system.service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ import { SystemService } from 'src/app/services/system.service';
     constructor(
       public modalController: ModalController,
       public systemService: SystemService,
-      public objectService: GenericObjectService
+      public objectService: GenericObjectService,
+    public authService: AuthenticationService
     ) { }
   
     ngOnInit() { }

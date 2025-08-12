@@ -3,6 +3,7 @@ import { OutgoingRule } from 'src/app/shared/models/secutiry-model';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { ModalController } from '@ionic/angular';
 import { SecurityService } from 'src/app/services/security-service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 class SourceObject {
   public key:  number;
@@ -19,6 +20,7 @@ export class AddOutgoingRuleComponent {
   rule: OutgoingRule = new OutgoingRule();
   selectedSource;
   constructor(
+    public authService: AuthenticationService,
     public objectService: GenericObjectService,
     public securityService: SecurityService,
     public modalCtrl: ModalController
