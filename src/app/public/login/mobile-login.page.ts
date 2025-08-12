@@ -16,7 +16,7 @@ class server {
 @Component({
     standalone: false,
     selector: 'app-login',
-    templateUrl: './login.page.html',
+    templateUrl: './mobile-login.page.html',
     styleUrls: ['./login.page.scss'],
 })
 export class LoginPage{
