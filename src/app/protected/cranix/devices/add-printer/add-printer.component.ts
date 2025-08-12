@@ -22,9 +22,9 @@ export class AddPrinterComponent implements OnInit {
   name: string = "";
   printer: Printer = new Printer();
   driverFile;
-  model = { id: "", label: "" };
+  model = { id: "", name: "" };
   models = {};
-  manufacturer = { id: "", label: "" };
+  manufacturer = { id: "", name: "" };
   manufacturers = [];
   submitted = false;
   printerDevices: Device[] = [];
@@ -48,10 +48,10 @@ export class AddPrinterComponent implements OnInit {
       (val) => {
         console.log(val)
         for (let man of Object.keys(val).sort()) {
-          this.manufacturers.push({ id: man, label: man })
+          this.manufacturers.push({ id: man, name: man })
           this.models[man] = []
           for (let mod of val[man]) {
-            this.models[man].push({ id: mod, label: mod })
+            this.models[man].push({ id: mod, name: mod })
           }
         }
         //this.models = val;
@@ -79,7 +79,7 @@ export class AddPrinterComponent implements OnInit {
         this.printer = this.object;
         this.originalModel = this.printer.model
         this.originalMac = this.printer.mac
-        this.model = { id: this.originalModel, label: this.originalModel }
+        this.model = { id: this.originalModel, name: this.originalModel }
     }
   }
 
@@ -106,7 +106,7 @@ export class AddPrinterComponent implements OnInit {
       this.authService.log(this.room);
       this.printer.roomId = this.room.id;
 
-      //this.model = { id: this.printer.model, label: this.printer.model }
+      //this.model = { id: this.printer.model, name: this.printer.model }
     }
   }
 

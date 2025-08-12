@@ -24,7 +24,7 @@
     <ion-list lines="full">
       <ion-item *ngIf="action == 'add'">
         <ion-label position="stacked">{{'roomId'| translate}}</ion-label>
-	<cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect" [multiple]="false" name="room"></cranix-search>
+	      <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect" [multiple]="false" name="room"></cranix-search>
       </ion-item>
       <ion-item *ngIf="action == 'queue'">
         <ion-label position="stacked">{{'device'| translate}}</ion-label>
@@ -62,7 +62,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">{{'model'| translate}}</ion-label>
-	<cranix-search objectType="model" [(ngModel)]="model" [items]="models[manufacturer.id]" [multiple]="false" name="model"></cranix-search>
+	      <cranix-search objectType="model" [(ngModel)]="model" [items]="models[manufacturer.id]" [multiple]="false" name="model"></cranix-search>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">{{ driverFile | translate }}</ion-label>
