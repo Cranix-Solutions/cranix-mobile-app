@@ -9,9 +9,11 @@
     </ion-searchbar>
   </ion-item>
   <ion-buttons slot="end">
-    <ion-button size="small" fill="solid" (click)="redirectToEdit(null)" [matTooltip]="addToolTip">
+    @if(context && context.componentParent.redirectToEdit){
+    <ion-button size="small" fill="solid" (click)="context.componentParent.redirectToEdit(null)" [matTooltip]="addToolTip">
       <ion-icon slot="icon-only" name="add-circle"></ion-icon>
     </ion-button>
+  }
     @if(objectType == 'printer' && authService.isAllowed('printers.add')) {
     <ion-button size="small" fill="solid" (click)="addPrinter()"
       matTooltip="{{'Create a new printer queue' | translate }}">

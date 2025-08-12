@@ -1,6 +1,6 @@
 <form #addPrinterFrom="ngForm" (ngSubmit)="onSubmit()">
   <ion-header translucent>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
       <ion-title *ngIf="action=='add'">{{ 'Add printer' | translate }}</ion-title>
       <ion-title *ngIf="action=='queue'">{{ 'Add printer queue' | translate }}</ion-title>
       <ion-title *ngIf="action=='modify'">{{ 'Modify printer' | translate }}</ion-title>
@@ -24,29 +24,7 @@
     <ion-list lines="full">
       <ion-item *ngIf="action == 'add'">
         <ion-label position="stacked">{{'roomId'| translate}}</ion-label>
-        <ionic-selectable
-          #ionicSelectable
-          (onChange)="roomChanged($event.value)"
-          [items]="roomsToSelect"
-          itemValueField="id"
-          itemTextField="name"
-          [canSearch]="true">
-          <ng-template ionicSelectableHeaderTemplate>
-            <ion-toolbar>
-              <ion-title>
-                {{ "Select a Room" | translate }}
-              </ion-title>
-              <ion-buttons slot="end">
-                <ion-button ion-button (click)="ionicSelectable.close()">
-                  <ion-icon color="danger" name="close"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ng-template>
-          <ng-template ionicSelectableItemIconTemplate>
-            <div></div>
-          </ng-template>
-        </ionic-selectable>
+	<cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect" [multiple]="false" name="room"></cranix-search>
       </ion-item>
       <ion-item *ngIf="action == 'queue'">
         <ion-label position="stacked">{{'device'| translate}}</ion-label>
@@ -80,46 +58,11 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">{{'manufacturer'| translate}}</ion-label>
-        <ionic-selectable #manufacturerSelect [(ngModel)]="manufacturer" [items]="manufacturers"
-          [ngModelOptions]="{standalone: true}" itemValueField="key" itemTextField="label" [canSearch]="true">
-          <ng-template ionicSelectableHeaderTemplate>
-            <ion-toolbar>
-              <ion-title>
-                {{ "Select a manufacturer" | translate }}
-              </ion-title>
-              <ion-buttons slot="end">
-                <ion-button ion-button (click)="manufacturerSelect.close()">
-                  <ion-icon color="danger" name="close"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ng-template>
-          <ng-template ionicSelectableItemIconTemplate>
-            <div></div>
-          </ng-template>
-        </ionic-selectable>
+        <cranix-search objectType="manufacturer" [(ngModel)]="manufacturer" [items]="manufacturers" [multiple]="false" name="manufacturer"></cranix-search>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">{{'model'| translate}}</ion-label>
-        <ionic-selectable #modelSelect [(ngModel)]="model" [items]="models[manufacturer.key]"
-          [ngModelOptions]="{standalone: true}" itemValueField="key" itemTextField="label" [canSearch]="true"
-          (onSelect)="setModel($event)">
-          <ng-template ionicSelectableHeaderTemplate>
-            <ion-toolbar>
-              <ion-title>
-                {{ "Select a model" | translate }}
-              </ion-title>
-              <ion-buttons slot="end">
-                <ion-button ion-button (click)="modelSelect.close()">
-                  <ion-icon color="danger" name="close"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ng-template>
-          <ng-template ionicSelectableItemIconTemplate>
-            <div></div>
-          </ng-template>
-        </ionic-selectable>
+	<cranix-search objectType="model" [(ngModel)]="model" [items]="models[manufacturer.id]" [multiple]="false" name="model"></cranix-search>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">{{ driverFile | translate }}</ion-label>

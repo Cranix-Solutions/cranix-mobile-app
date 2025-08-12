@@ -1,33 +1,29 @@
 <cranix-toolbar title="{{ 'Software installation status:' | translate}}"></cranix-toolbar>
 <ion-content>
+  @if(ready){
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-label position="stacked">{{'Softwares'|translate}}</ion-label>
-        <ionic-selectable #softwareSelect [(ngModel)]="selectedSoftwares" [ngModelOptions]="{standalone: true}"
-          [items]="softwares" itemValueField="key" itemTextField="value" [canSearch]="true" [isMultiple]="true"
-          placeholder="Select Softwares" (onChange)="readFilteredSoftwareData()">
-        </ionic-selectable>
+        <cranix-search objectType="software" [(ngModel)]="selectedSoftwares" [items]="softwares" itemTextField="value"
+          [multiple]="true" (onChange)="readFilteredSoftwareData()">
+        </cranix-search>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
-        <ion-label position="stacked">{{'Rooms'|translate}}</ion-label>
-        <ionic-selectable #roomSelect [(ngModel)]="selectedRooms" [ngModelOptions]="{standalone: true}" [items]="rooms"
-          itemValueField="key" itemTextField="value" [canSearch]="true" [isMultiple]="true" placeholder="Select Rooms"
-          (onChange)="readFilteredSoftwareData()">
-        </ionic-selectable>
+        <cranix-search objectType="room"  [(ngModel)]="selectedRooms" [items]="rooms" itemTextField="value" [multiple]="true" (onChange)="readFilteredSoftwareData()">
+        </cranix-search>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
-        <ion-label position="stacked">{{'Installation Status'|translate}}</ion-label>
-        <ion-select multiple="true" [(ngModel)]="selectedStati" placeholder="Select Installation Status"
-          (ionChange)="readFilteredSoftwareData()">
-          <ion-select-option *ngFor="let status of stati" [value]="status">{{status | translate }}</ion-select-option>
-        </ion-select>
+        <cranix-search objectType="status"  [(ngModel)]="selectedStati" [items]="stati" itemTextField="value" [multiple]="true" (onChange)="readFilteredSoftwareData()">
+        </cranix-search>
       </ion-item>
     </ion-col>
   </ion-row>
   <cranix-list objectType="softwarestatus" [context]="context" [rowData]="softwareData"></cranix-list>
+}@else{
+  {{'Loading data ...'|translate}}
+}
 </ion-content>

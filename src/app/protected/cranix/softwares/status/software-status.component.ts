@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 //Own stuff
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { LanguageService } from 'src/app/services/language.service';
 import { SoftwareService } from 'src/app/services/softwares.service'
 import { SoftwareStatus } from 'src/app/shared/models/data-model';
 
@@ -16,69 +17,61 @@ export class SoftwareStatusComponent {
   softwareDataBack: SoftwareStatus[] = [];
   selectedRooms = [];
   selectedSoftwares = [];
-  selectedStati: string[] = [];
+  selectedStati = [];
   rooms = [];
   softwares = [];
-  stati: string[] = [];
+  stati  = [];
+  ready: boolean = false;
   constructor(
     public authService: AuthenticationService,
-    public softwareService: SoftwareService
+    public softwareService: SoftwareService,
+    private languageService: LanguageService
   ) {
     this.context = { componentParent: this };
     this.readSoftwareData();
   }
 
   readSoftwareData() {
-    let subM = this.softwareService.getSoftwareStatus().subscribe(
+    this.softwareService.getSoftwareStatus().subscribe(
       (val) => {
+        this.ready = false;
         this.softwareData = val;
-        this.authService.log(val);
-        let temp1 = [];
-        let temp2 = [];
+        console.log(val);
         for (let obj of this.softwareData) {
-          if (temp1.indexOf(obj.softwareName) == -1) {
-            temp1.push(obj.softwareName)
-            this.softwares.push(
-              { key: obj.softwareName, value: obj.softwareName }
-            )
+          if (this.softwares. filter( o => o.id == obj.softwareName ).length == 0 ) {
+            this.softwares.push({ id: obj.softwareName, value: obj.softwareName })
           }
-          if (temp2.indexOf(obj.roomName) == -1) {
-            temp2.push(obj.roomName)
-            this.rooms.push(
-              { key: obj.roomName, value: obj.roomName }
-            )
+          if (this.rooms.filter( o => o.id == obj.roomName ).length == 0) {
+            this.rooms.push({ id: obj.roomName, value: obj.roomName })
           }
-          if (this.stati.indexOf(obj.status) == -1) {
-            this.stati.push(obj.status)
+          if (this.stati.filter(o => o.id == obj.status).length == 0) {
+            this.stati.push({ id: obj.status, value: this.languageService.trans(obj.status)})
           }
         }
         this.stati.sort()
         this.softwares.sort()
         this.rooms.sort()
+        console.log(this.rooms)
+        this.ready = true;
       })
   }
 
   readFilteredSoftwareData() {
+    this.ready = false;
     if (this.softwareDataBack.length == 0) {
       this.softwareDataBack = this.softwareData;
     }
-    this.softwareData = [];
-    let sRooms:    string[] = [];
-    let sSoftware: string[] = [];
-    for( let m of this.selectedRooms ) {
-      sRooms.push(m.value)
-    }
-    for( let m of this.selectedSoftwares ) {
-      sSoftware.push(m.value)
-    }
+    let tmp = [];
     for (let obj of this.softwareDataBack) {
-      if (sRooms.length == 0 || sRooms.indexOf(obj.roomName) != -1) {
-        if (sSoftware.length == 0 || sSoftware.indexOf(obj.softwareName) != -1) {
-          if (this.selectedStati.length == 0 || this.selectedStati.indexOf(obj.status) != -1) {
-            this.softwareData.push(obj)
+      if (this.selectedRooms.length == 0 || this.selectedRooms.filter(o=>o.id == obj.roomName).length > 0) {
+        if (this.selectedSoftwares.length == 0 || this.selectedSoftwares.filter(o => o.id == obj.softwareName).length > 0 ) {
+          if (this.selectedStati.length == 0 || this.selectedStati.filter(o => o.id == obj.status).length > 0) {
+            tmp.push(obj)
           }
         }
       }
     }
+    this.softwareData = tmp;
+    this.ready = true
   }
 }

@@ -42,8 +42,8 @@
 <ion-content>
   @if(segment == 'basic') {
   <ion-item lines="none">
-    <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="proxyQuickFilter">
-    </ion-input>
+    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="proxyQuickFilter">
+    </ion-searchbar>
   </ion-item>
   <div style="display: flex; width: 100%; background-color : {{authService.rowColors[2]}}">
     <div class="divclass" style="padding: 5px 10px 5px; margin-left: 15px;">{{'Name'|translate}}</div>

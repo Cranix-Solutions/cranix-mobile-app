@@ -59,8 +59,8 @@
     }
   </ion-toolbar>
   <ion-item lines="none">
-    <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="roomsAccessFilter">
-    </ion-input>
+    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="roomsAccessFilter">
+    </ion-searchbar>
   </ion-item>
 
   @if(segment == 'list'){

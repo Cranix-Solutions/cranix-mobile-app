@@ -21,23 +21,7 @@
     <ion-content fullscreen>
         <ion-list>
             <ion-item *ngIf="owned">
-                <ion-label position="stacked">{{'category' | translate}}</ion-label>
-                <ionic-selectable #ionicSelectable [isMultiple]="true" [(ngModel)]="categories"
-                    [ngModelOptions]="{standalone: true}" [items]="informationsService.categories" itemValueField="id"
-                    itemTextField="name" [canSearch]="true">
-                    <ng-template ionicSelectableHeaderTemplate>
-                        <ion-toolbar>
-                            <ion-title>
-                                {{ "Select Categories" | translate }}
-                            </ion-title>
-                            <ion-buttons slot="end">
-                                <ion-button ion-button (click)="ionicSelectable.close()">
-                                    <ion-icon color="danger" name="close"></ion-icon>
-                                </ion-button>
-                            </ion-buttons>
-                        </ion-toolbar>
-                    </ng-template>
-                </ionic-selectable>
+	        <cranix-search objectType="category" [(ngModel)]="categories" [items]="informationsService.categories" [multiple]="true"></cranix-search>
             </ion-item>
             <ion-item *ngIf="owned">
                 <ion-label position="stacked">{{'title' | translate}}</ion-label>

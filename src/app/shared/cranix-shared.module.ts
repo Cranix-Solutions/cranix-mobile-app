@@ -36,7 +36,6 @@ import { HwconfIdCellRenderer } from 'src/app/pipes/ag-hwconfid-renderer';
 import { InstituteActionCellRenderer } from 'src/app/pipes/ag-institute-action-renderer';
 import { InstituteStatusRenderer } from 'src/app/pipes/ag-institute-status-renderer'
 import { IonicModule } from '@ionic/angular';
-import { IonicSelectableComponent, IonicSelectableHeaderTemplateDirective, IonicSelectableValueTemplateDirective, IonicSelectablePlaceholderTemplateDirective } from 'ionic-selectable'
 import { ManageDhcpComponent } from 'src/app/shared/actions/manage-dhcp/manage-dhcp.component'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -125,10 +124,6 @@ import { simpleToolbarOptions } from 'src/app/shared/models/constants'
     CommonModule,
     FormsModule,
     IonicModule,
-    IonicSelectableComponent,
-    IonicSelectableHeaderTemplateDirective,
-    IonicSelectablePlaceholderTemplateDirective,
-    IonicSelectableValueTemplateDirective,
     MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
@@ -150,10 +145,6 @@ import { simpleToolbarOptions } from 'src/app/shared/models/constants'
     CranixToolbarComponent,
     FormsModule,
     IonicModule,
-    IonicSelectableComponent,
-    IonicSelectableHeaderTemplateDirective,
-    IonicSelectablePlaceholderTemplateDirective,
-    IonicSelectableValueTemplateDirective,
     MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,

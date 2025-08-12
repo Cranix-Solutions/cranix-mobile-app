@@ -85,79 +85,16 @@
                         </ion-item>
                         }
                         <ion-item>
-                            <ion-label>{{'Select groups for the event' | translate}}</ion-label>
-                            <ionic-selectable #ionicSelectGroups itemValueField="id" itemTextField="description"
-                                [isMultiple]="true" [(ngModel)]="selectedEvent.groups"
-                                [ngModelOptions]="{standalone: true}" [items]="myGroups" [canSearch]="true">
-                                <ng-template ionicSelectableHeaderTemplate>
-                                    <ion-header>
-                                        <ion-toolbar color="primary">
-                                            <ion-title>
-                                                {{ "Select groups for the event" | translate }}
-                                            </ion-title>
-                                            <ion-buttons slot="end">
-                                                <ion-button ion-button (click)="ionicSelectGroups.close()">
-                                                    <ion-icon color="danger" name="close"></ion-icon>
-                                                </ion-button>
-                                            </ion-buttons>
-                                        </ion-toolbar>
-                                    </ion-header>
-                                </ng-template>
-                                <ng-template ionicSelectableValueTemplate let-ports="value">
-                                    <div class="ionic-selectable-value-item">
-                                        {{ports.length}} {{'groups are selected'|translate}}
-                                    </div>
-                                </ng-template>
-                            </ionic-selectable>
+                            <ion-label>{{'Groups for the event' | translate}}</ion-label>
+			                <cranix-search objectType="group" [(ngModel)]="selectedEvent.groups" name="groups" [items]="myGroups" [multiple]="true"></cranix-search>
                         </ion-item>
                         <ion-item>
-                            <ion-label>{{'Select users for the event' | translate}}</ion-label>
-                            <ionic-selectable #ionicSelectUsers itemValueField="id" itemTextField="fullName"
-                                [isMultiple]="true" [(ngModel)]="selectedEvent.users"
-                                [ngModelOptions]="{standalone: true}" [items]="objectService.allObjects['user']"
-                                [canSearch]="true">
-                                <ng-template ionicSelectableHeaderTemplate>
-                                    <ion-header>
-                                        <ion-toolbar color="primary">
-                                            <ion-title>
-                                                {{ "Select users for the event" | translate }}
-                                            </ion-title>
-                                            <ion-buttons slot="end">
-                                                <ion-button ion-button (click)="ionicSelectUsers.close()">
-                                                    <ion-icon color="danger" name="close"></ion-icon>
-                                                </ion-button>
-                                            </ion-buttons>
-                                        </ion-toolbar>
-                                    </ion-header>
-                                </ng-template>
-                                <ng-template ionicSelectableValueTemplate let-ports="value">
-                                    <div class="ionic-selectable-value-item">
-                                        {{ports.length}} {{'users are selected'|translate}}
-                                    </div>
-                                </ng-template>
-                            </ionic-selectable>
+                            <ion-label>{{'Users for the event' | translate}}</ion-label>
+			                <cranix-search objectType="user" [(ngModel)]="selectedEvent.users" name="users" [multiple]="true"></cranix-search>
                         </ion-item>
                         <ion-item>
-                            <ion-label>{{'Select room for the event' | translate}}</ion-label>
-                            <ionic-selectable #ionicSelectRoom itemValueField="id" itemTextField="description"
-                                [isMultiple]="false" [(ngModel)]="selectedEvent.room"
-                                [ngModelOptions]="{standalone: true}" [items]="roomsForEvents"
-                                [canSearch]="true">
-                                <ng-template ionicSelectableHeaderTemplate>
-                                    <ion-header>
-                                        <ion-toolbar color="primary">
-                                            <ion-title>
-                                                {{ "Select room for the event" | translate }}
-                                            </ion-title>
-                                            <ion-buttons slot="end">
-                                                <ion-button ion-button (click)="ionicSelectRoom.close()">
-                                                    <ion-icon color="danger" name="close"></ion-icon>
-                                                </ion-button>
-                                            </ion-buttons>
-                                        </ion-toolbar>
-                                    </ion-header>
-                                </ng-template>
-                            </ionic-selectable>
+                            <ion-label>{{'Room for the event' | translate}}</ion-label>
+			                <cranix-search objectType="room" [(ngModel)]="selectedEvent.room" name="rooms" [multiple]="false"></cranix-search>
                         </ion-item>
                     </ion-list>
                     <ion-list [inset]="true">
@@ -240,55 +177,11 @@
                     </ion-item>
                     <ion-item>
                         <ion-label>{{'Select groups calendars' | translate}}</ion-label>
-                        <ionic-selectable #ionicSelectGroups itemValueField="id" itemTextField="description"
-                            [isMultiple]="true" [(ngModel)]="eventFilter.groups" [ngModelOptions]="{standalone: true}"
-                            [items]="myGroups" [canSearch]="true">
-                            <ng-template ionicSelectableHeaderTemplate>
-                                <ion-header>
-                                    <ion-toolbar color="primary">
-                                        <ion-title>
-                                            {{ "Select groups calendars to show" | translate }}
-                                        </ion-title>
-                                        <ion-buttons slot="end">
-                                            <ion-button ion-button (click)="ionicSelectGroups.close()">
-                                                <ion-icon color="danger" name="close"></ion-icon>
-                                            </ion-button>
-                                        </ion-buttons>
-                                    </ion-toolbar>
-                                </ion-header>
-                            </ng-template>
-                            <ng-template ionicSelectableValueTemplate let-ports="value">
-                                <div class="ionic-selectable-value-item">
-                                    {{ports.length}} {{'groups are selected'|translate}}
-                                </div>
-                            </ng-template>
-                        </ionic-selectable>
+			            <cranix-search objectType="group" [(ngModel)]="eventFilter.groups" [items]="myGroups" [multiple]="true"></cranix-search>
                     </ion-item>
                     <ion-item>
                         <ion-label>{{'Select room calendars' | translate}}</ion-label>
-                        <ionic-selectable #ionicSelectUsers itemValueField="id" itemTextField="description"
-                            [isMultiple]="true" [(ngModel)]="eventFilter.rooms" [ngModelOptions]="{standalone: true}"
-                            [items]="roomsForEvents" [canSearch]="true">
-                            <ng-template ionicSelectableHeaderTemplate>
-                                <ion-header>
-                                    <ion-toolbar color="primary">
-                                        <ion-title>
-                                            {{ "Select room calendars to show" | translate }}
-                                        </ion-title>
-                                        <ion-buttons slot="end">
-                                            <ion-button ion-button (click)="ionicSelectUsers.close()">
-                                                <ion-icon color="danger" name="close"></ion-icon>
-                                            </ion-button>
-                                        </ion-buttons>
-                                    </ion-toolbar>
-                                </ion-header>
-                            </ng-template>
-                            <ng-template ionicSelectableValueTemplate let-ports="value">
-                                <div class="ionic-selectable-value-item">
-                                    {{ports.length}} {{'rooms are selected'|translate}}
-                                </div>
-                            </ng-template>
-                        </ionic-selectable>
+			            <cranix-search objectType="room" [(ngModel)]="eventFilter.rooms" [items]="myGroups" [multiple]="true"></cranix-search>
                     </ion-item>
                 </ion-list>
             </ion-content>

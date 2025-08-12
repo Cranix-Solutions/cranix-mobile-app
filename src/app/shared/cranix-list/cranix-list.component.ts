@@ -99,7 +99,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     }
     this.objectKeys = getObjectKeys(this.objectType);
     this.createColumnDefs();
-    console.log(this.objectType, this.objectKeys, this.columnDefs)
+    console.log(this.context, this.objectType, this.objectKeys, this.columnDefs)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -398,10 +398,6 @@ export class CranixListComponent implements OnInit, OnChanges {
 
   async redirectToGroups(object) {
     this.context.componentParent.redirectToGroups(object);
-  }
-
-  async redirectToEdit(object) {
-    this.context.componentParent.redirectToEdit(object);
   }
 
   async setDhcp(object) {

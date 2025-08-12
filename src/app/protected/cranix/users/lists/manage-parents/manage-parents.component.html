@@ -111,30 +111,7 @@
             @if(isUpcomming || selectedPTM.id == 0){
             <ion-item>
                 <ion-label>{{'Select classes for the PTM' | translate}}</ion-label>
-                <ionic-selectable #ionicSelectClasses itemValueField="id" itemTextField="name" [isMultiple]="true"
-                    [(ngModel)]="selectedPTM.classes" [ngModelOptions]="{standalone: true}" [items]="classes"
-                    [canSearch]="true">
-                    <ng-template ionicSelectableHeaderTemplate>
-                        <ion-header>
-                            <ion-toolbar color="primary">
-                                <ion-title>
-                                    {{ "Select classes for the PTM" | translate }}
-                                </ion-title>
-                                <ion-buttons slot="end">
-                                    <ion-button ion-button (click)="ionicSelectClasses.close()">
-                                        <ion-icon color="danger" name="close"></ion-icon>
-                                    </ion-button>
-                                </ion-buttons>
-                            </ion-toolbar>
-                        </ion-header>
-                    </ng-template>
-                    <ng-template ionicSelectableValueTemplate let-ports="value">
-                        <div class="ionic-selectable-value-item">
-                            {{ports.length}} {{'classes are selected'|translate}}
-                        </div>
-                    </ng-template>
-                </ionic-selectable>
-
+		<cranix-search objectType="group" [(ngModel)]="selectedPTM.classes" [items]="classes" [multiple]="true"></cranix-search>
             </ion-item>
             }
             @if(selectedPTM.id == 0 && formerPtms.length > 0) {

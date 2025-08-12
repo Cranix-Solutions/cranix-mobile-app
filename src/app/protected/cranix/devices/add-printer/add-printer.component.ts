@@ -22,9 +22,9 @@ export class AddPrinterComponent implements OnInit {
   name: string = "";
   printer: Printer = new Printer();
   driverFile;
-  model = { key: "", label: "" };
+  model = { id: "", label: "" };
   models = {};
-  manufacturer = { key: "", label: "" };
+  manufacturer = { id: "", label: "" };
   manufacturers = [];
   submitted = false;
   printerDevices: Device[] = [];
@@ -46,11 +46,12 @@ export class AddPrinterComponent implements OnInit {
   ngOnInit() {
     let subs = this.printersService.getDrivers().subscribe(
       (val) => {
+        console.log(val)
         for (let man of Object.keys(val).sort()) {
-          this.manufacturers.push({ key: man, label: man })
+          this.manufacturers.push({ id: man, label: man })
           this.models[man] = []
           for (let mod of val[man]) {
-            this.models[man].push({ key: mod, label: mod })
+            this.models[man].push({ id: mod, label: mod })
           }
         }
         //this.models = val;
@@ -78,7 +79,7 @@ export class AddPrinterComponent implements OnInit {
         this.printer = this.object;
         this.originalModel = this.printer.model
         this.originalMac = this.printer.mac
-        this.model = { key: this.originalModel, label: this.originalModel }
+        this.model = { id: this.originalModel, label: this.originalModel }
     }
   }
 
@@ -105,12 +106,12 @@ export class AddPrinterComponent implements OnInit {
       this.authService.log(this.room);
       this.printer.roomId = this.room.id;
 
-      //this.model = { key: this.printer.model, label: this.printer.model }
+      //this.model = { id: this.printer.model, label: this.printer.model }
     }
   }
 
   setModel(ev) {
-    this.printer.model = ev.item.key
+    this.printer.model = ev.item.id
   }
   onSubmit() {
     console.log(this.printer)

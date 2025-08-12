@@ -47,11 +47,9 @@
                 @if(myPTMTeacherInRoom.id == 0){
                 <ion-item>
                     @if(authService.isAllowed('ptm.registerRoom')){
-                    <ion-label>{{'Register a room'|translate}}</ion-label>
-                    <ionic-selectable #ionicSelectRoom itemValueField="id" itemTextField="description"
-                        [isMultiple]="false" [(ngModel)]="myPTMTeacherInRoom.room" [ngModelOptions]="{standalone: true}"
-                        [items]="freeRooms" [canSearch]="true" (onChange)="selectRoom()">
-                    </ionic-selectable>
+		    <cranix-search objectType="room" itemTextField="description" [(ngModel)]="myPTMTeacherInRoom.room"
+		    	emptyLabel="{{'Register a room'|translate}}" [multiple]="true" (onChange)="selectRoom()">
+                    </cranix-search>
                     }@else{
                     {{'You have to wait until a room will be reserved for you.'|translate}}
                     }
@@ -150,24 +148,10 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>{{'Select student for the event'|translate}}</ion-label>
-                    <ionic-selectable #ionSelectStudent itemValueField="id" itemTextField="fullName"
-                        [isMultiple]="false" [(ngModel)]="selectedEvent.student" [ngModelOptions]="{standalone: true}"
-                        [items]="students" [canSearch]="true">
-                        <ng-template ionicSelectableHeaderTemplate>
-                            <ion-header>
-                                <ion-toolbar color="primary">
-                                    <ion-title>
-                                        {{ "Select student for the event" | translate }}
-                                    </ion-title>
-                                    <ion-buttons slot="end">
-                                        <ion-button ion-button (click)="ionSelectStudent.close()">
-                                            <ion-icon color="danger" name="close"></ion-icon>
-                                        </ion-button>
-                                    </ion-buttons>
-                                </ion-toolbar>
-                            </ion-header>
-                        </ng-template>
-                    </ionic-selectable>
+                    <cranix-search objectType="user" itemTextField="fullName" [multiple]="false"
+		       [(ngModel)]="selectedEvent.student"[items]="students"
+		       emptyLabel="{{'Select student for the event'|translate}}">
+                    </cranix-search>
                 </ion-item>
             </ion-list>
         </ion-content>

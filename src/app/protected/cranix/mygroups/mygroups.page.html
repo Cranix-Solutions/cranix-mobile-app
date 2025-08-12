@@ -18,17 +18,17 @@
 <ion-content>
   @if(authService.isMD()){
   <cranix-md-list [objectType]="segment" [rowData]="objectService.allObjects[segment]"
-    context="context"></cranix-md-list>
+    [context]="context"></cranix-md-list>
   }@else{
   @switch(segment) {
   @case('education/user'){
-  <cranix-list objectType="education/user" context="context"></cranix-list>
+  <cranix-list objectType="education/user" [context]="context"></cranix-list>
   }
   @case('education/group'){
-  <cranix-list objectType="education/group" context="context"></cranix-list>
+  <cranix-list objectType="education/group" [context]="context"></cranix-list>
   }
   @case('education/guestUser'){
-  <cranix-list objectType="education/guestUser" context="context"></cranix-list>
+  <cranix-list objectType="education/guestUser" [context]="context"></cranix-list>
   }
   }
   }

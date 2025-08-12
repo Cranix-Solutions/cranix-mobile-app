@@ -18,6 +18,7 @@ export class AddEditRoomAccessComponent implements OnInit {
   objectKeys: string[] = [];
   objectActionTitle: string = "";
   roomsToSelect: Room[];
+  selectedRoom: Room;
 
   @Input() roomAccess: AccessInRoom;
   @Input() objectAction: string;
@@ -44,6 +45,7 @@ export class AddEditRoomAccessComponent implements OnInit {
     this.objectKeys = Object.getOwnPropertyNames(this.roomAccess);
   }
   roomChanged(room: Room) {
+    console.log(room)
     this.roomAccess.roomId = room.id;
   }
 

@@ -36,10 +36,9 @@ export class MyGroupsPage implements OnInit {
     public route: Router,
     public translateService: TranslateService
   ) {
-
+    this.context = { componentParent: this}
     this.noticeUse = this.authService.isAllowed('notice.use')
     this.mayGroupEdit = this.authService.isOneOfAllowed(['group.modify','group.manage'])
-    this.context = { componentParent: this };
   }
   async ngOnInit() {
     while (!this.objectService.allObjects['education/user']) {
@@ -85,6 +84,9 @@ export class MyGroupsPage implements OnInit {
       case 'education/group': {
         if (!anyObject) { anyObject = new Group() }
         delete anyObject.groupType
+      }
+      case 'education/guestUser': {
+        return this.addEditGuest(anyObject)
       }
     }
     if (action == 'add') {
