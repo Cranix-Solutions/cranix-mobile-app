@@ -334,6 +334,7 @@ export class AuthenticationService {
                 this.session['instituteName'] = sessionStorage.getItem('instituteName');
                 console.log(this.session);
                 this.loadSettings();
+                this.createMenu();
                 this.authenticationState.next(true);
             },
             error: (err) => { console.log(err) },

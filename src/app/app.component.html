@@ -4,7 +4,7 @@
 } @else {
 <ion-app>
   <ion-split-pane contentId="main-content" [disabled]="disabled">
-    @if(authService.authorized) {
+    @if(authService.authenticationState | async) {
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
