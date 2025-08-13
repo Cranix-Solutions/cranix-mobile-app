@@ -6,7 +6,6 @@ import { isDevMode } from '@angular/core';
 export class UtilsService {
 
         savedUrl = ""
-        url = ""
         double = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
         public okBrowser: boolean = true;
         public actMdList;
@@ -15,28 +14,27 @@ export class UtilsService {
                 if (tmp.indexOf("Mozilla") != -1 && tmp.indexOf("Windows") != -1) {
                         this.okBrowser = false;
                 }
-		console.log(this.url)
         }
 
         public hostName(): string {
-		console.log(this.url)
-                if(this.savedUrl != ""){
+                if (this.savedUrl != "") {
                         return this.savedUrl + "/api";
                 }
+		var url = ""
                 var hostname = window.location.hostname;
                 var protocol = window.location.protocol;
                 var port = window.location.port;
                 if (sessionStorage.getItem('shortName')) {
                         if (port) {
-                                this.url = `${protocol}//${hostname}:${port}/${sessionStorage.getItem('shortName')}`
+                                url = `${protocol}//${hostname}:${port}/${sessionStorage.getItem('shortName')}`
                         } else {
-                                this.url = `${protocol}//${hostname}/${sessionStorage.getItem('shortName')}`
+                                url = `${protocol}//${hostname}/${sessionStorage.getItem('shortName')}`
                         }
                 } else if (port) {
-                        this.url = protocol + "//" + hostname + ":" + port + "/api";
+                        url = protocol + "//" + hostname + ":" + port + "/api";
                 }
                 else {
-                        this.url = protocol + "//" + hostname + "/api";
+                        url = protocol + "//" + hostname + "/api";
                 }
                 //console.log("From utils: " + url);
                 //return "https://admin.cephalix.eu/api"
@@ -44,7 +42,7 @@ export class UtilsService {
                 return "https://test-cephalix.cephalix.eu/api"
                 //return "https://192.168.122.100:444/api"
                 return "https://192.168.178.127:444/api"
-                return this.url;
+                return url;
         }
         public log(args) {
                 var dev = isDevMode();
@@ -84,7 +82,7 @@ export class UtilsService {
                 return num
         }
 
-	public toIonISOString(dt: Date | undefined) {
+        public toIonISOString(dt: Date | undefined) {
                 if (dt) {
                         return dt.getFullYear() + "-" +
                                 this.getDouble(dt.getMonth() + 1) + "-" +
@@ -95,7 +93,7 @@ export class UtilsService {
                 return ""
         }
 
-	public toIonDate(dt: Date | undefined) {
+        public toIonDate(dt: Date | undefined) {
                 if (dt) {
                         return dt.getFullYear() + "-" +
                                 this.getDouble(dt.getMonth() + 1) + "-" +
@@ -107,7 +105,7 @@ export class UtilsService {
         public toIonTime(dt: Date | undefined) {
                 if (dt) {
                         return this.getDouble(dt.getHours()) + ":" +
-                               this.getDouble(dt.getMinutes())
+                                this.getDouble(dt.getMinutes())
                 }
                 return ""
         }
@@ -126,18 +124,18 @@ export class UtilsService {
                 document.cookie = `${name}=${value}; ${expires}${cpath}; SameSite=Lax`;
         }
 
-	public formatFileSize(bytes: number): string {
-	    if (bytes === 0) return '0 Bytes';
-            if (!bytes) return '';
+        public formatFileSize(bytes: number): string {
+                if (bytes === 0) return '0 Bytes';
+                if (!bytes) return '';
 
-	    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
-	    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-	    const size = bytes / Math.pow(1024, i);
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                const size = bytes / Math.pow(1024, i);
 
-	    // Formatieren auf zwei Dezimalstellen
-	    const formattedSize = size.toFixed(2);
+                // Formatieren auf zwei Dezimalstellen
+                const formattedSize = size.toFixed(2);
 
-	    return `${formattedSize} ${sizes[i]}`;
-	}
+                return `${formattedSize} ${sizes[i]}`;
+        }
 }
 

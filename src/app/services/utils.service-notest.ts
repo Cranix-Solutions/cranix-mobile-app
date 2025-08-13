@@ -5,7 +5,8 @@ import { isDevMode } from '@angular/core';
 @Injectable()
 export class UtilsService {
 
-	double = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
+        savedUrl = ""
+        double = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
         public okBrowser: boolean = true;
         public actMdList;
         constructor() {
@@ -16,10 +17,13 @@ export class UtilsService {
         }
 
         public hostName(): string {
+                if (this.savedUrl != "") {
+                        return this.savedUrl + "/api";
+                }
+		var url = ""
                 var hostname = window.location.hostname;
                 var protocol = window.location.protocol;
                 var port = window.location.port;
-                var url = '';
                 if (sessionStorage.getItem('shortName')) {
                         if (port) {
                                 url = `${protocol}//${hostname}:${port}/${sessionStorage.getItem('shortName')}`
@@ -66,22 +70,8 @@ export class UtilsService {
                 return '';
         }
 
-        /**
-         * set cookie
-         * @param {string} name
-         * @param {string} value
-         * @param {number} expireHours
-         * @param {string} path
-         */
-        public setCookie(name: string, value: string, expireHours: number, path: string = '') {
-                const d: Date = new Date();
-                d.setTime(d.getTime() + expireHours * 60 * 60 * 1000);
-                const expires = `expires=${d.toUTCString()}`;
-                const cpath = path ? `; path=${path}` : '';
-                document.cookie = `${name}=${value}; ${expires}${cpath}; SameSite=Lax`;
-	}
 
-	public getDouble(num: number) {
+        public getDouble(num: number) {
                 if (this.double[num]) return this.double[num]
                 return num
         }
@@ -105,12 +95,40 @@ export class UtilsService {
                 }
                 return ""
         }
+
         public toIonTime(dt: Date | undefined) {
                 if (dt) {
                         return this.getDouble(dt.getHours()) + ":" +
-                               this.getDouble(dt.getMinutes())
+                                this.getDouble(dt.getMinutes())
                 }
                 return ""
         }
-}
+        /**
+         * set cookie
+         * @param {string} name
+         * @param {string} value
+         * @param {number} expireHours
+         * @param {string} path
+         */
+        public setCookie(name: string, value: string, expireHours: number, path: string = '') {
+                const d: Date = new Date();
+                d.setTime(d.getTime() + expireHours * 60 * 60 * 1000);
+                const expires = `expires=${d.toUTCString()}`;
+                const cpath = path ? `; path=${path}` : '';
+                document.cookie = `${name}=${value}; ${expires}${cpath}; SameSite=Lax`;
+        }
 
+        public formatFileSize(bytes: number): string {
+                if (bytes === 0) return '0 Bytes';
+                if (!bytes) return '';
+
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                const size = bytes / Math.pow(1024, i);
+
+                // Formatieren auf zwei Dezimalstellen
+                const formattedSize = size.toFixed(2);
+
+                return `${formattedSize} ${sizes[i]}`;
+        }
+}

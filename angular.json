@@ -45,6 +45,10 @@
                 {
                   "replace": "src/app/public/login/login.page.ts",
                   "with": "src/app/public/login/mobile-login.page.ts"
+                },
+                {
+                  "replace": "src/app/services/utils.service.ts",
+                  "with": "src/app/services/utils.service-notest.ts"
                 }
               ]
 	    },
@@ -53,6 +57,10 @@
                 {
                   "replace": "src/app/public/login/login.page.ts",
                   "with": "src/app/public/login/mobile-login.page.ts"
+                },
+                {
+                  "replace": "src/app/services/utils.service.ts",
+                  "with": "src/app/services/utils.service-notest.ts"
                 }
               ]
 	    },
@@ -73,6 +81,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/app/services/utils.service.ts",
+                  "with": "src/app/services/utils.service-notest.ts"
                 }
               ],
               "outputHashing": "all"

@@ -8,8 +8,7 @@ echo -n "Can we build y/n "; read b
 if [ $b != "y" ]; then
 	exit
 fi
-cp src/app/services/utils.service.ts-notest src/app/services/utils.service.ts
-cp src/index.html-prod src/index.html
+cp src/index-prod.html src/index.html
 sed -i "s/VERSION-PLACE-HOLDER/${DATE}/" src/app/services/auth.service.ts
 ionic build --prod
 git stash
