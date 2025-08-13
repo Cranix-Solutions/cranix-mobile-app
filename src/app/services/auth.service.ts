@@ -18,7 +18,6 @@ import { TeachingSubject } from '../shared/models/data-model';
 })
 
 export class AuthenticationService {
-    authorized: boolean = false
     authenticationState = new BehaviorSubject(false);
     use2fa: boolean = false;
     crx2fa: string = "";
@@ -227,7 +226,6 @@ export class AuthenticationService {
         let subscription = this.login(user).subscribe({
             next: (val) => {
                 console.log('login respons is', val);
-                this.authorized = true
                 this.session = val;
                 this.session['instituteName'] = instituteName;
                 this.setUpHeaders();
@@ -355,7 +353,6 @@ export class AuthenticationService {
             });
         }
         this.appPages = []
-        this.authorized = false
         this.authenticationState.next(false);
         this.session = null;
         this.use2fa = false;
