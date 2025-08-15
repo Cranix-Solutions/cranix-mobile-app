@@ -99,7 +99,6 @@ export class LoginPage{
         })
         console.log(i)
         this.isAddConnectionOpen = false
-        this.authService.authorized = true
         this.router.navigate(['/']);
     }
     
