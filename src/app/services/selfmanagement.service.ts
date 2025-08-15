@@ -18,7 +18,7 @@ export class SelfManagementService {
         this.hostname = this.utilsService.hostName();
     }
 
-    //GET 
+    //GET
 
     getMySelf() {
         this.url = this.hostname + `/selfmanagement/me`;
@@ -68,7 +68,7 @@ export class SelfManagementService {
         return this.http.get<Room[]>(this.url, { headers: this.authService.headers });
     }
 
-    // POST 
+    // POST
     modMySelf(user: User) {
         const url = this.hostname + "/selfmanagement/modify";
         console.log(url);
@@ -152,12 +152,18 @@ export class SelfManagementService {
     getDir(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post<DirEntry[]>(url, {path: path, action: "list" }, { headers: this.authService.headers }); 
+        return this.http.post<DirEntry[]>(url, {path: path, action: "list" }, { headers: this.authService.headers });
+    }
+
+    getFile(path: string){
+        const url = this.hostname + "/selfmanagement/myFiles";
+        console.log(url);
+        return this.http.post(url, {path: path, action: "get" }, { headers: this.authService.headers });
     }
 
     deleteFile(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post<ServerResponse>(url, {path: path, action: "delete" }, { headers: this.authService.headers }); 
+        return this.http.post<ServerResponse>(url, {path: path, action: "delete" }, { headers: this.authService.headers });
     }
 }

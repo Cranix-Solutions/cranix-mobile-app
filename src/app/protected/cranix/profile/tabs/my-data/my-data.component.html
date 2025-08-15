@@ -8,30 +8,30 @@
       </ion-button>
     </ion-list-header>
     @for(entry of dirList; track entry.path){
-      <ion-item [button]="true" (click)="open(entry)" [detail]="entry.type == 'd'" [disabled]="disabled">
-        @if(entry.type == "d"){
-          <ion-icon name="folder"></ion-icon>
-        }@else{
-          <ion-icon [name]="getIcon(entry)"></ion-icon>
-        }
-         <div class="text-container">
-            <div class="text-row">
-              <span style="font-weight: bold;">{{entry.name}}</span>
-              <span class="right">{{entry.owner}}</span>
-            </div>
-            <div class="text-row">
-              <span class="left">{{entry.last_modified}}</span>
-              <span class="right">{{utilsService.formatFileSize(entry.size)}}</span>
-            </div>
-          </div>
-        <ion-button slot="end" fill="clear" size="small" (click)="delete(entry)" [disabled]="!entry.may_rm">
-          <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
-        </ion-button>
-      </ion-item>
+    <ion-item [button]="true" (click)="open(entry)" [detail]="entry.type == 'd'" [disabled]="disabled">
+      @if(entry.type == "d"){
+      <ion-icon name="folder"></ion-icon>
+      }@else{
+      <ion-icon [name]="getIcon(entry)"></ion-icon>
+      }
+      <div class="text-container">
+        <div class="text-row">
+          <span style="font-weight: bold;">{{entry.name}}</span>
+          <span class="right">{{entry.owner}}</span>
+        </div>
+        <div class="text-row">
+          <span class="left">{{entry.last_modified}}</span>
+          <span class="right">{{utilsService.formatFileSize(entry.size)}}</span>
+        </div>
+      </div>
+      <ion-button slot="end" fill="clear" size="small" (click)="delete(entry)" [disabled]="!entry.may_rm">
+        <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
+      </ion-button>
+    </ion-item>
     }
   </ion-list>
   @if(disabled){
-    {{'Loading data'|translate}}
+  {{'Loading data'|translate}}
   }
 </ion-content>
 <ion-modal #deleteModal [isOpen]="isDeleteOpen" (didDissmiss)="isDeleteOpen = false">
@@ -54,22 +54,27 @@
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Name'|translate}}" value="{{selectedEntry.name}}"></ion-input>
-	      </ion-item>
+          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Name'|translate}}"
+            value="{{selectedEntry.name}}"></ion-input>
+        </ion-item>
         <ion-item>
-          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Full path'|translate}}" value="{{selectedEntry.path}}"></ion-input>
-	      </ion-item>
+          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Full path'|translate}}"
+            value="{{selectedEntry.path}}"></ion-input>
+        </ion-item>
         <ion-item>
-          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Last modified'|translate}}" value="{{selectedEntry.last_modified}}"></ion-input>
-	      </ion-item>
-	      @if(selectedEntry.type != 'd'){
+          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Last modified'|translate}}"
+            value="{{selectedEntry.last_modified}}"></ion-input>
+        </ion-item>
+        @if(selectedEntry.type != 'd'){
         <ion-item>
-          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Size'|translate}}" value="{{utilsService.formatFileSize(selectedEntry.size)}}"></ion-input>
-	      </ion-item>
-	      }
+          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Size'|translate}}"
+            value="{{utilsService.formatFileSize(selectedEntry.size)}}"></ion-input>
+        </ion-item>
+        }
         <ion-item>
-          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Owner'|translate}}" value="{{selectedEntry.owner}}"></ion-input>
-	</ion-item>
+          <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Owner'|translate}}"
+            value="{{selectedEntry.owner}}"></ion-input>
+        </ion-item>
       </ion-list>
     </ion-content>
   </ng-template>

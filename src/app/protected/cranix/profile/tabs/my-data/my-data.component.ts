@@ -49,7 +49,32 @@ export class MyDataComponent  implements OnInit {
         }
       )
     }else{
-      this.disabled = false
+      this.selfService.getFile(entry.path).subscribe(
+        (resp) => {
+          const contentType = resp.headers.get('Content-Type') || 'application/octet-stream';
+          const blob: Blob = new Blob([resp.body!], { type: contentType });
+
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+
+          // Optionaler Dateiname aus Header (Content-Disposition)
+          const contentDisposition = resp.headers.get('Content-Disposition');
+          let fileName = 'download';
+          if (contentDisposition) {
+            const match = /filename[^;=\n]*=\s*(\"?)([^\";\n]+)\1/ig.exec(contentDisposition);
+            if (match && match[2]) {
+              fileName = match[2].trim().replace(/"/g, '');
+            }
+          }
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+          this.disabled = false
+        }
+      )
     }
   }
   createNewDir(){
