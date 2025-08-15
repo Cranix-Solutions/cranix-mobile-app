@@ -4,6 +4,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 import { SelfManagementService } from 'src/app/services/selfmanagement.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { DirEntry } from 'src/app/shared/models/data-model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   standalone: false,
@@ -119,16 +120,18 @@ export class MyDataComponent  implements OnInit {
     this.selectedEntry = entry
   }
 
-  uploadRealy(){
+  async uploadRealy(){
     for(let file of this.files){
       let fd = new FormData();
       fd.append('dirPath',this.selectedEntry.path)
       fd.append('file', file, file.name);
-      this.selfService.uploadFile(fd).subscribe(
-        (val) => { 
-          this.objService.responseMessage(val)
-        }
-      )
-    }   
+      try {
+      const val = await firstValueFrom(this.selfService.uploadFile(fd))
+      this.objService.responseMessage(val)
+      } catch(err) {
+        console.log(err)
+      }
+    }
+    this.ngOnInit()
   }
 }
