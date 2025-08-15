@@ -37,7 +37,7 @@ export class UtilsService {
                         url = protocol + "//" + hostname + "/api";
                 }
                 //console.log("From utils: " + url);
-                //return "https://admin.cephalix.eu/api"
+                return "https://admin.cephalix.eu/api"
                 return "https://gif1.bbs1-gifhorn.de:444/api"
                 return "https://test-cephalix.cephalix.eu/api"
                 //return "https://192.168.122.100:444/api"
@@ -132,10 +132,16 @@ export class UtilsService {
                 const i = Math.floor(Math.log(bytes) / Math.log(1024));
                 const size = bytes / Math.pow(1024, i);
 
+                if(i == 0){
+                        return `${size} ${sizes[i]}`;
+                }else {
+                        const formattedSize = size.toFixed(2);
+                        return `${formattedSize} ${sizes[i]}`;
+                }
                 // Formatieren auf zwei Dezimalstellen
-                const formattedSize = size.toFixed(2);
+                 
 
-                return `${formattedSize} ${sizes[i]}`;
+                
         }
 }
 

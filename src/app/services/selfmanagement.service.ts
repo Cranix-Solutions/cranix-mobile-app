@@ -158,12 +158,22 @@ export class SelfManagementService {
     getFile(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post(url, {path: path, action: "get" }, { headers: this.authService.headers });
+        return this.http.post<Blob>(url, {path: path, action: "get" },
+             { headers: this.authService.headers, observe: 'response', responseType: 'blob' as 'json'  }
+        );
     }
 
     deleteFile(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post<ServerResponse>(url, {path: path, action: "delete" }, { headers: this.authService.headers });
+        return this.http.post<ServerResponse>(url, {path: path, action: "delete" }, 
+            { headers: this.authService.headers});
+    }
+
+
+    uploadFile(fd: FormData) {
+        const url = this.hostname + "/selfmanagement/myFiles/upload";
+        console.log(url);
+        return this.http.post<ServerResponse>(url, fd, { headers: this.authService.formHeaders })
     }
 }

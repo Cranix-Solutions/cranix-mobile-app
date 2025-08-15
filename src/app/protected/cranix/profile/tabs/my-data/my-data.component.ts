@@ -16,7 +16,9 @@ export class MyDataComponent  implements OnInit {
   actDir: string = ""
   dirList: DirEntry[] = []
   disabled: boolean = true
+  files: any[];
   isDeleteOpen: boolean = false
+  isUploadOpen: boolean = false
   selectedEntry: DirEntry;
   constructor(
     private selfService: SelfManagementService,
@@ -106,5 +108,27 @@ export class MyDataComponent  implements OnInit {
       case ('application/pdf'): return 'document'
     }
     return 'reader'
+  }
+
+  onFilesAdded(event) {
+    this.files = event.target.files;
+  }
+
+  upload(entry: DirEntry){
+    this.isUploadOpen = true
+    this.selectedEntry = entry
+  }
+
+  uploadRealy(){
+    for(let file of this.files){
+      let fd = new FormData();
+      fd.append('dirPath',this.selectedEntry.path)
+      fd.append('file', file, file.name);
+      this.selfService.uploadFile(fd).subscribe(
+        (val) => { 
+          this.objService.responseMessage(val)
+        }
+      )
+    }   
   }
 }
