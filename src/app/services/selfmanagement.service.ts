@@ -7,7 +7,6 @@ import { User, Device, Room, IdRequest, DirEntry } from 'src/app/shared/models/d
 
 @Injectable()
 export class SelfManagementService {
-
     hostname: string;
     url: string;
 
@@ -149,28 +148,47 @@ export class SelfManagementService {
         return this.http.delete<ServerResponse>(url, { headers: this.authService.headers });
     }
 
+    getHome(){
+        const url = `${this.hostname}/users/byUid/${this.authService.session.user.uid}/home`
+        console.log(url)
+        return this.http.get<string>(url, {headers: this.authService.textHeaders} )
+    }
     getDir(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post<DirEntry[]>(url, {path: path, action: "list" }, { headers: this.authService.headers });
+        return this.http.post<DirEntry[]>(url,
+            {path: path, action: "list" },
+            { headers: this.authService.headers }
+        );
     }
 
     getFile(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post<Blob>(url, {path: path, action: "get" },
-             { headers: this.authService.headers, observe: 'response', responseType: 'blob' as 'json'  }
+        return this.http.post<Blob>(url,
+            {path: path, action: "get" },
+            { headers: this.authService.headers, observe: 'response', responseType: 'blob' as 'json'  }
         );
     }
 
     deleteFile(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";
         console.log(url);
-        return this.http.post<ServerResponse>(url, {path: path, action: "delete" }, 
-            { headers: this.authService.headers});
+        return this.http.post<ServerResponse>(url,
+            {path: path, action: "delete" }, 
+            { headers: this.authService.headers}
+        );
     }
 
-
+    createDir(actDir: string, newDirName: string) {
+        const url = this.hostname + "/selfmanagement/myFiles";
+        console.log(url);
+        return this.http.post<ServerResponse>(url, 
+            {path: actDir, action: "createDir", newDirName: newDirName}, 
+            { headers: this.authService.headers}
+        );
+      }
+  
     uploadFile(fd: FormData) {
         const url = this.hostname + "/selfmanagement/myFiles/upload";
         console.log(url);

@@ -3,7 +3,10 @@
   <ion-list [inset]="true">
     <ion-list-header lines="full">
       <ion-label>{{actDir}}</ion-label>
-      <ion-button fill="clear" size="small" (click)="createNewDir()" [disabled]="disabled">
+      <ion-button fill="clear" size="small" (click)="upload(null)">
+        <ion-icon slot="icon-only" name="cloud-upload" color="warning"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" size="small" (click)="createDir()" [disabled]="disabled">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
     </ion-list-header>
@@ -24,14 +27,16 @@
           <span class="right">{{utilsService.formatFileSize(entry.size)}}</span>
         </div>
       </div>
-      @if(entry.type == "d"){ 
+      @if(entry.type == "d" && entry.name != ".."){
       <ion-button slot="end" fill="clear" size="small" (click)="upload(entry)" [disabled]="!entry.may_rm">
         <ion-icon slot="icon-only" name="cloud-upload" color="warning"></ion-icon>
-      </ion-button> 
+      </ion-button>
       }
-      <ion-button slot="end" fill="clear" size="small" (click)="delete(entry)" [disabled]="!entry.may_rm">
+      @if(entry.name != "..") {
+      <ion-button slot="end" fill="clear" size="small" (click)="delete($event, entry)" [disabled]="!entry.may_rm">
         <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
       </ion-button>
+      }
     </ion-item>
     }
   </ion-list>
@@ -39,6 +44,30 @@
   {{'Loading data'|translate}}
   }
 </ion-content>
+<ion-modal #createDirModal [isOpen]="isCreateDirOpen" (didDissmiss)="isCreateDirOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>
+          {{'Create New Directory'|translate}}
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" size="small" (click)="createDirRealy(uploadModal)">
+            <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="mall" (click)="closeModal(createDirModal)">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-item>
+        <ion-input label="{{'Name'|translate}}" [labelPlacement]="authService.settings.labelPlacement" [(ngModel)]="newDirName"></ion-input>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 <ion-modal #uploadModal [isOpen]="isUploadOpen" (didDissmiss)="isUploadOpen = false">
   <ng-template>
     <ion-header>
@@ -47,10 +76,10 @@
           {{'Select files to upload'|translate}}
         </ion-title>
         <ion-buttons slot="end">
-          <ion-button fill="clear" size="small" (click)="uploadRealy()">
+          <ion-button fill="clear" size="small" (click)="uploadRealy(uploadModal)" [disabled]="disabled">
             <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
           </ion-button>
-          <ion-button fill="clear" size="mall" (click)="uploadModal.dismiss()">
+          <ion-button fill="clear" size="mall" (click)="closeModal(uploadModal)" [disabled]="disabled">
             <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -74,10 +103,10 @@
           {{'Do you realy want to delete:'|translate}}
         </ion-title>
         <ion-buttons slot="end">
-          <ion-button fill="clear" size="small" (click)="deleteRealy()">
+          <ion-button fill="clear" size="small" (click)="deleteRealy(deleteModal)">
             <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
           </ion-button>
-          <ion-button fill="clear" size="mall" (click)="deleteModal.dismiss()">
+          <ion-button fill="clear" size="mall" (click)="closeModal(deleteModal)">
             <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
         </ion-buttons>

@@ -14,12 +14,15 @@ import { firstValueFrom } from 'rxjs';
 })
 export class MyDataComponent  implements OnInit {
 
+  myHome: string = ""
   actDir: string = ""
   dirList: DirEntry[] = []
   disabled: boolean = true
   files: any[];
+  isCreateDirOpen: boolean = false
   isDeleteOpen: boolean = false
   isUploadOpen: boolean = false
+  newDirName: string = ""
   selectedEntry: DirEntry;
   constructor(
     private selfService: SelfManagementService,
@@ -29,8 +32,23 @@ export class MyDataComponent  implements OnInit {
   ) {
     console.log('MyDataComponment called')
   }
-
   ngOnInit() {
+    if(this.authService.session.role == 'sysadmins' ) {
+      this.actDir = '/home'
+      this.myHome = this.actDir
+      this.listActDir()
+    }else{
+      this.selfService.getHome().subscribe(
+        (val) => {
+          this.actDir = val
+          this.myHome = this.actDir
+          this.listActDir()
+        }
+      )
+    }
+  }
+
+  listActDir(){
     this.selfService.getDir(this.actDir).subscribe(
       (val) => {
         console.log(val)
@@ -40,17 +58,26 @@ export class MyDataComponent  implements OnInit {
     )
   }
 
+  closeModal(modal){
+    modal.dismiss()
+    this.newDirName = ""
+    this.isCreateDirOpen = false
+    this.isDeleteOpen = false
+    this.isUploadOpen = false
+    this.disabled = false
+    this.selectedEntry = new DirEntry();
+  }
+
   open(entry: DirEntry) {
     this.disabled = true
     if(entry.type == "d") {
-      this.selfService.getDir(entry.path).subscribe(
-        (val) => {
-          console.log(val)
-          this.dirList = val
-          this.actDir = entry.path
-          this.disabled = false
-        }
-      )
+      if(entry.path.startsWith(this.myHome)){
+        this.actDir = entry.path
+        this.listActDir()
+      }else{
+        this.disabled = false;
+        this.objService.errorMessage("You have no access in this directory")
+      }
     }else{
       this.selfService.getFile(entry.path).subscribe(
         (resp) => {
@@ -80,21 +107,32 @@ export class MyDataComponent  implements OnInit {
       )
     }
   }
-  createNewDir(){
-
+  createDir(){
+    this.disabled = true
+    this.isCreateDirOpen = true
   }
 
-  delete(entry: DirEntry){
+  createDirRealy(modal){
+    this.selfService.createDir(this.actDir, this.newDirName).subscribe(
+      (val) => {
+        this.objService.responseMessage(val)
+        this.closeModal(modal)
+      }
+    )
+  }
+
+  delete(event, entry: DirEntry){
+    event.stopPropagation()
     this.selectedEntry = entry
     this.isDeleteOpen = true
   }
 
-  deleteRealy(){
+  deleteRealy(modal){
     this.selfService.deleteFile(this.selectedEntry.path).subscribe(
       (val) => {
-        this.isDeleteOpen = false
-        this.selectedEntry = undefined
         this.objService.responseMessage(val)
+        this.closeModal(modal)
+        this.listActDir()
       }
     )
   }
@@ -117,21 +155,57 @@ export class MyDataComponent  implements OnInit {
 
   upload(entry: DirEntry){
     this.isUploadOpen = true
-    this.selectedEntry = entry
+    if(entry){
+      this.selectedEntry = entry
+    }else{
+      entry = new DirEntry
+      entry.path = this.actDir
+      this.selectedEntry = entry
+    }
   }
 
-  async uploadRealy(){
+  async uploadRealy(modal)
+  {
+    this.disabled = true
+    const count = this.files.length
+    let i = 0
+    this.objService.requestSent()
     for(let file of this.files){
       let fd = new FormData();
+      console.log(file.name)
       fd.append('dirPath',this.selectedEntry.path)
       fd.append('file', file, file.name);
-      try {
-      const val = await firstValueFrom(this.selfService.uploadFile(fd))
+      let val = await firstValueFrom(this.selfService.uploadFile(fd))
       this.objService.responseMessage(val)
-      } catch(err) {
-        console.log(err)
-      }
     }
-    this.ngOnInit()
+    this.disabled = false
+    modal.dismiss()
+    this.isUploadOpen = false;
+    this.listActDir()
   }
+
+  /* uploadRealy(modal)
+  {
+    this.disabled = true
+    const count = this.files.length
+    let i = 0
+    for(let file of this.files){
+      let fd = new FormData();
+      console.log(file.name)
+      fd.append('dirPath',this.selectedEntry.path)
+      fd.append('file', file, file.name);
+      this.selfService.uploadFile(fd).subscribe(
+        (val) => {
+          this.objService.responseMessage(val)
+          i++
+          if( i == count) {
+            this.disabled = false
+            modal.dismiss()
+            this.isUploadOpen = false;
+            this.listActDir()
+          }
+        }
+      )
+    }
+  }*/
 }
