@@ -116,6 +116,7 @@ export class MyDataComponent  implements OnInit {
     this.selfService.createDir(this.actDir, this.newDirName).subscribe(
       (val) => {
         this.objService.responseMessage(val)
+        this.listActDir()
         this.closeModal(modal)
       }
     )
