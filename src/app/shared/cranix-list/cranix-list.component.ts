@@ -45,10 +45,11 @@ export class CranixListComponent implements OnInit, OnChanges {
   gridOptions: GridOptions = {
     defaultColDef: {
       cellDataType: false,
-      resizable: true,
-      sortable: true,
+      flex: 1,
       hide: false,
       minWidth: 80,
+      resizable: true,
+      sortable: true,
       suppressHeaderMenuButton: true
     },
     rowSelection: {
