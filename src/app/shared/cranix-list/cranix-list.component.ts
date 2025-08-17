@@ -8,7 +8,7 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { GridApi } from 'ag-grid-community';
-import type { ColDef, GridOptions } from 'ag-grid-community';
+import type { ColDef, GridOptions, SelectionColumnDef } from 'ag-grid-community';
 import { ActionBTNRenderer } from 'src/app/pipes/ag-action-renderer';
 import { CustomerActionRenderer } from 'src/app/pipes/ag-customer-action-renderer';
 import { DeviceActionBTNRenderer } from 'src/app/pipes/ag-device-renderer'
@@ -53,6 +53,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     },
     rowSelection: {
       mode: 'multiRow',
+      checkboxes: true,
       selectAll: 'filtered',
       headerCheckbox: true
     },
@@ -60,6 +61,13 @@ export class CranixListComponent implements OnInit, OnChanges {
       params.api.autoSizeColumns(['actions']);
     }
   }
+  selectionColumnDef: SelectionColumnDef = {
+    sortable: true,
+    resizable: true,
+    width: 120,
+    suppressHeaderMenuButton: false,
+    pinned: 'left',
+  };
   listContext: any;
   objectKeys: string[] = [];
 
@@ -160,21 +168,19 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'description':{
           if(this.objectType == 'challenge'){
             col['minWidth'] = 170;
-          col['suppressSizeToFit'] = true;
-          col['pinned'] = 'left';
-          col['flex'] = '1';
-          col['colId'] = '1';
-          columnDefs.push(col);
-          columnDefs.push({
-            field: 'actions',
-            headerName: "",
-            //minWidth: 200,
-            //suppressSizeToFit: true,
-            cellStyle: { 'padding': '2px' },
-            pinned: 'left',
-            cellRenderer: cellRenderer
-          });
-          continue;
+            col['suppressSizeToFit'] = true;
+            col['pinned'] = 'left';
+            col['flex'] = '1';
+            col['colId'] = '1';
+            columnDefs.push(col);
+            columnDefs.push({
+              field: 'actions',
+              headerName: "",
+              cellStyle: { 'padding': '2px' },
+              pinned: 'left',
+              cellRenderer: cellRenderer
+            });
+            continue;
           }
           break;
         }
