@@ -15,20 +15,19 @@ export class IdCardsComponent implements AfterViewInit {
   allRequests: IdRequest[] = []
   isPopoverOpen: boolean = false
   openedOnly: boolean = true
-  overView: boolean = true
+  workMode: string = "overview"
   releasing: boolean = false
   requests: IdRequest[] = []
-  reviewRequests: IdRequest[] = []
   selectedRequest: IdRequest = new IdRequest()
   start: number = -1
+  nextValidity: string;
 
   constructor(
     public authService: AuthenticationService,
     private objectService: GenericObjectService,
     public userService: UsersService
-  ) {
-    this.overView = true
-  }
+  ) {}
+
   ngAfterViewInit() {
     this.readData()
   }
@@ -41,8 +40,11 @@ export class IdCardsComponent implements AfterViewInit {
     )
   }
   searchRequests() {
-    let filter = (<HTMLInputElement>document.getElementById('search-requests')).value
-    filter = filter ? filter.toLowerCase() : ""
+    let search = (<HTMLInputElement>document.getElementById('search-requests'))
+    let filter = ""
+    if( search) {
+      filter = search.value.toLowerCase()
+    }
     let tmp = []
     for (let o of this.allRequests) {
       if (this.openedOnly && o.allowed) {
@@ -91,14 +93,22 @@ export class IdCardsComponent implements AfterViewInit {
     this.isPopoverOpen = false;
   }
 
+  changeMode(event){
+    console.log(event)
+    if(this.workMode == "overview"){
+      this.searchRequests()
+    }else{
+      this.doReView(true)
+    }
+  }
   doReView(reset: boolean){
     if(reset){
       this.start = -1
     }
-    this.reviewRequests = []
+    this.requests = []
     while(true){
       this.start++
-      if(this.allRequests.length == this.start || this.reviewRequests.length > 36) {
+      if(this.allRequests.length == this.start || this.requests.length > 36) {
         break;
       }
       let request = this.allRequests[this.start]
@@ -106,16 +116,17 @@ export class IdCardsComponent implements AfterViewInit {
         continue
       }
       this.getPictureOfRequest(request)
-      this.reviewRequests.push(request)
+      this.requests.push(request)
     }
   }
   doNotRelease(indx: number){
-    this.reviewRequests.splice(indx,1)
+    this.requests.splice(indx,1)
   }
   async release(){
     this.releasing = true
-    for(let request of this.reviewRequests){
+    for(let request of this.requests){
       request.allowed = true
+      request.validUntil = this.nextValidity
       let resp = await this.userService.setIdRequest(request).toPromise()
       console.log(resp)
     }

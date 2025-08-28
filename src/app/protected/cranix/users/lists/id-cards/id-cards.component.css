@@ -14,3 +14,75 @@
 ion-button {
   margin-left: 0 !important;
 }
+
+/* grid container: so viele Zellen wie möglich pro Zeile (breites Responsive) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+/* Karte/Zelle */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: #fff;
+}
+
+/* Headerzeile mit 2 Buttons */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.card-header button {
+  flex: 1 1 auto;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+
+/* Namenszeile */
+.card-name {
+  font-weight: 600;
+  margin: 4px 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bild in 3x3 cm Größe */
+.card-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* optional: fixiere Höhe/Breite an Basis der Bildgröße in cm */
+}
+
+.card-image img {
+  /* 3x3 cm in CSS: convert cm zu px; Standardmäßig 96 DPI -> 1cm ≈ 37.8px */
+  width: 3cm;
+  height: 3cm;
+  object-fit: contain;
+  display: block;
+}
+/* Bild in 3x3 cm Größe */
+.card-image-big {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* optional: fixiere Höhe/Breite an Basis der Bildgröße in cm */
+}
+
+.card-image-big img {
+  /* 4x4 cm in CSS: convert cm zu px; Standardmäßig 96 DPI -> 1cm ≈ 37.8px */
+  width: 4cm;
+  height: 4cm;
+  object-fit: contain;
+  display: block;
+}

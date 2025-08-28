@@ -1,13 +1,13 @@
 <cranix-toolbar title="{{'Manage ID-Card Requests'| translate}}"></cranix-toolbar>
+<!--- ionic>
 @if(overView){
 <ion-item>
     @if(!authService.isMD()){
     <ion-toggle (ionChange)="doReView(true)" [(ngModel)]="overView"
         name="overViewToole">{{'Overview'|translate}}</ion-toggle>
     }
-    <ion-searchbar id="search-requests" (input)="searchRequests()"></ion-searchbar>
-    <ion-toggle (ionChange)="searchRequests()" [(ngModel)]="openedOnly" name="openedOnlyToogle">
-        {{'Opened Only'|translate}}</ion-toggle>
+    
+    
 </ion-item>
 <ion-content>
     <ion-grid>
@@ -82,22 +82,91 @@
     </ion-row>
 </ion-grid>
 }
+<ionic -->
+<ion-toolbar>
+    <ion-item>
+        <ion-select aria-label="processing" [(ngModel)]="workMode" (ionChange)="changeMode($event)">
+          <ion-select-option value="overview">{{'Overview'|translate}} </ion-select-option>
+          <ion-select-option value="batch">{{'Batch processing'|translate}} </ion-select-option>
+        </ion-select>
+        {{'Next Validity'|translate}}:
+        <input type="date" [(ngModel)]="nextValidity">
+        @if(workMode == "overview") {
+            <ion-toggle (ionChange)="searchRequests()" [(ngModel)]="openedOnly" name="openedOnlyToogle" [enableOnOffLabels]="true">
+                {{'Opened Only'|translate}}</ion-toggle>
+            <ion-searchbar id="search-requests" (input)="searchRequests()"></ion-searchbar>
+            #{{requests.length}}
+        }@else{
+            <ion-button (click)="release()" [disabled]="releasing || !nextValidity">{{'Release all shown cards'|translate}}</ion-button>
+        }
+      </ion-item>
+</ion-toolbar>
+<ion-content>
+<div class="grid">
+  @for(request of requests; track request.id; let idx = $index ){
+  <div class="card">
+    <div class="card-header">
+    </div>
+    <div class="card-name">
+        {{request.creator.surName}}, {{request.creator.givenName}}
+        @if(workMode == "overView"){
+            <ion-button slot="end" fill="clear" (click)="deleteIdRequest(request.id)" size="small">
+                <ion-icon color="danger" name="trash"></ion-icon>
+            </ion-button>
+        }@else{
+            <ion-button slot="end" fill="clear" (click)="doNotRelease(idx)" size="small">
+                <ion-icon color="danger" name="close"></ion-icon>
+            </ion-button>
+        }
+    </div>
+    @if(workMode == "overview") {
+    <div class="card-image" (click)="getIdRequest(request.id)">
+        <img [src]="request.avatar" alt="{{ request.creator.surName }}">
+    </div>
+    }@else{
+        <div class="card-image-big">
+            <img [src]="request.picture" alt="{{ request.creator.surName }}">
+        </div>
+    }
+  </div>
+  }
+</div>
+</ion-content>
 <ion-popover #popOver [isOpen]="isPopoverOpen" [backdropDismiss]="false" (onDidDismiss)="isPopoverOpen = false">
     <ng-template>
         <ion-header>
+            <ion-toolbar color="primary">
+                <ion-buttons slot="end">
+                    <ion-button size="large" class="button-no-margin" slot="end" (click)="setIdRequest(selectedRequest)"
+                        fill="clear" [disabled]="selectedRequest.comment.length == 0">
+                        <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="deleteIdRequest(selectedRequest.id)" fill="clear" size="small">
+                        <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="closePopOver(popOver)">
+                        <ion-icon name="close" color="danger"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
             <ion-toolbar>
                 <ion-title>
                     {{selectedRequest.creator.surName}} {{selectedRequest.creator.givenName}}
                 </ion-title>
-                <ion-buttons slot="end">
-                    <ion-button (click)="closePopOver(popOver)">
-                        <ion-icon name="close"></ion-icon>
-                    </ion-button>
-                </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
             <ion-img [src]="selectedRequest.picture"></ion-img>
+            {{'Comment'|translate}}:
+            <ion-textarea [(ngModel)]="selectedRequest.comment">
+            </ion-textarea>
+            <ion-item>
+                <ion-label>{{'validUntil'|translate}}</ion-label>
+                <input type="date" [(ngModel)]="selectedRequest.validUntil" name="validUntil">
+            </ion-item>
+            <ion-item>
+                <ion-toggle [(ngModel)]="selectedRequest.allowed" justify="space-between"> {{'Released'|translate}}</ion-toggle>
+            </ion-item>
         </ion-content>
     </ng-template>
 </ion-popover>

@@ -5,8 +5,8 @@
 }
 <ion-content>
 @if(authService.isMD()){
-<cranix-md-list objectType="device" [context]="context"></cranix-md-list>
+<cranix-md-list objectType="device" [rowData]="rowData" [context]="context"></cranix-md-list>
 }@else{
-<cranix-list objectType="device"  [context]="context"></cranix-list>
+<cranix-list objectType="device" [rowData]="rowData" [context]="context"></cranix-list>
 }
 </ion-content>
