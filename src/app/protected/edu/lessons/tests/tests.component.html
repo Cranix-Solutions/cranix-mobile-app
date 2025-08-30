@@ -11,13 +11,13 @@
   <ion-item *ngFor="let object of objectService.allObjects['challenges/todo']; let i = index"
     style="background-color : {{authService.rowColors[i%2]}}">
     <ion-label (click)="redirectToEdit(object)">
-      <b *ngIf="object.teachingSubject">{{object.teachingSubject.name}}:</b> {{object.description}}
+      <b *ngIf="object.teachingSubject">{{object.teachingSubject.name}}:</b> {{object.title}}
     </ion-label>
   </ion-item>
 </ion-content>
 <ion-toolbar *ngIf="selectedChallenge" class="page-toolbar">
   <ion-title>
-    <b *ngIf="selectedChallenge.teachingSubject">{{selectedChallenge.teachingSubject.name}}:</b> {{selectedChallenge.description}}
+    <b *ngIf="selectedChallenge.teachingSubject">{{selectedChallenge.teachingSubject.name}}:</b> {{selectedChallenge.title}}
   </ion-title>
   <ion-buttons slot="end">
     <ion-button size="small" fill="solid" (click)="close(false)">

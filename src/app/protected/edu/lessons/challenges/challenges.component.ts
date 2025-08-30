@@ -355,7 +355,7 @@ export class ChallengesComponent {
     var blob = new Blob([this.htmlResult.changingThisBreaksApplicationSecurity], { type: "text/html;charset=utf-8" })
     var downloader = document.createElement('a');
     downloader.href = URL.createObjectURL(blob);
-    downloader.setAttribute('download', this.selectedChallenge.description + " " + date.toLocaleString() + ".html");
+    downloader.setAttribute('download', this.selectedChallenge.title + " " + date.toLocaleString() + ".html");
     downloader.click();
   }
 

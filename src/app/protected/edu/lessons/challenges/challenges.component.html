@@ -16,7 +16,7 @@
 @if(htmlResult){
 <ion-toolbar class="page-toolbar">
   <ion-title>
-    {{selectedChallenge.description}}
+    {{selectedChallenge.title}}
   </ion-title>
   <ion-buttons slot="end">
     <ion-button size="small" fill="solid" (click)="htmlResult=null;" matTooltip="{{'Close' | translate }}">
@@ -37,7 +37,7 @@
 <!--- Assigne a challenge to group or users and start it.-->
 @if(challengeToAssign && !challengeToAssign.released) {
 <ion-toolbar class="page-toolbar">
-  <ion-title>{{challengeToAssign.description}}</ion-title>
+  <ion-title>{{challengeToAssign.title}}</ion-title>
   <ion-buttons slot="end">
     <ion-button size="small" fill="solid" (click)="challengeToAssign=null">
       <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
@@ -69,7 +69,7 @@
 <ion-toolbar class="page-toolbar">
   <ion-item [disabled]="selectedChallenge.released" slot="start" lines="none">
     <ion-label position="floating">{{'Title'|translate}}:</ion-label>
-    <ion-input [(ngModel)]="selectedChallenge.description" placeholder="{{'Title' | translate}}"></ion-input>
+    <ion-input [(ngModel)]="selectedChallenge.title" placeholder="{{'Title' | translate}}"></ion-input>
     @if(selectedChallenge.released && selectedChallenge.groups.length){
       {{objectService.formatGroups(selectedChallenge.groups)}}
     }
@@ -99,7 +99,7 @@
     }@else{
     <ion-button size="small" fill="solid" (click)="save()"
       matTooltip="{{'Save changes' | translate }}"
-      [disabled]="!selectedChallenge.description || !selectedChallenge.teachingSubject">
+      [disabled]="!selectedChallenge.title || !selectedChallenge.teachingSubject">
       <ion-icon slot="icon-only" name="checkmark" color="success"></ion-icon>
     </ion-button>
     <ion-button fill="solid" (click)="assign(selectedChallenge)"
@@ -154,7 +154,7 @@
       }@else{
       <ion-fab-button size="small" fill="solid" (click)="save()"
         matTooltip="{{'Save changes' | translate }}"
-        [disabled]="!selectedChallenge.description || !selectedChallenge.teachingSubject">
+        [disabled]="!selectedChallenge.title || !selectedChallenge.teachingSubject">
         <ion-icon name="checkmark" color="success"></ion-icon>
       </ion-fab-button>
       <ion-fab-button fill="solid" (click)="assign(selectedChallenge)"
