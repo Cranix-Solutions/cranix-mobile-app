@@ -1,96 +1,14 @@
 <cranix-toolbar title="{{'Manage ID-Card Requests'| translate}}"></cranix-toolbar>
-<!--- ionic>
-@if(overView){
-<ion-item>
-    @if(!authService.isMD()){
-    <ion-toggle (ionChange)="doReView(true)" [(ngModel)]="overView"
-        name="overViewToole">{{'Overview'|translate}}</ion-toggle>
-    }
-    
-    
-</ion-item>
-<ion-content>
-    <ion-grid>
-        <ion-row>
-            @for(request of requests; track request.id){
-            <ion-col size="2" size-xs="12" size-sm="12" size-md="6" size-lg="3" size-xl="2" class="grid-cell">
-                <ion-item>
-                    <ion-thumbnail aria-hidden="true" slot="start">
-                        <img alt="" [src]="request.avatar" />
-                    </ion-thumbnail>
-                    <ion-label>
-                        <strong>{{request.creator.surName}}, {{request.creator.givenName}}</strong>
-                    </ion-label>
-                    <ion-button (click)="getIdRequest(request.id)" fill="clear" size="large">
-                        <ion-icon slot="icon-only" color="primary" name="image"></ion-icon>
-                    </ion-button>
-                    <ion-button (click)="deleteIdRequest(request.id)" fill="clear" size="large">
-                        <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
-                    </ion-button>
-                </ion-item>
-                <ion-item line="none">
-                    <ion-textarea labelPlacement="stacked" label="{{'Comment'|translate}}" [(ngModel)]="request.comment"
-                        name="comment" fill="solid" [counter]="false" maxlength="128">
-                    </ion-textarea>
-                    <ion-button size="large" class="button-no-margin" slot="end" (click)="setIdRequest(request)"
-                        fill="clear" [disabled]="request.comment.length == 0">
-                        <ion-icon slot="icon-only" color="success" name="add-circle"></ion-icon>
-                    </ion-button>
-                </ion-item>
-                <ion-item>
-                    <ion-label>{{'validUntil'|translate}}</ion-label>
-                    <input type="date" [(ngModel)]="request.validUntil" name="validUntil">
-                </ion-item>
-                <ion-item>
-                    <ion-toggle [(ngModel)]="request.allowed" justify="space-between"
-                        (ionChange)="setIdRequest(request)"> {{'Released'|translate}}</ion-toggle>
-                </ion-item>
-            </ion-col>
-            }
-        </ion-row>
-    </ion-grid>
-</ion-content>
-}@else{
-<ion-item>
-    <ion-toggle justify="start" [(ngModel)]="overView" name="openedOnly">{{'Overview'|translate}}</ion-toggle>
-    <ion-button (click)="release()" [disabled]="releasing">{{'Release all shown cards'|translate}}</ion-button>
-</ion-item>
-<ion-grid [fixed]="true">
-    <ion-row>
-        @for(request of reviewRequests; track request.id; let idx = $index ){
-        <ion-col size="2" size-xs="12" size-sm="12" size-md="6" size-lg="3" size-xl="2">
-            <ion-card>
-                <ion-card-header>
-                    <ion-toolbar>
-                        <ion-label>
-                            {{request.creator.surName}}
-                            {{request.creator.givenName}}
-                        </ion-label>
-                        <ion-buttons slot="end">
-                            <ion-button fill="clear" (click)="doNotRelease(idx)">
-                                <ion-icon color="danger" name="close"></ion-icon>
-                            </ion-button>
-                        </ion-buttons>
-                    </ion-toolbar>
-                </ion-card-header>
-                <ion-card-content>
-                    <ion-img [src]="request.picture"></ion-img>
-                </ion-card-content>
-            </ion-card>
-        </ion-col>
-        }
-    </ion-row>
-</ion-grid>
-}
-<ionic -->
-<ion-toolbar>
+<ion-toolbar class="page-toolbar">
     <ion-item>
-        <ion-select aria-label="processing" [(ngModel)]="workMode" (ionChange)="changeMode($event)">
+        <ion-select aria-label="processing" [(ngModel)]="workMode" (ionChange)="changeMode($event)" fill="outline" style="max-width: 200px;">
           <ion-select-option value="overview">{{'Overview'|translate}} </ion-select-option>
           <ion-select-option value="batch">{{'Batch processing'|translate}} </ion-select-option>
         </ion-select>
-        {{'Next Validity'|translate}}:
-        <input type="date" [(ngModel)]="nextValidity">
+         <div class="card">
+            {{'Next Validity'|translate}}:
+            <input style="margin-right: 8px;" type="date" [(ngModel)]="nextValidity">
+        </div>
         @if(workMode == "overview") {
             <ion-toggle (ionChange)="searchRequests()" [(ngModel)]="openedOnly" name="openedOnlyToogle" [enableOnOffLabels]="true">
                 {{'Opened Only'|translate}}</ion-toggle>
@@ -106,18 +24,30 @@
   @for(request of requests; track request.id; let idx = $index ){
   <div class="card">
     <div class="card-header">
-    </div>
-    <div class="card-name">
-        {{request.creator.surName}}, {{request.creator.givenName}}
-        @if(workMode == "overView"){
-            <ion-button slot="end" fill="clear" (click)="deleteIdRequest(request.id)" size="small">
-                <ion-icon color="danger" name="trash"></ion-icon>
-            </ion-button>
+        <span>
+            {{request.creator.surName}}, {{request.creator.givenName}}
+        </span>
+        @if(workMode == "overview"){
+            <button (click)="deleteIdRequest(request.id)">
+                <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+            </button>
         }@else{
-            <ion-button slot="end" fill="clear" (click)="doNotRelease(idx)" size="small">
-                <ion-icon color="danger" name="close"></ion-icon>
-            </ion-button>
+            <button (click)="doNotRelease(idx)">
+                <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+            </button>
         }
+    </div>
+    <div class="card-header">
+        <span>
+            {{'validUntil'|translate}}: {{request.validUntil}}
+        </span>
+        <button>
+        @if(request.allowed){
+            <ion-icon slot="icon-only" color="success" name="checkmark" aria-label="released"></ion-icon>
+        }@else{
+            <ion-icon slot="icon-only" color="warning" name="eye" aria-label="Waiting for overview"></ion-icon>
+        }
+        </button>
     </div>
     @if(workMode == "overview") {
     <div class="card-image" (click)="getIdRequest(request.id)">
@@ -132,7 +62,7 @@
   }
 </div>
 </ion-content>
-<ion-popover #popOver [isOpen]="isPopoverOpen" [backdropDismiss]="false" (onDidDismiss)="isPopoverOpen = false">
+<ion-modal #popOver [isOpen]="isPopoverOpen" [backdropDismiss]="false" (onDidDismiss)="isPopoverOpen = false">
     <ng-template>
         <ion-header>
             <ion-toolbar color="primary">
@@ -156,17 +86,23 @@
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-            <ion-img [src]="selectedRequest.picture"></ion-img>
-            {{'Comment'|translate}}:
-            <ion-textarea [(ngModel)]="selectedRequest.comment">
-            </ion-textarea>
-            <ion-item>
-                <ion-label>{{'validUntil'|translate}}</ion-label>
-                <input type="date" [(ngModel)]="selectedRequest.validUntil" name="validUntil">
-            </ion-item>
-            <ion-item>
-                <ion-toggle [(ngModel)]="selectedRequest.allowed" justify="space-between"> {{'Released'|translate}}</ion-toggle>
-            </ion-item>
+            <ion-list>
+                <ion-item>
+                    {{selectedRequest.creator.role|translate}}
+                </ion-item>
+                <ion-img [src]="selectedRequest.picture"></ion-img>
+                <ion-item>
+                    <ion-textarea label="{{'Comment'|translate}}:" [(ngModel)]="selectedRequest.comment">
+                </ion-textarea>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{'validUntil'|translate}}</ion-label>
+                    <input type="date" [(ngModel)]="selectedRequest.validUntil" name="validUntil">
+                </ion-item>
+                <ion-item>
+                    <ion-toggle [(ngModel)]="selectedRequest.allowed" justify="space-between"> {{'Released'|translate}}</ion-toggle>
+                </ion-item>
+            </ion-list>
         </ion-content>
     </ng-template>
-</ion-popover>
+</ion-modal>

@@ -31,9 +31,13 @@ ion-button {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: #fff;
+  background: transparent;
+  white-space: nowrap;
 }
 
+.card:hover {
+  border: 1px solid #888;
+}
 /* Headerzeile mit 2 Buttons */
 .card-header {
   display: flex;
@@ -42,9 +46,11 @@ ion-button {
   margin-bottom: 6px;
 }
 .card-header button {
-  flex: 1 1 auto;
-  padding: 6px 8px;
-  font-size: 0.9rem;
+  /*flex: 1 1 auto;*/
+  margin-left: auto;
+  /*padding: 6px 8px;
+  font-size: 0.9rem;*/
+  background: #fff;
 }
 
 /* Namenszeile */

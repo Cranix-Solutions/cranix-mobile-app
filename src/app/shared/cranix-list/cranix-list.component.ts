@@ -166,25 +166,6 @@ export class CranixListComponent implements OnInit, OnChanges {
       col['headerName'] = this.languageService.trans(key);
       col['hide'] = (this.hiddenColumns.indexOf(key) != -1);
       switch (key) {
-        case 'description':{
-          if(this.objectType == 'challenge'){
-            col['minWidth'] = 170;
-            col['suppressSizeToFit'] = true;
-            col['pinned'] = 'left';
-            col['flex'] = '1';
-            col['colId'] = '1';
-            columnDefs.push(col);
-            columnDefs.push({
-              field: 'actions',
-              headerName: "",
-              cellStyle: { 'padding': '2px' },
-              pinned: 'left',
-              cellRenderer: cellRenderer
-            });
-            continue;
-          }
-          break;
-        }
         case 'title':
         case 'name':
         case 'uid': {

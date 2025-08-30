@@ -112,7 +112,8 @@ export class IdCardsComponent implements AfterViewInit {
         break;
       }
       let request = this.allRequests[this.start]
-      if(request && request.allowed) {
+      //todo list expiered IDs also
+      if(request && request.allowed && !this.isDateWithinNext30Days(request.validUntil)) {
         continue
       }
       this.getPictureOfRequest(request)
@@ -145,5 +146,38 @@ export class IdCardsComponent implements AfterViewInit {
         request.picture = "data:image/jpg;base64," + val.picture
       }
     )
+  }
+
+  isDateWithinNext30Days(dateStr: string): boolean {
+    // Erwartetes Format: YYYY-MM-DD
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return false;
+
+    const year = Number(parts[0]);
+    const month = Number(parts[1]); // 1-12
+    const day = Number(parts[2]);   // 1-31
+
+    // Grundvalidierung
+    if (
+      Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day) ||
+      month < 1 || month > 12 || day < 1 || day > 31
+    ) {
+      return false;
+    }
+
+    // Konstruktion des Datums (Monatsangabe in JS Date ist 0-basiert)
+    const inputDate = new Date(year, month - 1, day);
+
+    // Datum heute (mit Uhrzeit 00:00:00)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Datum 30 Tage in der Zukunft (mit Uhrzeit 00:00:00)
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 30);
+
+    // Vergleiche: inputDate muss <= maxDate sein, UND >= heute (je nach Anforderung)
+    // Falls nur Zukunftszustände relevant sind, benutze inputDate >= today.
+    return inputDate <= maxDate;
   }
 }

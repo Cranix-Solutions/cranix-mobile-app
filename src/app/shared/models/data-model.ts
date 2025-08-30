@@ -515,7 +515,7 @@ export class CrxQuestion {
 export class CrxChallenge {
 	id?: number = 0
 	creatorId: number = 0;
-	description: string = ""
+	title: string = ""
 	questions: CrxQuestion[] = []
 	groups: Group[] = []
 	users: User[] = []
