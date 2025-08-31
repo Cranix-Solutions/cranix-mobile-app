@@ -1,0 +1,47 @@
+<cranix-toolbar title="{{'Teaching Subjects' | translate}}"></cranix-toolbar>
+<ion-content>
+  <ion-item color="light">
+    <ion-input [(ngModel)]="newTeachingSubject.name" name="newTeachingSubject" placeholder="{{'New teaching subject'|translate}} "></ion-input>
+    <ion-button (click)="addSubject(newTeachingSubject)" fill="clear">
+      <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
+    </ion-button>
+  </ion-item>
+  @if(crxObjectService.subjects.length == 0){
+    {{'Loading data ...'|translate}}
+  }@else{
+  <ion-accordion-group>
+    @for(subject of crxObjectService.subjects; track subject.id){
+      <ion-accordion value="{{subject.id}}" toggleIconSlot="start">
+        <ion-item slot="header" color="light">
+          <ion-input [(ngModel)]="subject.name" name="{{subject.name}}"></ion-input>
+          <ion-button (click)="crxObjectService.modifySubject(subject)" fill="clear">
+            <ion-icon slot="icon-only" name="checkmark" color="success"></ion-icon>
+          </ion-button>
+          <ion-button (click)="crxObjectService.deleteSubject(subject.id)" fill="clear">
+            <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item slot="header" color="light">
+            <ion-input [(ngModel)]="newSubjectArea.name" name="newSubjectArea" placeholder="{{'New subject area'|translate}} "></ion-input>
+            <ion-button (click)="addSubjectArea(subject.id, newSubjectArea)" fill="clear">
+              <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
+            </ion-button>
+          </ion-item>
+          @for(subjectArea of subject.subjectAreaList.sort(objectService.sortByName); track subjectArea.id){
+            <ion-item slot="header" color="light">
+              <ion-input [(ngModel)]="subjectArea.name" name="{{subjectArea.name}}"></ion-input>
+              <ion-button (click)="crxObjectService.modifySubjectArea(subjectArea)" fill="clear">
+                <ion-icon slot="icon-only" name="checkmark" color="success"></ion-icon>
+              </ion-button>
+              <ion-button (click)="crxObjectService.deleteSubjectArea(subjectArea.id)" fill="clear">
+                <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
+              </ion-button>
+            </ion-item>        
+          }
+        </div>
+      </ion-accordion>
+    }
+  </ion-accordion-group>   
+}
+</ion-content>
