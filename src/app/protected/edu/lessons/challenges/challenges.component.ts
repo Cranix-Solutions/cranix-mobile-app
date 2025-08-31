@@ -222,12 +222,14 @@ export class ChallengesComponent {
   }
 
   addNewQuestion() {
-    let questionToAdd = new CrxQuestion(this.languageService.trans('Question text.'));
+    let questionToAdd = new CrxQuestion(this.languageService.trans('Question'));
     questionToAdd.answerType = this.answerType;
     questionToAdd.value = this.questionValue;
-    questionToAdd.crxQuestionAnswers.push(new CrxQuestionAnswer(this.languageService.trans('Answer text.')))
-    questionToAdd.crxQuestionAnswers.push(new CrxQuestionAnswer(this.languageService.trans('Answer text.')))
-    questionToAdd.crxQuestionAnswers.push(new CrxQuestionAnswer(this.languageService.trans('Answer text.')))
+    questionToAdd.crxQuestionAnswers.push(new CrxQuestionAnswer("1. " + this.languageService.trans('Answer')))
+    if(this.answerType != 'Text'){
+      questionToAdd.crxQuestionAnswers.push(new CrxQuestionAnswer("2. " + this.languageService.trans('Answer')))
+      questionToAdd.crxQuestionAnswers.push(new CrxQuestionAnswer("3. " + this.languageService.trans('Answer')))
+    }
     this.selectedChallenge.questions.push(questionToAdd)
     this.challengesService.modified = true;
     this.modalAddNewQuestionIsOpen = false;

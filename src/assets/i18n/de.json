@@ -1,4 +1,11 @@
 {
+    "Question":"Frage",
+    "Answer":"Antwort",
+    "Reload tests to work on":"Zu lösende tests herunterladen",
+    "Create Tests":"Tests Erstellen",
+    "Teaching Subjects":"Schulfächer",
+    "New teaching subject":"Neues Schulfach",
+    "New subject area":"Neues Fachgebiet",
     "Released":"Veröffentlicht",
     "Date":"Datum",
     "Search for":"Suche nach",

@@ -68,18 +68,18 @@
 @if(!htmlResult && !challengeToAssign && selectedChallenge){
 <ion-toolbar class="page-toolbar">
   <ion-item [disabled]="selectedChallenge.released" slot="start" lines="none">
-    <ion-label position="floating">{{'Title'|translate}}:</ion-label>
     <ion-input [(ngModel)]="selectedChallenge.title" placeholder="{{'Title' | translate}}"></ion-input>
-    @if(selectedChallenge.released && selectedChallenge.groups.length){
+    @if(selectedChallenge.released && selectedChallenge.groups.length > 0){
       {{objectService.formatGroups(selectedChallenge.groups)}}
     }
-    @if(selectedChallenge.released && selectedChallenge.users.length){
+    @if(selectedChallenge.released && selectedChallenge.users.length > 0){
       {{objectService.formatUsers(selectedChallenge.users)}}
     }
   </ion-item>
   <ion-item [disabled]="selectedChallenge.released" slot="end" lines="none">
     <cranix-search objectType="teachingSubject" [(ngModel)]="selectedChallenge.teachingSubject"
-      [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()">
+      [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()"
+      emptyLabel="Select subject area">
     </cranix-search>
   </ion-item>
   @if( !authService.isMD() ) {
@@ -218,8 +218,8 @@
       </ion-button>
     </ion-item>
     }
-    <ion-item class="answer" *ngFor="let answer of question.crxQuestionAnswers; index as j"
-      [disabled]="selectedChallenge.released">
+    @for(answer of question.crxQuestionAnswers; track answer.id; let j = $index){
+    <ion-item class="answer" [disabled]="selectedChallenge.released">
       @if( answerToEdit == i + '-' + j ){
       <quill-editor [styles]="editorStyles"
         [(ngModel)]="selectedChallenge.questions[i].crxQuestionAnswers[j].answer" name="description">
@@ -245,9 +245,11 @@
         <div>{{selectedChallenge.questions[i].crxQuestionAnswers[j].answer.length/1024}}KB</div>
       </ion-button>
       }@else{
+      @if(question.answerType != 'Text'){
       <input style="margin-right: 10px;"
         [type]="question.answerType == 'One' ? 'radio' : 'checkbox'" name="answer-{{i}}" [value]="answer.answer"
         [checked]="answer.correct" (click)="toggle(i, j)">
+      }
       <div style="margin: 0;" [innerHTML]="answer.answer" (click)="toggleEditAnswer(i,j)"></div>
       @if(!answer.answer){
       <div (click)="toggleEditAnswer(i,j)">{{'Answer text.'|translate}}</div>
@@ -257,7 +259,8 @@
       </ion-button>
       }
     </ion-item>
-    @if(!selectedChallenge.released){
+    }
+    @if(!selectedChallenge.released && question.answerType != 'Text'){
     <ion-item class="answer" style="color:green;">
       <ion-label>{{ 'Add new answer' | translate }}</ion-label>
       <ion-button slot="end" size="small" fill="clear" (click)="addNewAnswer(i)">
@@ -295,6 +298,7 @@
           <ion-select [(ngModel)]="answerType" style="max-width: 200px; margin: 10px; color: black;">
             <ion-select-option value="One">{{'One right answer'|translate}}</ion-select-option>
             <ion-select-option value="Multiple">{{'More right answers'|translate}}</ion-select-option>
+            <ion-select-option value="Text">{{'The answer must be entered'|translate}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>

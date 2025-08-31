@@ -478,7 +478,7 @@ export interface AccessStatus {
 }
 
 export class SubjectArea {
-	id: number
+	id: number = 0
 	creator_id: number = 0
 	name: string = ""
 	constructor() {}
@@ -488,7 +488,7 @@ export class TeachingSubject {
 	id: number = 0
 	creator_id: number = 0
 	name: string = ""
-	subjectAreas: SubjectArea[] = []
+	subjectAreaList: SubjectArea[] = []
 	constructor() { }
 }
 

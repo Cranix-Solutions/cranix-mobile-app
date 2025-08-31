@@ -1,9 +1,10 @@
-import { CrxConfig, TeachingSubject } from 'src/app/shared/models/data-model';
+import { CrxConfig, SubjectArea, TeachingSubject } from 'src/app/shared/models/data-model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UtilsService } from './utils.service';
 import { AuthenticationService } from './auth.service';
 import { ServerResponse } from '../shared/models/server-models';
+import { GenericObjectService } from './generic-object.service';
 
 @Injectable()
 export class CrxObjectService {
@@ -13,6 +14,7 @@ export class CrxObjectService {
     constructor(
         private authService: AuthenticationService,
         private http: HttpClient,
+        private objectService: GenericObjectService,
         private utilsService: UtilsService,
     ) {
         this.hostname = this.utilsService.hostName();
@@ -23,21 +25,40 @@ export class CrxObjectService {
         let url = this.hostname + "/objects/subjects"
         this.http.get<TeachingSubject[]>(url, { headers: this.authService.headers }).subscribe(
             (val1) => {
-                this.subjects = val1
+                this.subjects = val1.sort(this.objectService.sortByName)
                 console.log("TEACHING SUBJECTS")
                 console.log(val1)
             }
         )
     }
 
-    addSubject(subject: TeachingSubject) {
+    addSubject(object: TeachingSubject) {
         let url = this.hostname + "/objects/subjects"
-        return this.http.post<ServerResponse>(url, subject, { headers: this.authService.headers })
+        return this.http.post<ServerResponse>(url, object, { headers: this.authService.headers }).subscribe(
+            (val) => {
+                this.objectService.responseMessage(val)
+                this.getSubjects();
+            }
+        )
     }
 
-    modifySubject(subject: TeachingSubject) {
+    modifySubject(object: TeachingSubject) {
         let url = this.hostname + "/objects/subjects"
-        return this.http.patch<ServerResponse>(url, subject, { headers: this.authService.headers })
+        return this.http.patch<ServerResponse>(url, object, { headers: this.authService.headers }).subscribe(
+            (val) => {
+                this.objectService.responseMessage(val)
+                this.getSubjects();
+            }
+        )
+    }
+    deleteSubject(id: number) {
+        let url = this.hostname + `/objects/subjects/${id}`
+        return this.http.delete<ServerResponse>(url, { headers: this.authService.headers }).subscribe(
+            (val) => {
+                this.objectService.responseMessage(val)
+                this.getSubjects();
+            }
+        )
     }
 
     getSubjectById(id: number){
@@ -46,6 +67,35 @@ export class CrxObjectService {
                 return object
             }
         }
+    }
+
+    addSubjectArea(teachingSubjectId: number, object: SubjectArea) {
+        let url = this.hostname + `/objects/subjects/${teachingSubjectId}`
+        return this.http.post<ServerResponse>(url, object, { headers: this.authService.headers }).subscribe(
+            (val) => {
+                this.objectService.responseMessage(val)
+                this.getSubjects();
+            }
+        )
+    }
+
+    modifySubjectArea(object: SubjectArea) {
+        let url = this.hostname + "/objects/subjects/"
+        return this.http.patch<ServerResponse>(url, object, { headers: this.authService.headers }).subscribe(
+            (val) => {
+                this.objectService.responseMessage(val)
+                this.getSubjects();
+            }
+        )
+    }
+    deleteSubjectArea(id: number) {
+        let url = this.hostname + `/objects/subjects/${id}`
+        return this.http.delete<ServerResponse>(url, { headers: this.authService.headers }).subscribe(
+            (val) => {
+                this.objectService.responseMessage(val)
+                this.getSubjects();
+            }
+        )
     }
 
     /*

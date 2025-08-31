@@ -4,13 +4,11 @@ import { AlertController, ToastController, PopoverController, ModalController } 
 // own modules
 
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
-import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { ServerResponse } from 'src/app/shared/models/server-models';
 import { Group, Package, User } from 'src/app/shared/models/data-model';
 import { UtilsService } from './utils.service';
 import { AuthenticationService } from './auth.service';
 import { LanguageService } from './language.service';
-import { CrxObjectService } from './crx-object-service';
 import { Router } from '@angular/router';
 import { objectsTemlate, enumerates, selects, hiddenAttributes, readOnlyAttributes, required, multivalued } from 'src/app/shared/models/constants';
 @Injectable({
@@ -40,7 +38,6 @@ export class GenericObjectService {
     private http: HttpClient,
     private languageS: LanguageService,
     private utilsService: UtilsService,
-    private crxObjectService: CrxObjectService,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
     public toastController: ToastController,
@@ -49,7 +46,6 @@ export class GenericObjectService {
 
   initialize(force: boolean) {
     this.objects = []
-    this.crxObjectService.getSubjects();
     if (this.authService.isAllowed('cephalix.manage')) {
       this.initializeCephalixObjects();
     }

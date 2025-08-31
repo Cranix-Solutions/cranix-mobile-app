@@ -16,6 +16,7 @@ import { MypositiveComponent } from './mypositive/mypositive.component';
 import { ChallengesComponent } from './challenges/challenges.component'
 import { TestsComponent } from './tests/tests.component'
 import { PtmsComponent } from './ptms/ptms.component';
+import { TeachingSubjectsComponent } from './teaching-subjects/teaching-subjects.component'
 
 const routes: Routes = [
   {
@@ -26,8 +27,10 @@ const routes: Routes = [
       {
         path: 'ptms',
         component: PtmsComponent
-      },
-      {
+      },{
+        path: 'subjects',
+        component: TeachingSubjectsComponent
+      },{
         path: 'tests',
         canDeactivate: [ChallengeCanDeactivate],
         component: TestsComponent
@@ -71,7 +74,8 @@ const routes: Routes = [
     RoomDevComponent,
     MypositiveComponent,
     PtmsComponent,
-    TestsComponent
+    TestsComponent,
+    TeachingSubjectsComponent
   ],
   providers:
     [ChallengeCanDeactivate]

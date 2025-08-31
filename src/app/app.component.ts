@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage-angular';
 import { AuthenticationService } from './services/auth.service';
 import { GenericObjectService } from './services/generic-object.service';
 import { LanguageService } from './services/language.service';
-import { UtilsService } from './services/utils.service';
+import { CrxObjectService } from './services/crx-object-service';
 
 @Component({
   standalone: false,
@@ -23,6 +23,7 @@ export class AppComponent {
     public authService: AuthenticationService,
     public location: Location,
     private genericObjectS: GenericObjectService,
+    private crxObjectService: CrxObjectService,
     private languageService: LanguageService,
     private platform: Platform,
     private router: Router,
@@ -58,7 +59,8 @@ export class AppComponent {
           console.log("shortName", sessionStorage.getItem('shortName'))
           if (state) {
             if (!this.authService.session.mustSetup2fa) {
-              this.genericObjectS.initialize(true);
+              this.genericObjectS.initialize(true)
+              this.crxObjectService.getSubjects()
             }
             if (this.authService.session.mustSetup2fa) {
               console.log('initializeApp: 2FA must be set up');
