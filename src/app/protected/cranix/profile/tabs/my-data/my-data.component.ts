@@ -41,7 +41,7 @@ export class MyDataComponent  implements OnInit {
       this.selfService.getHome().subscribe(
         (val) => {
           this.actDir = val
-          this.myHome = this.actDir
+          this.myHome = this.actDir.slice(0,-1)
           this.listActDir()
         }
       )
@@ -51,7 +51,6 @@ export class MyDataComponent  implements OnInit {
   listActDir(){
     this.selfService.getDir(this.actDir).subscribe(
       (val) => {
-        console.log(val)
         this.dirList = val
         this.disabled = false
       }

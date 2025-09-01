@@ -151,7 +151,7 @@ export class SelfManagementService {
     getHome(){
         const url = `${this.hostname}/users/byUid/${this.authService.session.user.uid}/home`
         console.log(url)
-        return this.http.get<string>(url, {headers: this.authService.textHeaders} )
+        return this.http.get(url, {headers: this.authService.textHeaders, responseType: 'text'} )
     }
     getDir(path: string){
         const url = this.hostname + "/selfmanagement/myFiles";

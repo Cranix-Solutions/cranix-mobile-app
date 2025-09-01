@@ -522,6 +522,7 @@ export class CrxChallenge {
 	studentsOnly?: boolean = false;
 	released: boolean = false;
 	teachingSubject: TeachingSubject = new TeachingSubject();
+	subjectArea: SubjectArea = new SubjectArea();
 }
 
 export class CrxChallengeAnswer {
