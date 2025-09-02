@@ -78,8 +78,10 @@
   </ion-item>
   <ion-item [disabled]="selectedChallenge.released" slot="end" lines="none">
     <cranix-search objectType="teachingSubject" [(ngModel)]="selectedChallenge.teachingSubject"
-      [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()"
-      emptyLabel="Select subject area">
+      [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()">
+    </cranix-search>
+    <cranix-search objectType="subjectArea" [(ngModel)]="selectedChallenge.subjectArea"
+      [items]="subjectAreas" itemTextField="name">
     </cranix-search>
   </ion-item>
   @if( !authService.isMD() ) {

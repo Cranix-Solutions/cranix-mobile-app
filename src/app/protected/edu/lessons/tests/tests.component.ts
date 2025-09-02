@@ -45,7 +45,14 @@ export class TestsComponent implements OnInit {
             for (let question of this.selectedChallenge.questions) {
               j = 0;
               for (let answer of question.crxQuestionAnswers) {
-                if (val[answer.id]) {
+                if(question.answerType == "Text") {
+                  if (val[answer.id]) {
+                    this.selectedChallenge.questions[i].crxQuestionAnswers[j].answer = val[answer.id]
+                  }else{
+                    this.selectedChallenge.questions[i].crxQuestionAnswers[j].answer = ""
+                  }
+                }
+                if (val[answer.id] && val[answer.id] == "Y") {
                   this.selectedChallenge.questions[i].crxQuestionAnswers[j].correct = true
                 } else {
                   this.selectedChallenge.questions[i].crxQuestionAnswers[j].correct = false
@@ -93,11 +100,22 @@ export class TestsComponent implements OnInit {
     }
   }
 
+  textChanged(){
+    if (this.autoSave) {
+      this.save(true);
+    }
+  }
+
   save(silent: boolean) {
     let answers = {}
     for (let question of this.selectedChallenge.questions) {
-      for (let answer of question.crxQuestionAnswers) {
-        answers[answer.id] = answer.correct
+      if(question.answerType == "Text"){
+        let answer = question.crxQuestionAnswers[0]
+        answers[answer.id] = answer.answer
+      }else{
+        for (let answer of question.crxQuestionAnswers) {
+          answers[answer.id] = answer.correct ? "Y" : "N"
+        }
       }
     }
     console.log(this.selectedChallenge.id,answers)

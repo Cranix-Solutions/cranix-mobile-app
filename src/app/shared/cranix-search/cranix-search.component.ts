@@ -54,6 +54,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
       this.selection = []
     }
     console.log("items", this.items)
+    console.log(this.emptyLabel)
     this.rowData = this.items
   }
 
@@ -68,7 +69,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     }
   }
   writeValue(value: any) {
-    console.log("write value called")
+    console.log("write value called for:" + this.objectType )
     console.log(value)
     this.selection = value;
   }

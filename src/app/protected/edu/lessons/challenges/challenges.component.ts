@@ -2,7 +2,7 @@ import { ChallengesService } from 'src/app/services/challenges.service';
 import { Component, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CrxChallenge, CrxQuestion, CrxQuestionAnswer, TeachingSubject } from 'src/app/shared/models/data-model';
+import { CrxChallenge, CrxQuestion, CrxQuestionAnswer, SubjectArea, TeachingSubject } from 'src/app/shared/models/data-model';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
@@ -41,6 +41,7 @@ export class ChallengesComponent {
   questionsToAdd: CrxQuestion[] = [];
   questionListPlaceHolder: string = 'List of questions';
   rowData: CrxChallenge[];
+  subjectAreas: SubjectArea[] = []
   editorStyles = {
     height: '80px',
     backgroundColor: 'whitesmoke'
@@ -73,6 +74,8 @@ export class ChallengesComponent {
 
   changeTeachingSubject(){
     this.selectedTeachingSubject = this.selectedChallenge.teachingSubject
+    this.subjectAreas = this.selectedChallenge.teachingSubject.subjectAreaList
+    this.selectedChallenge.subjectArea = null
     this.getQuestionsFromServer()
   }
 
@@ -159,10 +162,16 @@ export class ChallengesComponent {
   redirectToEdit(data) {
     if (data) {
       this.selectedChallenge = data;
+      if(this.selectedChallenge.teachingSubject){
+        this.subjectAreas = this.selectedChallenge.teachingSubject.subjectAreaList
+      }else{
+        this.subjectAreas = []
+      }
     } else {
       this.selectedChallenge = new CrxChallenge();
+      this.selectedChallenge.subjectArea = null
+      this.selectedChallenge.teachingSubject = null
     }
-    this.changeTeachingSubject()
     console.log(data)
   }
 
