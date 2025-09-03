@@ -20,6 +20,12 @@ cd www
 tar cjf $REPO/cranix-web.tar.bz2 *
 xterm -e "git log --raw" &
 cd ${REPO}
-osc vc
+echo "-------------------------------------------------------------------
+$(LANG=en_EN date -u) - Peter Varkoly <pvarkoly@cephalix.eu>
+
+- " > bla
+cat bla cranix-web.changes > blabla
+mv blabla cranix-web.changes
+vi cranix-web.changes
 osc ci
 cd ${HERE}
