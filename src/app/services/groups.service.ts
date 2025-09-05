@@ -38,6 +38,7 @@ export class GroupsService {
 		} else {
 			this.url = `${this.hostname}/education/groups/${id}/members`;
 		}
+		console.log(this.url)
 		return this.http.get<User[]>(this.url, { headers: this.authService.headers });
 	}
 

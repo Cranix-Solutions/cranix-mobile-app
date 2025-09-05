@@ -7,23 +7,31 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     selector: 'group-action-cell-renderer',
     template: `
 
-        <ion-button *ngIf="mayEdit" style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
+        
+        @if(mayEdit){
+        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
              <ion-icon name="build-sharp"></ion-icon>
         </ion-button>
+        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="members($event)" matTooltip="{{'Members of the group:' | translate }}">
+             <ion-icon name="people-circle"></ion-icon>
+        </ion-button>
+        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+            <ion-icon color="danger" name="trash-outline" ></ion-icon>
+        </ion-button>
+        }@else{
+        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="showMembers($event)" matTooltip="{{'Members of the group:' | translate }}">
+             <ion-icon name="people-circle"></ion-icon>
+        </ion-button>
+        }
         @if(noticeUse){
         <ion-button  style="padding-horizontal : 2px" fill="clear" size="small" (click)="openNotice($event)" matTooltip="{{'notices' | translate }}">
             <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
         </ion-button>
         }
-        <ion-button *ngIf="mayEdit" style="padding-horizontal : 2px" fill="clear" size="small" (click)="members($event)" matTooltip="{{'Members of the group:' | translate }}">
-             <ion-icon name="people-circle"></ion-icon>
-        </ion-button>
         <ion-button fill="clear" size="small" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
             <ion-icon  name="ellipsis-vertical-sharp"></ion-icon>
         </ion-button>
-        <ion-button *ngIf="mayEdit"  style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
-            <ion-icon color="danger" name="trash-outline" ></ion-icon>
-        </ion-button>
+        
         `
 })
 
@@ -33,8 +41,9 @@ export class GroupActionBTNRenderer implements ICellRendererAngularComp {
     public noticeUse: boolean = false;
     agInit(params: any): void {
         this.params = params;
-        if (this.params.data) {
-            this.mayEdit = params.context.componentParent.mayGroupEdit || (params.context.componentParent.authService.session.userId == params.data.creatorId);
+        this.mayEdit = params.context.componentParent.mayGroupEdit;
+        if (!this.mayEdit && this.params.data) {
+            this.mayEdit = params.context.componentParent.authService.session.userId == params.data.creatorId;
         }
         this.noticeUse = this.params.context.componentParent.noticeUse;
     }
@@ -46,6 +55,10 @@ export class GroupActionBTNRenderer implements ICellRendererAngularComp {
     public members(event) {
         event.stopPropagation();
         this.params.context.componentParent.redirectToMembers(this.params.data);
+    }
+    public showMembers(event) {
+        event.stopPropagation();
+        this.params.context.componentParent.redirectToShowMembers(this.params.data);
     }
     public openAction(event) {
         event.stopPropagation();

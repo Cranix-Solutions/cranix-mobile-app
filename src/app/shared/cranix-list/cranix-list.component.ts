@@ -386,7 +386,9 @@ export class CranixListComponent implements OnInit, OnChanges {
   async redirectToMembers(object) {
     this.context.componentParent.redirectToMembers(object);
   }
-
+  redirectToShowMembers(object) {
+    this.context.componentParent.redirectToShowMembers(object);
+  }
   async redirectToGroups(object) {
     this.context.componentParent.redirectToGroups(object);
   }

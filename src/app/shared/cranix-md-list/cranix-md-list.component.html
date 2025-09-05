@@ -188,7 +188,7 @@
         <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
       </ion-item-option>
       }
-      @if(objectType.indexOf('group') != -1 && (authService.isAllowed('group.modify') || authService.session.userId ==
+      @if(objectType.indexOf('group') != -1 && (context.componentParent.mayGroupEdit || authService.session.userId ==
       object.creatorId)){
       <ion-item-option (click)="context.componentParent.redirectToMembers(object)">
         <ion-icon slot="icon-only" name="people-circle"></ion-icon>

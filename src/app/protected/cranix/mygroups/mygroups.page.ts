@@ -11,8 +11,8 @@ import { LanguageService } from 'src/app/services/language.service';
 import { Group, GuestUsers, Room, User } from 'src/app/shared/models/data-model'
 import { GroupMembersPage } from 'src/app/shared/actions/group-members/group-members.page';
 import { EductaionService } from 'src/app/services/education.service';
-import { CranixNoticesComponent } from 'src/app/shared/cranix-notices/cranix-notices.component';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { GroupsService } from 'src/app/services/groups.service';
 
 @Component({
   standalone: false,
@@ -26,6 +26,9 @@ export class MyGroupsPage implements OnInit {
   rowData = [];
   noticeUse: boolean = false;
   mayGroupEdit: boolean = false;
+  selectedGroup: Group = new Group()
+  groupMembers: User[] = []
+  isShowMemberOpen: boolean = false
   constructor(
     public authService: AuthenticationService,
     public educationService: EductaionService,
@@ -34,7 +37,8 @@ export class MyGroupsPage implements OnInit {
     public popoverCtrl: PopoverController,
     public languageS: LanguageService,
     public route: Router,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private groupService: GroupsService
   ) {
     this.context = { componentParent: this}
     this.noticeUse = this.authService.isAllowed('notice.use')
@@ -71,6 +75,18 @@ export class MyGroupsPage implements OnInit {
       showBackdrop: true
     });
     (await modal).present();
+  }
+
+  redirectToShowMembers(group: Group){
+    console.log(group)
+    this.selectedGroup = group
+    this.groupService.getMembers(group.id).subscribe(
+      (val) => {
+        console.log(val)
+        this.groupMembers = val
+        this.isShowMemberOpen = true
+      }
+    );
   }
 
   async redirectToEdit(anyObject: any) {

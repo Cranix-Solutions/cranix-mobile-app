@@ -22,16 +22,17 @@ export class GroupsPage {
   context;
   mayGroupEdit: boolean = false
   noticeUse: boolean = false
+  isShowMemberOpen: boolean = false
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public languageS: LanguageService,
-    public route: Router,
+    public route: Router
   ) {
     this.context = { componentParent: this };
-    this.noticeUse = this.authService.isAllowed('notice.use')
+    this.noticeUse    = this.authService.isAllowed('notice.use')
     this.mayGroupEdit = this.authService.isOneOfAllowed(['group.modify','group.manage'])
   }
 

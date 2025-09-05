@@ -33,3 +33,33 @@
   }
   }
 </ion-content>
+<ion-modal #showMember [isOpen]="isShowMemberOpen" (didDismiss)="isShowMemberOpen = false">
+  <ng-template>
+    <ion-toolbar color="primary">
+      <ion-title>
+        {{'Members of:'|translate}} {{selectedGroup.name}} {{selectedGroup.description}}
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="showMember.dismiss()" fill="clear">
+          <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-content>
+      <ion-list>
+        @for(user of groupMembers; track user.id){
+        <ion-item>
+          <div style="display: flex; width: 100%;">
+            <div class="divclass">
+              {{user.role|translate}}
+            </div>
+            <div class="divclass">
+              {{user.fullName}}
+            </div>
+          </div>
+        </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
