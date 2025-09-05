@@ -15,7 +15,7 @@ import { firstValueFrom } from 'rxjs';
 export class MyDataComponent  implements OnInit {
 
   myHome: string = ""
-  actDir: string = ""
+  actDir: DirEntry = new DirEntry()
   dirList: DirEntry[] = []
   disabled: boolean = true
   files: any[];
@@ -34,14 +34,14 @@ export class MyDataComponent  implements OnInit {
   }
   ngOnInit() {
     if(this.authService.session.role == 'sysadmins' ) {
-      this.actDir = '/home'
-      this.myHome = this.actDir
+      this.actDir.path = '/home'
+      this.myHome = this.actDir.path
       this.listActDir()
     }else{
       this.selfService.getHome().subscribe(
         (val) => {
-          this.actDir = val
-          this.myHome = this.actDir.slice(0,-1)
+          this.actDir.path = val
+          this.myHome = val.slice(0,-1)
           this.listActDir()
         }
       )
@@ -49,10 +49,13 @@ export class MyDataComponent  implements OnInit {
   }
 
   listActDir(){
-    this.selfService.getDir(this.actDir).subscribe(
+    this.selfService.getDir(this.actDir.path).subscribe(
       (val) => {
-        this.dirList = val
+        this.actDir = val[0]
+        this.dirList = val.slice(1)
         this.disabled = false
+        console.log(this.actDir)
+        console.log(this.dirList)
       }
     )
   }
@@ -71,7 +74,7 @@ export class MyDataComponent  implements OnInit {
     this.disabled = true
     if(entry.type == "d") {
       if(entry.path.startsWith(this.myHome)){
-        this.actDir = entry.path
+        this.actDir = entry
         this.listActDir()
       }else{
         this.disabled = false;
@@ -112,7 +115,7 @@ export class MyDataComponent  implements OnInit {
   }
 
   createDirRealy(modal){
-    this.selfService.createDir(this.actDir, this.newDirName).subscribe(
+    this.selfService.createDir(this.actDir.path, this.newDirName).subscribe(
       (val) => {
         this.objService.responseMessage(val)
         this.listActDir()
@@ -155,13 +158,7 @@ export class MyDataComponent  implements OnInit {
 
   upload(entry: DirEntry){
     this.isUploadOpen = true
-    if(entry){
-      this.selectedEntry = entry
-    }else{
-      entry = new DirEntry
-      entry.path = this.actDir
-      this.selectedEntry = entry
-    }
+    this.selectedEntry = entry
   }
 
   async uploadRealy(modal)

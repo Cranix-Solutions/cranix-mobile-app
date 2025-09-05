@@ -28,7 +28,7 @@
             {{request.creator.surName}}, {{request.creator.givenName}}
         </span>
         @if(workMode == "overview"){
-            <button (click)="deleteIdRequest(request.id)">
+            <button (click)="deleteIdRequest(request)">
                 <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
             </button>
         }@else{
@@ -71,7 +71,7 @@
                         fill="clear" [disabled]="selectedRequest.comment.length == 0">
                         <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
                     </ion-button>
-                    <ion-button (click)="deleteIdRequest(selectedRequest.id)" fill="clear" size="small">
+                    <ion-button (click)="deleteIdRequest(selectedRequest)" fill="clear" size="small">
                         <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
                     </ion-button>
                     <ion-button (click)="closePopOver(popOver)">
@@ -106,3 +106,10 @@
         </ion-content>
     </ng-template>
 </ion-modal>
+<ion-alert
+  [isOpen]="isDeleteAlertOpen"
+  header="{{'Do you realy want to delete?'|translate}}"
+  [subHeader]="selectedRequest.creator.fullName"
+  [buttons]="alertDeleteButtons"
+  (didDismiss)="isDeleteAlertOpen = false"
+></ion-alert>

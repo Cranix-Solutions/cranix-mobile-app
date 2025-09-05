@@ -2,11 +2,11 @@
 <ion-content color="light">
   <ion-list [inset]="true">
     <ion-list-header lines="full">
-      <ion-label>{{actDir}}</ion-label>
-      <ion-button fill="clear" size="small" (click)="upload(null)">
+      <ion-label>{{actDir.path}}</ion-label>
+      <ion-button fill="clear" size="small" (click)="upload(actDir)"  [disabled]="disabled || !actDir.may_rm">
         <ion-icon slot="icon-only" name="cloud-upload" color="warning"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" size="small" (click)="createDir()" [disabled]="disabled">
+      <ion-button fill="clear" size="small" (click)="createDir()" [disabled]="disabled || !actDir.may_rm">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
     </ion-list-header>

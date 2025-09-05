@@ -14,6 +14,7 @@ export class IdCardsComponent implements AfterViewInit {
 
   allRequests: IdRequest[] = []
   isPopoverOpen: boolean = false
+  isDeleteAlertOpen: boolean = false
   openedOnly: boolean = true
   workMode: string = "overview"
   releasing: boolean = false
@@ -69,13 +70,34 @@ export class IdCardsComponent implements AfterViewInit {
     )
   }
 
-  deleteIdRequest(id: number) {
-    this.userService.deleteIdRequest(id).subscribe(
-      (val) => {
-        this.objectService.responseMessage(val)
-        this.readData()
-      }
-    )
+  public alertDeleteButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        this.isDeleteAlertOpen = false
+        console.log('Alert canceled');
+      },
+    },
+    {
+      text: 'OK',
+      role: 'confirm',
+      handler: () => {
+        this.userService.deleteIdRequest(this.selectedRequest.id).subscribe(
+        (val) => {
+          this.selectedRequest = new IdRequest()
+          this.objectService.responseMessage(val)
+          this.isDeleteAlertOpen = false
+          this.readData()
+        })
+        console.log('Alert confirmed');
+      },
+    },
+  ];
+
+  deleteIdRequest(request: IdRequest) {
+    this.selectedRequest = request;
+    this.isDeleteAlertOpen = true
   }
 
   getIdRequest(id: number) {

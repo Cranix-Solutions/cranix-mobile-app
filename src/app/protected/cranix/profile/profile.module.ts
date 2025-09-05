@@ -44,7 +44,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'myFiles', pathMatch: 'full'
+        redirectTo: 'myself', pathMatch: 'full'
       }
     ]
   }
