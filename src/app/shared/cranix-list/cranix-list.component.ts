@@ -71,6 +71,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   };
   listContext: any;
   objectKeys: string[] = [];
+  listFilterName: string = ""
 
   noticeUse: boolean = false;
   @Input({ required: true }) objectType: string;
@@ -95,6 +96,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   }
 
   async ngOnInit() {
+    this.listFilterName = "filterFor" + this.objectType
     this.addToolTip = this.languageService.trans("Create a new " + this.objectType);
     let val = await this.storage.get(this.objectType + "_hidden_collums");
     let myArray = JSON.parse(val);
@@ -196,7 +198,14 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'created': case 'modified':
         case 'validFrom': case 'validUntil':
         case 'lastUpdate':{
-            col['valueFormatter'] = params => new Date(params.value).toISOString().substring(0, 16); break
+            col['valueFormatter'] = params => {
+              try {
+                return new Date(params.value).toISOString().substring(0, 16);
+              }catch{
+                return ""
+              }
+            }
+            break
         }
         case 'cephalixCustomerId': {
           col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('customer', params.data.cephalixCustomerId); break;
@@ -348,7 +357,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   }
 
   onQuickFilterChanged() {
-    let filter = (<HTMLInputElement>document.getElementById('quickFilter')).value.toLowerCase();
+    let filter = (<HTMLInputElement>document.getElementById(this.listFilterName)).value.toLowerCase();
     this.gridApi.setGridOption('quickFilterText', filter);
   }
 

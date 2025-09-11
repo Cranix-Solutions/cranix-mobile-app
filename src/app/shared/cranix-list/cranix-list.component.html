@@ -5,7 +5,8 @@
       #{{gridApi.getDisplayedRowCount()}}
     </ion-label>
     }
-    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="quickFilter">
+    <!-- input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="listFilterInput" -->
+    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" [id]="listFilterName">
     </ion-searchbar>
   </ion-item>
   <ion-buttons slot="end">

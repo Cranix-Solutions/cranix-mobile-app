@@ -1,8 +1,6 @@
 <cranix-toolbar *ngIf="!selectedStatus" title="{{'Status of the institutes' | translate}}"></cranix-toolbar>
 <ion-content color="light">
-  @if(!authService.isMD()){
-  <cranix-list objectType="institutestatus" [rowData]="rowData" [context]="context"></cranix-list>
-  }@else{
+  @if(authService.isMD()){
   <ion-list>
     @for(obj of rowData; track obj.id){
     <ion-item button (click)="showStatus(obj)">
@@ -17,6 +15,8 @@
     </ion-item>
     }
   </ion-list>
+  }@else{
+    <cranix-list objectType="institutestatus" [rowData]="rowData" [context]="context"></cranix-list>
   }
 </ion-content>
 
