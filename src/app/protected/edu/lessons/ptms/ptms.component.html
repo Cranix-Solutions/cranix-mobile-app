@@ -47,8 +47,8 @@
                 @if(myPTMTeacherInRoom.id == 0){
                 <ion-item>
                     @if(authService.isAllowed('ptm.registerRoom')){
-		    <cranix-search objectType="room" itemTextField="description" [(ngModel)]="myPTMTeacherInRoom.room"
-		    	emptyLabel="{{'Register a room'|translate}}" [multiple]="true" (onChange)="selectRoom()">
+                    <cranix-search objectType="room" itemTextField="description" [(ngModel)]="myPTMTeacherInRoom.room"
+                        emptyLabel="{{'Register a room'|translate}}" [multiple]="true" (onChange)="selectRoom()">
                     </cranix-search>
                     }@else{
                     {{'You have to wait until a room will be reserved for you.'|translate}}
@@ -149,8 +149,8 @@
                 <ion-item>
                     <ion-label>{{'Select student for the event'|translate}}</ion-label>
                     <cranix-search objectType="user" itemTextField="fullName" [multiple]="false"
-		       [(ngModel)]="selectedEvent.student"[items]="students"
-		       emptyLabel="{{'Select student for the event'|translate}}">
+                        [(ngModel)]="selectedEvent.student" [items]="students"
+                        emptyLabel="{{'Select student for the event'|translate}}">
                     </cranix-search>
                 </ion-item>
             </ion-list>
@@ -162,7 +162,8 @@
         <ion-header>
             <ion-toolbar color="primary">
                 <ion-title>
-                    {{'Create notice for:'|translate}} {{selectedEvent.student.surName}}, {{selectedEvent.student.givenName}}
+                    {{'Create notice for:'|translate}} {{selectedEvent.student.surName}},
+                    {{selectedEvent.student.givenName}}
                 </ion-title>
                 <ion-buttons slot="end">
                     <ion-button class="ion-no-margin" (click)="saveNotice()">
@@ -177,8 +178,15 @@
         <ion-content>
             <ion-list>
                 <ion-list-header>
-                    <ion-input label="{{'title'|translate}}:" [(ngModel)]="selectedNotice.title" fill="solid"></ion-input>
+                    <ion-input label="{{'title'|translate}}:" [(ngModel)]="selectedNotice.title"
+                        fill="solid"></ion-input>
                 </ion-list-header>
+                <ion-item>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'teachingSubject'|translate}}:</ion-label>
+                    <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects" [(ngModel)]="selectedNotice.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
+                    <ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label>
+                    <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
+                </ion-item>
                 <ion-item>
                     <quill-editor [(ngModel)]="selectedNotice.text"></quill-editor>
                 </ion-item>

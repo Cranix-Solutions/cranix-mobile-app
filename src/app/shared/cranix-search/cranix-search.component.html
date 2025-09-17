@@ -36,7 +36,7 @@
             </ion-toolbar>
             <ion-item>
                 <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()"
-                    id="crxSearchFilter"></ion-searchbar>
+                    [id]="crxSearchFilter"></ion-searchbar>
             </ion-item>
         </ion-header>
         <ion-content>

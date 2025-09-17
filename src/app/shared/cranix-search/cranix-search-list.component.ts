@@ -16,6 +16,7 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
   isAllSelected: boolean = false
   isShowChecked: boolean = false
   rowData = []
+  crxSearchFilter: string = "";
 
   @Output() callback = new EventEmitter<any>();
   @Output() selectedItemChange = new EventEmitter<any>();
@@ -34,6 +35,7 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.crxSearchFilter = this.objectType + (Math.floor(Math.random()* 9000) + 1000)
     console.log("CranixSearchListComponent")
     console.log(this.selectedItems)
     if (typeof this.items == "undefined") {
@@ -119,7 +121,7 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
     this.selectedItemsChange.emit(this.selectedItems)
   }
   onQuickFilterChanged() {
-    let filter = (<HTMLInputElement>document.getElementById('crxSearchFilter')).value;
+    let filter = (<HTMLInputElement>document.getElementById(this.crxSearchFilter)).value;
     this.rowData = this.objectService.filterItemsOfObject(this.objectType, filter, this.items);
   }
 

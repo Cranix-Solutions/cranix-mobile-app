@@ -639,8 +639,9 @@ export class CrxNotice {
 	weighting: number = 1
 	objectType: string = ""
 	objectId: number = 0
-	issueType: string = ""
-	issueId: number = 0
+	ptmId: number = 0
+	subjectArea: SubjectArea
+	teachingSubject: TeachingSubject
 }
 
 export class CrxTicketArticle {

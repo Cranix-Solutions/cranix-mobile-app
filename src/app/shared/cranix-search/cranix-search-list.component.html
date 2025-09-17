@@ -13,7 +13,7 @@
       </ion-buttons>
       }
       <ion-input type="text" placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()"
-        id="crxSearchFilter"></ion-input>
+        [id]="crxSearchFilter"></ion-input>
       <ion-buttons slot="end">
         @if(!multiple){
         <ion-button class="ion-no-margin" (click)="clearSelection()" matTooltip="{{'Clear selection' | translate }}">

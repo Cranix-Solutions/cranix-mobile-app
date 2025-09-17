@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { NoticesService } from 'src/app/services/notices.service';
-import { CrxNotice } from '../models/data-model';
+import { CrxNotice, SubjectArea } from '../models/data-model';
 import { LanguageService } from 'src/app/services/language.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
@@ -21,6 +21,7 @@ export class CranixNoticesComponent implements OnInit {
     notices: CrxNotice[] = []
     allNotices: CrxNotice[] = []
     selectedNotice: CrxNotice = new CrxNotice()
+    subjectAreas: SubjectArea[] = []
     selectedIssue: string = "";
     @Input() objectType: string
     @Input() selectedObject: any
@@ -42,28 +43,18 @@ export class CranixNoticesComponent implements OnInit {
     }
 
     readData() {
-        let tmp = []
         let notice = new CrxNotice();
         notice.objectType = this.objectType
         notice.objectId = this.selectedObject.id
         this.noticeService.getByFilter(notice).subscribe(
             (val) => {
-                for (let notice of val) {
-                    console.log(notice)
-                    if (notice.issueType == 'PTMEvent') {
-                        this.labels[notice.id] = this.languageS.trans('PTM')
-                    } else if (notice.issueType == 'subject') {
-                        this.labels[notice.id] = this.crxObjectService.getSubjectById(notice.issueId).name
-                    } else {
-                        this.labels[notice.id] = this.languageS.trans('Notice')
-                    }
-                    this.allNotices.push(notice)
-                    tmp.push(notice)
-                }
-                console.log(this.labels)
+                this.notices = val
             }
         )
-        this.notices = tmp;
+    }
+
+    selectTeachingSubject() {
+        this.subjectAreas = this.selectedNotice.teachingSubject.subjectAreaList
     }
 
     openNotice(notice: CrxNotice) {
@@ -74,17 +65,11 @@ export class CranixNoticesComponent implements OnInit {
             this.selectedNotice.objectType = this.objectType
             this.selectedNotice.objectId = this.selectedObject.id
         }
-        this.selectedIssue = this.selectedNotice.issueType + "#" + this.selectedNotice.issueId
         this.isNoticeOpen = true
     }
 
     saveNotice() {
         this.isDisabled = true;
-        let tmp = this.selectedIssue.split("#")
-        if (tmp.length == 2) {
-            this.selectedNotice.issueType = tmp[0]
-            this.selectedNotice.issueId = Number(tmp[1])
-        }
         console.log(this.selectedNotice)
         this.noticeService.add(this.selectedNotice).subscribe(
             (val) => {

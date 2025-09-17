@@ -17,7 +17,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
   isCranixSearchModalOpen: boolean = false;
   rowData = []
   selection: any|any[]
-
+  crxSearchFilter: string = "";
   @Output() callback = new EventEmitter<any>();
   @Output() onChange: EventEmitter<{ value: any }> = new EventEmitter();
   @Input({ required: true }) objectType: string
@@ -29,9 +29,11 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
   @Input() selectedLabel: string
   constructor(
     private objectService: GenericObjectService
-  ) { }
+  ) { 
+  }
 
   ngOnInit(): void {
+    this.crxSearchFilter = this.objectType + (Math.floor(Math.random()* 9000) + 1000)
     console.log("CranixSearchComponent")
     if (typeof this.items == "undefined") {
       this.items = this.objectService.allObjects[this.objectType]
@@ -53,7 +55,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     if (this.multiple) {
       this.selection = []
     }
-    console.log("items", this.items)
+    //console.log("items", this.items)
     console.log(this.emptyLabel)
     this.rowData = this.items
   }
@@ -131,8 +133,8 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     this.closeModal(modal)
   }
   onQuickFilterChanged() {
-    let filter = (<HTMLInputElement>document.getElementById('crxSearchFilter')).value.toLowerCase();
-    this.rowData = this.objectService.filterObject(this.objectType,filter);
+    let filter = (<HTMLInputElement>document.getElementById(this.crxSearchFilter)).value.toLowerCase();
+    this.rowData = this.objectService.filterItemsOfObject(this.objectType,filter,this.items);
   }
 
   getDefaultTextFields(){
