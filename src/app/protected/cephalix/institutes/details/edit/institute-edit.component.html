@@ -1,6 +1,6 @@
 <form #editForm="ngForm">
   <cranix-toolbar title="{{ 'Modify selected institute:' | translate}} {{object.name}}"></cranix-toolbar>
-  <ion-toolbar>
+  <ion-toolbar class="page-toolbar">
     <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="details">
       <ion-segment-button value="details">
         <ion-label>{{'Details' | translate}}</ion-label>

@@ -54,7 +54,6 @@ export class ManageParentsComponent {
     private utilsService: UtilsService,
     private parentsService: ParentsService
   ) {
-
     this.context = { componentParent: this };
     this.loadData()
     for (let o of this.objectService.allObjects['user']) {

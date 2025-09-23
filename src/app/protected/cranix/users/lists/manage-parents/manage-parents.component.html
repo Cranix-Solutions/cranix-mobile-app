@@ -15,17 +15,19 @@
 }
 @else
 {
-<ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="parents">
-    <ion-segment-button value="parents">
-        <ion-label>{{'Parents'|translate}}</ion-label>
-    </ion-segment-button>
-    <!-- ion-segment-button value="requests">
-        <ion-label>{{'Requests'|translate}}</ion-label>
-    </ion-segment-button -->
-    <ion-segment-button value="ptm">
-        <ion-label>{{'PTM'|translate}}</ion-label>
-    </ion-segment-button>
-</ion-segment>
+<ion-toolbar class="page-toolbar">
+    <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="parents">
+        <ion-segment-button value="parents">
+            <ion-label>{{'Parents'|translate}}</ion-label>
+        </ion-segment-button>
+        <!-- ion-segment-button value="requests">
+            <ion-label>{{'Requests'|translate}}</ion-label>
+        </ion-segment-button -->
+        <ion-segment-button value="ptm">
+            <ion-label>{{'PTM'|translate}}</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
 @if(segment == 'ptm'){
 <ion-content>
     <form #addEditPTMForm="ngForm">
@@ -111,7 +113,8 @@
             @if(isUpcomming || selectedPTM.id == 0){
             <ion-item>
                 <ion-label>{{'Select classes for the PTM' | translate}}</ion-label>
-		<cranix-search objectType="group" [(ngModel)]="selectedPTM.classes" [items]="classes" [multiple]="true"></cranix-search>
+                <cranix-search objectType="group" [(ngModel)]="selectedPTM.classes" [items]="classes"
+                    [multiple]="true"></cranix-search>
             </ion-item>
             }
             @if(selectedPTM.id == 0 && formerPtms.length > 0) {
@@ -129,9 +132,9 @@
 }@else{
 <ion-content>
     @if(authService.isMD()){
-    <cranix-md-list context="context" objectType="parent" [rowData]="rowData"></cranix-md-list>
+    <cranix-md-list [context]="context" objectType="parent" [rowData]="rowData"></cranix-md-list>
     }@else{
-    <cranix-list context="context" objectType="parent" [rowData]="rowData"></cranix-list>
+    <cranix-list [context]="context" objectType="parent" [rowData]="rowData"></cranix-list>
     }
 </ion-content>
 }
