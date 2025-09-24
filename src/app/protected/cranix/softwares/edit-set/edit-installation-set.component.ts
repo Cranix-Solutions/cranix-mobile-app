@@ -105,17 +105,14 @@ export class EditInstallationSetComponent {
       this.installationSet.id = this.softwareService.selectedInstallationSet.id;
     }
     console.log(this.installationSet)
-    let subs = this.softwareService.addModifyInstallationsSets(this.installationSet).subscribe({
+    this.softwareService.addModifyInstallationsSets(this.installationSet).subscribe({
       next: (val) => {
         this.objectService.responseMessage(val);
         this.modalCtrl.dismiss();
       },
       error: (err) => {
         this.objectService.errorMessage(err);
-      },
-      complete: () => {
         this.submitted = false;
-        subs.unsubscribe();
       }
     })
   }

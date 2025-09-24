@@ -79,13 +79,14 @@ export class SoftwareService {
 	}
 
 	addModifyInstallationsSets(installationSet: Category) {
+		let myHeaders = this.authService.headers.append("timeout", "600000")
 		if (installationSet.id) {
 			this.url = this.hostname + "/softwares/installations/" + installationSet.id;
 		} else {
 			this.url = this.hostname + "/softwares/installations";
 		}
 		console.log(this.url);
-		return this.http.post<ServerResponse>(this.url, installationSet, { headers: this.authService.headers });
+		return this.http.post<ServerResponse>(this.url, installationSet, { headers: myHeaders });
 	}
 
 	deleteInstallationsSet(installationSet: Category) {
