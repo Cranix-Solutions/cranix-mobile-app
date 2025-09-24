@@ -13,7 +13,6 @@ import { CrxObjectService } from 'src/app/services/crx-object-service';
     styleUrl: './cranix-notices.component.css'
 })
 export class CranixNoticesComponent implements OnInit {
-
     issue: string;
     isDisabled: boolean = false;
     isNoticeOpen: boolean = false;

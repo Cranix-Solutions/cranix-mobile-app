@@ -44,7 +44,6 @@ export class SystemStatusComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.chartsReady = false;
     this.storage.get('System.Status.mySupport').then((val) => {
       let myTmp = JSON.parse(val);

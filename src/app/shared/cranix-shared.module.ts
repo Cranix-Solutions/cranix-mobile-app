@@ -45,7 +45,6 @@ import { NgModule } from '@angular/core';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { PipesModule } from 'src/app/pipes/pipe-modules';
 import { PrinterActionBTNRenderer } from 'src/app/pipes/ag-printer-renderer';
-import { QuillModule } from 'ngx-quill';
 import { RoomActionBTNRenderer } from 'src/app/pipes/ag-room-renderer';
 import { RoomIdCellRenderer } from 'src/app/pipes/ag-roomid-render';
 import { RoomRenderer } from 'src/app/pipes/ag-ptm-room-renderer';
@@ -63,7 +62,7 @@ import { UserIdCellRenderer } from 'src/app/pipes/ag-userid-renderer';
 import { UserIdToNameCellRenderer } from 'src/app/pipes/ag-userid-to-name-renderer';
 import { WindowRef } from 'src/app/shared/models/ohters'
 import { YesNoBTNRenderer } from 'src/app/pipes/ag-yesno-renderer';
-import { simpleToolbarOptions } from 'src/app/shared/models/constants'
+import { QuillModule } from 'ngx-quill'
 
 @NgModule({
   declarations: [
@@ -129,7 +128,7 @@ import { simpleToolbarOptions } from 'src/app/shared/models/constants'
     MatIconModule,
     MatTooltipModule,
     PipesModule,
-    QuillModule.forRoot({ modules: { toolbar: simpleToolbarOptions}, }),
+    QuillModule.forRoot(),
     ReactiveFormsModule,
     TranslateModule,
   ], exports: [

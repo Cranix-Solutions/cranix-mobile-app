@@ -11,7 +11,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { QuillModule } from 'ngx-quill';
+import { QuillConfigModule } from 'ngx-quill/config';
 
 //own modules
 import { CranixSharedModule } from './shared/cranix-shared.module';
@@ -38,6 +38,7 @@ import { SystemService } from './services/system.service';
 import { UsersService } from './services/users.service';
 import { UtilsService } from './services/utils.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { quillTextToolbar } from './shared/models/constants';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -62,7 +63,13 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    QuillModule.forRoot(),
+    QuillConfigModule.forRoot({
+      modules: {
+        syntax: false,
+        formula: false,
+        toolbar: quillTextToolbar
+      }
+    }),
     AppRoutingModule
   ],
   providers: [

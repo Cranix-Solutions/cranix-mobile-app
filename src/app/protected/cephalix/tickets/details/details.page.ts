@@ -9,6 +9,7 @@ import { User } from 'src/app/shared/models/data-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { WindowRef } from 'src/app/shared/models/ohters';
 import { LanguageService } from 'src/app/services/language.service';
+import { quillFullToolbar } from 'src/app/shared/models/constants';
 @Component({
   standalone: false,
     selector: 'cranix-details',
@@ -345,5 +346,4 @@ export class EditArticle implements OnInit {
       }
     )
   }
-
 }

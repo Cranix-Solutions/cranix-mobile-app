@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { QuillModule } from 'ngx-quill';
 
 import { CanActivateViaAcls } from 'src/app/services/auth-guard.service';
 import { ChallengeCanDeactivate } from 'src/app/services/challenges.service';
@@ -17,6 +16,7 @@ import { ChallengesComponent } from './challenges/challenges.component'
 import { TestsComponent } from './tests/tests.component'
 import { PtmsComponent } from './ptms/ptms.component';
 import { TeachingSubjectsComponent } from './teaching-subjects/teaching-subjects.component'
+import { QuillModule } from 'ngx-quill'
 
 const routes: Routes = [
   {
@@ -64,8 +64,8 @@ const routes: Routes = [
     DragDropModule,
     FormsModule,
     IonicModule,
+    QuillModule.forRoot(),
     RouterModule.forChild(routes),
-    QuillModule.forRoot()
   ],
   declarations: [
     LessonsPage,

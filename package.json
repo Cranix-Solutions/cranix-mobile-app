@@ -43,6 +43,7 @@
     "ag-grid-angular": "^32.3.8",
     "angular-csv-ext": "",
     "hammerjs": "",
+    "katex": "^0.16.22",
     "ngx-quill": "",
     "rrule": "",
     "rxjs": "",

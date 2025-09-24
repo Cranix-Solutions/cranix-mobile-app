@@ -89,6 +89,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     private storage: Storage,
     public utilsService: UtilsService
   ) {
+    console.log(this.context)
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilsService.actMdList = this;

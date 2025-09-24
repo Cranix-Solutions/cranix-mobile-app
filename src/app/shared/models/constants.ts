@@ -26,6 +26,41 @@ export const mathToolbarOptions = [
     ['link', 'image']
 ];
 
+export const quillTextToolbar = [
+    //Font styling
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['blockquote', 'code-block'],
+    [{ 'script': 'sub'}, { 'script': 'super' }],
+
+    //Text styling
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'align': [] }],
+    [{ header: [1, 2, 3, 4, 5, false] }],
+    ['image']
+]
+
+export const quillFullToolbar = [
+    //Font styling
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['blockquote', 'code-block'],
+    [{ 'script': 'sub'}, { 'script': 'super' }],
+
+    //Text styling
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'align': [] }],
+
+    [{ header: [1, 2, 3, 4, 5, false] }],
+    ['link', 'image', 'video', 'formula'],
+    //['clean']                                         // remove formatting button
+  ]
 /**
    * The base objects which need to be loaded by the initialisations
    */

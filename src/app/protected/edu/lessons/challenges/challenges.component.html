@@ -183,25 +183,8 @@
   <div class="question">
     @if( questionToEdit == i ){
     <ion-item style="background-color: lightgray;" [disabled]="selectedChallenge.released">
-      <quill-editor [styles]="editorStyles" [(ngModel)]="selectedChallenge.questions[i].question" name="description">
-        <div quill-editor-toolbar>
-          <span class="ql-formats">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-code-block"></button>
-          </span>
-          <span class="ql-formats">
-            <button class="ql-script" value="sub"></button>
-            <button class="ql-script" value="super"></button>
-          </span>
-          <span class="ql-formats">
-            <button class="ql-link"></button>
-            <button class="ql-image"></button>
-          </span>
-        </div>
-      </quill-editor>
-      <ion-button size="small" fill="clear" (click)="toggleEditQuestion(i)">
+      <quill-editor [(ngModel)]="selectedChallenge.questions[i].question" name="description"></quill-editor>
+      <ion-button size="small" fill="solid" (click)="toggleEditQuestion(i)">
         <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
         <div>{{selectedChallenge.questions[i].question.length/1024}}KB</div>
       </ion-button>
@@ -209,9 +192,8 @@
     }@else{
     <ion-item style="background-color: lightgray;" [disabled]="selectedChallenge.released">
       <div class="counter"><b>{{i+1}}.</b></div>
-      <quill-view-html [content]="question.question" (click)="toggleEditQuestion(i)" style="min-width: 200px;">
-      </quill-view-html>
-      <!-- div [innerHTML]="question.question" (click)="toggleEditQuestion(i)"></div -->
+      <!-- quill-view-html [content]="question.question" (click)="toggleEditQuestion(i)" style="min-width: 200px;"> </quill-view-html -->
+      <div [innerHTML]="question.question" (click)="toggleEditQuestion(i)"></div>
       <ion-label class="answer" slot="end">{{ 'value' | translate }}:</ion-label>
       <ion-input class="answer" slot="end" style="max-width: 30px; margin-right: 10px; margin-left: 5px;" [(ngModel)]="question.value" type="number"
         (ionInput)="challengesService.modified = true" min="1"></ion-input>
@@ -223,25 +205,7 @@
     @for(answer of question.crxQuestionAnswers; track answer.id; let j = $index){
     <ion-item class="answer" [disabled]="selectedChallenge.released">
       @if( answerToEdit == i + '-' + j ){
-      <quill-editor [styles]="editorStyles"
-        [(ngModel)]="selectedChallenge.questions[i].crxQuestionAnswers[j].answer" name="description">
-        <div quill-editor-toolbar>
-          <span class="ql-formats">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-code-block"></button>
-          </span>
-          <span class="ql-formats">
-            <button class="ql-script" value="sub"></button>
-            <button class="ql-script" value="super"></button>
-          </span>
-          <span class="ql-formats">
-            <button class="ql-link"></button>
-            <button class="ql-image"></button>
-          </span>
-        </div>
-      </quill-editor>
+      <quill-editor [(ngModel)]="selectedChallenge.questions[i].crxQuestionAnswers[j].answer" name="description"></quill-editor>
       <ion-button size="small" fill="clear" (click)="toggleEditAnswer(i,j)">
         <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
         <div>{{selectedChallenge.questions[i].crxQuestionAnswers[j].answer.length/1024}}KB</div>
