@@ -4,26 +4,28 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <cranix-search objectType="software" [(ngModel)]="selectedSoftwares" [items]="softwares" itemTextField="value"
+        <cranix-search objectType="software" [(ngModel)]="selectedSoftwares" [items]="softwares" itemTextField="name"
           [multiple]="true" (onChange)="readFilteredSoftwareData()">
         </cranix-search>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
-        <cranix-search objectType="room"  [(ngModel)]="selectedRooms" [items]="rooms" itemTextField="value" [multiple]="true" (onChange)="readFilteredSoftwareData()">
+        <cranix-search objectType="room" [(ngModel)]="selectedRooms" [items]="rooms" itemTextField="name"
+          [multiple]="true" (onChange)="readFilteredSoftwareData()">
         </cranix-search>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
-        <cranix-search objectType="status"  [(ngModel)]="selectedStati" [items]="stati" itemTextField="value" [multiple]="true" (onChange)="readFilteredSoftwareData()">
+        <cranix-search objectType="status" [(ngModel)]="selectedStati" [items]="stati" itemTextField="name"
+          [multiple]="true" (onChange)="readFilteredSoftwareData()">
         </cranix-search>
       </ion-item>
     </ion-col>
   </ion-row>
   <cranix-list objectType="softwarestatus" [context]="context" [rowData]="softwareData"></cranix-list>
-}@else{
+  }@else{
   {{'Loading data ...'|translate}}
-}
+  }
 </ion-content>

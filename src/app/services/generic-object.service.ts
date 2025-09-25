@@ -563,6 +563,7 @@ export class GenericObjectService {
   filterItemsOfObject(objectType: string, filter: string, items: any[]) {
     let rowData = []
     let lowerFilter = filter.toLowerCase();
+    let fields = this.getDefaultSearchFields(objectType)
     for (let o of items) {
       //TODO split filter also
       switch(objectType){
@@ -572,7 +573,7 @@ export class GenericObjectService {
           }
         }
       }
-      for (let field of this.getDefaultSearchFields(objectType)) {
+      for (let field of fields) {
         if (o[field] && o[field].toLowerCase().indexOf(lowerFilter) > -1) {
           rowData.push(o); break;
         }

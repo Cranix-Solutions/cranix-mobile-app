@@ -10,7 +10,7 @@
     }
     <ion-icon slot="end" name="caret-down"></ion-icon>
 </ion-button>
-<ion-modal [isOpen]="isCranixSearchModalOpen" #cranixSearchModal>
+<ion-modal [isOpen]="isCranixSearchModalOpen" #cranixSearchModal [backdropDismiss]="false">
     <ng-template>
         <ion-header>
             <ion-toolbar color="primary">
@@ -27,11 +27,9 @@
                         matTooltip="{{'Clear selection' | translate }}">
                         <ion-icon slot="icon-only" color="warning" name="trash"></ion-icon>
                     </ion-button>
-                    @if(!multiple){
-                    <ion-button class="ion-no-margin" (click)="closeModal(cranixSearchModal)">
+                    <ion-button class="ion-no-margin" (click)="breakModal(cranixSearchModal)">
                         <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
                     </ion-button>
-                    }
                 </ion-buttons>
             </ion-toolbar>
             <ion-item>

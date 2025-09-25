@@ -39,13 +39,13 @@ export class SoftwareStatusComponent {
         console.log(val);
         for (let obj of this.softwareData) {
           if (this.softwares. filter( o => o.id == obj.softwareName ).length == 0 ) {
-            this.softwares.push({ id: obj.softwareName, value: obj.softwareName })
+            this.softwares.push({ id: obj.softwareName, name: obj.softwareName })
           }
           if (this.rooms.filter( o => o.id == obj.roomName ).length == 0) {
-            this.rooms.push({ id: obj.roomName, value: obj.roomName })
+            this.rooms.push({ id: obj.roomName, name: obj.roomName })
           }
           if (this.stati.filter(o => o.id == obj.status).length == 0) {
-            this.stati.push({ id: obj.status, value: this.languageService.trans(obj.status)})
+            this.stati.push({ id: obj.status, name: this.languageService.trans(obj.status)})
           }
         }
         this.stati.sort()

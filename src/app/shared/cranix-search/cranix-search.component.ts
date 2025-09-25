@@ -31,10 +31,9 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     private objectService: GenericObjectService
   ) { 
   }
-
   ngOnInit(): void {
     this.crxSearchFilter = this.objectType + (Math.floor(Math.random()* 9000) + 1000)
-    console.log("CranixSearchComponent")
+    console.log("CranixSearchComponent id:" + this.crxSearchFilter )
     if (typeof this.items == "undefined") {
       this.items = this.objectService.allObjects[this.objectType]
     }
@@ -55,8 +54,8 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     if (this.multiple) {
       this.selection = []
     }
-    //console.log("items", this.items)
-    console.log(this.emptyLabel)
+    console.log("items", this.items)
+    //console.log(this.emptyLabel)
     this.rowData = this.items
   }
 
@@ -84,7 +83,16 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
   openModal() {
     this.isCranixSearchModalOpen = true
   }
+  breakModal(modal){
+    if(this.multiple){
+      this.selection = []
+    }else{
+      this.selection = null
+    }
+    this.closeModal(modal);
+  }
   closeModal(modal){
+    console.log("closeModal called")
     modal.dismiss();
     this.isCranixSearchModalOpen = false
   }
@@ -100,8 +108,8 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     }else{
       this.selection = null
     }
-    this.propagateOnChange(this.selection);
     if(!this.multiple){
+      this.propagateOnChange(this.selection);
       this.closeModal(modal)
     }
   }

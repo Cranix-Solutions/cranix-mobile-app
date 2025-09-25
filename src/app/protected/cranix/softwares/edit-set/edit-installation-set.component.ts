@@ -108,7 +108,10 @@ export class EditInstallationSetComponent {
     this.softwareService.addModifyInstallationsSets(this.installationSet).subscribe({
       next: (val) => {
         this.objectService.responseMessage(val);
-        this.modalCtrl.dismiss();
+        this.submitted = false;
+        if(val.code == "OK") {
+          this.modalCtrl.dismiss();
+        }
       },
       error: (err) => {
         this.objectService.errorMessage(err);

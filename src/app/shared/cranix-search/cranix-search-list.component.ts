@@ -36,7 +36,7 @@ export class CranixSearchListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.crxSearchFilter = this.objectType + (Math.floor(Math.random()* 9000) + 1000)
-    console.log("CranixSearchListComponent")
+    console.log("CranixSearchListComponent id" + this.crxSearchFilter)
     console.log(this.selectedItems)
     if (typeof this.items == "undefined") {
       this.items = this.objectService.allObjects[this.objectType]
