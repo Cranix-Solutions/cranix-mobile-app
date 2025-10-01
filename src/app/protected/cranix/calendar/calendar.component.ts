@@ -137,7 +137,7 @@ export class CalendarComponent implements OnInit {
       this.calendarOptions.headerToolbar = {
         left: 'today',
         center: 'title',
-        right: 'selectCalendar addEvent'
+        right: 'selectCalendar,addEvent'
       }
       this.calendarOptions.footerToolbar = {
         left: '',

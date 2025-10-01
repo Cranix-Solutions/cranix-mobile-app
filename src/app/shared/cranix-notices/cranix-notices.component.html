@@ -56,11 +56,13 @@
     <ion-toolbar color="primary">
         <ion-title>
             {{'Notices for'|translate}}:
+            <em>
             @if(objectType.indexOf('user') != -1){
             {{selectedObject.surName}}, {{selectedObject.givenName}}
             }@else{
             {{selectedObject.description}}
             }
+            </em>
         </ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="openNotice(null)">

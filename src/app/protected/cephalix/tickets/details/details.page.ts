@@ -103,9 +103,7 @@ export class DetailsPage implements OnInit {
   }
 
   async answerArticle(article: Article) {
-    if (!article.sender) {
-      article.sender = this.ticket.email;
-    }
+    article.recipient = this.ticket.email;
     article.title = this.ticket.firstname + " " + this.ticket.lastname;
     const modal = await this.modalController.create({
       component: EditArticle,
@@ -279,8 +277,8 @@ export class DetailsPage implements OnInit {
 @Component({
   standalone: false,
     selector: 'cranix-edit-article',
-  templateUrl: './edit-article.html'
-  //styleUrls: ['./edit-article.scss'],
+  templateUrl: './edit-article.html',
+  styleUrls: ['./edit-article.css'],
 })
 export class EditArticle implements OnInit {
 
@@ -292,6 +290,7 @@ export class EditArticle implements OnInit {
 
   constructor(
     private cephalixService: CephalixService,
+    public authService: AuthenticationService,
     public modalController: ModalController,
     public objectService: GenericObjectService
   ) { }
@@ -311,7 +310,7 @@ export class EditArticle implements OnInit {
     this.files = event.target.files;
   }
 
-  addAttachment() {
+  addAttachment(popover) {
     console.log("addP")
     for (let file of this.files) {
       this.article.attachmentName = file.name;
@@ -322,10 +321,15 @@ export class EditArticle implements OnInit {
       }
       fileReader.readAsDataURL(file);
     }
+    popover.dismiss()
   }
 
+  clearAttachement(popover){
+    delete(this.article.attachmentName )
+    delete(this.article.attachment)
+    popover.dismiss()
+  }
   sendArticle() {
-    this.article.recipient = this.article.sender;
     this.article.created = new Date()
     this.article.articleType = 'O';
     this.article.text = this.newText;

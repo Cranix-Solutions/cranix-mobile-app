@@ -199,7 +199,11 @@
       </ion-item-option>
       @if(authService.session.userId == object.creatorId || authService.isAllowed(objectType + '.delete')){
       <ion-item-option color="danger" (click)="redirectToDelete(object)">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        @if(objectType == 'ticket'){
+          <ion-icon slot="icon-only" name="checkmark-done" color="danger"></ion-icon>
+          }@else{
+          <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
+          }
       </ion-item-option>
       }
     </ion-item-options>

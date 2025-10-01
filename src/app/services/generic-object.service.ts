@@ -289,7 +289,7 @@ export class GenericObjectService {
     }
     const alert = await this.alertCtrl.create({
       header: this.languageS.trans('Confirm!'),
-      subHeader: this.languageS.trans('Do you realy want to delete?'),
+      subHeader: objectType == 'ticket'? this.languageS.trans('Do you realy want to close?'): this.languageS.trans('Do you realy want to delete?'),
       message: name,
       buttons: [
         {

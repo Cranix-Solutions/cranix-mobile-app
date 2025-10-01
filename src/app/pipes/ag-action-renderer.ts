@@ -15,14 +15,18 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
             <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
         </ion-button>
         <ion-button fill="clear" size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+            @if(params.context.componentParent.objectType == 'ticket'){
+            <ion-icon color="danger" name="checkmark-done" ></ion-icon>
+            }@else{
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
+            }
         </ion-button>
         </div>
         `
 })
 
 export class ActionBTNRenderer implements ICellRendererAngularComp {
-    private params: any;
+    public params: any;
     public  id;
     agInit(params: any ): void {
         this.params = params;

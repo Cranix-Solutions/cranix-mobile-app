@@ -9,7 +9,7 @@
   }@else{
   <ion-title>#{{ticket.id}}, {{ticket.created | date:'yyyy-MM-dd HH:mm'}}, {{ticket.title}}<br>
     @if(institute) { {{ institute.name }} {{ institute.regCode }} {{ institute.ipVPN }}<br> }
-    {{ticket.email}} {{ticket.lastname}},{{ticket.firstname}}
+    {{ticket.lastname}},{{ticket.email}}
   </ion-title>
   <ion-buttons slot="end">
     <ion-button fill="clear" (click)="router.navigate(['/pages/cephalix/tickets'])">
@@ -109,7 +109,7 @@
             <ion-icon slot="icon-only" name="download"></ion-icon>
           </ion-button>
           }
-          @if(article.articleType == 'O'){
+          @if(article.articleType == 'I'){
           <ion-button [color]="article.seen ? 'success' : 'danger'" fill="clear" (click)="setSeenOnArticle(article)"
             matTooltip="{{'Set article as seen.' | translate }}">
             <ion-icon slot="icon-only" name="checkmark"></ion-icon>
