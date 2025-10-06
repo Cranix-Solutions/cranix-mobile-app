@@ -38,7 +38,7 @@
     </ion-fab-button>
     }
     @if(objectType == 'ticket') {
-    <ion-fab-button fill="solid" (click)="context.componentParent.reloadAllObjects()"
+    <ion-fab-button fill="solid" (click)="context.componentParent.objectService.getAllObject('ticket')"
       matTooltip="{{'Reload tickets' | translate }}">
       <ion-icon color="secondary" name="refresh"></ion-icon>
     </ion-fab-button>

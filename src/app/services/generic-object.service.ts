@@ -117,7 +117,6 @@ export class GenericObjectService {
 
   getObjects(objectType: string) {
     let url = this.utilsService.hostName() + "/" + objectType + "s/all";
-    //We do not read all challenges only the challenges from the selected
     console.log("getObjects " + url)
     return fetch(url, {
       method: 'get', headers: new Headers({
@@ -127,6 +126,7 @@ export class GenericObjectService {
       })
     })
   }
+
   /**
    * Loads the object of type 'objectType' from the server
    * @param objectType
