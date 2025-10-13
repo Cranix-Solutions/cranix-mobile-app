@@ -44,6 +44,7 @@ export class AddPrinterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.object)
     let subs = this.printersService.getDrivers().subscribe(
       (val) => {
         console.log(val)
@@ -51,6 +52,9 @@ export class AddPrinterComponent implements OnInit {
           this.manufacturers.push({ id: man, name: man })
           this.models[man] = []
           for (let mod of val[man]) {
+            if(this.action == 'modify' && this.object.model == mod) {
+              this.manufacturer = { id: man , name: man}
+            }
             this.models[man].push({ id: mod, name: mod })
           }
         }
@@ -108,6 +112,11 @@ export class AddPrinterComponent implements OnInit {
 
       //this.model = { id: this.printer.model, name: this.printer.model }
     }
+  }
+
+  deletePrinter(){
+    this.objectService.deleteObjectDialog(this.printer,'printer','')
+    this.modalCtrl.dismiss()
   }
 
   setModel(ev) {

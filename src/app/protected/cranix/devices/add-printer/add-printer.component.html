@@ -10,8 +10,7 @@
           <ion-icon slot="icon-only" color="success" name="checkmark-sharp">
           </ion-icon>
         </ion-button>
-        <ion-button *ngIf="action=='modify'" fill="clear" size="small" [disabled]="submitted"
-          (click)="objectService.deleteObjectDialog(printer,'printer','')">
+        <ion-button *ngIf="action=='modify'" fill="clear" size="small" [disabled]="submitted" (click)="deletePrinter()">
           <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
         </ion-button>
         <ion-button fill="clear" size="small" (click)="modalCtrl.dismiss()" [disabled]="submitted">
@@ -21,8 +20,6 @@
     </ion-toolbar>
   </ion-header>
   <ion-content fullscreen>
-    {{addPrinterFrom.form.valid}} {{printer.driverFile}} {{model.name}} {{submitted}} <br>
-    {{!addPrinterFrom.form.valid}} {{(!printer.driverFile && !model.name )}}
     <ion-list lines="full">
       <ion-item *ngIf="action == 'add'">
         <ion-label [position]="authService.settings.labelPlacement">{{'roomId'| translate}}</ion-label>
