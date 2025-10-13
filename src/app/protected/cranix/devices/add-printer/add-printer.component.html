@@ -6,7 +6,7 @@
       <ion-title *ngIf="action=='modify'">{{ 'Modify printer' | translate }}</ion-title>
       <ion-buttons slot="end">
         <ion-button type="submit" class="ion-no-margin"
-          [disabled]="!addPrinterFrom.form.valid || (!printer.driverFile && !printer.model ) || submitted ">
+          [disabled]="!addPrinterFrom.form.valid || (!driverFile && !model.name ) || submitted ">
           <ion-icon slot="icon-only" color="success" name="checkmark-sharp">
           </ion-icon>
         </ion-button>
@@ -21,6 +21,8 @@
     </ion-toolbar>
   </ion-header>
   <ion-content fullscreen>
+    {{addPrinterFrom.form.valid}} {{printer.driverFile}} {{model.name}} {{submitted}} <br>
+    {{!addPrinterFrom.form.valid}} {{(!printer.driverFile && !model.name )}}
     <ion-list lines="full">
       <ion-item *ngIf="action == 'add'">
         <ion-label [position]="authService.settings.labelPlacement">{{'roomId'| translate}}</ion-label>

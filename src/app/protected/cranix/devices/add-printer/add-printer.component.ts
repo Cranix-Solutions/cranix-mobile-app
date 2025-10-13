@@ -120,8 +120,8 @@ export class AddPrinterComponent implements OnInit {
     let formData: FormData = new FormData();
     if (this.driverFile) {
       formData.append('file', this.driverFile, this.driverFile.name);
-    } else if (this.printer.model) {
-      formData.append('model', this.printer.model);
+    } else if (this.model) {
+      formData.append('model', this.model.name);
     } else if (this.action != 'modify') {
       this.objectService.errorMessage(
         this.languageS.trans('You have to set either the model of the printer or upload a ppd driver file.')
