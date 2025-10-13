@@ -38,7 +38,7 @@
           matTooltip="{{ 'Edit user preferences' | translate }}">
           <ion-icon color="success" name="person"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" (click)="logOut($event)">
+        <ion-button fill="clear" (click)="logOut()">
           <ion-icon color="danger" name="log-out"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -57,7 +57,7 @@
           <ion-icon color="success" name="person"></ion-icon>
           <ion-label>{{ 'Edit user preferences' | translate }}"</ion-label>
         </ion-item>
-        <ion-item button fill="clear" (click)="logOut($event)">
+        <ion-item button fill="clear" (click)="logOut()">
           <ion-icon color="danger" name="log-out"></ion-icon>
           <ion-label>{{'Log out'|translate}} </ion-label>
         </ion-item>

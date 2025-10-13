@@ -73,7 +73,8 @@ export class CranixToolbarComponent  implements OnDestroy {
       }})
   }
 
-  async logOut(ev: Event) {
+  async logOut() {
+    this.isPopoverOpen = false;
     const alert = await this.alertController.create({
       header: this.translateService.trans('Confirm!'),
       message: this.translateService.trans('Do you realy want to logout?'),
