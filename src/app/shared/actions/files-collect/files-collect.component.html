@@ -1,6 +1,6 @@
 <form #collectFile="ngForm" (ngSubmit)="onSubmit()">
   <ion-header translucent>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
       <ion-title>{{  'Collect files' | translate }}</ion-title>
       <ion-buttons slot="end">
         <ion-button type="submit" class="ion-no-margin" fill="clear" size="small" [disabled]="!collectFile.valid">

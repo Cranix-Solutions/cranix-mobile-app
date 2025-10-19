@@ -66,16 +66,14 @@
   </ion-buttons>
   <ion-item lines="none" slot="end" style="max-height: 54px">
     <div #selectRoom slot="start" matTooltip="{{'Select the room to control' | translate}}">
-      <ion-label [position]="authService.settings.labelPlacement">{{'Select a Room' | translate }}</ion-label>
+      <!-- ion-label [position]="authService.settings.labelPlacement">{{'Select a Room' | translate }}</ion-label -->
       <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
       itemTextField="name" (onChange)="roomSelected()"></cranix-search>
     </div>
     <div slot="end" *ngIf="!authService.isMD()" lines="none" matTooltip="{{'Select picture size' | translate}}">
-      <ion-label [position]="authService.settings.labelPlacement">{{'Select picture size' | translate }}</ion-label>
-      {{gridSize}}
-      <ion-select *ngIf="eduS.selectedRoom" [(ngModel)]="gridSize" name="gridSize" (ionChange)="sizeChange($event)"
-        okText="{{'apply' | translate }}" cancelText="{{ 'Cancel' | translate}}">
-        <ion-select-option value="{{size}}" *ngFor="let size of gridSizes">{{size}}</ion-select-option>
+      <!-- ion-label [position]="authService.settings.labelPlacement">{{'Select picture size' | translate }}</ion-label -->
+      <ion-select [(ngModel)]="gridSize" name="gridSize" okText="{{'apply' | translate }}" cancelText="{{ 'Cancel' | translate}}" fill="solid" placeholder="{{'Select device pro line'|translate}} ">
+        <ion-select-option value="{{size}}" *ngFor="let size of gridSizes">{{12/size}} {{'pro line'|translate}}</ion-select-option>
       </ion-select>
     </div>
   </ion-item>
