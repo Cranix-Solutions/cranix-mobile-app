@@ -41,7 +41,7 @@ export class GroupActionBTNRenderer implements ICellRendererAngularComp {
     public noticeUse: boolean = false;
     agInit(params: any): void {
         this.params = params;
-        this.mayEdit = params.context.componentParent.mayGroupEdit;
+        this.mayEdit = params.context.componentParent.context.componentParent.mayGroupEdit;
         if (!this.mayEdit && this.params.data) {
             this.mayEdit = params.context.componentParent.authService.session.userId == params.data.creatorId;
         }
