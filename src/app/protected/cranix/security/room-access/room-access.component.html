@@ -76,7 +76,7 @@
         {{ 'accessType' | translate}}
       </ion-col>
     </ion-row>
-    <div class="button-container">
+    <div class="button-container" style="padding-left: 0px; padding-right: 0px;">
       <ion-row *ngFor="let obj of rowData; index as i" button (click)="redirectToAddEdit(obj)"
         style="background-color : {{authService.rowColors[i%2]}}">
         <ion-col size="4">
@@ -135,7 +135,7 @@
       </ion-col>
       }
     </ion-row>
-    <div class="button-container">
+    <div class="button-container" style="padding-left: 0px; padding-right: 0px;">
       @for(obj of rowData; track obj.id; let i = $index){
       <ion-row style="background-color : {{authService.rowColors[i%2]}}">
         <ion-col size="2">

@@ -65,17 +65,17 @@
     </ion-button>
   </ion-buttons>
   <ion-item lines="none" slot="end" style="max-height: 54px">
-    <div #selectRoom slot="start" matTooltip="{{'Select the room to control' | translate}}">
-      <!-- ion-label [position]="authService.settings.labelPlacement">{{'Select a Room' | translate }}</ion-label -->
-      <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
+    <cranix-search #selectRoom slot="start" matTooltip="{{'Select the room to control' | translate}}"
+      style="height: 54px; padding: 0;" objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
       itemTextField="name" (onChange)="roomSelected()"></cranix-search>
-    </div>
-    <div slot="end" *ngIf="!authService.isMD()" lines="none" matTooltip="{{'Select picture size' | translate}}">
-      <!-- ion-label [position]="authService.settings.labelPlacement">{{'Select picture size' | translate }}</ion-label -->
-      <ion-select [(ngModel)]="gridSize" name="gridSize" okText="{{'apply' | translate }}" cancelText="{{ 'Cancel' | translate}}" fill="solid" placeholder="{{'Select device pro line'|translate}} ">
-        <ion-select-option value="{{size}}" *ngFor="let size of gridSizes">{{12/size}} {{'pro line'|translate}}</ion-select-option>
-      </ion-select>
-    </div>
+    @if(!authService.isMD()){
+    <ion-select slot="end" matTooltip="{{'Select picture size' | translate}}" [(ngModel)]="gridSize" name="gridSize"
+      okText="{{'apply' | translate }}" cancelText="{{ 'Cancel' | translate}}" fill="solid" color="light"
+      placeholder="{{'Select device pro line'|translate}} ">
+      <ion-select-option value="{{size}}" *ngFor="let size of gridSizes">{{12/size}} {{'pro
+        line'|translate}}</ion-select-option>
+    </ion-select>
+    }
   </ion-item>
 </ion-toolbar>
 <ion-item-divider></ion-item-divider>
@@ -89,6 +89,6 @@
   </ion-grid>
 </ion-content>
 <ion-modal [isOpen]="selectRoomOpen">
-  <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
-  itemTextField="name" (onChange)="roomSelected()"></cranix-search>
+  <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms" itemTextField="name"
+    (onChange)="roomSelected()"></cranix-search>
 </ion-modal>

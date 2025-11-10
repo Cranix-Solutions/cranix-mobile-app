@@ -1,4 +1,4 @@
-<ion-button expand="block" fill="clear" (click)="openModal()">
+<button (click)="openModal()" style="min-height: 40px; background-color: #e6e6e6; margin: 2px; padding: 2px; min-width: 100px;">
     @if(!selection || selection.length == 0){
     {{emptyLabel|translate}}
     }@else{
@@ -9,7 +9,7 @@
     }
     }
     <ion-icon slot="end" name="caret-down"></ion-icon>
-</ion-button>
+</button>
 <ion-modal [isOpen]="isCranixSearchModalOpen" #cranixSearchModal [backdropDismiss]="false">
     <ng-template>
         <ion-header>

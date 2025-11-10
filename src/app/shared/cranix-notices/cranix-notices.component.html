@@ -2,12 +2,14 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-title>
-            {{'Notice for:'|translate}} 
-            @if(objectType.indexOf('user') != -1) {
+            {{'Notice for:'|translate}}
+            <em>
+                @if(objectType.indexOf('user') != -1) {
                 {{selectedObject.surName}}, {{selectedObject.givenName}}
-            }@else{
+                }@else{
                 {{selectedObject.name}}, {{selectedObject.description}}
-            }
+                }
+            </em>
         </ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="saveNotice()" [disabled]="isDisabled">
@@ -26,12 +28,13 @@
 </ion-header>
 <ion-content>
     <ion-item>
-        <ion-input label="{{'Title'|translate}}: " [(ngModel)]="selectedNotice.title"
-            placeholder="{{'Insert title'|translate}}"></ion-input>
+        <ion-input label="{{'Title'|translate}}: " [labelPlacement]="authService.settings.labelPlacement"
+            [(ngModel)]="selectedNotice.title" placeholder="{{'Insert title'|translate}}"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label>
-            {{'created'|translate}} {{selectedNotice.created|date:"yyyy-MM-dd"}}; {{'modified'|translate}} {{selectedNotice.modified|date:"yyyy-MM-dd"}}
+            {{'created'|translate}} {{selectedNotice.created|date:"yyyy-MM-dd"}}; {{'modified'|translate}}
+            {{selectedNotice.modified|date:"yyyy-MM-dd"}}
         </ion-label>
     </ion-item>
     <ion-item>
@@ -39,13 +42,17 @@
         <ion-label>{{'PTM'|translate}}</ion-label>
         }
         <ion-label [position]="authService.settings.labelPlacement">{{'teachingSubject'|translate}}:</ion-label>
-        <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects" [(ngModel)]="selectedNotice.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
+        <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
+            [(ngModel)]="selectedNotice.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
         <ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label>
-        <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
+        <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
+            [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
     </ion-item>
     <ion-item>
-        <ion-input label="{{'grading'|translate}}: " type="number" [(ngModel)]="selectedNotice.grading"></ion-input>
-        <ion-input label="{{'weighting'|translate}}: " type="number" [(ngModel)]="selectedNotice.weighting"></ion-input>
+        <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'grading'|translate}}: "
+            type="number" [(ngModel)]="selectedNotice.grading"></ion-input>
+        <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'weighting'|translate}}: "
+            type="number" [(ngModel)]="selectedNotice.weighting"></ion-input>
     </ion-item>
     <ion-item>
         <quill-editor [(ngModel)]="selectedNotice.text"></quill-editor>
@@ -57,11 +64,11 @@
         <ion-title>
             {{'Notices for'|translate}}:
             <em>
-            @if(objectType.indexOf('user') != -1){
-            {{selectedObject.surName}}, {{selectedObject.givenName}}
-            }@else{
-            {{selectedObject.description}}
-            }
+                @if(objectType.indexOf('user') != -1){
+                {{selectedObject.surName}}, {{selectedObject.givenName}}
+                }@else{
+                {{selectedObject.description}}
+                }
             </em>
         </ion-title>
         <ion-buttons slot="end">
@@ -84,7 +91,7 @@
                         <ion-toolbar color="primary">
                             <ion-label>
                                 {{'created'|translate}} {{notice.created|date:"yyyy-MM-dd"}}
-                                </ion-label>
+                            </ion-label>
                             <ion-buttons slot="end">
                                 <ion-button fill="clear" (click)="openNotice(notice)">
                                     <ion-icon name="build"></ion-icon>

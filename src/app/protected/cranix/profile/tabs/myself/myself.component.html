@@ -30,6 +30,12 @@
         <h3>{{ 'fsQuota' | translate}}</h3>
       </ion-label>
     </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="key"></ion-icon>
+      <ion-button (click)="openChangePW()">
+        {{ 'Reset password' | translate }}
+      </ion-button>
+    </ion-item>
     @if(idRequestUse){
     <ion-item>
       <ion-icon slot="start" name="id-card"></ion-icon>
@@ -65,10 +71,5 @@
       }
     </ion-item>
     }
-    <ion-item lines="none">
-      <ion-button (click)="openChangePW()">
-        {{ 'Reset password' | translate }}
-      </ion-button>
-    </ion-item>
   </ion-list>
 </ion-content>
