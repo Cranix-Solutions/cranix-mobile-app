@@ -94,7 +94,7 @@ export const enumerates: string[] = [
 ];
 
 export const multivalued: string[] = [
-    'softwareVersions', 'softwareFullNames', 'mailAliases'
+    'softwareVersions', 'softwareFullNames', 'mailAliases', 'virtualMailAliases'
 ]
 
 /**

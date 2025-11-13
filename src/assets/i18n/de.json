@@ -667,6 +667,7 @@
     "logout": "Abmelden",
     "mac": "MAC-Adresse",
     "mailAliases": "E-Mail-Aliase",
+    "virtualMailAliases": "Virtuelle E-Mail-Adressen",
     "mandatoryProfile": "Windows-Profil einfrieren.",
     "manually": "Manuell installiert",
     "manufacturer": "Hersteller",

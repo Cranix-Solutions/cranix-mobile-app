@@ -37,8 +37,9 @@ export class User {
 	fsQuotaUsed?: number = 0;
 	fullName: string = "";
 	mailAliases: string[] = [];
+	virtualMailAliases?: string[] = [];
 	emailAddress?: string = ""
-	telefonNumber?: string = ""
+	telephoneNumber?: string = ""
 	childIds?: number[] = []
 	parentIds?: number[] = []
 	classIds?: number[] = []
