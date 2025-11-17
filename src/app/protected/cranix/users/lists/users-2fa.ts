@@ -5,9 +5,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 @Component({
     standalone: false,
     selector: 'cranix-users-2fa',
-    templateUrl: './users-2fa.html',
-    // styleUrls: ['./user-import.component.scss'],
-
+    templateUrl: './users-2fa.html'
 })
 export class Users2faComponent {
     context;

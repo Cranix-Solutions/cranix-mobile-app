@@ -1,6 +1,8 @@
 <cranix-toolbar title="{{'Manage CRANIX 2FA' | translate}}"></cranix-toolbar>
-@if(authService.isMD()){
-<cranix-list objectType="2fa" [context]="context"></cranix-list>
-}@else{
-<cranix-md-list objectType="2fa" [context]="context"></cranix-md-list>
-}
+<ion-content>
+    @if(authService.isMD()){
+    <cranix-md-list objectType="2fa" [context]="context"></cranix-md-list>
+    }@else{
+    <cranix-list objectType="2fa" [context]="context"></cranix-list>
+    }
+</ion-content>

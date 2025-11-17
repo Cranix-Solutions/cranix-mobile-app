@@ -1,0 +1,42 @@
+ion-item.row-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+ion-item.row-right .right-input {
+  margin-left: auto;
+}
+
+
+:host(.select-label-placement-fixed) .label-text-wrapper {
+  -ms-flex: 0 0 200px;
+  flex: 0 0 200px;
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+/* Manchmal muss man noch tiefer in den Shadow DOM */
+/* Dies ist nicht immer garantiert und sollte nur als letzter Ausweg dienen: */
+.wide-label-input.ion-input-md div.label-text-wrapper,
+.wide-label-input.ion-input-ios div.label-text-wrapper {
+    max-width: none;
+    width: 200px; /* gewünschte Breite setzen */
+}
+
+
+ion-select[part="custom-label"]::part(label) {
+    /* Setzt die gewünschte Breite für das Label */
+    min-width: 180px;
+    width: 180px;
+    max-width: 180px;
+
+    /* Wichtig: Entfernen Sie 'overflow: hidden' und 'text-overflow: ellipsis'
+       wenn Sie verhindern möchten, dass lange Texte abgeschnitten werden. */
+    overflow: visible;
+    text-overflow: clip;
+}
+
+ion-input {
+  text-align: right;
+}

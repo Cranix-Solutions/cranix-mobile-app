@@ -45,6 +45,16 @@ ion-input.number {
 }
 
 /*
+
+ion-input {
+  --text-align: right;
+}
+
+ion-input{
+  --background: lightgrey;
+}*/
+
+/*
 * Fixed label which is more widther and readable
 */
 .custom-fixed-label {
@@ -111,7 +121,7 @@ ion-accordion.accordion-expanded ion-item[slot="header"] {
 }
 
 /*
-* Ein anderes lookout 
+* Ein anderes lookout
 */
 .upload-btn-wrapper {
   position: relative;
@@ -140,7 +150,7 @@ ion-accordion.accordion-expanded ion-item[slot="header"] {
 
 
 /*
- * edited styling for ag-grid 
+ * edited styling for ag-grid
  *
  */
 $grid-breakpoints :(xs: 0,
@@ -292,6 +302,7 @@ button:focus {
   height: 54px;
   border-color: var(--ion-color-primary-tint);
   border-width: 2px;
+  border-bottom-width: 2px;
   border-left: none;
   border-right: none;
   border-top: none;
@@ -351,9 +362,17 @@ ion-card {
   }
 }
 
-ion-input{
-  --background: lightgrey;
-  }
+/* Styling für alle ion-item-divider im Projekt */
+ion-item-divider {
+  /* Textgröße erhöhen */
+  font-size: 1.2em; /* Oder z.B. 18px */
+
+  /* Text fett machen (bold) */
+  font-weight: bold;
+
+  /* Optional: Sie können auch die Farbe des Texts ändern, z.B. für mehr Kontrast */
+  color: black;
+}
 
 /*
 * ion-item should inherit background from its container for example ion-row
