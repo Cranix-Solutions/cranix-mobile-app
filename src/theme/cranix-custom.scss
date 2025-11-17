@@ -44,6 +44,32 @@ ion-input.number {
   text-align: right;
 }
 
+
+ion-select[part="custom-label"]::part(label) {
+  /* Setzt die gewünschte Breite für das Label */
+  min-width: 200;
+  width: 200;
+  max-width: 200;
+
+  /* Wichtig: Entfernen Sie 'overflow: hidden' und 'text-overflow: ellipsis'
+     wenn Sie verhindern möchten, dass lange Texte abgeschnitten werden. */
+  overflow: visible;
+  text-overflow: clip;
+}
+
+
+ion-input[part="custom-label"]::part(label) {
+  /* Setzt die gewünschte Breite für das Label */
+  min-width: 200;
+  width: 200;
+  max-width: 200;
+
+  /* Wichtig: Entfernen Sie 'overflow: hidden' und 'text-overflow: ellipsis'
+     wenn Sie verhindern möchten, dass lange Texte abgeschnitten werden. */
+  overflow: visible;
+  text-overflow: clip;
+}
+
 /*
 
 ion-input {
