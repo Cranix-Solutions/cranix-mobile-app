@@ -78,6 +78,9 @@
           @if(objectType == 'challenge'){
             <p>{{object.description}}</p>
             @if(object.teachingSubject){<p>{{object.teachingSubject.name}}</p>}
+          }@else if(objectType == '2fa') {
+            <p>{{ object.creatorId | idToName:'user' }}</p>
+            <p>{{ object.crx2faType }} {{ object.crx2faAddress }}</p>
           }@else{
             <p>{{ object[left1] }}</p>
             <p>{{ object[left2] }} {{ object[left3] }}</p>
@@ -87,6 +90,10 @@
           @if(objectType == 'customer'){
           <p>{{ object.contact }}</p>
           <p>{{ object.telephone }}</p>
+          }
+          @else if(objectType == '2fa') {
+            <p>{{ object.timeStep }}</p>
+            <p>{{ object.validHours }}</p>
           }
           @else if(objectType == 'device') {
           <p>{{ object.mac }}</p>

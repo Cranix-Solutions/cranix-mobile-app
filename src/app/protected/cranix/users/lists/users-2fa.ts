@@ -11,7 +11,6 @@ export class Users2faComponent {
     context;
     constructor(
         public authService: AuthenticationService
-
     ) {
         this.context = { componentParent: this };
     }

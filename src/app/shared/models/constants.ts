@@ -217,10 +217,11 @@ export const hiddenColumns: string[] = [
     'questions'
 ]
 
-import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNotice, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
+import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, Crx2fa, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNotice, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
 import { Article, CephalixCare, Customer, DynDns, Institute, InstituteStatus, Notice, Repository, Ticket} from './cephalix-data-model'
 export function getObjectKeys(objectType: string) {
     switch (objectType) {
+        case '2fa': return Object.getOwnPropertyNames(new Crx2fa)
         case 'accessinrooms': return Object.getOwnPropertyNames(new AccessInRooms)
         case 'accessstatus': return Object.getOwnPropertyNames(new AccessStatus)
         case 'adhocroom': return Object.getOwnPropertyNames(new AdHocRoom)
