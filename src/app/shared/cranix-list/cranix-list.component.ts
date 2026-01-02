@@ -109,6 +109,10 @@ export class CranixListComponent implements OnInit, OnChanges {
         await new Promise(f => setTimeout(f, 1000));
       }
     }
+    if(this.objectType == '2fa'){
+      this.hiddenColumns = this.hiddenColumns.filter((val) => val != 'creatorId')
+      this.hiddenColumns.push('address')
+    }
     this.objectKeys = getObjectKeys(this.objectType);
     this.createColumnDefs();
     console.log(this.context, this.objectType, this.objectKeys, this.columnDefs)

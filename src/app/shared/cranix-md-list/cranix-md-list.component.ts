@@ -68,6 +68,11 @@ export class CranixMdListComponent implements OnInit, OnChanges {
         this.left3 = "givenName"
         break
       }
+      case "2fa": {
+        this.left1 = "creatorId"
+        this.left2 = "crx2faType"
+        break
+      }
       case 'device': {
         this.left2 = 'ip'
         break

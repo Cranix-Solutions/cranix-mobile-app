@@ -686,3 +686,14 @@ export class FileActionsMap {
 	action: string = "list"
 	data: string = ""
 }
+
+export class Crx2fa {
+	id: number;
+	creatorId: number = 0;
+	crx2faType: string = 'TOTP'
+	timeStep: number = 30
+	validHours: number = 6
+	address: string = ''
+	created: Date | string = new Date()
+	modified: Date | string = new Date()
+}

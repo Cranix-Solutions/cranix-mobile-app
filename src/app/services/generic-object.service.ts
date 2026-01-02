@@ -132,6 +132,10 @@ export class GenericObjectService {
    * @param objectType
    */
   async getAllObject(objectType: string) {
+    if( !this.authService.isOneOfAllowed([objectType, objectType+".search", objectType+".manage"])) {
+      console.log('getAllObject not allowed to load:', objectType);
+      return
+    }
     if (this.objects.indexOf(objectType) == -1) {
       console.log("Unknown object type:", objectType)
       return;
