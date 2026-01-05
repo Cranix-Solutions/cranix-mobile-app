@@ -54,7 +54,7 @@ export class SoftwareService {
 	}
 	getSoftwareLicense(softwareId: number) {
 		this.url = this.hostname + `/softwares/${softwareId}/license`;
-		console.log(this.url);
+		//console.log(this.url);
 		return this.http.get<License[]>(this.url, { headers: this.authService.headers });
 	}
 	deleteSoftwareLicense(licenseId: number) {

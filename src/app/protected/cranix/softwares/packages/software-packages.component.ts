@@ -7,18 +7,15 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { SoftwareService } from 'src/app/services/softwares.service';
 import { Package, Software } from 'src/app/shared/models/data-model';
 import { SoftwareLicensesComponent } from 'src/app/shared/actions/software-licenses/software-licenses.component';
-
+import { DownloadSoftwaresComponent } from 'src/app/shared/actions/download-softwares/download-softwares.component';
 @Component({
   standalone: false,
-    selector: 'cranix-software-packages',
+  selector: 'cranix-software-packages',
   templateUrl: './software-packages.component.html',
   styleUrls: ['./software-packages.component.scss'],
 })
 export class SoftwarePackagesComponent {
   context;
-  rowData: Package[];
-	availableSoftwares: Software[];
-  isDownloadOpen: boolean = false;
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
@@ -38,23 +35,29 @@ export class SoftwarePackagesComponent {
   sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
   }
-  
+
   onQuickFilterChanged(quickFilter) {
     let filter = (<HTMLInputElement>document.getElementById(quickFilter)).value.toLowerCase();
   }
 
   public redirectToDelete = (software: Software) => {
-    this.objectService.deleteObjectDialog(software, 'software','')
+    this.objectService.deleteObjectDialog(software, 'software', '')
   }
 
   /**
    * Function to select the software packages to download
-   * @param ev
    */
-  downloadSoftwares(ev: any) {
-    this.isDownloadOpen = true
+  async downloadSoftwares() {
+    const modal = await this.modalCtrl.create({
+      component: DownloadSoftwaresComponent,
+      cssClass: "medium-modal",
+      animated: true,
+      backdropDismiss: false
+    });
+    (await modal).present().then((val) => {
+      this.authService.log("downloadSoftwares executed.")
+    })
   }
-
   /**
    * Modify or add a software package
    * @param ev
@@ -105,7 +108,7 @@ export class SoftwarePackagesComponent {
         this.authService.log("Object was created or modified", dataReturned.data)
       }
     });
-    (await modal).present(); 
+    (await modal).present();
 
   }
 }

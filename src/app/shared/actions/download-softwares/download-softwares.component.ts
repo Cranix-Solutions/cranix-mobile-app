@@ -14,7 +14,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 })
 export class DownloadSoftwaresComponent {
   context;
-  selected: Package[];
+  selected: Package[] = [];
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,

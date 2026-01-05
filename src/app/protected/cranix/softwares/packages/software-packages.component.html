@@ -1,7 +1,8 @@
 <cranix-toolbar title="{{'Available software packages:' | translate}}"></cranix-toolbar>
 <ion-content id="carded">
   @if(authService.isMD()){
-  <cranix-md-list objectType="package" [rowData]="softwareService.availableSoftwares" [context]="context"></cranix-md-list>
+  <cranix-md-list objectType="package" [rowData]="softwareService.availableSoftwares"
+    [context]="context"></cranix-md-list>
   }@else{
   <cranix-list objectType="package" [rowData]="softwareService.availableSoftwares" [context]="context"></cranix-list>
   }

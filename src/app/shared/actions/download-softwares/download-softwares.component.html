@@ -3,7 +3,7 @@
     <ion-title>{{ 'Select softwares to download' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" size="small" (click)="startDownload()">
-        <ion-icon slot="icon-only" color="primary" name="cloud-download"></ion-icon>
+        <ion-icon slot="icon-only" color="success" name="cloud-download"></ion-icon>
       </ion-button>
       <ion-button fill="clear" size="small" (click)="closeWindow()">
         <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
@@ -12,5 +12,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-  <cranix-search-list objectType="package" [multiple]="true" [items]="objectService.packagesAvailable" [(selectedItems)]="selected" [itemTextField]="['name', 'version']"></cranix-search-list>
+  <cranix-search-list objectType="package" [multiple]="true" [items]="objectService.packagesAvailable"
+    [(selectedItems)]="selected" [itemTextField]="['name', 'version']"></cranix-search-list>
 </ion-content>
