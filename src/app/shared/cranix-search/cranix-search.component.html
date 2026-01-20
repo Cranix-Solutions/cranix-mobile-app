@@ -50,17 +50,15 @@
                 }
             </ul>
             }@else{
-            <ul class="radiolist">
                 @for(o of rowData; let i=$index; track i;){
-                <li>
+                <div style="padding: 5px 0px 3px 10px;">
                     <input type="radio" (click)="select(o,cranixSearchModal)" [id]="o.id" name="cranixSearchList"
                         [checked]="selection && o.id == selection.id">
-                    <label [for]="o.id">
+                    <label style="border-bottom: 1px solid; display: inline-block; width: 95%; padding-left: 5px;" [for]="o.id">
                         @for(field of itemTextField; track field){ {{o[field]}} &nbsp; }
                     </label>
-                </li>
+                </div>
                 }
-            </ul>
             }
         </ion-content>
     </ng-template>
