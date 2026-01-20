@@ -1,9 +1,10 @@
-<form #addEditRoomAccess="ngForm" (ngSubmit)="onSubmit()">
+<form #addEditRoomAccess="ngForm">
   <ion-header translucent>
     <ion-toolbar color="primary">
       <ion-title>{{ objectActionTitle | translate }}</ion-title>
       <ion-buttons slot="end">
-        <ion-button type="submit" class="ion-no-margin" [disabled]="!addEditRoomAccess.valid && !roomAccess.roomId">
+        <ion-button class="ion-no-margin" [disabled]="!addEditRoomAccess.valid && !roomAccess.roomId"
+          (click)="addModify()">
           <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
         </ion-button>
         <ion-button *ngIf="objectAction == 'modify'" fill="clear" size="small" (click)="deleteObject()">
@@ -18,41 +19,49 @@
   <ion-content fullscreen>
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       @for(key of objectKeys; track key) {
+      @if(key == 'roomId'){
       <ion-item>
-        @if(key == 'roomId'){
-        <ion-label [position]="authService.settings.labelPlacement">{{'roomId'| translate}}</ion-label>
-	<cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect" [multiple]="false"></cranix-search>
-        } @else if(key == 'accessType') {
-        <ion-label [position]="authService.settings.labelPlacement">{{'accessType'| translate}}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
+        <ion-note slot="end">
+          <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect"
+            [multiple]="false" [(ngModel)]="roomAccess.room" name="room"></cranix-search>
+        </ion-note>
+      </ion-item>
+      } @else if(key == 'accessType') {
+      <ion-item>
+        <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-select type="text" [(ngModel)]="roomAccess.accessType" name="accessType" required
           [compareWith]="objectService.compareFn">
           <ion-select-option *ngFor="let accessType of objectService.selects['accessType']" value="{{accessType}}">
             {{accessType | translate}}
           </ion-select-option>
         </ion-select>
-        } @else if(key == 'action') {
-        <ion-label [position]="authService.settings.labelPlacement">{{'action'| translate}}</ion-label>
+      </ion-item>
+      } @else if(key == 'action') {
+      <ion-item>
+        <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-select type="text" [(ngModel)]="roomAccess.action" name="action" required
           [compareWith]="objectService.compareFn" [disabled]="roomAccess.accessType != 'ACT'">
           <ion-select-option *ngFor="let action of objectService.selects['action']" value="{{action}}">
             {{action | translate}}
           </ion-select-option>
         </ion-select>
-        } @else if(key == 'pointInTime') {
+      </ion-item>
+      } @else if(key == 'pointInTime') {
+      <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-input type="text" [(ngModel)]="roomAccess.pointInTime" name="pointInTime"
           [disabled]="roomAccess.accessType == 'DEF'"></ion-input>
-        } @else if(key == 'login' || key == 'portal' || key == 'printing' || key == 'proxy' || key == 'direct') {
+      </ion-item>
+      } @else if(toShow(roomAccess.accessType, key)) {
+      <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-checkbox slot="end" [(ngModel)]="roomAccess[key]" name="{{key}}" color="secondary"
           [disabled]="roomAccess.accessType == 'ACT'">
         </ion-checkbox>
-        } @else {
-        <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
-        <ion-checkbox slot="end" [(ngModel)]="roomAccess[key]" name="{{key}}" color="secondary"
-          [disabled]="roomAccess.accessType == 'DEF'"></ion-checkbox>
-        }
       </ion-item>
+      }
+
       }
     </ion-list>
   </ion-content>

@@ -1,3 +1,5 @@
+import { Room } from "./data-model";
+
 export class IncomingRules {
     services: string[];
     ports: string[];
@@ -41,6 +43,7 @@ export class AccessInRoom  {
     saturday: boolean = false;
     sunday: boolean = false;
     holiday: boolean = false;
+    room: Room;
     constructor() { }
 }
 

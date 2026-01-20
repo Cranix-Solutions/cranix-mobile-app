@@ -9,9 +9,14 @@ import { SecurityService } from 'src/app/services/security-service';
 import { Room } from 'src/app/shared/models/data-model';
 import { AccessInRoom } from 'src/app/shared/models/secutiry-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
+
+
+const access = ['login', 'portal', 'printing', 'proxy', 'direct']
+const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'holiday']
+
 @Component({
   standalone: false,
-    selector: 'cranix-add-edit-room-access',
+  selector: 'cranix-add-edit-room-access',
   templateUrl: './add-edit-room-access.component.html',
 })
 export class AddEditRoomAccessComponent implements OnInit {
@@ -19,8 +24,6 @@ export class AddEditRoomAccessComponent implements OnInit {
   objectKeys: string[] = [];
   objectActionTitle: string = "";
   roomsToSelect: Room[];
-  selectedRoom: Room;
-
   @Input() roomAccess: AccessInRoom;
   @Input() objectAction: string;
   constructor(
@@ -39,11 +42,13 @@ export class AddEditRoomAccessComponent implements OnInit {
     } else {
       this.objectActionTitle = "Edit room access rule.";
     }
+    console.log(this.roomAccess)
     this.roomService.getControllableRooms().subscribe(
       (val) => {
         this.roomsToSelect = val;
       }
     )
+    this.roomAccess.room = this.objectService.getObjectById("room", this.roomAccess.roomId)
     this.objectKeys = Object.getOwnPropertyNames(this.roomAccess);
   }
   roomChanged(room: Room) {
@@ -54,8 +59,10 @@ export class AddEditRoomAccessComponent implements OnInit {
   closeWindow() {
     this.modalController.dismiss();
   }
-  onSubmit() {
+  addModify() {
     console.log("onSubmit", this.roomAccess);
+    this.roomAccess.roomId = this.roomAccess.room.id
+    delete this.roomAccess.room
     this.securityService.addAccessInRoom(this.roomAccess);
     this.modalController.dismiss(this.roomAccess);
   }
@@ -63,6 +70,26 @@ export class AddEditRoomAccessComponent implements OnInit {
   deleteObject() {
     this.securityService.deleteAccessInRoom(this.roomAccess.id);
     this.modalController.dismiss(this.roomAccess);
+  }
+
+  toShow(accessType, key) {
+    switch (accessType) {
+      case 'DEF': {
+        return access.indexOf(key) != -1
+      }
+      case 'ACT': {
+        return (
+          this.objectService.selects['action'].indexOf(key) != -1 ||
+          days.indexOf(key) != -1
+        )
+      }
+      case 'FW': {
+        return (
+          access.indexOf(key) != -1 ||
+          days.indexOf(key) != -1
+        )
+      }
+    }
   }
 }
 
