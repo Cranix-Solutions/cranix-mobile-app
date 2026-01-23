@@ -42,11 +42,9 @@
         <ion-label>{{'PTM'|translate}}</ion-label>
         }
         <ion-label [position]="authService.settings.labelPlacement">{{'teachingSubject'|translate}}:</ion-label>
-        <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
-            [(ngModel)]="selectedNotice.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
+        <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
         <ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label>
-        <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
-            [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
+        <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
     </ion-item>
     <ion-item>
         <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'grading'|translate}}: "

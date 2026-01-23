@@ -86,15 +86,15 @@
                         }
                         <ion-item>
                             <ion-label>{{'Groups for the event' | translate}}</ion-label>
-			                <cranix-search objectType="group" [(ngModel)]="selectedEvent.groups" name="groups" [items]="myGroups" [multiple]="true"></cranix-search>
+			                <cranix-search objectType="group" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedEvent.groups" [items]="myGroups" [multiple]="true"></cranix-search>
                         </ion-item>
                         <ion-item>
                             <ion-label>{{'Users for the event' | translate}}</ion-label>
-			                <cranix-search objectType="user" [(ngModel)]="selectedEvent.users" name="users" [multiple]="true"></cranix-search>
+			                <cranix-search objectType="user" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedEvent.users" [multiple]="true"></cranix-search>
                         </ion-item>
                         <ion-item>
                             <ion-label>{{'Room for the event' | translate}}</ion-label>
-			                <cranix-search objectType="room" [(ngModel)]="selectedEvent.room" name="rooms" [multiple]="false"></cranix-search>
+			                <cranix-search objectType="room" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedEvent.room" [multiple]="false"></cranix-search>
                         </ion-item>
                     </ion-list>
                     <ion-list [inset]="true">
@@ -177,11 +177,11 @@
                     </ion-item>
                     <ion-item>
                         <ion-label>{{'Select groups calendars' | translate}}</ion-label>
-			            <cranix-search objectType="group" [(ngModel)]="eventFilter.groups" [items]="myGroups" [multiple]="true"></cranix-search>
+			            <cranix-search objectType="group" [ngModelOptions]="{standalone: true}" [(ngModel)]="eventFilter.groups" [items]="myGroups" [multiple]="true"></cranix-search>
                     </ion-item>
                     <ion-item>
                         <ion-label>{{'Select room calendars' | translate}}</ion-label>
-			            <cranix-search objectType="room" [(ngModel)]="eventFilter.rooms" [items]="myGroups" [multiple]="true"></cranix-search>
+			            <cranix-search objectType="room" [ngModelOptions]="{standalone: true}" [(ngModel)]="eventFilter.rooms" [items]="myGroups" [multiple]="true"></cranix-search>
                     </ion-item>
                 </ion-list>
             </ion-content>

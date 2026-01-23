@@ -66,7 +66,7 @@
   </ion-buttons>
   <ion-item lines="none" slot="end" style="max-height: 54px">
     <cranix-search #selectRoom slot="start" matTooltip="{{'Select the room to control' | translate}}"
-      style="height: 54px; padding: 0;" objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
+      style="height: 54px; padding: 0;" objectType="room" [ngModelOptions]="{standalone: true}" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms"
       itemTextField="name" (onChange)="roomSelected()"></cranix-search>
     @if(!authService.isMD()){
     <ion-select slot="end" matTooltip="{{'Select picture size' | translate}}" [(ngModel)]="gridSize" name="gridSize"
@@ -89,6 +89,6 @@
   </ion-grid>
 </ion-content>
 <ion-modal [isOpen]="selectRoomOpen">
-  <cranix-search objectType="room" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms" itemTextField="name"
+  <cranix-search objectType="room" [ngModelOptions]="{standalone: true}" [(ngModel)]="eduS.selectedRoom" [items]="eduS.myRooms" itemTextField="name"
     (onChange)="roomSelected()"></cranix-search>
 </ion-modal>

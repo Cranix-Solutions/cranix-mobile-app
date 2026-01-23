@@ -68,7 +68,7 @@
   <ion-title>
     {{'Select devices to multicats cloning' | translate}}
   </ion-title>
-  <cranix-search slot="start" objectType="room" [items]="rooms" [(ngModel)]="selectedRooms" [multiple]="true"
+  <cranix-search slot="start" objectType="room" [items]="rooms" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedRooms" [multiple]="true"
     (callback)="readFilteredMember()"></cranix-search>
   <ion-buttons slot="end">
     <ion-button size="small" fill="solid" (click)="triggerClone($event,'startmulticastclone')"

@@ -28,7 +28,7 @@
     <ion-content fullscreen>
         <ion-list>
             <ion-item *ngIf="owned">
-	        <cranix-search objectType="category" [(ngModel)]="categories" [items]="informationsService.categories" [multiple]="true" name="categories"></cranix-search>
+	        <cranix-search objectType="category" [ngModelOptions]="{standalone: true}" [(ngModel)]="categories" [items]="informationsService.categories" [multiple]="true" name="categories"></cranix-search>
             </ion-item>
             <ion-item *ngIf="owned">
                 <ion-label [position]="authService.settings.labelPlacement">{{'title' | translate}}</ion-label>

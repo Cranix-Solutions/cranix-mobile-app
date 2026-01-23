@@ -18,6 +18,7 @@
           <ion-label [position]="authService.settings.labelPlacement">{{'DHCP Option'| translate}} </ion-label>
           <cranix-search objectType="dhcpOption"
             [(ngModel)]="selectedDHCP"
+	    [ngModelOptions]="{standalone: true}" 
             itemTextField="name"
             [items]="dhcpOptions"></cranix-search>
           <ion-button slot="end" (click)="addDHCP()">

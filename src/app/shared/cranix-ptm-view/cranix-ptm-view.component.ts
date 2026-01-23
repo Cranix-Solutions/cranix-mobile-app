@@ -275,6 +275,10 @@ export class CranixPtmViewComponent implements OnInit {
     })
   }
   registerRoom(teacherId: number, ptmId: number) {
+    console.log("Start registration")
+    console.log(this.ptm.startRegistration)
+    console.log("Now")
+    console.log(new Date().getTime())
     if(new Date(this.ptm.startRegistration).getTime() < new Date().getTime()){
       this.objectService.errorMessage(this.languageS.trans("Registration started. No change is allowed."))
       return

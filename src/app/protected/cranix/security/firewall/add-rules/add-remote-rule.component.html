@@ -20,7 +20,7 @@
       </ion-item>
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'device'| translate}}</ion-label>
-        <cranix-search objectType="device" [(ngModel)]="selectedDevice" name="selectDevice"></cranix-search>
+        <cranix-search objectType="device" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedDevice"></cranix-search>
       </ion-item>
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'internal port'|translate}}</ion-label>

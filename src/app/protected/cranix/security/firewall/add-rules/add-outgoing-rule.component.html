@@ -24,13 +24,12 @@
       @if(rule.type == 'room'){
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'Room'| translate}}</ion-label>
-        <cranix-search objectType="room" [(ngModel)]="selectedSource" [items]="securityService.firewallRooms"
-          name="selectRoomSource"></cranix-search>
+        <cranix-search objectType="room" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedSource" [items]="securityService.firewallRooms"></cranix-search>
       </ion-item>
       }@else{
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'Device'| translate}}</ion-label>
-        <cranix-search objectType="device" [(ngModel)]="selectedSource" name="selectDeviceSource"></cranix-search>
+        <cranix-search objectType="device" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedSource"></cranix-search>
       </ion-item>
       }
       <ion-item>

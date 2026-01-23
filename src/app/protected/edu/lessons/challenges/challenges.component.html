@@ -53,13 +53,13 @@
   <ion-list>
     <ion-item>
       <ion-label>{{'Groups' | translate}}:</ion-label>
-      <cranix-search objectType="group" [multiple]="true" [(ngModel)]="challengeToAssign.groups"></cranix-search>
+      <cranix-search objectType="group" [multiple]="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="challengeToAssign.groups"></cranix-search>
       {{'studentsOnly' | translate}}:
       <ion-toggle [(ngModel)]="challengeToAssign.studentsOnly"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>{{'Users' | translate}}:</ion-label>
-      <cranix-search objectType="group" [multiple]="true" [(ngModel)]="challengeToAssign.users"></cranix-search>
+      <cranix-search objectType="group" [multiple]="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="challengeToAssign.users"></cranix-search>
     </ion-item>
   </ion-list>
 </ion-content>
@@ -77,10 +77,10 @@
     }
   </ion-item>
   <ion-item [disabled]="selectedChallenge.released" slot="end" lines="none">
-    <cranix-search objectType="teachingSubject" [(ngModel)]="selectedChallenge.teachingSubject"
+    <cranix-search objectType="teachingSubject" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedChallenge.teachingSubject"
       [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()">
     </cranix-search>
-    <cranix-search objectType="subjectArea" [(ngModel)]="selectedChallenge.subjectArea"
+    <cranix-search objectType="subjectArea" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedChallenge.subjectArea"
       [items]="subjectAreas" itemTextField="name">
     </cranix-search>
   </ion-item>
@@ -290,7 +290,7 @@
           }
         </ion-list-header>
         <ion-item>
-          <cranix-search objectType="question" [(ngModel)]="questionsToAdd" [items]="questions" itemTextField="question" [multiple]="true" (onChange)="addQuestions()"></cranix-search>
+          <cranix-search objectType="question" [ngModelOptions]="{standalone: true}" [(ngModel)]="questionsToAdd" [items]="questions" itemTextField="question" [multiple]="true" (onChange)="addQuestions()"></cranix-search>
         </ion-item>
       </ion-list>
     </ion-content>

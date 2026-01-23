@@ -24,7 +24,7 @@
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-note slot="end">
           <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect"
-            [multiple]="false" [(ngModel)]="roomAccess.room" name="room"></cranix-search>
+            [multiple]="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="roomAccess.room" name="room"></cranix-search>
         </ion-note>
       </ion-item>
       } @else if(key == 'accessType') {

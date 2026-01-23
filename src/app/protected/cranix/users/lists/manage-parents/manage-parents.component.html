@@ -116,7 +116,7 @@
             @if(isUpcomming || selectedPTM.id == 0){
             <ion-item>
                 <ion-label>{{'Classes for the PTM' | translate}}</ion-label>
-                <cranix-search objectType="group" [(ngModel)]="selectedPTM.classes" [items]="classes"
+                <cranix-search objectType="group" [(ngModel)]="selectedPTM.classes" name="classes" [items]="classes"
                     [multiple]="true"></cranix-search>
             </ion-item>
             }
