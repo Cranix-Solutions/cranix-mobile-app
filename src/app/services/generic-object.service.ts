@@ -114,7 +114,6 @@ export class GenericObjectService {
     });
   }
 
-
   getObjects(objectType: string) {
     let url = this.utilsService.hostName() + "/" + objectType + "s/all";
     console.log("getObjects " + url)
@@ -132,7 +131,7 @@ export class GenericObjectService {
    * @param objectType
    */
   async getAllObject(objectType: string) {
-    if( !this.authService.isOneOfAllowed([objectType, objectType+".search", objectType+".manage"])) {
+    if( !this.authService.isOneOfAllowed([objectType.replace('/','.'), objectType, objectType+".search", objectType+".manage"])) {
       console.log('getAllObject not allowed to load:', objectType);
       return
     }
