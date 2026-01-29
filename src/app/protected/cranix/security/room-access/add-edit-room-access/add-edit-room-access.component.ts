@@ -73,6 +73,9 @@ export class AddEditRoomAccessComponent implements OnInit {
   }
 
   toShow(accessType, key) {
+    if( key == 'roomId'){
+      return false;
+    }
     switch (accessType) {
       case 'DEF': {
         return access.indexOf(key) != -1

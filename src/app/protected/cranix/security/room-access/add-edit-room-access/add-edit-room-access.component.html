@@ -18,16 +18,20 @@
   </ion-header>
   <ion-content fullscreen>
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
-      @for(key of objectKeys; track key) {
-      @if(key == 'roomId'){
       <ion-item>
-        <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
+        <ion-label [position]="authService.settings.labelPlacement">{{ 'Room' | translate }}</ion-label>
+        @if(objectAction == 'add') {
         <ion-note slot="end">
           <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect"
-            [multiple]="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="roomAccess.room" name="room"></cranix-search>
+            [multiple]="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="roomAccess.room"
+            name="room"></cranix-search>
         </ion-note>
+        } @else {
+        {{roomAccess.room.name}}
+        }
       </ion-item>
-      } @else if(key == 'accessType') {
+      @for(key of objectKeys; track key) {
+      @if(key == 'accessType') {
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-select type="text" [(ngModel)]="roomAccess.accessType" name="accessType" required
@@ -37,11 +41,11 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      } @else if(key == 'action') {
+      } @else if(key == 'action' && roomAccess.accessType == 'ACT') {
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-select type="text" [(ngModel)]="roomAccess.action" name="action" required
-          [compareWith]="objectService.compareFn" [disabled]="roomAccess.accessType != 'ACT'">
+          [compareWith]="objectService.compareFn">
           <ion-select-option *ngFor="let action of objectService.selects['action']" value="{{action}}">
             {{action | translate}}
           </ion-select-option>
@@ -61,7 +65,6 @@
         </ion-checkbox>
       </ion-item>
       }
-
       }
     </ion-list>
   </ion-content>
