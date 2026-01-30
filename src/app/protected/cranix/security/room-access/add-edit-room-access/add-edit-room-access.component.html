@@ -35,7 +35,7 @@
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
         <ion-select type="text" [(ngModel)]="roomAccess.accessType" name="accessType" required
-          [compareWith]="objectService.compareFn">
+          [compareWith]="objectService.compareFn" [disabled]="objectAction != 'add'">
           <ion-select-option *ngFor="let accessType of objectService.selects['accessType']" value="{{accessType}}">
             {{accessType | translate}}
           </ion-select-option>
@@ -60,8 +60,7 @@
       } @else if(toShow(roomAccess.accessType, key)) {
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ key | translate }}</ion-label>
-        <ion-checkbox slot="end" [(ngModel)]="roomAccess[key]" name="{{key}}" color="secondary"
-          [disabled]="roomAccess.accessType == 'ACT'">
+        <ion-checkbox slot="end" [(ngModel)]="roomAccess[key]" name="{{key}}" color="secondary">
         </ion-checkbox>
       </ion-item>
       }
