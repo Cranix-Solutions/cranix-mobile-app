@@ -24,74 +24,86 @@
   </ion-fab-list>
 </ion-fab>
 }
-<ion-content>
-  <ion-toolbar class="page-toolbar">
-    <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="list">
-      <ion-segment-button value="list">
-        <ion-label>{{'Room access rules' | translate}}</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="status">
-        <ion-label>{{'Actual status' | translate}}</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-    @if(!authService.isMD()){
-    <ion-buttons slot="end">
-      @if(segment == 'list'){
-      <ion-button size="small" fill="solid" (click)="redirectToAddEdit(null)"
-        matTooltip="{{'Add new room access status' | translate }}" [disabled]="disabled">
-        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-      </ion-button>
-      }@else{
-      <ion-button size="small" fill="solid" (click)="securityService.getActualAccessStatus()"
-        matTooltip="{{'Reload actual firewall status' | translate }}">
-        <ion-icon slot="icon-only" name="refresh" color="tertiary"></ion-icon>
-      </ion-button>
-      }
-      <ion-button size="small" (click)="restartFirewall()" size="small" fill="solid"
-        matTooltip="{{'Restart firewall' | translate }}">
-        <ion-icon slot="icon-only" name="arrow-redo" color="tertiary"></ion-icon>
-      </ion-button>
-      <ion-button size="small" (click)="stopFirewall()" size="small" fill="solid"
-        matTooltip="{{'Stop firewall' | translate }}">
-        <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+<ion-toolbar class="page-toolbar">
+  <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="list">
+    <ion-segment-button value="list">
+      <ion-label>{{'Room access rules' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="status">
+      <ion-label>{{'Actual status' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  @if(!authService.isMD()){
+  <ion-buttons slot="end">
+    @if(segment == 'list'){
+    <ion-button size="small" fill="solid" (click)="redirectToAddEdit(null)"
+      matTooltip="{{'Add new room access status' | translate }}" [disabled]="disabled">
+      <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+    </ion-button>
+    }@else{
+    <ion-button size="small" fill="solid" (click)="securityService.getActualAccessStatus()"
+      matTooltip="{{'Reload actual firewall status' | translate }}">
+      <ion-icon slot="icon-only" name="refresh" color="tertiary"></ion-icon>
+    </ion-button>
     }
-  </ion-toolbar>
-  <ion-item lines="none">
-    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="roomsAccessFilter">
-    </ion-searchbar>
-  </ion-item>
-
-  @if(segment == 'list'){
+    <ion-button size="small" (click)="restartFirewall()" size="small" fill="solid"
+      matTooltip="{{'Restart firewall' | translate }}">
+      <ion-icon slot="icon-only" name="arrow-redo" color="tertiary"></ion-icon>
+    </ion-button>
+    <ion-button size="small" (click)="stopFirewall()" size="small" fill="solid"
+      matTooltip="{{'Stop firewall' | translate }}">
+      <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  }
+</ion-toolbar>
+<ion-item lines="none">
+  <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="roomsAccessFilter">
+  </ion-searchbar>
+</ion-item>
+<ion-content>
+  @if(segment == 'list' && rowData){
   <ion-grid style="height: 80vh;">
     <ion-row style="background-color : {{authService.rowColors[2]}}">
-      <ion-col size="4">
+      <ion-col size="3">
         {{ 'room' | translate}}
       </ion-col>
-      <ion-col size="4">
+      <ion-col size="3">
         {{ 'pointInTime' | translate}}
       </ion-col>
-      <ion-col size="4">
+      <ion-col size="2">
         {{ 'accessType' | translate}}
+      </ion-col>
+      <ion-col size="4">
       </ion-col>
     </ion-row>
     <div class="button-container" style="padding-left: 0px; padding-right: 0px;">
       <ion-row *ngFor="let obj of rowData; index as i" button (click)="redirectToAddEdit(obj)"
         style="background-color : {{authService.rowColors[i%2]}}">
-        <ion-col size="4">
+        <ion-col size="3">
           {{ obj.roomId | idToName:'room' }}
         </ion-col>
-        <ion-col size="4">
+        <ion-col size="3">
           {{ obj.pointInTime }}
         </ion-col>
-        <ion-col size="4">
+        <ion-col size="2">
           {{ obj.accessType }}
+        </ion-col>
+        <ion-col size="4">
+          @if(obj.accessType == 'ACT'){
+            {{obj.action}}
+          }@else{
+            <ion-icon name="nuclear-sharp" [color]="obj.direct ? 'success' : 'danger'"></ion-icon>
+            <ion-icon name="log-in" [color]="obj.login ? 'success' : 'danger'"></ion-icon>
+            <ion-icon name="mail" [color]="obj.portal ? 'success' : 'danger'"></ion-icon>
+            <ion-icon name="print" [color]="obj.printing ? 'success' : 'danger'"></ion-icon>
+            <ion-icon name="globe" [color]="obj.proxy ? 'success' : 'danger'"></ion-icon>
+          }
         </ion-col>
       </ion-row>
     </div>
   </ion-grid>
-  }@else{
+  }@else if(segment == 'status' && rowData){
   <ion-grid style="height: 85vh;">
     <ion-row style="background-color : {{authService.rowColors[2]}}">
       <ion-col size="2">{{ 'room' | translate}}</ion-col>
@@ -130,7 +142,7 @@
         @if(authService.isMD()){
         <ion-icon color="success" name="globe"></ion-icon>
         }@else{
-        {{'direct'|translate}}
+          {{'direct'|translate}}
         }
       </ion-col>
       }
@@ -179,5 +191,7 @@
       }
     </div>
   </ion-grid>
+  }@else{
+    {{'Loading data ...'|translate}}
   }
 </ion-content>

@@ -63,7 +63,11 @@ export class AddEditRoomAccessComponent implements OnInit {
     console.log("onSubmit", this.roomAccess);
     this.roomAccess.roomId = this.roomAccess.room.id
     delete this.roomAccess.room
-    this.securityService.addAccessInRoom(this.roomAccess);
+    if (this.objectAction == 'add') {
+      this.securityService.addAccessInRoom(this.roomAccess);
+    }else{
+      this.securityService.modifyAccessInRoom(this.roomAccess);
+    }
     this.modalController.dismiss(this.roomAccess);
   }
 

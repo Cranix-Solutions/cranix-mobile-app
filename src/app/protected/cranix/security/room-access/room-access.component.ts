@@ -39,6 +39,7 @@ export class RoomAccessComponent {
   getAllAccess() {
     this.securityService.getAllAccess().subscribe(
       (val) => {
+        val.sort((a,b) => this.objectService.idToName('room', a.roomId).localeCompare(this.objectService.idToName('room', b.roomId)))
         this.allAccess = val
         this.rowData = val
       }
@@ -52,6 +53,7 @@ export class RoomAccessComponent {
         for (let s of val) {
           s['id'] = i++
         }
+        val.sort((a,b) => this.objectService.idToName('room', a.roomId).localeCompare(this.objectService.idToName('room', b.roomId)))
         this.actStatus = val
         this.rowData = val
       }
