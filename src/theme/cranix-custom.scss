@@ -6,6 +6,31 @@ quill-editor {
    margin-left: 10px;
 }
 
+ion-label {
+  min-width: 110px;
+}
+.label-fixed {
+  margin-right: 5px;
+}
+
+.native-input,
+.native-input.sc-ion-input-md {
+  padding-left: 3px;
+}
+ion-input {
+  margin-left: 3px;
+  background-color: #eeefee;
+}
+
+ion-input[readonly] {
+  --background: #efe0e0;
+}
+
+/*
+ion-label {
+  min-width: 300px;
+  max-width: 50%;
+}
 /*
 * File select design
 */
@@ -70,15 +95,6 @@ ion-input[part="custom-label"]::part(label) {
   text-overflow: clip;
 }
 
-/*
-
-ion-input {
-  --text-align: right;
-}
-
-ion-input{
-  --background: lightgrey;
-}*/
 
 /*
 * Fixed label which is more widther and readable
