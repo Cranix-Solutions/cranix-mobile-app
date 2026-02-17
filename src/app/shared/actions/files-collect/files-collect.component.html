@@ -16,7 +16,9 @@
     <ion-list>
       <ion-item>
         <ion-label position="start">{{'projectName'| translate}}</ion-label>
-        <ion-input  [(ngModel)]="projectName" name="projectName" pattern="[a-zA-Z0-9].*[a-zA-Z0-9]$" required></ion-input>
+        <ion-input  [(ngModel)]="projectName" name="projectName" pattern="^[A-Za-z0-9\u00C0-\u017F][A-Za-z0-9\u00C0-\u017F\-_\. ]*[A-Za-z0-9\u00C0-\u017F]$"
+            title="Erlaubt sind: Buchstaben (inkl. Umlaute und Akzente), Ziffern, Bindestrich (-), Unterstrich (_), Punkt (.) und Leerzeichen.  Muss mit einem Buchstaben oder einer Ziffer beginnen und enden."
+            required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="start">{{'sortInDirs'| translate}}</ion-label>
