@@ -13,24 +13,26 @@ ion-label {
   margin-right: 5px;
 }
 
+.label-text {
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
 .native-input,
 .native-input.sc-ion-input-md {
   padding-left: 3px;
 }
+
 ion-input {
-  margin-left: 3px;
-  background-color: #eeefee;
+  --background: rgba(238, 239, 238, 0.5);
+  background-color: rgba(238, 239, 238, 0.5);
 }
 
 ion-input[readonly] {
-  --background: #efe0e0;
+  --background: rgba(254, 224, 224, 0.5);
 }
 
-/*
-ion-label {
-  min-width: 300px;
-  max-width: 50%;
-}
 /*
 * File select design
 */

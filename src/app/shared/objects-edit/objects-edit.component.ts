@@ -58,7 +58,7 @@ export class ObjectsEditComponent implements OnInit {
   }
   ngOnInit() {
     this.objectId = this.object.id;
-    //User role may be constant:
+    //User role may be constant (education.students):
     if (this.objectType.split("\.").length == 2) {
       let tmp = this.objectType.split("\.")
       this.objectType = tmp[0]

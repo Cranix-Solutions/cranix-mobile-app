@@ -48,40 +48,40 @@
                 <ion-content [fullscreen]="true">
                     <ion-list [inset]="true">
                         <ion-item>
-                            <ion-input [(ngModel)]="selectedEvent.title" name="title" type="text" labelPlacement="fixed"
-                                label="{{'title'|translate}}*" required></ion-input>
+                            <ion-label [position]="authService.settings.labelPlacement">{{ 'title' | translate}}*</ion-label>
+                            <ion-input [(ngModel)]="selectedEvent.title" name="title" type="text" required></ion-input>
                         </ion-item>
                         <ion-item>
-                            <ion-input [(ngModel)]="selectedEvent.description" name="description" type="text-area"
-                                labelPlacement="fixed" label="{{'description'|translate}}"></ion-input>
+                            <ion-label [position]="authService.settings.labelPlacement">{{ 'description' | translate}}</ion-label>
+                            <ion-input [(ngModel)]="selectedEvent.description" name="description" type="text-area"></ion-input>
                         </ion-item>
                         <ion-item>
-                            <ion-input [(ngModel)]="selectedEvent.location" name="location" type="text"
-                                labelPlacement="fixed" label="{{'location'|translate}}"></ion-input>
+                            <ion-label [position]="authService.settings.labelPlacement">{{ 'location' | translate}}</ion-label>
+                            <ion-input [(ngModel)]="selectedEvent.location" name="location" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
-                            <ion-toggle [(ngModel)]="selectedEvent.allDay" name="allDay" labelPlacement="start"
+                            <ion-toggle [(ngModel)]="selectedEvent.allDay" name="allDay" justify="space-between"
                                 (ionChange)="adaptEventTimes()">{{'allDay'|translate}}</ion-toggle>
                         </ion-item>
                         @if(selectedEvent.allDay) {
                         <ion-item>
-                            <ion-label>{{'From'|translate}}*</ion-label>
-                            <input [(ngModel)]="selectedEvent.start" name="startTime" type="date" required />
+                            <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}*</ion-label>
+                            <input [(ngModel)]="selectedEvent.start" name="startTime" type="date" slot="end" required />
                         </ion-item>
                         @if(!eventRecurring) {
                         <ion-item>
-                            <ion-label>{{'Until'|translate}}*</ion-label>
-                            <input [(ngModel)]="selectedEvent.end" name="endTime" type="date" required />
+                            <ion-label [position]="authService.settings.labelPlacement">{{'Until'|translate}}*</ion-label>
+                            <input [(ngModel)]="selectedEvent.end" name="endTime" type="date" slot="end" required />
                         </ion-item>
                         }
                         } @else {
                         <ion-item>
-                            <ion-label>{{'From'|translate}}*</ion-label>
-                            <input [(ngModel)]="selectedEvent.start" name="startTime" type="datetime-local" required />
+                            <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}*</ion-label>
+                            <input [(ngModel)]="selectedEvent.start" name="startTime" type="datetime-local" slot="end" required/>
                         </ion-item>
                         <ion-item>
-                            <ion-label>{{'Until'|translate}}*</ion-label>
-                            <input [(ngModel)]="selectedEvent.end" name="endTime" type="datetime-local" required />
+                            <ion-label [position]="authService.settings.labelPlacement">{{'Until'|translate}}*</ion-label>
+                            <input [(ngModel)]="selectedEvent.end" name="endTime" type="datetime-local"  slot="end"  required/>
                         </ion-item>
                         }
                         <ion-item>
@@ -99,12 +99,11 @@
                     </ion-list>
                     <ion-list [inset]="true">
                         <ion-item>
-                            <ion-toggle [(ngModel)]="eventRecurring" name="recurring"
-                                labelPlacement="start">{{'Recurring'|translate}}</ion-toggle>
+                            <ion-toggle [(ngModel)]="eventRecurring" name="recurring" justify="space-between">{{'Recurring'|translate}}</ion-toggle>
                         </ion-item>
                         <ion-item>
-                            <ion-select [(ngModel)]="rRule.freq" name="rruleFreq" label="{{'Freq'|translate}}"
-                                labelPlacement="start" [disabled]="!eventRecurring">
+                            <ion-select [(ngModel)]="rRule.freq" name="rruleFreq" [disabled]="!eventRecurring">
+                                <div slot="label">{{'Freq' | translate}}</div>
                                 <ion-select-option *ngFor="let freq of rruleFrequents; index as i" [value]="i">{{freq |
                                     translate}}</ion-select-option>
                             </ion-select>
@@ -114,23 +113,21 @@
                                 label="{{'Interval'|translate}}" [disabled]="!eventRecurring"></ion-input>
                         </ion-item>
                         <ion-item>
-                            <ion-select [(ngModel)]="rRule.byweekday" name="byweekday" label="{{'Weekday'|translate}}"
-                                labelPlacement="start" [multiple]="true" [disabled]="!eventRecurring">
+                            <ion-select [(ngModel)]="rRule.byweekday" name="byweekday" [multiple]="true" [disabled]="!eventRecurring">
+                                <div slot="label">{{'Weekday' | translate}}</div>
                                 <ion-select-option *ngFor="let day of rruleDays; index as i" [value]="i">{{day |
                                     translate}}</ion-select-option>
                             </ion-select>
                         </ion-item>
                         <ion-item>
-                            <ion-select [(ngModel)]="rRule.bymonth" name="bymonth" label="{{'Month'|translate}}"
-                                labelPlacement="start" [multiple]="true" [disabled]="!eventRecurring">
+                            <ion-select [(ngModel)]="rRule.bymonth" name="bymonth" [multiple]="true" [disabled]="!eventRecurring">
+                                <div slot="label">{{'Month' | translate}}</div>
                                 <ion-select-option *ngFor="let month of rruleMonths; index as j" [value]="j+1">{{month |
                                     translate}}</ion-select-option>
                             </ion-select>
                         </ion-item>
                         <ion-item>
-                            <ion-input [(ngModel)]="rRule.count" name="rruleCount" type="number" class="number"
-                                label="{{'Count'|translate}}"
-                                [disabled]="!eventRecurring || recurringUntil != ''"></ion-input>
+                            <ion-input [(ngModel)]="rRule.count" name="rruleCount" type="number" class="number" label="{{'Count'|translate}}" [disabled]="!eventRecurring || recurringUntil != ''"></ion-input>
                         </ion-item>
                         <ion-item [disabled]="!eventRecurring || rRule.count > 0">
                             <ion-label>{{'End Date'|translate}}</ion-label>
@@ -168,11 +165,11 @@
                         </ion-label>
                     </ion-item>
                     <ion-item>
-                        <ion-toggle labelPlacement="start" [(ngModel)]="eventFilter.showPrivate">{{'Private
+                        <ion-toggle justify="space-between" [(ngModel)]="eventFilter.showPrivate">{{'Private
                             Events'|translate}}</ion-toggle>
                     </ion-item>
                     <ion-item>
-                        <ion-toggle labelPlacement="start" [(ngModel)]="eventFilter.showIndividual">{{'Individual
+                        <ion-toggle justify="space-between" [(ngModel)]="eventFilter.showIndividual">{{'Individual
                             Events'|translate}}</ion-toggle>
                     </ion-item>
                     <ion-item>
