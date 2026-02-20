@@ -49,6 +49,7 @@ export class MyDataComponent  implements OnInit {
   }
 
   listActDir(){
+    console.log(this.actDir)
     this.selfService.getDir(this.actDir.path).subscribe(
       (val) => {
         this.actDir = val[0]

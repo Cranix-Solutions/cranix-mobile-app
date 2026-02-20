@@ -1,11 +1,121 @@
+ion-card {
+    @media only screen and (max-width: 768px) {
+        margin-inline: 0;
+    }
+}
+
+/*
+* ion-content
+*/
+ion-content ion-segment {
+    margin: 5px 0;
+}
+
+/*
+* ion-input
+*/
+.native-input,
+.native-input.sc-ion-input-md {
+    padding-left: 3px;
+}
+
+ion-input {
+    background-color: rgba(238, 239, 238, 0.5);
+}
+
+input[readonly],
+ion-input[readonly] {
+    background-color: rgba(254, 224, 224, 0.5);
+}
+
+ion-input.number {
+    text-align: right;
+}
+
+ion-input[part="custom-label"]::part(label) {
+    /* Setzt die gewünschte Breite für das Label */
+    min-width: 200;
+    width: 200;
+    max-width: 200;
+    /* Wichtig: Entfernen Sie 'overflow: hidden' und 'text-overflow: ellipsis'
+       wenn Sie verhindern möchten, dass lange Texte abgeschnitten werden. */
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/*
+* ion-item
+*/
 ion-item {
-    --max-height: 70px;
+    max-height: 70px;
 }
 
 ::slotted([slot="start"]) {
     margin-right: unset;
     margin-inline-end: 2px;
 }
+
 ::slotted(ion-note[slot]) {
     padding: 1px 0px 1px;
+}
+
+/* Styling für alle ion-item-divider im Projekt */
+ion-item-divider {
+    /* Textgröße erhöhen */
+    font-size: 1.2em;
+    /* Oder z.B. 18px */
+
+    /* Text fett machen (bold) */
+    font-weight: bold;
+
+    /* Optional: Sie können auch die Farbe des Texts ändern, z.B. für mehr Kontrast */
+    color: black;
+
+    margin-top: 0px;
+    min-height: 1px!important;
+
+}
+
+/*
+* ion-label
+*/
+ion-label {
+    min-width: 130px !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.label-fixed {
+    margin-right: 5px;
+}
+
+//Fixed label which is more widther and readable
+.custom-fixed-label {
+    width: 200px !important;
+    min-width: 200px !important;
+    padding-right: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*
+* ion-select
+*/
+ion-select {
+    width: 100%;
+    white-space: normal !important;
+}
+
+.sc-ion-alert-md {
+    white-space: normal !important;
+
+}
+
+/*
+* ion-segment
+*/
+ion-segment .segment-button-checked {
+    background-color: #4a7a81;
 }

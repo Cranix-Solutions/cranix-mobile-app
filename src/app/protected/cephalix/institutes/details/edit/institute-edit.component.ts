@@ -45,6 +45,8 @@ export class InstituteEditComponent implements OnInit {
     this.object = JSON.parse(JSON.stringify(this.objectService.selectedObject));
     this.object.adminPW = ""
     this.object.cephalixPW = ""
+    this.object.modified = new Date(this.object.modified).toJSON().replace(".000Z","")
+    this.object.created = new Date(this.object.created).toJSON().replace(".000Z","")
     this.cephalixService.getAllAddons().subscribe((val) => { this.allAddons = val });
     this.cephalixService.getAddonsOfInstitute(this.object.id).subscribe((val) => { this.addons = val; this.origAddons = val })
     this.cephalixService.getUsersFromInstitute(this.object.id).subscribe(

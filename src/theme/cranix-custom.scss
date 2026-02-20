@@ -6,36 +6,57 @@ quill-editor {
    margin-left: 10px;
 }
 
-ion-label {
-  min-width: 110px;
-}
-.label-fixed {
-  margin-right: 5px;
+/*
+* Define custom modal for browser
+*/
+@media only screen and (min-width: 768px) and (min-height: 768px) {
+  .modal-wrapper {
+    height: 85%;
+    width : 500px;
+  }
+
+  .big-modal {
+    &::part(content) {
+      height: 85%;
+      width : 80%;
+    }
+  }
+
+  .medium-modal {
+    &::part(content) {
+      height: 85%;
+      width : 500px;
+    }
+  }
+  .small-modal {
+    &::PART(Content) {
+      height: 400px;
+      width : 500px;
+    }
+  }
+
+  .fullscreen-modal {
+    &::part(content) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .ios .fullscreen-modal {
+    &::part(content) {
+      top: 26px;
+    }
+  }
 }
 
-.native-input,
-.native-input.sc-ion-input-md {
-  padding-left: 3px;
-}
-
-ion-input {
-  --background: rgba(238, 239, 238, 0.5);
-  background-color: rgba(238, 239, 238, 0.5);
-}
-
-ion-input[readonly] {
-  --background: rgba(254, 224, 224, 0.5);
-}
 
 /*
 * File select design
 */
-
-ion-segment .segment-button-checked {
-  background-color: #4a7a81; /* Deine Wunschfarbe */
-  //color: #ffffff; /* Textfarbe, falls nötig */
-}
-
 .button-file {
   min-width            : 150px;
   color                : #fff;
@@ -58,51 +79,11 @@ ion-segment .segment-button-checked {
   cursor: pointer;
 }
 
-/*
-* Ich möchte die Zahlen auf der Rechte seite haben.
-*/
-ion-input.number {
-  text-align: right;
-}
-
-
-//ion-select[part="custom-label"]::part(label) {
-//  /* Setzt die gewünschte Breite für das Label */
-//  min-width: 200;
-//  width: 200;
-//  max-width: 200;
-//
-//  /* Wichtig: Entfernen Sie 'overflow: hidden' und 'text-overflow: ellipsis'
-//     wenn Sie verhindern möchten, dass lange Texte abgeschnitten werden. */
-//  overflow: visible;
-//  text-overflow: clip;
-//}
-
-
-ion-input[part="custom-label"]::part(label) {
-  /* Setzt die gewünschte Breite für das Label */
-  min-width: 200;
-  width: 200;
-  max-width: 200;
-
-  /* Wichtig: Entfernen Sie 'overflow: hidden' und 'text-overflow: ellipsis'
-     wenn Sie verhindern möchten, dass lange Texte abgeschnitten werden. */
-  overflow: visible;
-  text-overflow: clip;
-}
-
 
 /*
-* Fixed label which is more widther and readable
+* Own style for split one row in identical width pieces
+* The parent must be a <div style="display: flex; width: 100%;">
 */
-.custom-fixed-label {
-    width: 180px;
-    min-width: 180px;
-    font-weight: bold;
-    padding-right: 10px;
-}
-
-
 .divclass {
     flex: 1; /* Gleiche Breite, teilt den Platz gleich auf */
     display: flex;
@@ -111,6 +92,7 @@ ion-input[part="custom-label"]::part(label) {
     text-overflow: ellipsis; /* Bei Überlauf "..." anzeigen */
     white-space: nowrap; /* Kein Zeilenumbruch, Text bleibt in einer Zeile */
 }
+
 /*
 * Layaout for cranix-search-list and user/group member lists
 */
@@ -187,19 +169,10 @@ ion-accordion.accordion-expanded ion-item[slot="header"] {
 }
 
 
+
 /*
- * edited styling for ag-grid
- *
- */
-$grid-breakpoints :(xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px);
-
-$breakpoints-keys  : map-keys($grid-breakpoints);
-$breakpoints-values: map-values($grid-breakpoints);
-
+* Styles for different states
+*/
 .ok-row {
   background: lightgreen;
   color     : black;
@@ -230,6 +203,19 @@ $breakpoints-values: map-values($grid-breakpoints);
   margin    : 6px;
 }
 
+
+/*
+ * edited styling for ag-grid
+ *
+ */
+$grid-breakpoints :(xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px);
+
+$breakpoints-keys  : map-keys($grid-breakpoints);
+$breakpoints-values: map-values($grid-breakpoints);
 @for $i from 1 to length($breakpoints-keys)+1 {
   @if $i < length($breakpoints-keys) {
     .hidden-#{nth($breakpoints-keys, $i)} {
@@ -248,9 +234,11 @@ $breakpoints-values: map-values($grid-breakpoints);
   }
 }
 
+/*
+* AG Grid Styles
+*
 .ag-row .ag-cell {
   display          : flex;
-  //justify-content: center; /* align horizontal *
   align-items      : center;
   justify-content  : space-between;
   text-overflow    : ellipsis;
@@ -268,7 +256,6 @@ $breakpoints-values: map-values($grid-breakpoints);
   padding-left: 4px;
 }
 
-
 .ag-theme-material .ag-checkbox-input-wrapper.ag-checked::after {
   color: var(--ion-color-secondary);
 }
@@ -281,12 +268,15 @@ $breakpoints-values: map-values($grid-breakpoints);
   justify-content: space-between;
 }
 
+.ag-header-group-cell-label,
+.ag-header-cell-label {
+  justify-content: center;
+}
+*/
 .uuid-flex {
-
   display       : flex;
   flex-direction: row;
   align-items   : center;
-
 }
 
 .name-action {
@@ -305,28 +295,12 @@ $breakpoints-values: map-values($grid-breakpoints);
   }
 }
 
-.ag-header-group-cell-label,
-.ag-header-cell-label {
-  justify-content: center;
-}
 
 input {
   border      : none;
   border-width: 0;
   box-shadow  : aqua;
 }
-
-/*
-input[type=text] {
-  width: 250px;
-  padding: 4px 4px;
-  margin: 4px 4px;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  background-color: aquamarine;
-}*/
 
 input:focus,
 select:focus,
@@ -379,38 +353,7 @@ button:focus {
       text-align: left;
   }
 }
-.rotate-header-class {
-  transform: rotate(90deg);
-  //display  : inline-block;
-  height: 150;
-  width: 200;
-  padding: 0;
-}
 
-.header-row {
-  padding-top      : 6px;
-  height           : 33px;
-  @media only screen and (min-width: 769px) {
-    display: none;
-  }
-}
-ion-card {
-  @media only screen and (max-width: 768px) {
-    margin-inline: 0;
-  }
-}
-
-/* Styling für alle ion-item-divider im Projekt */
-ion-item-divider {
-  /* Textgröße erhöhen */
-  font-size: 1.2em; /* Oder z.B. 18px */
-
-  /* Text fett machen (bold) */
-  font-weight: bold;
-
-  /* Optional: Sie können auch die Farbe des Texts ändern, z.B. für mehr Kontrast */
-  color: black;
-}
 
 /*
 * ion-item should inherit background from its container for example ion-row
@@ -438,51 +381,6 @@ ion-item::part(native) {
     padding-top: 60px;
   }
 }
-
-#carded {
-
-  margin-top      : 5px;
-  //  --background: #f5f5f5;
-  ion-card {
-    height               : 97%;
-      display             : flex;
-      flex-direction      : column;
-      //display           : grid;
-      //grid-template-rows: 12%;
-
-      ion-card-header {
-        align-items        : center;
-        //  grid-row       : 1/2;
-        //  height         : 100%;
-        /* border-style    : ridge;
-        border-top         : none;
-        border-left        : none;
-        border-right       : none;*/
-      }
-
-      ion-card-content {
-        padding-top    : 3px;
-        grid-row       : 2/2;
-        height         : 100%;
-        grid-column    : 1/1;
-        //overflow     : hidden;
-        border-style   : ridge;
-        border-bottom  : none;
-        border-left    : none;
-        border-right   : none;
-        border-width   : 1px;
-        overflow-y     : auto;
-
-        ::-webkit-scrollbar {
-          display: auto;
-        }
-      }
-    }
-  }
-
-ion-card-header{
-    padding : 6px;
-}
 ion-card-content{
   padding : 0px;
 }
@@ -501,33 +399,10 @@ ion-card-title{
   padding-inline-start: 0%;
   padding-inline-end: 0%;
 }
-/*
- * error and short messages classes
- *
- *
- */
-
-.error-text {
-  color    : red;
-  font-size: smaller;
-}
-
-/*
-* We need a small divieder between head and body
-*/
-ion-item-divider{
-  margin-top: 0px;
-  min-height: 1px!important;
-}
 
 .ql-editor {
   padding: 0px
 }
-
-.white-background {
-  background-color: #fff;
-}
-
 
 .text-container {
   flex: 1 1 auto;
