@@ -13,7 +13,7 @@ import { IdRequest } from 'src/app/shared/models/data-model';
 export class IdCardsComponent implements AfterViewInit {
 
   allRequests: IdRequest[] = []
-  isPopoverOpen: boolean = false
+  isEditIdModalOpen: boolean = false
   isDeleteAlertOpen: boolean = false
   openedOnly: boolean = true
   workMode: string = "overview"
@@ -60,9 +60,14 @@ export class IdCardsComponent implements AfterViewInit {
     }
     this.requests = tmp;
   }
+  changeAllowed(){
+    if(this.nextValidity && this.selectedRequest.allowed){
+      this.selectedRequest.validUntil = this.nextValidity;
+    }
+  }
 
-  setIdRequest(request: IdRequest) {
-    this.userService.setIdRequest(request).subscribe(
+  setIdRequest() {
+    this.userService.setIdRequest(this.selectedRequest).subscribe(
       (val) => {
         this.objectService.responseMessage(val)
         this.readData()
@@ -106,13 +111,13 @@ export class IdCardsComponent implements AfterViewInit {
         console.log(val)
         this.selectedRequest = val
         this.selectedRequest.picture = "data:image/jpg;base64," + val.picture
-        this.isPopoverOpen = true
+        this.isEditIdModalOpen = true
       }
     )
   }
   closePopOver(popOver: any) {
     popOver.dismiss();
-    this.isPopoverOpen = false;
+    this.isEditIdModalOpen = false;
   }
 
   changeMode(event){
@@ -145,6 +150,7 @@ export class IdCardsComponent implements AfterViewInit {
   doNotRelease(indx: number){
     this.requests.splice(indx,1)
   }
+
   async release(){
     this.releasing = true
     for(let request of this.requests){

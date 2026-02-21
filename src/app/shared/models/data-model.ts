@@ -341,6 +341,8 @@ export class SupportRequest {
 	requestDate?: number = 0;
 	ticketno?: number = 0;
 	ticketResponseInfo?: string = "";
+        attachment?: any = "";
+        attachmentName?: string = "";
 	constructor() { }
 }
 

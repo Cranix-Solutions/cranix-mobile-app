@@ -3,6 +3,8 @@ import { ModalController } from '@ionic/angular';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { SystemService } from 'src/app/services/system.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { SupportRequest } from '../../models/data-model';
+import { Institute } from '../../models/cephalix-data-model';
 
 
 @Component({
@@ -14,12 +16,13 @@ import { AuthenticationService } from 'src/app/services/auth.service';
   
     disabled: boolean = false;
     files = [];
-    @Input() support
+    institute: Institute
+    @Input() support: SupportRequest
     constructor(
       public modalController: ModalController,
       public systemService: SystemService,
       public objectService: GenericObjectService,
-    public authService: AuthenticationService
+      public authService: AuthenticationService
     ) { }
   
     ngOnInit() { }
@@ -48,4 +51,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
         }
       )
     };
+    setInstitute(){
+      this.support.regcode = this.institute.regCode;
+    }
   }

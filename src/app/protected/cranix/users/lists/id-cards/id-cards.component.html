@@ -6,6 +6,10 @@
             <ion-select-option value="overview">{{'Overview'|translate}} </ion-select-option>
             <ion-select-option value="batch">{{'Batch processing'|translate}} </ion-select-option>
         </ion-select>
+        <div class="card">
+            {{'Next Validity'|translate}}:
+            <input style="margin-right: 8px;" type="date" [(ngModel)]="nextValidity">
+        </div>
         @if(workMode == "overview") {
         <ion-toggle (ionChange)="searchRequests()" [(ngModel)]="openedOnly" name="openedOnlyToogle"
             [enableOnOffLabels]="true">
@@ -13,10 +17,6 @@
         <ion-searchbar id="search-requests" (input)="searchRequests()"></ion-searchbar>
         #{{requests.length}}
         }@else{
-        <div class="card">
-            {{'Next Validity'|translate}}:
-            <input style="margin-right: 8px;" type="date" [(ngModel)]="nextValidity">
-        </div>
         <ion-button (click)="release()" [disabled]="releasing || !nextValidity">
             {{'Release all shown cards'|translate}}
         </ion-button>
@@ -66,7 +66,7 @@
         }
     </div>
 </ion-content>
-<ion-modal #popOver [isOpen]="isPopoverOpen" [backdropDismiss]="false" (onDidDismiss)="isPopoverOpen = false">
+<ion-modal #popOver [isOpen]="isEditIdModalOpen" [backdropDismiss]="false" (onDidDismiss)="isEditIdModalOpen = false">
     <ng-template>
         <ion-header>
             <ion-toolbar color="primary">
@@ -75,8 +75,8 @@
                     <em>{{selectedRequest.creator.role|translate}}</em>
                 </ion-title>
                 <ion-buttons slot="end">
-                    <ion-button size="large" class="button-no-margin" slot="end" (click)="setIdRequest(selectedRequest)"
-                        fill="clear" [disabled]="selectedRequest.comment.length == 0">
+                    <ion-button size="large" class="button-no-margin" slot="end" (click)="setIdRequest()" fill="clear"
+                        [disabled]="!(selectedRequest.comment.length != 0 || (selectedRequest.allowed && selectedRequest.validUntil))">
                         <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
                     </ion-button>
                     <ion-button (click)="deleteIdRequest(selectedRequest)" fill="clear" size="small">
@@ -100,7 +100,7 @@
                     <input type="date" [(ngModel)]="selectedRequest.validUntil" name="validUntil">
                 </ion-item>
                 <ion-item>
-                    <ion-toggle [(ngModel)]="selectedRequest.allowed" justify="space-between">
+                    <ion-toggle [(ngModel)]="selectedRequest.allowed" justify="space-between" (ionChange)="changeAllowed()">
                         {{'Released'|translate}}</ion-toggle>
                 </ion-item>
             </ion-list>

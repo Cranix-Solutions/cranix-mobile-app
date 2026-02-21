@@ -1,16 +1,15 @@
 <cranix-toolbar title="{{ 'Challenges' | translate}}"></cranix-toolbar>
 <!-- List of the challenges -->
 @if(!htmlResult && !selectedChallenge && !challengeToAssign){
-  @if(authService.isMD()){
-    <ion-content>
-      <cranix-md-list objectType="challenge" [context]="context" [rowData]="rowData"></cranix-md-list>
-    </ion-content>
-  }@else{
-    <ion-content>
-      <cranix-list objectType="challenge" [context]="context" [rowData]="rowData"></cranix-list>
-    </ion-content>
-
-  }
+@if(authService.isMD()){
+<ion-content>
+  <cranix-md-list objectType="challenge" [context]="context" [rowData]="rowData"></cranix-md-list>
+</ion-content>
+}@else{
+<ion-content>
+  <cranix-list objectType="challenge" [context]="context" [rowData]="rowData"></cranix-list>
+</ion-content>
+}
 }
 <!---- Show results -->
 @if(htmlResult){
@@ -23,8 +22,7 @@
       <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
     </ion-button>
     @if(selectedChallenge.released){
-    <ion-button size="small" fill="solid" (click)="downloadArchive()"
-      matTooltip="{{'Download results' | translate }}">
+    <ion-button size="small" fill="solid" (click)="downloadArchive()" matTooltip="{{'Download results' | translate }}">
       <ion-icon slot="icon-only" name="download" color="success"></ion-icon>
     </ion-button>
     }
@@ -53,13 +51,15 @@
   <ion-list>
     <ion-item>
       <ion-label>{{'Groups' | translate}}:</ion-label>
-      <cranix-search objectType="group" [multiple]="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="challengeToAssign.groups"></cranix-search>
+      <cranix-search objectType="group" [multiple]="true" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="challengeToAssign.groups"></cranix-search>
       {{'studentsOnly' | translate}}:
       <ion-toggle [(ngModel)]="challengeToAssign.studentsOnly"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>{{'Users' | translate}}:</ion-label>
-      <cranix-search objectType="group" [multiple]="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="challengeToAssign.users"></cranix-search>
+      <cranix-search objectType="group" [multiple]="true" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="challengeToAssign.users"></cranix-search>
     </ion-item>
   </ion-list>
 </ion-content>
@@ -70,18 +70,19 @@
   <ion-item [disabled]="selectedChallenge.released" slot="start" lines="none">
     <ion-input [(ngModel)]="selectedChallenge.title" placeholder="{{'Title' | translate}}"></ion-input>
     @if(selectedChallenge.released && selectedChallenge.groups.length > 0){
-      {{objectService.formatGroups(selectedChallenge.groups)}}
+    {{objectService.formatGroups(selectedChallenge.groups)}}
     }
     @if(selectedChallenge.released && selectedChallenge.users.length > 0){
-      {{objectService.formatUsers(selectedChallenge.users)}}
+    {{objectService.formatUsers(selectedChallenge.users)}}
     }
   </ion-item>
   <ion-item [disabled]="selectedChallenge.released" slot="end" lines="none">
-    <cranix-search objectType="teachingSubject" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedChallenge.teachingSubject"
-      [items]="crxObjectService.subjects" itemTextField="name" (onChange)="changeTeachingSubject()">
+    <cranix-search objectType="teachingSubject" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="selectedChallenge.teachingSubject" [items]="crxObjectService.subjects" itemTextField="name"
+      (onChange)="changeTeachingSubject()">
     </cranix-search>
-    <cranix-search objectType="subjectArea" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedChallenge.subjectArea"
-      [items]="subjectAreas" itemTextField="name">
+    <cranix-search objectType="subjectArea" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="selectedChallenge.subjectArea" [items]="subjectAreas" itemTextField="name">
     </cranix-search>
   </ion-item>
   @if( !authService.isMD() ) {
@@ -94,13 +95,11 @@
       matTooltip="{{'Stop and evaluate challenge and archive the results.'|translate}}">
       <ion-icon slot="icon-only" name="stop-circle-outline" color="danger"></ion-icon>
     </ion-button>
-    <ion-button size="small" fill="solid" (click)="evaluate()"
-      matTooltip="{{'Show actual results' | translate }}">
+    <ion-button size="small" fill="solid" (click)="evaluate()" matTooltip="{{'Show actual results' | translate }}">
       <ion-icon slot="icon-only" name="settings" color="success"></ion-icon>
     </ion-button>
     }@else{
-    <ion-button size="small" fill="solid" (click)="save()"
-      matTooltip="{{'Save changes' | translate }}"
+    <ion-button size="small" fill="solid" (click)="save()" matTooltip="{{'Save changes' | translate }}"
       [disabled]="!selectedChallenge.title || !selectedChallenge.teachingSubject">
       <ion-icon slot="icon-only" name="checkmark" color="success"></ion-icon>
     </ion-button>
@@ -112,8 +111,8 @@
       matTooltip="{{'Upload the test to CEPHALIX Server.'|translate}}">
       <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
     </ion-button>
-    <ion-button size="small" fill="solid"
-      (click)="deleteChallenge(selectedChallenge.id)" matTooltip="{{'Delete' | translate }}">
+    <ion-button size="small" fill="solid" (click)="deleteChallenge(selectedChallenge.id)"
+      matTooltip="{{'Delete' | translate }}">
       <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
     </ion-button>
     }
@@ -154,8 +153,7 @@
         <ion-icon name="settings" color="success"></ion-icon>
       </ion-fab-button>
       }@else{
-      <ion-fab-button size="small" fill="solid" (click)="save()"
-        matTooltip="{{'Save changes' | translate }}"
+      <ion-fab-button size="small" fill="solid" (click)="save()" matTooltip="{{'Save changes' | translate }}"
         [disabled]="!selectedChallenge.title || !selectedChallenge.teachingSubject">
         <ion-icon name="checkmark" color="success"></ion-icon>
       </ion-fab-button>
@@ -167,8 +165,8 @@
         matTooltip="{{'Upload the test to CEPHALIX Server.'|translate}}">
         <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
       </ion-fab-button>
-      <ion-fab-button size="small" fill="solid"
-        (click)="deleteChallenge(selectedChallenge.id)" matTooltip="{{'Delete' | translate }}">
+      <ion-fab-button size="small" fill="solid" (click)="deleteChallenge(selectedChallenge.id)"
+        matTooltip="{{'Delete' | translate }}">
         <ion-icon name="trash" color="danger"></ion-icon>
       </ion-fab-button>
       }
@@ -182,39 +180,51 @@
   @for(question of selectedChallenge.questions; let i = $index; track i;){
   <div class="question">
     @if( questionToEdit == i ){
-    <ion-item style="background-color: lightgray;" [disabled]="selectedChallenge.released">
+    <ion-toolbar color="primary">
+      <ion-title>
+        {{'Insert question'|translate}} {{i+1}}
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button size="small" fill="clear" (click)="toggleEditQuestion(i)" [disabled]="selectedChallenge.released">
+          <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <div style="background-color: lightgray;">
       <quill-editor [(ngModel)]="selectedChallenge.questions[i].question" name="description"></quill-editor>
-      <ion-button size="small" fill="solid" (click)="toggleEditQuestion(i)">
-        <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
-        <div>{{selectedChallenge.questions[i].question.length/1024}}KB</div>
-      </ion-button>
-    </ion-item>
+    </div>
     }@else{
     <ion-item style="background-color: lightgray;" [disabled]="selectedChallenge.released">
       <div class="counter"><b>{{i+1}}.</b></div>
       <!-- quill-view-html [content]="question.question" (click)="toggleEditQuestion(i)" style="min-width: 200px;"> </quill-view-html -->
       <div [innerHTML]="question.question" (click)="toggleEditQuestion(i)"></div>
       <ion-label class="answer" slot="end">{{ 'value' | translate }}:</ion-label>
-      <ion-input class="answer" slot="end" style="max-width: 30px; margin-right: 10px; margin-left: 5px;" [(ngModel)]="question.value" type="number"
-        (ionInput)="challengesService.modified = true" min="1"></ion-input>
+      <ion-input class="answer" slot="end" style="max-width: 30px; margin-right: 10px; margin-left: 5px;"
+        [(ngModel)]="question.value" type="number" (ionInput)="challengesService.modified = true" min="1"></ion-input>
       <ion-button slot="end" size="small" fill="clear" (click)="deleteQuestion(i)">
         <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
       </ion-button>
     </ion-item>
     }
     @for(answer of question.crxQuestionAnswers; track answer.id; let j = $index){
+    @if( answerToEdit == i + '-' + j ){
+    <ion-toolbar color="primary">
+      <ion-title>
+        {{'Insert answer'|translate}} {{j+1}}
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button size="small" fill="clear" (click)="toggleEditAnswer(i,j)" [disabled]="selectedChallenge.released">
+          <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <quill-editor [(ngModel)]="selectedChallenge.questions[i].crxQuestionAnswers[j].answer"
+      name="description"></quill-editor>
+    }@else{
     <ion-item class="answer" [disabled]="selectedChallenge.released">
-      @if( answerToEdit == i + '-' + j ){
-      <quill-editor [(ngModel)]="selectedChallenge.questions[i].crxQuestionAnswers[j].answer" name="description"></quill-editor>
-      <ion-button size="small" fill="clear" (click)="toggleEditAnswer(i,j)">
-        <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
-        <div>{{selectedChallenge.questions[i].crxQuestionAnswers[j].answer.length/1024}}KB</div>
-      </ion-button>
-      }@else{
       @if(question.answerType != 'Text'){
-      <input style="margin-right: 10px;"
-        [type]="question.answerType == 'One' ? 'radio' : 'checkbox'" name="answer-{{i}}" [value]="answer.answer"
-        [checked]="answer.correct" (click)="toggle(i, j)">
+      <input style="margin-right: 10px;" [type]="question.answerType == 'One' ? 'radio' : 'checkbox'"
+        name="answer-{{i}}" [value]="answer.answer" [checked]="answer.correct" (click)="toggle(i, j)">
       }
       <div style="margin: 0;" [innerHTML]="answer.answer" (click)="toggleEditAnswer(i,j)"></div>
       @if(!answer.answer){
@@ -223,8 +233,8 @@
       <ion-button slot="end" size="small" fill="clear" (click)="deleteAnswer(i,j)">
         <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
       </ion-button>
-      }
     </ion-item>
+    }
     }
     @if(!selectedChallenge.released && question.answerType != 'Text'){
     <ion-item class="answer" style="color:green;">
@@ -276,21 +286,20 @@
         <ion-list-header lines="full">
           <ion-label>{{'Insert existing questions'|translate}}</ion-label>
           @if( questionListPlaceHolder.indexOf('CEPHALIX') == -1 ){
-            <ion-button size="small" fill="clear"
-              (click)="getQuestionsFromCephalix()"
-              matTooltip="{{'Get challenge questions from CEPHALIX server to the selected subject.' | translate }}">
-              <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
-            </ion-button>
+          <ion-button size="small" fill="clear" (click)="getQuestionsFromCephalix()"
+            matTooltip="{{'Get challenge questions from CEPHALIX server to the selected subject.' | translate }}">
+            <img src="assets/images/logo/cranix_school.svg" style="height: 32px; width: 32px;">
+          </ion-button>
           }@else{
-            <ion-button size="small" fill="clear"
-              (click)="getQuestionsFromServer()"
-              matTooltip="{{'Get challenge questions from your server to the selected subject.' | translate }}">
-              <ion-icon slot="icon-only" name="download" color="success"></ion-icon>
-            </ion-button>
+          <ion-button size="small" fill="clear" (click)="getQuestionsFromServer()"
+            matTooltip="{{'Get challenge questions from your server to the selected subject.' | translate }}">
+            <ion-icon slot="icon-only" name="download" color="success"></ion-icon>
+          </ion-button>
           }
         </ion-list-header>
         <ion-item>
-          <cranix-search objectType="question" [ngModelOptions]="{standalone: true}" [(ngModel)]="questionsToAdd" [items]="questions" itemTextField="question" [multiple]="true" (onChange)="addQuestions()"></cranix-search>
+          <cranix-search objectType="question" [ngModelOptions]="{standalone: true}" [(ngModel)]="questionsToAdd"
+            [items]="questions" itemTextField="question" [multiple]="true" (onChange)="addQuestions()"></cranix-search>
         </ion-item>
       </ion-list>
     </ion-content>
@@ -343,7 +352,8 @@
     </ion-content>
   </ng-template>
 </ion-modal>
-<ion-modal #getCephalixChallenges [isOpen]="modalGetCepahlixChallengesIsOpen" (onDidDismiss)="modalGetCepahlixChallengesIsOpen = false">
+<ion-modal #getCephalixChallenges [isOpen]="modalGetCepahlixChallengesIsOpen"
+  (onDidDismiss)="modalGetCepahlixChallengesIsOpen = false">
   <ng-template>
     <ion-header>
       <ion-toolbar color="primary">
@@ -361,7 +371,8 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <cranix-search-list objectType="teachingSubject" [(selectedItem)]="selectedTeachingSubject" [items]="crxObjectService.subjects" itemTextField="name"></cranix-search-list>
+      <cranix-search-list objectType="teachingSubject" [(selectedItem)]="selectedTeachingSubject"
+        [items]="crxObjectService.subjects" itemTextField="name"></cranix-search-list>
     </ion-content>
   </ng-template>
 </ion-modal>

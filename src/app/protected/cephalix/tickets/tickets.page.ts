@@ -20,7 +20,6 @@ import { CreateSupport } from 'src/app/shared/actions/create-support/create-supp
 export class TicketsPage {
   context;
   alive: boolean;
-  supportRequest: SupportRequest
 
   constructor(
     public authService: AuthenticationService,
@@ -37,7 +36,7 @@ export class TicketsPage {
       this.route.navigate(['/pages/cephalix/tickets/' + ticket.id]);
     } else {
       var mySupport = new SupportRequest();
-      mySupport.lastname = this.authService.session.fullName.replace("(", "").replace(")", "")
+      mySupport.regcode = "Select Institute";
       const modal = await this.modalCtrl.create({
         component: CreateSupport,
         cssClass: 'big-modal',

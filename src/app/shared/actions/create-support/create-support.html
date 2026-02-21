@@ -16,7 +16,7 @@
         </ion-toolbar>
     </ion-header>
     <ion-content fullscreen>
-        <ion-list>
+        <ion-list [inset]="true">
             <ion-item>
                 <ion-label [position]="authService.settings.labelPlacement">{{'supporttype' | translate}}</ion-label>
                 <ion-select [(ngModel)]="support.supporttype" name="title" required>
@@ -30,6 +30,13 @@
                 <ion-label [position]="authService.settings.labelPlacement">{{'email' | translate}}</ion-label>
                 <ion-input [(ngModel)]="support.email" name="email" required></ion-input>
             </ion-item>
+            @if(support.regcode){
+            <ion-item lines="none">
+                <ion-label [position]="authService.settings.labelPlacement">{{'Institute'| translate}}</ion-label>
+                <cranix-search objectType="institute" [(ngModel)]="institute" name="selecteInstitue"
+                    (onChange)="setInstitute()" [itemTextField]="['name','locality']"></cranix-search>
+            </ion-item>
+            }
             <ion-item>
                 <ion-label [position]="authService.settings.labelPlacement">{{'name' | translate}}</ion-label>
                 <ion-input [(ngModel)]="support.lastname" name="lastname" required></ion-input>
@@ -38,8 +45,9 @@
                 <ion-label [position]="authService.settings.labelPlacement">{{'subject' | translate}}</ion-label>
                 <ion-input [(ngModel)]="support.subject" name="subject" required></ion-input>
             </ion-item>
-	    <quill-editor [(ngModel)]="support.description" name="description">{{'Insert your issue ...' | translate}}</quill-editor>
         </ion-list>
+        <quill-editor [(ngModel)]="support.description" name="description">{{'Insert your issue ...' |
+            translate}}</quill-editor>
     </ion-content>
 </form>
 
