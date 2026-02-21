@@ -75,7 +75,7 @@
                     <em>{{selectedRequest.creator.role|translate}}</em>
                 </ion-title>
                 <ion-buttons slot="end">
-                    <ion-button size="large" class="button-no-margin" slot="end" (click)="setIdRequest()" fill="clear"
+                    <ion-button size="large" class="button-no-margin" slot="end" (click)="setIdRequest(popOver)" fill="clear"
                         [disabled]="!(selectedRequest.comment.length != 0 || (selectedRequest.allowed && selectedRequest.validUntil))">
                         <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
                     </ion-button>

@@ -66,11 +66,13 @@ export class IdCardsComponent implements AfterViewInit {
     }
   }
 
-  setIdRequest() {
+  setIdRequest(popOver) {
     this.userService.setIdRequest(this.selectedRequest).subscribe(
       (val) => {
         this.objectService.responseMessage(val)
         this.readData()
+        console.log("id modified")
+        this.closePopOver(popOver)
       }
     )
   }
