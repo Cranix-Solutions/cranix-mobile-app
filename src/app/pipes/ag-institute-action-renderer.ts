@@ -81,9 +81,7 @@ export class InstituteActionCellRenderer implements ICellRendererAngularComp, On
                             sessionStorage.removeItem('shortName');
                         }
                     }
-                },
-                (err) => { console.log(err) },
-                () => { sub.unsubscribe() }
+                }
             )
     }
     refresh(params: any): boolean {

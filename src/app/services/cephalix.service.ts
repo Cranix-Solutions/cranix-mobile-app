@@ -36,12 +36,24 @@ export class CephalixService {
 		this.hostname = this.utilsService.hostName();
 	}
 
+	getLastDayOfCurrentMonthNextYear(): Date {
+	    const today = new Date();
+	    const nextYear = today.getFullYear() + 1;
+	    const month = today.getMonth(); // 0-11
+	    return new Date(nextYear, month + 1, 1);
+	}
+        getLastDayOfCurrentMonthNextYearISO(): string {
+            const date = this.getLastDayOfCurrentMonthNextYear();
+            return date.toISOString().split("T")[0];
+        }
+
 	//GET calls
 	getTemplateInstitute(){
 		var templateInstitute = new Institute();
 		if (!this.authService.isAllowed('customer.manage')) {
 			delete templateInstitute.cephalixCustomerId;
 		}
+                templateInstitute['validity'] = this.getLastDayOfCurrentMonthNextYearISO()
 		return templateInstitute
 	}
 
