@@ -9,6 +9,7 @@ import { CanActivateViaAcls } from 'src/app/services/auth-guard.service';
 import { ChallengeCanDeactivate } from 'src/app/services/challenges.service';
 import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
 import { LessonsPage } from './lessons.page';
+import { CoursesComponent } from './courses/courses.component';
 import { RoomControlComponent } from './room-control/room-control.component';
 import { RoomDevComponent } from './room-control/device/roomdev.component';
 import { MypositiveComponent } from './mypositive/mypositive.component';
@@ -44,7 +45,10 @@ const routes: Routes = [
         path: 'roomcontrol',
         component: RoomControlComponent
       },
-
+      {
+        path: 'courses',
+        component: CoursesComponent
+      }
       {
         path: 'mypositive',
         component: MypositiveComponent
@@ -69,8 +73,9 @@ const routes: Routes = [
   ],
   declarations: [
     LessonsPage,
-    RoomControlComponent,
+    CoursesComponent,
     ChallengesComponent,
+    RoomControlComponent,
     RoomDevComponent,
     MypositiveComponent,
     PtmsComponent,
