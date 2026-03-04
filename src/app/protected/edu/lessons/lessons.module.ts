@@ -48,7 +48,7 @@ const routes: Routes = [
       {
         path: 'courses',
         component: CoursesComponent
-      }
+      },
       {
         path: 'mypositive',
         component: MypositiveComponent
