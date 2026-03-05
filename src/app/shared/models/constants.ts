@@ -65,18 +65,19 @@ export const quillFullToolbar = [
    * The base objects which need to be loaded by the initialisations
    */
 export const objectsTemlate: string[] = [
-    'education/user',
+    'adhocroom',
+    'device',
+    'challenge',
+    'challenges/todo',
+	'course',
+	'education/user',
     'education/group',
     'education/guestUser',
-    'user',
     'group',
-    'room',
-    'device',
     'hwconf',
     'printer',
-    'adhocroom',
-    'challenge',
-    'challenges/todo'
+    'room',
+    'user'
 ]
 
 export const selects: any = {
@@ -217,7 +218,7 @@ export const hiddenColumns: string[] = [
 	'questions'
 	]
 
-	import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, Crx2fa, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNotice, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
+	import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, Course, Crx2fa, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNotice, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
 	import { Article, CephalixCare, Customer, DynDns, Institute, InstituteStatus, Notice, Repository, Ticket} from './cephalix-data-model'
 
 	export function getObjectKeys(objectType: string) {
@@ -229,6 +230,7 @@ export const hiddenColumns: string[] = [
 			case 'announcenement': return Object.getOwnPropertyNames(new Announcenement)
 			case 'category': return Object.getOwnPropertyNames(new Category)
 			case 'contact': return Object.getOwnPropertyNames(new Contact)
+			case 'course': return Object.getOwnPropertyNames(new Course)
 			case 'crxcalendar': return Object.getOwnPropertyNames(new CrxCalendar)
 			case 'challenge': return Object.getOwnPropertyNames(new CrxChallenge)
 			case 'crxchallengeanswer': return Object.getOwnPropertyNames(new CrxChallengeAnswer)

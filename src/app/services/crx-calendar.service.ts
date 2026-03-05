@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 //own modules
 import { UtilsService } from './utils.service';
-import { AuthenticationService } from './auth.service';;
+import { AuthenticationService } from './auth.service';
 import { ServerResponse } from 'src/app/shared/models/server-models';
 import { CrxCalendar } from 'src/app/shared/models/data-model';
 

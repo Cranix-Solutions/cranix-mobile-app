@@ -21,6 +21,7 @@ import { LoginPage } from './public/login/login.page';
 //own services
 import { CrxCalendarService } from './services/crx-calendar.service';
 import { CephalixService } from './services/cephalix.service';
+import { CourseService } from './services/course.service';
 import { DevicesService } from './services/devices.service';
 import { EductaionService } from './services/education.service';
 import { GenericObjectService } from './services/generic-object.service';
@@ -75,6 +76,7 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CephalixService,
+    CourseService,
     CrxObjectService,
     CrxCalendarService,
     DevicesService,

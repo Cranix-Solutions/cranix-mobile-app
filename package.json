@@ -61,6 +61,7 @@
     "@types/jasmine": "",
     "@types/jasminewd2": "",
     "@types/node": "",
+    "@types/uuid": "^10.0.0",
     "codelyzer": "",
     "jasmine-core": "",
     "jasmine-spec-reporter": "",

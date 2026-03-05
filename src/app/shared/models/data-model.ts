@@ -1,4 +1,6 @@
 import { Frequency, RRule } from 'rrule';
+import { v4 as uuidv4 } from 'uuid';
+
 export class Hwconf {
 	id?: number = 0;
 	name: string = "";
@@ -537,10 +539,12 @@ export class CrxChallengeAnswer {
 
 export class CrxCalendar {
 	id: number = 0
+	courseId: number = null
 	creatorId: number
+	creator?: User
 	created: Date | string
 	modified: Date | string
-	uuid: string
+	uuid: string = uuidv4();
 	allDay: boolean = false
 	editable: boolean = true
 	start: Date | string
@@ -698,4 +702,22 @@ export class Crx2fa {
 	address: string = ''
 	created: Date | string = new Date()
 	modified: Date | string = new Date()
+}
+
+export class Course {
+	id: number = 0;
+	creatorId: number = 0;
+	created: Date | string = new Date()
+	modified: Date | string = new Date()
+	description: string = ""
+	countOfParticipants: number = 5;
+	countOfRegistrations: number = 1;
+	start: Date | string = new Date();
+	end: Date | string = new Date();
+	startRegistration: Date | string = new Date()
+	endRegistration: Date | string = new Date()
+	released: boolean = false
+	groups: Group[] = []
+	users: User[] = []
+	appointments: CrxCalendar[] = []
 }

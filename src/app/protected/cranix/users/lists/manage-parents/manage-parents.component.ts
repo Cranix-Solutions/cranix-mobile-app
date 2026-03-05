@@ -120,7 +120,6 @@ export class ManageParentsComponent {
       this.selectedPTM.endRegistration = new Date(start.getTime() - (3600000 * 24 * 2))
     }
     this.selectedPTM = this.parentsService.adaptPtmTimes(this.selectedPTM)
-
     console.log(this.selectedPTM)
   }
 
