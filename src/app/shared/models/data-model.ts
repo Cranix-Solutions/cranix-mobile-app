@@ -706,10 +706,10 @@ export class Crx2fa {
 
 export class Course {
 	id: number = 0;
+	title: string = ""
 	creatorId: number = 0;
 	created: Date | string = new Date()
 	modified: Date | string = new Date()
-	description: string = ""
 	countOfParticipants: number = 5;
 	countOfRegistrations: number = 1;
 	start: Date | string = new Date();

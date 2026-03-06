@@ -202,7 +202,10 @@ export class CranixListComponent implements OnInit, OnChanges {
         }
         case 'created': case 'modified':
         case 'validFrom': case 'validUntil':
-        case 'lastUpdate':{
+        case 'lastUpdate': 
+        case 'start': case 'end':
+        case 'startRegistration': case 'endRegistration':
+        {
             col['valueFormatter'] = params => {
               try {
                 return new Date(params.value).toISOString().substring(0, 16);

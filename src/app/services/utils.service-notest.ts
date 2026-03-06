@@ -131,4 +131,19 @@ export class UtilsService {
 
                 return `${formattedSize} ${sizes[i]}`;
         }
+
+        public adaptPtmTimes(ptm: any) {
+		ptm.start = this.toIonISOString(new Date(ptm.start))
+		ptm.end = this.toIonISOString(new Date(ptm.end))
+		ptm.startRegistration = this.toIonISOString(new Date(ptm.startRegistration))
+		ptm.endRegistration = this.toIonISOString(new Date(ptm.endRegistration))
+		return ptm
+	}
+
+	public convertPtmTimes(ptm: any) {
+		ptm.start = new Date(ptm.start).valueOf().toString()
+		ptm.end = new Date(ptm.end).valueOf().toString()
+		ptm.startRegistration = new Date(ptm.startRegistration).valueOf().toString()
+		ptm.endRegistration = new Date(ptm.endRegistration).valueOf().toString()
+	}
 }

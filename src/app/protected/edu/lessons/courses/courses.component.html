@@ -24,7 +24,7 @@
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-input [(ngModel)]="selectedCourse.description" name="description" label="{{'Description'|translate}}*"
+          <ion-input [(ngModel)]="selectedCourse.title" name="title" label="{{'Title'|translate}}*"
             labelPlacement="fixed" required part="custom-label"></ion-input>
         </ion-item>
         <ion-item>
@@ -127,7 +127,7 @@
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-input [(ngModel)]="selectedAppointment.description" name="description"
+          <ion-input [(ngModel)]="selectedAppointment.title" name="title"
             label="{{'Description'|translate}}*" labelPlacement="fixed" required part="custom-label"></ion-input>
         </ion-item>
         <ion-item>

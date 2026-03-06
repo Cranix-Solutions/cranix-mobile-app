@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import { Course, CrxCalendar, Room } from 'src/app/shared/models/data-model';
 
 @Component({
@@ -23,7 +24,8 @@ export class CoursesComponent  implements OnInit {
   constructor(
     public authService: AuthenticationService,
     public courseService: CourseService,
-    public objectService: GenericObjectService
+    public objectService: GenericObjectService,
+    public utilService: UtilsService
   ) { 
     this.context = {componentParent: this}
   }
@@ -39,6 +41,8 @@ export class CoursesComponent  implements OnInit {
       this.selectedCourse = course
       this.title = "Edit Course"
     }
+    this.utilService.adaptPtmTimes(this.selectedCourse)
+    console.log(this.selectedCourse)
     this.isModalOpen = true
   }
   closeAddEditModal(modal: any){

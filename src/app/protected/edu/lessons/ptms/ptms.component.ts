@@ -93,7 +93,7 @@ export class PtmsComponent implements OnInit {
     })
   }
   selectPTM(ptm) {
-    this.selectedPTM = this.ptmService.adaptPtmTimes(ptm);
+    this.selectedPTM = this.utilsService.adaptPtmTimes(ptm);
     this.ptmService.getFreeRooms(this.selectedPTM.id).subscribe((val2) => {
       this.freeRooms = val2
     })

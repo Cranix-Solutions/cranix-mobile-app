@@ -163,19 +163,5 @@ export class ParentsService {
 		return this.http.delete<ServerResponse>(this.url, { headers: this.authService.headers });
 	}
 
-	adaptPtmTimes(ptm: ParentTeacherMeeting) {
-		ptm.start = this.utilsService.toIonISOString(new Date(ptm.start))
-		ptm.end = this.utilsService.toIonISOString(new Date(ptm.end))
-		ptm.startRegistration = this.utilsService.toIonISOString(new Date(ptm.startRegistration))
-		ptm.endRegistration = this.utilsService.toIonISOString(new Date(ptm.endRegistration))
-		return ptm
-	}
-
-
-	convertPtmTimes(ptm: ParentTeacherMeeting) {
-		ptm.start = new Date(ptm.start).valueOf().toString()
-		ptm.end = new Date(ptm.end).valueOf().toString()
-		ptm.startRegistration = new Date(ptm.startRegistration).valueOf().toString()
-		ptm.endRegistration = new Date(ptm.endRegistration).valueOf().toString()
-	}
+	
 }

@@ -119,13 +119,13 @@ export class ManageParentsComponent {
     if (!this.selectedPTM.endRegistration) {
       this.selectedPTM.endRegistration = new Date(start.getTime() - (3600000 * 24 * 2))
     }
-    this.selectedPTM = this.parentsService.adaptPtmTimes(this.selectedPTM)
+    this.selectedPTM = this.utilsService.adaptPtmTimes(this.selectedPTM)
     console.log(this.selectedPTM)
   }
 
   selectPtm(ptm: ParentTeacherMeeting) {
     if (ptm) {
-      this.selectedPTM = this.parentsService.adaptPtmTimes(ptm)
+      this.selectedPTM = this.utilsService.adaptPtmTimes(ptm)
       let now = new Date().valueOf();
       let start = new Date(this.selectedPTM.start).valueOf()
       this.isUpcomming = (now < start)
@@ -167,7 +167,7 @@ export class ManageParentsComponent {
     if (!this.checkPtmTimes(this.selectedPTM)) {
       return
     }
-    this.parentsService.convertPtmTimes(this.selectedPTM)
+    this.utilsService.convertPtmTimes(this.selectedPTM)
     console.log(this.selectedPTM)
     this.objectService.requestSent();
     if (this.selectedPTM.id > 0) {

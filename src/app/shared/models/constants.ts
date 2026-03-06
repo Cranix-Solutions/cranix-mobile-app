@@ -129,6 +129,7 @@ export const readOnlyAttributes: string[] = [
 	 * Attributes which we get but need not be shown
 	 */
 	export const hiddenAttributes: string[] = [
+		'appointments',
 		'accessInRooms',
 		'cephalixInstituteId',
 		'color',
