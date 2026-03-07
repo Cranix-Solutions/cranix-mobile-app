@@ -146,4 +146,30 @@ export class UtilsService {
 		ptm.startRegistration = new Date(ptm.startRegistration).valueOf().toString()
 		ptm.endRegistration = new Date(ptm.endRegistration).valueOf().toString()
 	}
+
+        public formatDateKey(d: Date): string {
+                const yyyy = d.getFullYear();
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+        }
+
+        public groupEventsByDate(events: any[]): any {
+                const groups = {};
+                for (const ev of events) {
+                  const startVal = ev.start;
+                  const dateObj = startVal instanceof Date ? startVal : new Date(startVal);
+                  if (isNaN(dateObj.getTime())) continue; // ungültiges Datum überspringen
+                  const date = this.formatDateKey(dateObj);
+                  const hour = dateObj.getHours()
+                  if (!groups[date]) {
+                    groups[date] = {};
+                  }
+                  if (!groups[date][hour]) {
+                        groups[date][hour] = []
+                  }
+                  groups[date][hour].push(ev);
+                }
+                return groups;
+        }
 }

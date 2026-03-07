@@ -27,5 +27,13 @@ export class CourseService {
   patch(cours: Course){
     return this.http.patch<ServerResponse>(this.url, cours, { headers: this.authService.headers })
   }
-  
+  getById(id: number){
+    const url = `${this.url}/${id}`
+    return this.http.get<Course>(url, { headers: this.authService.headers } )
+  }
+
+  getByIdFree(id: number){
+    const url = `${this.url}/${id}`
+    return this.http.get<Course>(url, { headers: this.authService.headers } )
+  }
 }
