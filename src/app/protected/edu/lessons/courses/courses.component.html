@@ -88,28 +88,30 @@
       </ion-list>
       <ion-grid>
         <ion-row>
-          <ion-col>{{'Datum'|translate}} </ion-col>
-          <ion-col>{{'Start'|translate}} </ion-col>
-          <ion-col>{{'End'|translate}} </ion-col>
-          <ion-col>{{'Room'|translate}} </ion-col>
-          <ion-col>{{'Owner'|translate}} </ion-col>
-          <ion-col> </ion-col>
+          <ion-col size="2">{{'Datum'|translate}} </ion-col>
+          <ion-col size="2">{{'Start'|translate}} </ion-col>
+          <ion-col size="2">{{'End'|translate}} </ion-col>
+          <ion-col size="2">{{'Room'|translate}} </ion-col>
+          <ion-col size="2">{{'Owner'|translate}} </ion-col>
+          <ion-col size="2"> </ion-col>
         </ion-row>
         @for(appointment of selectedCourse.appointments; let index = $index; track $index;)
         {
         <ion-row>
-          <ion-col>{{appointment.start|date:'yyyy-MM-dd'}}</ion-col>
-          <ion-col>{{appointment.start|date:'HH:mm'}}</ion-col>
-          <ion-col>{{appointment.end|date:'HH:mm'}}</ion-col>
-          <ion-col>@if(appointment.room){{{appointment.room.name}}}</ion-col>
-          <ion-col>@if(appointment.creatorId){{{appointment.creatorId|idToName:'user'}}}</ion-col>
-          <ion-col>
-            <ion-button fill="clear" (click)="openAddEditAppointment(appointment)">
-              <ion-icon name="build-outline"></ion-icon>
-            </ion-button>
-            <ion-button fill="clear" (click)="deleteAppointment(index)">
-              <ion-icon color="danger" name="trash"></ion-icon>
-            </ion-button>
+          <ion-col size="2">{{appointment.start|date:'yyyy-MM-dd'}}</ion-col>
+          <ion-col size="2">{{appointment.start|date:'HH:mm'}}</ion-col>
+          <ion-col size="2">{{appointment.end|date:'HH:mm'}}</ion-col>
+          <ion-col size="2">@if(appointment.room){{{appointment.room.name}}}</ion-col>
+          <ion-col size="2">@if(appointment.creatorId){{{appointment.creatorId|idToName:'user'}}}</ion-col>
+          <ion-col size="2" style="padding: 2px;">
+            <ion-item>
+              <ion-button fill="clear" size="small" (click)="openAddEditAppointment(appointment)" style="margin: 0;">
+                <ion-icon name="build-outline"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" size="small" (click)="deleteAppointment(index)" style="margin: 0;">
+                <ion-icon color="danger" name="trash"></ion-icon>
+              </ion-button>
+            </ion-item>
           </ion-col>
         </ion-row>
         }

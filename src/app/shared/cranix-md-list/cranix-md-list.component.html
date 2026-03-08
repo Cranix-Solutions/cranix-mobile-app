@@ -78,6 +78,9 @@
           @if(objectType == 'challenge'){
             <p>{{object.description}}</p>
             @if(object.teachingSubject){<p>{{object.teachingSubject.name}}</p>}
+          }@else if(objectType == 'course') {
+            <p>{{ object.title }}</p>
+            <p>{{ object.start|date:'yyyy-MM-dd'}} - {{ object.end|date:'yyyy-MM-dd'}}</p>
           }@else if(objectType == '2fa') {
             <p>{{ object.creatorId | idToName:'user' }}</p>
             <p>{{ object.crx2faType }} {{ object.crx2faAddress }}</p>

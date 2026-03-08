@@ -145,7 +145,8 @@ export class CoursesComponent implements OnInit {
     this.closeAddEditAppontment(modal)
   }
   deleteAppointment(index: number){
-    this.selectedCourse.appointments = this.selectedCourse.appointments.splice(index,1)
+    console.log(index)
+    this.selectedCourse.appointments.splice(index,1)
     this.isModified = true;
   }
 
