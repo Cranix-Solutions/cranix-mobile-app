@@ -72,7 +72,9 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
   writeValue(value: any) {
     console.log("write value called for:" + this.objectType )
     console.log(value)
-    this.selection = value;
+    if(value) {
+      this.selection = value;
+    }
   }
   registerOnChange(method: any): void {
     this.propagateOnChange = method;

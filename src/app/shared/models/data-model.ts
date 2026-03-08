@@ -716,7 +716,6 @@ export class Course {
 	end: Date | string = new Date();
 	startRegistration: Date | string = new Date()
 	endRegistration: Date | string = new Date()
-	released: boolean = false
 	groups: Group[] = []
 	users: User[] = []
 	appointments: CrxCalendar[] = []

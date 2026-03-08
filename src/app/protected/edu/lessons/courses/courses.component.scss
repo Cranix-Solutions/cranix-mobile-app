@@ -7,3 +7,10 @@ ion-item {
 ion-modal {
     height: 100%;
 }
+
+ion-col {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    padding: 8px;
+    /* optional, damit der Inhalt nicht direkt am Rand klebt */
+}

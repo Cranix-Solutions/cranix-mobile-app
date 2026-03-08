@@ -5,6 +5,7 @@ import { UtilsService } from './utils.service';
 import { AuthenticationService } from './auth.service';
 import { ServerResponse } from 'src/app/shared/models/server-models';
 import { Course, CrxCalendar } from 'src/app/shared/models/data-model';
+import { GenericObjectService } from './generic-object.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,10 @@ export class CourseService {
   modified: boolean = false;
 
   constructor(private http: HttpClient,
+    private authService: AuthenticationService,
+    private objectService: GenericObjectService,
     private utilsService: UtilsService,
-    private authService: AuthenticationService)
+    )
   {
     this.url = this.utilsService.hostName() + "/courses";
   }
@@ -33,7 +36,28 @@ export class CourseService {
   }
 
   getByIdFree(id: number){
-    const url = `${this.url}/${id}`
+    const url = `${this.url}/${id}/free`
     return this.http.get<Course>(url, { headers: this.authService.headers } )
+  }
+  
+  register(id: number) {
+    const url = `${this.url}/appointments/${id}`
+    this.http.put<ServerResponse>(url, { headers: this.authService.headers } ).subscribe(
+      (val) => this.objectService.responseMessage(val)
+    )
+  }
+
+  withdrawing(id: number) {
+    const url = `${this.url}/appointments/${id}`
+    this.http.delete<ServerResponse>(url, { headers: this.authService.headers } ).subscribe(
+      (val) => this.objectService.responseMessage(val)
+    )
+  }
+
+  sendMails(id: number) {
+    const url = `${this.url}/${id}`
+    return this.http.put<ServerResponse>(url, { headers: this.authService.headers } ).subscribe(
+      (val) => this.objectService.responseMessage(val)
+    )
   }
 }

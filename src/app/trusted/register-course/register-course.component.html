@@ -1,13 +1,49 @@
 @if(selectedCourse){
-  <ion-header>
-      <ion-toolbar class="page-toolbar">
-          <ion-title>{{'Event Registrations'|translate}} {{selectedCourse.start|date:'yyyy-MM-dd'}}
-              {{selectedCourse.start|date:'HH:mm'}} - {{selectedCourse.end|date:'HH:mm'}}
-              {{'user'|translate}}: {{user.surName}}, {{user.givenName}}
-          </ion-title>
-      </ion-toolbar>
-  </ion-header>
-  <ion-content>
-      <cranix-ptm-view [id]="id"></cranix-ptm-view>
-  </ion-content>
-  }
+<ion-header>
+    <ion-toolbar class="page-toolbar">
+        <ion-title>{{'Event Registrations'|translate}} {{selectedCourse.start|date:'yyyy-MM-dd'}}
+            {{selectedCourse.start|date:'HH:mm'}} - {{selectedCourse.end|date:'HH:mm'}}
+            {{'user'|translate}}: {{user.surName}}, {{user.givenName}}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col></ion-col>
+            @for(date of dates; track date;){
+            <ion-col>
+                {{date}}
+            </ion-col>
+            }
+        </ion-row>
+        @for(hour of hours; track hour;){
+        <ion-row>
+            <ion-col>
+                {{hour}}:00
+            </ion-col>
+            @for(date of dates; track date;){
+            <ion-col>
+                @if(appointments[date] && appointments[date][hour]) {
+                {{ utilsService.formatTimeHHMM(appointments[date][hour]['start']) }} - {{
+                utilsService.formatTimeHHMM(appointments[date][hour]['end']) }}<br>
+                {{'Room'|translate}}: {{ appointments[date][hour]['room']['name'] }}<br>
+                @if(appointments[date][hour]['users'].includes(user)){
+                <ion-button (click)="courseService.withdrawing(appointments[date][hour]['id'])">
+                    {{'Withdrawing'|translate}}
+                    <ion-icon name="log-out-outline"></ion-icon>
+                </ion-button>
+                }@else{
+                <ion-button (click)="courseService.register(appointments[date][hour]['id'])">
+                    {{'register'|translate}}
+                    <ion-icon name="log-in-outline"></ion-icon>
+                </ion-button>
+                }
+                }
+            </ion-col>
+            }
+        </ion-row>
+        }
+    </ion-grid>
+</ion-content>
+}

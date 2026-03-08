@@ -142,6 +142,10 @@ export class UtilsService {
                 }
         }
 
+        public adaptEventTimes(event: any){
+                event.start = this.toIonISOString(new Date(event.start))
+		event.end = this.toIonISOString(new Date(event.end))
+        }
         public adaptPtmTimes(ptm: any) {
 		ptm.start = this.toIonISOString(new Date(ptm.start))
 		ptm.end = this.toIonISOString(new Date(ptm.end))
@@ -181,6 +185,12 @@ export class UtilsService {
                   groups[date][hour].push(ev);
                 }     
                 return groups;
+        }
+
+        public formatTimeHHMM(d: any): string {
+                const dateObj = d instanceof Date ? d : new Date(d);
+                if (isNaN(dateObj.getTime())) return "";
+                return `${dateObj.getHours}:${dateObj.getMinutes}`
         }
 }
 

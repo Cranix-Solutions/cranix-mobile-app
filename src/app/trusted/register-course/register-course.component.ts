@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { Course, User } from 'src/app/shared/models/data-model';
+import { Course, CrxCalendar, User } from 'src/app/shared/models/data-model';
 
 @Component({
+  standalone: false,
   selector: 'app-register-course',
   templateUrl: './register-course.component.html',
   styleUrls: ['./register-course.component.scss'],
@@ -22,12 +23,16 @@ export class RegisterCourseComponent  implements OnInit {
   constructor(
       private route: ActivatedRoute,
       private authService: AuthenticationService,
-      private courseService: CourseService,
-      private utilsService: UtilsService
+      public courseService: CourseService,
+      public utilsService: UtilsService
     ) {
     }
   
     ngOnInit() {
+      this.loadData()
+    }
+
+    loadData() {
       this.user = this.authService.session.user;
       this.id = this.route.snapshot.params['id'];
       console.log(this.id)
@@ -47,5 +52,4 @@ export class RegisterCourseComponent  implements OnInit {
         }
       )
     }
-
 }

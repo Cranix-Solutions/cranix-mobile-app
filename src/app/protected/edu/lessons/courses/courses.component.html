@@ -6,7 +6,7 @@
   <cranix-list objectType="course" [context]="context"></cranix-list>
   }
 </ion-content>
-<ion-modal #addEditModal [isOpen]="isModalOpen">
+<ion-modal #addEditModal [isOpen]="isModalOpen" class="big-modal">
   <ng-template>
     <ion-toolbar color="primary">
       <ion-title>
@@ -16,6 +16,17 @@
         <ion-button fill="clear" size="small" (click)="addEditCourse(addEditModal)">
           <ion-icon color="success" name="checkmark"></ion-icon>
         </ion-button>
+        @if(isUpcomming && selectedCourse.id) {
+        <ion-button (click)="courseService.sendMails(selectedCourse.id)"
+          matTooltip="{{'Send mail to the invited groups and users'|translate}}">
+          <ion-icon slot="icon-only" name="mail-outline"></ion-icon>
+        </ion-button>
+        }
+        @if(selectedCourse.id){
+        <ion-button fill="clear" size="small" (click)="deleteSelectedCourse(addEditModal)">
+          <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+        </ion-button>
+        }
         <ion-button fill="clear" size="small" (click)="closeAddEditModal(addEditModal)">
           <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
         </ion-button>
@@ -26,10 +37,6 @@
         <ion-item>
           <ion-input [(ngModel)]="selectedCourse.title" name="title" label="{{'Title'|translate}}*"
             labelPlacement="fixed" required part="custom-label"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-toggle labelPlacement="start" [(ngModel)]="selectedCourse.released" name="released"
-            [enableOnOffLabels]="true">{{'Released'|translate}}</ion-toggle>
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}*</ion-label>
@@ -81,22 +88,27 @@
       </ion-list>
       <ion-grid>
         <ion-row>
+          <ion-col>{{'Datum'|translate}} </ion-col>
           <ion-col>{{'Start'|translate}} </ion-col>
           <ion-col>{{'End'|translate}} </ion-col>
           <ion-col>{{'Room'|translate}} </ion-col>
           <ion-col>{{'Owner'|translate}} </ion-col>
           <ion-col> </ion-col>
         </ion-row>
-        @for(appointment of selectedCourse.appointments; track $index;)
+        @for(appointment of selectedCourse.appointments; let index = $index; track $index;)
         {
         <ion-row>
-          <ion-col>{{appointment.start}}</ion-col>
-          <ion-col>{{appointment.end}}</ion-col>
+          <ion-col>{{appointment.start|date:'yyyy-MM-dd'}}</ion-col>
+          <ion-col>{{appointment.start|date:'HH:mm'}}</ion-col>
+          <ion-col>{{appointment.end|date:'HH:mm'}}</ion-col>
           <ion-col>@if(appointment.room){{{appointment.room.name}}}</ion-col>
           <ion-col>@if(appointment.creatorId){{{appointment.creatorId|idToName:'user'}}}</ion-col>
           <ion-col>
             <ion-button fill="clear" (click)="openAddEditAppointment(appointment)">
               <ion-icon name="build-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="deleteAppointment(index)">
+              <ion-icon color="danger" name="trash"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
@@ -127,8 +139,8 @@
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-input [(ngModel)]="selectedAppointment.title" name="title"
-            label="{{'Description'|translate}}*" labelPlacement="fixed" required part="custom-label"></ion-input>
+          <ion-input [(ngModel)]="selectedAppointment.title" name="title" label="{{'Description'|translate}}*"
+            labelPlacement="fixed" required part="custom-label"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}*</ion-label>
@@ -143,7 +155,7 @@
         <ion-item>
           <ion-label>{{'Room' | translate}}</ion-label>
           <cranix-search objectType="room" [(ngModel)]="selectedAppointment.room" name="room"
-            [multiple]="true"></cranix-search>
+            [multiple]="false"></cranix-search>
         </ion-item>
         <ion-item>
           <ion-label>{{'Owner' | translate}}</ion-label>
