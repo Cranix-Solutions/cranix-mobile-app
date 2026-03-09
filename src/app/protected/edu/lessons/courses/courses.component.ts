@@ -5,7 +5,12 @@ import { CourseService } from 'src/app/services/course.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Course, CrxCalendar, Room } from 'src/app/shared/models/data-model';
-
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventChangeArg, EventClickArg } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridWeek from '@fullcalendar/timegrid';
+import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 @Component({
   standalone: false,
   selector: 'app-courses',
@@ -14,7 +19,9 @@ import { Course, CrxCalendar, Room } from 'src/app/shared/models/data-model';
 })
 export class CoursesComponent implements OnInit {
 
+  calendarOptions: CalendarOptions;
   context: any;
+  events: any[];
   isAddAppointmentOpen: boolean = false;
   isModalOpen: boolean = false
   isUpcomming: boolean = false
@@ -27,6 +34,7 @@ export class CoursesComponent implements OnInit {
   constructor(
     private alertController: AlertController,
     public authService: AuthenticationService,
+    private calendarS: CrxCalendarService,
     public courseService: CourseService,
     public objectService: GenericObjectService,
     public utilService: UtilsService
@@ -34,7 +42,8 @@ export class CoursesComponent implements OnInit {
     this.context = { componentParent: this }
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   public alertButtons = [
     {
@@ -63,22 +72,62 @@ export class CoursesComponent implements OnInit {
     await alert.present();
   }
   //Manage course
+
+  createCalendarOptions(){
+    this.calendarOptions = {
+      locale: 'de',
+      height: "100%",
+      slotMinTime: "07:00",
+      slotMaxTime: "20:00",
+      validRange: {
+        start: this.selectedCourse.startDate,
+        end: this.utilService.nextDay(this.selectedCourse.endDate)
+      },
+      plugins: [
+        interactionPlugin,
+        timeGridWeek
+      ],
+      customButtons: {
+        addEvent: {
+          text: "+",
+          click: this.handleDateSelect.bind(this)
+        }
+      },
+      headerToolbar: {
+        left: '',
+        center: 'title',
+        right: 'addEvent'
+      },
+      firstDay: 1,
+      initialView: 'timeGridWeek',
+      select: this.handleDateSelect.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      eventChange: this.handleEventChange.bind(this),
+      editable: this.authService.isOneOfAllowed(['course.manage', 'course.use']),
+      selectable: true,
+      weekNumbers: true
+    };
+  }
   redirectToEdit(course: Course) {
+    let now = new Date();
     if (!course) {
       this.selectedCourse = new Course()
+      this.selectedCourse.startDate = this.utilService.formatDateKey(now);
+      this.selectedCourse.endDate = this.utilService.formatDateKey(now);
       this.title = "Add Course"
     } else {
       this.selectedCourse = course
       this.title = "Edit Course"
-      let now = new Date().valueOf();
-      let start = new Date(this.selectedCourse.start).valueOf()
-      this.isUpcomming = (now < start)
+      let start = new Date(this.selectedCourse.startDate).valueOf()
+      this.isUpcomming = (now.valueOf() < start)
     }
-    this.utilService.adaptPtmTimes(this.selectedCourse)
+    this.createCalendarOptions();
+    this.events = this.selectedCourse.appointments;
     console.log(this.selectedCourse)
+    console.log(this.calendarOptions)
     this.isModalOpen = true
   }
-  
+
   closeAddEditModal(modal: any) {
     if (this.isModified) {
       this.presentAlert()
@@ -97,14 +146,14 @@ export class CoursesComponent implements OnInit {
     this.isModified = false;
     if (this.selectedCourse.id) {
       this.courseService.patch(this.selectedCourse).subscribe(
-        (val) => { 
+        (val) => {
           this.objectService.responseMessage(val)
           this.objectService.getAllObject('course');
         }
       )
     } else {
       this.courseService.add(this.selectedCourse).subscribe(
-        (val) => { 
+        (val) => {
           this.objectService.responseMessage(val)
           this.objectService.getAllObject('course');
         }
@@ -113,15 +162,51 @@ export class CoursesComponent implements OnInit {
     this.closeAddEditModal(modal)
   }
 
-  deleteSelectedCourse(modal){
-    this.objectService.deleteObjectDialog(this.selectedCourse,'course', '')
+  deleteSelectedCourse(modal) {
+    this.objectService.deleteObjectDialog(this.selectedCourse, 'course', '')
     modal.dismiss()
     this.isModalOpen = false
   }
   startTimeSet() {
 
   }
+
   //Manage appointments
+  handleDateSelect(arg: DateSelectArg) {
+    let start = new Date()
+    let end = new Date()
+    if (arg != null && arg.start != null) {
+      if (arg.start.getTime() < start.getTime()) {
+        this.objectService.errorMessage("You can not create event in the past.")
+        return
+      }
+      start = arg.start
+      end = arg.end
+    }
+    /*this.addEditEventTitle = "Add new event"
+    this.selectedEvent = new CrxCalendar();
+    this.selectedEvent.start = start
+    this.selectedEvent.end = end
+    this.adaptEventTimes()
+    this.setOpen(true)*/
+    console.log(arg)
+  }
+  handleEventClick(arg: EventClickArg) {
+    console.log(arg.event.id)
+    //TODO OPEN MODIFY APPOINTMENT
+  }
+  handleEventChange(arg: EventChangeArg) {
+    console.log(arg.event._instance?.range)
+    this.calendarS.getById(arg.event.id).subscribe((val) => {
+      val.start = arg.event._instance?.range.start
+      val.end = arg.event._instance?.range.end
+      this.calendarS.modify(val).subscribe((val2) => {
+        this.objectService.getAllObject('course');
+        this.objectService.responseMessage(val2)
+      })
+    })
+  }
+
   openAddEditAppointment(appointment: CrxCalendar) {
     if (appointment) {
       this.newAppointment = false
@@ -144,9 +229,9 @@ export class CoursesComponent implements OnInit {
     this.isModified = true;
     this.closeAddEditAppontment(modal)
   }
-  deleteAppointment(index: number){
+  deleteAppointment(index: number) {
     console.log(index)
-    this.selectedCourse.appointments.splice(index,1)
+    this.selectedCourse.appointments.splice(index, 1)
     this.isModified = true;
   }
 

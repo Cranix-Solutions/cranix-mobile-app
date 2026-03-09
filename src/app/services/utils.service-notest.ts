@@ -182,4 +182,10 @@ export class UtilsService {
                 if (isNaN(dateObj.getTime())) return "";
                 return `${dateObj.getHours}:${dateObj.getMinutes}`
         }
+
+        public nextDay(end: string): string {
+                const [y, m, d] = end.split("-").map(Number);
+                const date = new Date(Date.UTC(y, m - 1, d + 1));
+                return date.toISOString().slice(0, 10);
+        }
 }

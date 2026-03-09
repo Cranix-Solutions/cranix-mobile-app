@@ -712,8 +712,8 @@ export class Course {
 	modified: Date | string = new Date()
 	countOfParticipants: number = 5;
 	countOfRegistrations: number = 1;
-	start: Date | string = new Date();
-	end: Date | string = new Date();
+	startDate: string;
+	endDate: string;
 	startRegistration: Date | string = new Date()
 	endRegistration: Date | string = new Date()
 	groups: Group[] = []

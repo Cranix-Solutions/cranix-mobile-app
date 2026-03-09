@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { CanActivateViaAcls } from 'src/app/services/auth-guard.service';
 import { ChallengeCanDeactivate } from 'src/app/services/challenges.service';
@@ -67,6 +68,7 @@ const routes: Routes = [
     CommonModule,
     DragDropModule,
     FormsModule,
+    FullCalendarModule,
     IonicModule,
     QuillModule.forRoot(),
     RouterModule.forChild(routes),

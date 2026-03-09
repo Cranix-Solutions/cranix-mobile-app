@@ -1,8 +1,7 @@
 @if(selectedCourse){
 <ion-header>
     <ion-toolbar class="page-toolbar">
-        <ion-title>{{'Event Registrations'|translate}} {{selectedCourse.start|date:'yyyy-MM-dd'}}
-            {{selectedCourse.start|date:'HH:mm'}} - {{selectedCourse.end|date:'HH:mm'}}
+        <ion-title>{{'Event Registrations'|translate}} {{selectedCourse.startDate}} - {{selectedCourse.endDate}}
             {{'user'|translate}}: {{user.surName}}, {{user.givenName}}
         </ion-title>
     </ion-toolbar>

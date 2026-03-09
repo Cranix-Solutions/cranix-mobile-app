@@ -40,13 +40,13 @@
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}*</ion-label>
-          <input style="margin-left: auto;" [(ngModel)]="selectedCourse.start" name="startTime" type="datetime-local"
-            required (change)="startTimeSet()" />
+          <input style="margin-left: auto;" [(ngModel)]="selectedCourse.startDate" name="startDate" type="date"
+            required (change)="createCalendarOptions()"/>
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'Until'|translate}}*</ion-label>
-          <input style="margin-left: auto;" [(ngModel)]="selectedCourse.end" name="endTime" type="datetime-local"
-            required />
+          <input style="margin-left: auto;" [(ngModel)]="selectedCourse.endDate" name="endDate" type="date"
+          [min]="selectedCourse.startDate" required (change)="createCalendarOptions()"/>
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'Start Registration'|translate}}*</ion-label>
@@ -79,14 +79,17 @@
           <cranix-search objectType="user" [(ngModel)]="selectedCourse.users" name="user"
             [multiple]="true"></cranix-search>
         </ion-item>
-        <ion-item style="display: flex; align-items: center; justify-content: space-between;">
+        <!-- ion-item style="display: flex; align-items: center; justify-content: space-between;">
           <ion-label>{{'Add new appointment' | translate}}</ion-label>
           <ion-button (click)="openAddEditAppointment(null)">
             <ion-icon slot="icon-only" color="success" name="add"></ion-icon>
           </ion-button>
-        </ion-item>
+        </ion-item -->
       </ion-list>
-      <ion-grid>
+      @if(selectedCourse.startDate && selectedCourse.endDate){
+        <full-calendar #calendar [options]="calendarOptions" [events]="events"></full-calendar>
+      }
+      <!-- ion-grid>
         <ion-row>
           <ion-col size="2">{{'Datum'|translate}} </ion-col>
           <ion-col size="2">{{'Start'|translate}} </ion-col>
@@ -115,7 +118,7 @@
           </ion-col>
         </ion-row>
         }
-      </ion-grid>
+      </ion-grid-->
     </ion-content>
   </ng-template>
 </ion-modal>
