@@ -15,7 +15,6 @@ import { LanguageService } from 'src/app/services/language.service';
 import { CrxCalendar, Group, RecRule, Room } from 'src/app/shared/models/data-model';
 import { UsersService } from 'src/app/services/users.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
-import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   standalone: false,
@@ -112,7 +111,7 @@ export class CalendarComponent implements OnInit {
     private gestureCtrl: GestureController,
     private lanaguageS: LanguageService,
     private userS: UsersService,
-    private utilsService: UtilsService,
+    private calendarService: CrxCalendarService,
   ) {
     console.log("CalendarComponent constructor called")
     if (this.authService.isAllowed('calendar.manage')) {
@@ -260,11 +259,11 @@ export class CalendarComponent implements OnInit {
   }
   adaptEventTimes() {
     if (this.selectedEvent.allDay) {
-      this.selectedEvent.start = this.utilsService.toIonDate(new Date(this.selectedEvent.start))
-      this.selectedEvent.end = this.utilsService.toIonDate(new Date(this.selectedEvent.end))
+      this.selectedEvent.start = this.calendarService.toIonDate(new Date(this.selectedEvent.start))
+      this.selectedEvent.end = this.calendarService.toIonDate(new Date(this.selectedEvent.end))
     } else {
-      this.selectedEvent.start = this.utilsService.toIonISOString(new Date(this.selectedEvent.start))
-      this.selectedEvent.end = this.utilsService.toIonISOString(new Date(this.selectedEvent.end))
+      this.selectedEvent.start = this.calendarService.toIonISOString(new Date(this.selectedEvent.start))
+      this.selectedEvent.end = this.calendarService.toIonISOString(new Date(this.selectedEvent.end))
     }
   }
   handleDateSelect(arg: DateSelectArg) {
@@ -301,7 +300,7 @@ export class CalendarComponent implements OnInit {
         this.selectedEvent.start = arg.event.startStr
         this.selectedEvent.end = arg.event.endStr
         let rule = RRule.fromString(val.rrule)
-        this.recurringUntil = this.utilsService.toIonDate(rule.options.until)
+        this.recurringUntil = this.calendarService.toIonDate(rule.options.until)
         console.log(this.selectedEvent)
         console.log(rule.options)
         this.rRule = rule.options

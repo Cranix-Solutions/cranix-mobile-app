@@ -162,6 +162,4 @@ export class ParentsService {
 		this.url = this.hostname + "/parents/requests/" + id;
 		return this.http.delete<ServerResponse>(this.url, { headers: this.authService.headers });
 	}
-
-	
 }

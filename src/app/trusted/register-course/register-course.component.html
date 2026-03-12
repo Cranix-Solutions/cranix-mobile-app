@@ -4,45 +4,20 @@
         <ion-title>{{'Event Registrations'|translate}} {{selectedCourse.startDate}} - {{selectedCourse.endDate}}
             {{'user'|translate}}: {{user.surName}}, {{user.givenName}}
         </ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" size="small" (click)="calendarRegistration()">
+                <ion-icon name="calendar"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="printRegistration()">
+                <ion-icon name="printer"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="mailRegistration()">
+                <ion-icon name="mail"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-grid>
-        <ion-row>
-            <ion-col></ion-col>
-            @for(date of dates; track date;){
-            <ion-col>
-                {{date}}
-            </ion-col>
-            }
-        </ion-row>
-        @for(hour of hours; track hour;){
-        <ion-row>
-            <ion-col>
-                {{hour}}:00
-            </ion-col>
-            @for(date of dates; track date;){
-            <ion-col>
-                @if(appointments[date] && appointments[date][hour]) {
-                {{ utilsService.formatTimeHHMM(appointments[date][hour]['start']) }} - {{
-                utilsService.formatTimeHHMM(appointments[date][hour]['end']) }}<br>
-                {{'Room'|translate}}: {{ appointments[date][hour]['room']['name'] }}<br>
-                @if(appointments[date][hour]['users'].includes(user)){
-                <ion-button (click)="courseService.withdrawing(appointments[date][hour]['id'])">
-                    {{'Withdrawing'|translate}}
-                    <ion-icon name="log-out-outline"></ion-icon>
-                </ion-button>
-                }@else{
-                <ion-button (click)="courseService.register(appointments[date][hour]['id'])">
-                    {{'register'|translate}}
-                    <ion-icon name="log-in-outline"></ion-icon>
-                </ion-button>
-                }
-                }
-            </ion-col>
-            }
-        </ion-row>
-        }
-    </ion-grid>
+    <full-calendar #calendar [options]="calendarOptions" [events]="events"></full-calendar>
 </ion-content>
 }

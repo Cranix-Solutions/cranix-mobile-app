@@ -5,10 +5,8 @@ import { CourseService } from 'src/app/services/course.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Course, CrxCalendar, Room } from 'src/app/shared/models/data-model';
-import { FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventChangeArg, EventClickArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridWeek from '@fullcalendar/timegrid';
 import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 @Component({
@@ -34,7 +32,7 @@ export class CoursesComponent implements OnInit {
   constructor(
     private alertController: AlertController,
     public authService: AuthenticationService,
-    private calendarS: CrxCalendarService,
+    private calendarService: CrxCalendarService,
     public courseService: CourseService,
     public objectService: GenericObjectService,
     public utilService: UtilsService
@@ -45,6 +43,12 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
   }
 
+  ////////////////////////////////////////////////////
+  // Functions to manage course
+  ////////////////////////////////////////////////////
+  /**
+   * Function to alert by closing edit course
+   */
   public alertButtons = [
     {
       text: 'Cancel',
@@ -71,18 +75,23 @@ export class CoursesComponent implements OnInit {
 
     await alert.present();
   }
-  //Manage course
 
+  /**
+   * Create calendar options when opening or modifying a course.
+   * This is necessary to adapt the valide range
+   */
   createCalendarOptions(){
     this.calendarOptions = {
+      hiddenDays: this.calendarService.notInRange(this.selectedCourse.startDate, this.selectedCourse.endDate),
+      initialDate: this.selectedCourse.startDate,
       locale: 'de',
       height: "100%",
       slotMinTime: "07:00",
       slotMaxTime: "20:00",
-      validRange: {
+      /*validRange: {
         start: this.selectedCourse.startDate,
-        end: this.utilService.nextDay(this.selectedCourse.endDate)
-      },
+        end: this.calendarService.nextDay(this.selectedCourse.endDate)
+      },*/
       plugins: [
         interactionPlugin,
         timeGridWeek
@@ -108,12 +117,34 @@ export class CoursesComponent implements OnInit {
       weekNumbers: true
     };
   }
+
+  /**
+   * Make appointments of selected course clored based on the count of participants
+   */
+  adaptEvents(){
+    let clonedEvents = structuredClone(this.selectedCourse.appointments)
+    for(let app of clonedEvents){
+      if(app.userIds.length == 0){
+        app['backgroundColor'] = 'green'
+      }else if(app.userIds.length < this.selectedCourse.countOfParticipants ){
+        app['backgroundColor'] = 'blue'
+        app['title'] = app['title'] + " \n" + app.userIds.length + ' participants'
+      }else{
+        app['backgroundColor'] = 'red'
+      }
+    }
+    this.events = clonedEvents
+  }
+  /**
+   * Open a cours to edit
+   * @param course
+   */
   redirectToEdit(course: Course) {
     let now = new Date();
     if (!course) {
       this.selectedCourse = new Course()
-      this.selectedCourse.startDate = this.utilService.formatDateKey(now);
-      this.selectedCourse.endDate = this.utilService.formatDateKey(now);
+      this.selectedCourse.startDate = this.calendarService.formatDateKey(now);
+      this.selectedCourse.endDate = this.calendarService.formatDateKey(now);
       this.title = "Add Course"
     } else {
       this.selectedCourse = course
@@ -122,12 +153,17 @@ export class CoursesComponent implements OnInit {
       this.isUpcomming = (now.valueOf() < start)
     }
     this.createCalendarOptions();
-    this.events = this.selectedCourse.appointments;
+    this.adaptEvents()
     console.log(this.selectedCourse)
     console.log(this.calendarOptions)
     this.isModalOpen = true
   }
 
+  /**
+   * Close the edit course modal.
+   * Befor closing check if there a some unsaved changes.
+   * @param modal 
+   */
   closeAddEditModal(modal: any) {
     if (this.isModified) {
       this.presentAlert()
@@ -137,14 +173,19 @@ export class CoursesComponent implements OnInit {
       this.objectService.getAllObject('course');
     }
   }
-  closeAddEditAppontment(modal: any) {
-    modal.dismiss();
-    this.isAddAppointmentOpen = false;
-  }
+
+  /**
+   * Apply all changes.
+   */
   addEditCourse(modal: any) {
     console.log(this.selectedCourse)
     this.isModified = false;
     if (this.selectedCourse.id) {
+      for(let app of this.selectedCourse.appointments){
+        if(app.id < 1){
+          app.id = null
+        }
+      }
       this.courseService.patch(this.selectedCourse).subscribe(
         (val) => {
           this.objectService.responseMessage(val)
@@ -162,6 +203,10 @@ export class CoursesComponent implements OnInit {
     this.closeAddEditModal(modal)
   }
 
+  /**
+   * Delete a course inclusive all appointments
+   * @param modal
+   */
   deleteSelectedCourse(modal) {
     this.objectService.deleteObjectDialog(this.selectedCourse, 'course', '')
     modal.dismiss()
@@ -171,7 +216,63 @@ export class CoursesComponent implements OnInit {
 
   }
 
-  //Manage appointments
+  //////////////////////////////////////////////
+  // Functions to manage appointments
+  //////////////////////////////////////////////
+  /***
+   * Open modal to edit an existing or add a new appointment
+   */
+  openAddEditAppointment() {
+    this.calendarService.adaptEventTimes(this.selectedAppointment)
+    if (this.selectedAppointment.id) {
+      this.newAppointment = false
+    } else {
+      this.newAppointment = true
+    }
+    console.log(this.events)
+    this.events = []
+    this.isAddAppointmentOpen = true
+  }
+
+  /**
+   * Close the modal for add edit appointments.
+   * @param modal 
+   */
+  closeAddEditAppontment(modal: any) {
+    modal.dismiss();
+    this.isAddAppointmentOpen = false;
+    this.adaptEvents()
+  }
+  
+  /**
+   * Apply changes on the selected appointment. This changes will not be saved immediately in the database.
+   * @param modal 
+   */
+  addEditAppointment(modal) {
+    if (this.selectedAppointment.creator) {
+      this.selectedAppointment.creatorId = this.selectedAppointment.creator.id;
+    }
+    if (this.newAppointment) {
+      this.selectedCourse.appointments.push(this.selectedAppointment);
+    }
+    this.adaptEvents()
+    console.log(this.events)
+    this.isModified = true;
+    this.closeAddEditAppontment(modal)
+  }
+
+  deleteAppointment(index: number) {
+    console.log(index)
+    this.selectedCourse.appointments.splice(index, 1)
+    this.adaptEvents()
+    this.isModified = true;
+  }
+
+  /**
+   * Handle the event of full calendar if the user hase selected a time range
+   * @param arg The selected date range
+   * @returns 
+   */
   handleDateSelect(arg: DateSelectArg) {
     let start = new Date()
     let end = new Date()
@@ -183,56 +284,42 @@ export class CoursesComponent implements OnInit {
       start = arg.start
       end = arg.end
     }
-    /*this.addEditEventTitle = "Add new event"
-    this.selectedEvent = new CrxCalendar();
-    this.selectedEvent.start = start
-    this.selectedEvent.end = end
-    this.adaptEventTimes()
-    this.setOpen(true)*/
-    console.log(arg)
+    this.selectedAppointment = new CrxCalendar();
+    this.selectedAppointment.start = start
+    this.selectedAppointment.end = end
+    this.openAddEditAppointment()
   }
+
+  /**
+   * Handle the event of full calendar if the user has clicked on an existing event. 
+   * @param arg 
+   */
   handleEventClick(arg: EventClickArg) {
-    console.log(arg.event.id)
-    //TODO OPEN MODIFY APPOINTMENT
+    console.log(arg.event)
+    let uuid = arg.event._def.extendedProps.uuid
+    for( let app of this.selectedCourse.appointments){
+      console.log(app)
+      if(app.uuid == uuid){
+        this.selectedAppointment = app
+        break
+      }
+    }
+    this.openAddEditAppointment()
   }
+
+  /**
+   * Handle the event of full-calendar when the user has moved or resized an existing event.
+   * @param arg The time range change of the existing event
+   */
   handleEventChange(arg: EventChangeArg) {
-    console.log(arg.event._instance?.range)
-    this.calendarS.getById(arg.event.id).subscribe((val) => {
-      val.start = arg.event._instance?.range.start
-      val.end = arg.event._instance?.range.end
-      this.calendarS.modify(val).subscribe((val2) => {
+    console.log(arg.event)
+    this.calendarService.getById(arg.event.id).subscribe((val) => {
+      val.start = this.calendarService.oneHourEarlier(arg.event._instance?.range.start)
+      val.end = this.calendarService.oneHourEarlier(arg.event._instance?.range.end)
+      this.calendarService.modify(val).subscribe((val2) => {
         this.objectService.getAllObject('course');
         this.objectService.responseMessage(val2)
       })
     })
   }
-
-  openAddEditAppointment(appointment: CrxCalendar) {
-    if (appointment) {
-      this.newAppointment = false
-
-      this.utilService.adaptEventTimes(appointment);
-      this.selectedAppointment = appointment
-    } else {
-      this.newAppointment = true
-      this.selectedAppointment = new CrxCalendar();
-    }
-    this.isAddAppointmentOpen = true
-  }
-  addEditAppointment(modal) {
-    if (this.selectedAppointment.creator) {
-      this.selectedAppointment.creatorId = this.selectedAppointment.creator.id;
-    }
-    if (this.newAppointment) {
-      this.selectedCourse.appointments.push(this.selectedAppointment);
-    }
-    this.isModified = true;
-    this.closeAddEditAppontment(modal)
-  }
-  deleteAppointment(index: number) {
-    console.log(index)
-    this.selectedCourse.appointments.splice(index, 1)
-    this.isModified = true;
-  }
-
 }

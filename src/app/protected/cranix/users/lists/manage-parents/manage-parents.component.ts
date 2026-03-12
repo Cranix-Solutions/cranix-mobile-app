@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ParentsService } from 'src/app/services/parents.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 import { Group, PTMTeacherInRoom, ParentTeacherMeeting, User } from 'src/app/shared/models/data-model';
 
 @Component({
@@ -51,7 +51,7 @@ export class ManageParentsComponent {
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
     private languageS: LanguageService,
-    private utilsService: UtilsService,
+    private calendarService: CrxCalendarService,
     private parentsService: ParentsService
   ) {
     this.context = { componentParent: this };
@@ -119,13 +119,13 @@ export class ManageParentsComponent {
     if (!this.selectedPTM.endRegistration) {
       this.selectedPTM.endRegistration = new Date(start.getTime() - (3600000 * 24 * 2))
     }
-    this.selectedPTM = this.utilsService.adaptPtmTimes(this.selectedPTM)
+    this.selectedPTM = this.calendarService.adaptPtmTimes(this.selectedPTM)
     console.log(this.selectedPTM)
   }
 
   selectPtm(ptm: ParentTeacherMeeting) {
     if (ptm) {
-      this.selectedPTM = this.utilsService.adaptPtmTimes(ptm)
+      this.selectedPTM = this.calendarService.adaptPtmTimes(ptm)
       let now = new Date().valueOf();
       let start = new Date(this.selectedPTM.start).valueOf()
       this.isUpcomming = (now < start)
@@ -167,7 +167,7 @@ export class ManageParentsComponent {
     if (!this.checkPtmTimes(this.selectedPTM)) {
       return
     }
-    this.utilsService.convertPtmTimes(this.selectedPTM)
+    this.calendarService.convertPtmTimes(this.selectedPTM)
     console.log(this.selectedPTM)
     this.objectService.requestSent();
     if (this.selectedPTM.id > 0) {
@@ -268,7 +268,7 @@ export class ManageParentsComponent {
         }
       })
     } else {
-      this.selectedParent.birthDay = this.utilsService.toIonDate(new Date())
+      this.selectedParent.birthDay = this.calendarService.toIonDate(new Date())
       this.parentsService.addParent(this.selectedParent).subscribe((val) => {
         this.objectService.responseMessage(val)
         if (val.code == "OK") {

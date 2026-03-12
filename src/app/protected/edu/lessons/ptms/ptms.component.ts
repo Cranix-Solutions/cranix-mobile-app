@@ -6,7 +6,7 @@ import { LanguageService } from 'src/app/services/language.service';
 import { NoticesService } from 'src/app/services/notices.service';
 import { ParentsService } from 'src/app/services/parents.service';
 import { SystemService } from 'src/app/services/system.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 import { CrxNotice, ParentTeacherMeeting, PTMEvent, PTMTeacherInRoom, Room, SubjectArea, User } from 'src/app/shared/models/data-model';
 import { WindowRef } from 'src/app/shared/models/ohters';
 
@@ -43,7 +43,7 @@ export class PtmsComponent implements OnInit {
     private objectService: GenericObjectService,
     private noticeService: NoticesService,
     public ptmService: ParentsService,
-    private utilsService: UtilsService,
+    private calendarService: CrxCalendarService,
     private systemService: SystemService
   ) {
     this.systemService.getInstituteName().subscribe((val) => { this.instituteName = val })
@@ -93,7 +93,7 @@ export class PtmsComponent implements OnInit {
     })
   }
   selectPTM(ptm) {
-    this.selectedPTM = this.utilsService.adaptPtmTimes(ptm);
+    this.selectedPTM = this.calendarService.adaptPtmTimes(ptm);
     this.ptmService.getFreeRooms(this.selectedPTM.id).subscribe((val2) => {
       this.freeRooms = val2
     })
@@ -177,9 +177,9 @@ export class PtmsComponent implements OnInit {
     event.stopPropagation();
     let start = new Date(this.selectedPTM.start)
     let end = new Date(this.selectedPTM.end)
-    let date = this.utilsService.toIonDate(start)
-    let startTime = this.utilsService.toIonTime(start)
-    let endTime = this.utilsService.toIonTime(end)
+    let date = this.calendarService.toIonDate(start)
+    let startTime = this.calendarService.toIonTime(start)
+    let endTime = this.calendarService.toIonTime(end)
     let html = '<h2>' + this.languageS.trans('PTM') + ' ' + date + ': ' + startTime + ' - ' + endTime + '</h2>\n'
     html += '<h2>' + this.languageS.trans('Teacher') + ': ' + this.myPTMTeacherInRoom.teacher.surName + ', ' + this.myPTMTeacherInRoom.teacher.givenName + '</h2>\n'
     html += '<h3>' + this.languageS.trans('room') + ' ' + this.myPTMTeacherInRoom.room.name + '</h3>\n'
@@ -191,7 +191,7 @@ export class PtmsComponent implements OnInit {
     html += '</th></tr>\n'
     for (let event of this.myPTMTeacherInRoom.events.sort(this.compare)) {
       let start = new Date(event.start)
-      let time = this.utilsService.toIonTime(start)
+      let time = this.calendarService.toIonTime(start)
       let user = ""
       if (event.student) {
         user = event.student.surName + ", " + event.student.givenName

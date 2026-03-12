@@ -6,7 +6,6 @@ import { isDevMode } from '@angular/core';
 export class UtilsService {
 
         savedUrl = ""
-        double = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
         public okBrowser: boolean = true;
         public actMdList;
         constructor() {
@@ -79,38 +78,7 @@ export class UtilsService {
         }
 
 
-        public getDouble(num: number) {
-                if (this.double[num]) return this.double[num]
-                return num
-        }
-
-        public toIonISOString(dt: Date | undefined) {
-                if (dt) {
-                        return dt.getFullYear() + "-" +
-                                this.getDouble(dt.getMonth() + 1) + "-" +
-                                this.getDouble(dt.getDate()) + "T" +
-                                this.getDouble(dt.getHours()) + ":" +
-                                this.getDouble(dt.getMinutes())
-                }
-                return ""
-        }
-
-        public toIonDate(dt: Date | undefined) {
-                if (dt) {
-                        return dt.getFullYear() + "-" +
-                                this.getDouble(dt.getMonth() + 1) + "-" +
-                                this.getDouble(dt.getDate())
-                }
-                return ""
-        }
-
-        public toIonTime(dt: Date | undefined) {
-                if (dt) {
-                        return this.getDouble(dt.getHours()) + ":" +
-                                this.getDouble(dt.getMinutes())
-                }
-                return ""
-        }
+        
         /**
          * set cookie
          * @param {string} name
@@ -142,61 +110,5 @@ export class UtilsService {
                 }
         }
 
-        public adaptEventTimes(event: any){
-                event.start = this.toIonISOString(new Date(event.start))
-		event.end = this.toIonISOString(new Date(event.end))
-        }
-        public adaptPtmTimes(ptm: any) {
-		ptm.start = this.toIonISOString(new Date(ptm.start))
-		ptm.end = this.toIonISOString(new Date(ptm.end))
-		ptm.startRegistration = this.toIonISOString(new Date(ptm.startRegistration))
-		ptm.endRegistration = this.toIonISOString(new Date(ptm.endRegistration))
-		return ptm
-	}
-
-	public convertPtmTimes(ptm: any) {
-		ptm.start = new Date(ptm.start).valueOf().toString()
-		ptm.end = new Date(ptm.end).valueOf().toString()
-		ptm.startRegistration = new Date(ptm.startRegistration).valueOf().toString()
-		ptm.endRegistration = new Date(ptm.endRegistration).valueOf().toString()
-	}
-
-        public formatDateKey(d: Date): string {
-                const yyyy = d.getFullYear();
-                const mm = String(d.getMonth() + 1).padStart(2, '0');
-                const dd = String(d.getDate()).padStart(2, '0');
-                return `${yyyy}-${mm}-${dd}`;
-        }
-
-        public groupEventsByDate(events: any[]): any {
-                const groups = {};
-                for (const ev of events) {
-                  const startVal = ev.start;
-                  const dateObj = startVal instanceof Date ? startVal : new Date(startVal);
-                  if (isNaN(dateObj.getTime())) continue; // ungültiges Datum überspringen
-                  const date = this.formatDateKey(dateObj);
-                  const hour = dateObj.getHours()
-                  if (!groups[date]) {
-                    groups[date] = {};
-                  }
-                  if (!groups[date][hour]) {
-                        groups[date][hour] = []
-                  }
-                  groups[date][hour].push(ev);
-                }     
-                return groups;
-        }
-
-        public formatTimeHHMM(d: any): string {
-                const dateObj = d instanceof Date ? d : new Date(d);
-                if (isNaN(dateObj.getTime())) return "";
-                return `${dateObj.getHours}:${dateObj.getMinutes}`
-        }
-
-        public nextDay(end: string): string {
-                const [y, m, d] = end.split("-").map(Number);
-                const date = new Date(Date.UTC(y, m - 1, d + 1));
-                return date.toISOString().slice(0, 10);
-        }
 }
 

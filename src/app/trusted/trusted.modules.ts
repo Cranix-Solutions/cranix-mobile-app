@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule,Routes } from '@angular/router';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
 import { RegisterCourseComponent } from './register-course/register-course.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CranixSharedModule,
+    FullCalendarModule,
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule,RegisterPTMComponent, RegisterCourseComponent],

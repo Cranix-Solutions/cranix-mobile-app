@@ -11,7 +11,7 @@ import { GenericObjectService } from './generic-object.service';
   providedIn: 'root'
 })
 export class CourseService {
-
+  
   url: string;
   modified: boolean = false;
 
@@ -39,19 +39,20 @@ export class CourseService {
     const url = `${this.url}/${id}/free`
     return this.http.get<Course>(url, { headers: this.authService.headers } )
   }
-  
+
+  getLastChange(id: number) {
+    const url = `${this.url}/${id}/lastChange`
+    return this.http.post<Date>(url,  { headers: this.authService.headers })
+  }
+
   register(id: number) {
     const url = `${this.url}/appointments/${id}`
-    this.http.put<ServerResponse>(url, { headers: this.authService.headers } ).subscribe(
-      (val) => this.objectService.responseMessage(val)
-    )
+    return this.http.put<ServerResponse>(url, { headers: this.authService.headers } )
   }
 
   withdrawing(id: number) {
     const url = `${this.url}/appointments/${id}`
-    this.http.delete<ServerResponse>(url, { headers: this.authService.headers } ).subscribe(
-      (val) => this.objectService.responseMessage(val)
-    )
+    return this.http.delete<ServerResponse>(url, { headers: this.authService.headers } )
   }
 
   sendMails(id: number) {

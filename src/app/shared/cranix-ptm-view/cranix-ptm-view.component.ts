@@ -4,7 +4,7 @@ import { PTMEvent, PTMTeacherInRoom, ParentTeacherMeeting, Room, User } from '..
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ParentsService } from 'src/app/services/parents.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { EventRenderer } from 'src/app/pipes/ag-ptm-event-renderer'
 import { RoomRenderer } from 'src/app/pipes/ag-ptm-room-renderer'
@@ -59,7 +59,7 @@ export class CranixPtmViewComponent implements OnInit {
     private languageS: LanguageService,
     private objectService: GenericObjectService,
     private parentsService: ParentsService,
-    private utilsService: UtilsService,
+    private calendarService: CrxCalendarService,
     private systemService: SystemService
   ) {
     this.nativeWindow = win.getNativeWindow();
@@ -94,7 +94,6 @@ export class CranixPtmViewComponent implements OnInit {
   refreshData(): void{
     this.parentsService.getLastChange(this.id).subscribe((val) => {
       let lastChange = new Date(val)
-      console.log(lastChange.toISOString())
       if(val && lastChange.getTime() > this.parentsService.lastSeen[this.id]){
         this.readData(false)
       }
@@ -175,7 +174,7 @@ export class CranixPtmViewComponent implements OnInit {
         teacherId: ptmTeacherInRoom.teacher.id
       }
       for (let ptmEvent of ptmTeacherInRoom.events.sort(this.compare)) {
-        let time = this.utilsService.getDouble(new Date(ptmEvent.start).getHours()) + ':' + this.utilsService.getDouble(new Date(ptmEvent.start).getMinutes())
+        let time = this.calendarService.getDouble(new Date(ptmEvent.start).getHours()) + ':' + this.calendarService.getDouble(new Date(ptmEvent.start).getMinutes())
         this.events[ptmEvent.id] = ptmEvent
         if (!this.eventsTimeStudent[time]) {
           this.eventsTimeStudent[time] = {}
@@ -343,9 +342,9 @@ export class CranixPtmViewComponent implements OnInit {
   printEventForStudent() {
     let start = new Date(this.ptm.start)
     let end = new Date(this.ptm.end)
-    let date = this.utilsService.toIonDate(start)
-    let startTime = this.utilsService.toIonTime(start)
-    let endTime = this.utilsService.toIonTime(end)
+    let date = this.calendarService.toIonDate(start)
+    let startTime = this.calendarService.toIonTime(start)
+    let endTime = this.calendarService.toIonTime(end)
     let html = '<h2>' + this.languageS.trans('PTM') + ' ' + date + ': ' + startTime + ' - ' + endTime + '</h2>\n'
     html += '<table>\n'
     html += '<caption>' + this.languageS.trans('Student') + ': ' + this.selectedStudent.surName + ', ' + this.selectedStudent.givenName + '</caption>\n'
