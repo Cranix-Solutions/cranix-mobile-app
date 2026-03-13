@@ -46,18 +46,18 @@ export class CourseService {
   }
 
   register(id: number) {
-    const url = `${this.url}/appointments/${id}`
-    return this.http.put<ServerResponse>(url, { headers: this.authService.headers } )
+    const url = `${this.url}/appointments/${id}/register`
+    return this.http.put<ServerResponse>(url, null, { headers: this.authService.headers } )
   }
 
   withdrawing(id: number) {
-    const url = `${this.url}/appointments/${id}`
+    const url = `${this.url}/appointments/${id}/register`
     return this.http.delete<ServerResponse>(url, { headers: this.authService.headers } )
   }
 
   sendMails(id: number) {
     const url = `${this.url}/${id}`
-    return this.http.put<ServerResponse>(url, { headers: this.authService.headers } ).subscribe(
+    return this.http.put<ServerResponse>(url, null, { headers: this.authService.headers } ).subscribe(
       (val) => this.objectService.responseMessage(val)
     )
   }
