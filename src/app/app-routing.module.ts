@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginPage } from './public/login/login.page';
+import { MobileLoginPage } from './public/login/mobile-login.page';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginPage
+  },
+  {
+    path: 'mobillogin',
+    component: MobileLoginPage
   },
   {
     path: 'public',

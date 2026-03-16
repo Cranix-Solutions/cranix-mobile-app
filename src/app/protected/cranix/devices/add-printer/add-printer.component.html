@@ -1,18 +1,28 @@
-<form #addPrinterFrom="ngForm" (ngSubmit)="onSubmit()">
+<form #addPrinterFrom="ngForm">
   <ion-header translucent>
     <ion-toolbar color="primary">
-      <ion-title *ngIf="action=='add'">{{ 'Add printer' | translate }}</ion-title>
-      <ion-title *ngIf="action=='queue'">{{ 'Add printer queue' | translate }}</ion-title>
-      <ion-title *ngIf="action=='modify'">{{ 'Modify printer' | translate }}</ion-title>
+      @switch(action){
+      @case('add'){
+      <ion-title>{{ 'Add printer' | translate }}</ion-title>
+      }
+      @case('queue'){
+      <ion-title>{{ 'Add printer queue' | translate }}</ion-title>
+      }
+      @case('modify'){
+      <ion-title>{{ 'Modify printer' | translate }}</ion-title>
+      }
+      }
       <ion-buttons slot="end">
-        <ion-button type="submit" class="ion-no-margin"
-          [disabled]="!addPrinterFrom.form.valid || (!driverFile && !model.name ) || submitted ">
+        <ion-button class="ion-no-margin"
+          [disabled]="!addPrinterFrom.form.valid || (!driverFile && !model ) || submitted" (click)="addModify()">
           <ion-icon slot="icon-only" color="success" name="checkmark-sharp">
           </ion-icon>
         </ion-button>
-        <ion-button *ngIf="action=='modify'" fill="clear" size="small" [disabled]="submitted" (click)="deletePrinter()">
+        @if(action=='modify'){
+        <ion-button fill="clear" size="small" [disabled]="submitted" (click)="deletePrinter()">
           <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
         </ion-button>
+        }
         <ion-button fill="clear" size="small" (click)="modalCtrl.dismiss()" [disabled]="submitted">
           <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
         </ion-button>
@@ -23,7 +33,8 @@
     <ion-list lines="full">
       <ion-item *ngIf="action == 'add'">
         <ion-label [position]="authService.settings.labelPlacement">{{'roomId'| translate}}</ion-label>
-	      <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect" [multiple]="false" name="room"></cranix-search>
+        <cranix-search objectType="room" (onChange)="roomChanged($event.value)" [items]="roomsToSelect"
+          [multiple]="false" name="room"></cranix-search>
       </ion-item>
       <ion-item *ngIf="action == 'queue'">
         <ion-label [position]="authService.settings.labelPlacement">{{'device'| translate}}</ion-label>
@@ -53,15 +64,17 @@
       <ion-item *ngIf="action != 'queue'">
         <ion-label [position]="authService.settings.labelPlacement">{{'mac'|translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="printer.mac" name="mac" required [disabled]="submitted"
-        pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"></ion-input>
+          pattern="^([0-9A-Fa-f]{2}[\-:]){5}([0-9A-Fa-f]{2})$"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'manufacturer'| translate}}</ion-label>
-        <cranix-search objectType="manufacturer" [(ngModel)]="manufacturer" [items]="manufacturers" [multiple]="false" name="manufacturer"></cranix-search>
+        <cranix-search objectType="manufacturer" [(ngModel)]="manufacturer" [items]="manufacturers" [multiple]="false"
+          name="manufacturer"></cranix-search>
       </ion-item>
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'model'| translate}}</ion-label>
-	      <cranix-search objectType="model" [(ngModel)]="model" [items]="models[manufacturer.id]" [multiple]="false" name="model"></cranix-search>
+        <cranix-search objectType="model" [(ngModel)]="model" [items]="models[manufacturer.id]" [multiple]="false"
+          name="model"></cranix-search>
       </ion-item>
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{ driverFile | translate }}</ion-label>

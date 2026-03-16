@@ -8,6 +8,7 @@ import { AuthenticationService } from './services/auth.service';
 import { GenericObjectService } from './services/generic-object.service';
 import { LanguageService } from './services/language.service';
 import { CrxObjectService } from './services/crx-object-service';
+import { UtilsService } from './services/utils.service';
 
 @Component({
   standalone: false,
@@ -22,12 +23,13 @@ export class AppComponent {
   constructor(
     public authService: AuthenticationService,
     public location: Location,
-    private genericObjectS: GenericObjectService,
     private crxObjectService: CrxObjectService,
+    private genericObjectS: GenericObjectService,
     private languageService: LanguageService,
     private platform: Platform,
     private router: Router,
     private storage: Storage,
+    private utilService: UtilsService
   ) {
     console.log("AppComponenet ngOnInit");
     this.storage.create();
@@ -42,13 +44,13 @@ export class AppComponent {
     this.platform.ready().then(() => {
       if (params.has("token") || this.error) {
         //Sending the token as url parameter grands only access to the page defined in the session of the token.
-        this.token = params.get('token') 
+        this.token = params.get('token')
         console.log(this.token)
         this.authService.setupSessionByToken(this.token)
       } else {
         this.authService.authenticationState.subscribe(state => {
           console.log("pathname :" + window.location.pathname);
-          if (window.location.pathname != '/login') {
+          if (!window.location.pathname.endsWith('login')) {
             this.authService.requestedPath = window.location.pathname.substring(1);
           }
           if (this.authService.session) {
@@ -95,7 +97,16 @@ export class AppComponent {
             this.authService.loadSession();
             this.router.navigate(['pages/cranix/users/all']);
           } else {
-            this.router.navigate(['login']);
+            if (this.authService.isPWA) {
+              this.router.config[0] = {
+                "path": "",
+                "redirectTo": "mobillogin",
+                "pathMatch": "full"
+              }
+              this.router.navigate(['mobillogin']);
+            } else {
+              this.router.navigate(['login']);
+            }
           }
         });
       }

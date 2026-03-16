@@ -42,7 +42,7 @@ export class PrintersComponent {
     this.objectKeys = Object.getOwnPropertyNames(new Printer());
     delete this.objectService.selectedObject;
   }
-  async redirectToEdit(printer: Printer) {
+  public async redirectToEdit(printer: Printer) {
     if (printer) {
       const modal = await this.modalCtrl.create({
         component: AddPrinterComponent,
@@ -60,7 +60,7 @@ export class PrintersComponent {
     }
   }
 
-  async addPrinter() {
+  public async addPrinter() {
     const modal = await this.modalCtrl.create({
       component: AddPrinterComponent,
       cssClass: 'medium-modal',
@@ -73,7 +73,7 @@ export class PrintersComponent {
     (await modal).present()
   }
 
-  async addDevice() {
+  public async addDevice() {
     const modal = await this.modalCtrl.create({
       component: AddPrinterComponent,
       cssClass: 'medium-modal',
@@ -86,7 +86,7 @@ export class PrintersComponent {
     (await modal).present()
   }
 
-  reset(id: number) {
+  public reset(id: number) {
     let subs = this.printersService.reset(id).subscribe(
       (val) => {
         this.objectService.responseMessage(val);
@@ -103,7 +103,7 @@ export class PrintersComponent {
     )
   }
 
-  toggle(data, what: string, yesno: boolean) {
+  public toggle(data, what: string, yesno: boolean) {
     let subs = this.printersService.toggle(data.id, what, yesno).subscribe(
       (val) => {
         this.objectService.responseMessage(val);

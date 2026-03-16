@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AlertController, ToastController, PopoverController, ModalController } from '@ionic/angular';
+import { AlertController, ToastController, PopoverController } from '@ionic/angular';
 // own modules
 
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
@@ -39,11 +39,13 @@ export class GenericObjectService {
     private languageS: LanguageService,
     private utilsService: UtilsService,
     private popoverCtrl: PopoverController,
-    private modalCtrl: ModalController,
     public toastController: ToastController,
     private router: Router) {
   }
 
+  cleanUp(){
+    delete this.allObjects
+  }
   initialize(force: boolean) {
     this.objects = []
     if (this.authService.isAllowed('cephalix.manage')) {
@@ -61,18 +63,15 @@ export class GenericObjectService {
     for (let obj of objectsTemlate) {
       this.objects.push(obj)
     }
-    let subs: any = {};
     this.authService.log("initialize all objects")
     for (let key of this.objects) {
       this.getAllObject(key);
     }
     for (let key of enumerates) {
       let url = this.utilsService.hostName() + "/system/enumerates/" + key;
-      subs[key] = this.http.get<string[]>(url, { headers: this.authService.headers }).subscribe({
-        next: (val) => { selects[key] = val; },
-        error: (err) => { },
-        complete: () => { subs[key].unsubscribe() }
-      });
+      this.http.get<string[]>(url, { headers: this.authService.headers }).subscribe({
+        next: (val) => { selects[key] = val; }
+      })
     }
     if (this.authService.isAllowed('software.download')) {
       this.getSoftwaresToDowload();

@@ -395,6 +395,9 @@ export class CranixListComponent implements OnInit, OnChanges {
   redirectToEdit = (object) => {
     this.context.componentParent.redirectToEdit(object)
   }
+  reset = (object) => {
+    this.context.componentParent.reset(object)
+  }
 
   editInstitutes(object) {
     this.context.componentParent.editInstitutes(object)

@@ -15,7 +15,7 @@
       <ion-icon slot="icon-only" name="add-circle"></ion-icon>
     </ion-button>
   }
-    @if(objectType == 'printer' && authService.isAllowed('printers.add')) {
+    @if(objectType == 'printer' && authService.isAllowed('printer.add')) {
     <ion-button size="small" fill="solid" (click)="addPrinter()"
       matTooltip="{{'Create a new printer queue' | translate }}">
       <ion-icon slot="icon-only" name="print"></ion-icon>

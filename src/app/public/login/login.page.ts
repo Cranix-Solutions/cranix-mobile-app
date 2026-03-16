@@ -6,8 +6,6 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { SystemService } from 'src/app/services/system.service';
 import { LoginForm } from 'src/app/shared/models/server-models';
 
-
-
 @Component({
     standalone: false,
     selector: 'app-login',

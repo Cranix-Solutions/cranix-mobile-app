@@ -24,12 +24,11 @@ export class PrinterActionBTNRenderer implements ICellRendererAngularComp {
 
     agInit(params: any): void {
         this.params = params;
-        this.printerAddAllowed = this.params.context.componentParent.authService.isAllowed('printers.add');
+        this.printerAddAllowed = this.params.context.componentParent.authService.isAllowed('printer.add');
     }
 
     public details(event) {
         event.stopPropagation();
-        console.log("Edit", this.params.data);
         this.params.context.componentParent.redirectToEdit(this.params.data);
     }
     public reset(event) {

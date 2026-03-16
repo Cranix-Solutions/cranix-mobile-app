@@ -108,7 +108,6 @@ export class UtilsService {
                         const formattedSize = size.toFixed(2);
                         return `${formattedSize} ${sizes[i]}`;
                 }
-        }
-
+        }    
 }
 

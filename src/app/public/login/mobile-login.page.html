@@ -14,18 +14,18 @@
 <ion-content class="ion-padding">
   <ion-list>
     @for(s of servers; track i; let i = $index){
-      <ion-item>
-        <ion-label>{{s.name}}</ion-label>
-        <ion-button shape="round" (click)="connectServer(i)">
-          <ion-icon slot="icon-only" color="success" name="enter"></ion-icon>
-        </ion-button>
-        <ion-button shape="round" (click)="addEditConnection(i)">
-          <ion-icon slot="icon-only" color="warning" name="build"></ion-icon>
-        </ion-button>
-        <ion-button shape="round" (click)="deleteServer(i)">
-          <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
-        </ion-button>
-      </ion-item>
+    <ion-item>
+      <ion-label>{{s.name}}</ion-label>
+      <ion-button shape="round" (click)="connectServer(i)">
+        <ion-icon slot="icon-only" color="success" name="enter"></ion-icon>
+      </ion-button>
+      <ion-button shape="round" (click)="addEditConnection(i)">
+        <ion-icon slot="icon-only" color="warning" name="build"></ion-icon>
+      </ion-button>
+      <ion-button shape="round" (click)="deleteServer(i)">
+        <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
     }
   </ion-list>
 </ion-content>
@@ -39,70 +39,75 @@
 
 <ion-modal #use2faModfal [isOpen]="authService.use2fa">
   <ng-template>
-  <form #crx2faForm="ngForm">
-  <ion-list>
-    @if(authService.session.crx2fas.length > 1){
-    <ion-item >
-      <ion-select [(ngModel)]="authService.crx2fa" name="selectedCx2fa">
-        @for(tmp of authService.session.crx2fas; track tmp){
-          <ion-select-option [value]="tmp">{{tmp.split('#')[0]}}</ion-select-option>
+    <form #crx2faForm="ngForm">
+      <ion-list>
+        @if(authService.session.crx2fas.length > 1){
+        <ion-item>
+          <ion-select [(ngModel)]="authService.crx2fa" name="selectedCx2fa">
+            @for(tmp of authService.session.crx2fas; track tmp){
+            <ion-select-option [value]="tmp">{{tmp.split('#')[0]}}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
         }
-      </ion-select>
-    </ion-item>
-    }
-    <ion-item>
-      <ion-input label="{{'Enter PIN'|translate}}" labelPlacement="fixed" [(ngModel)]="totppin" name="totppin" required></ion-input>
-        @if(!authService.crx2fa.startsWith('TOTP')) {
+        <ion-item>
+          <ion-input label="{{'Enter PIN'|translate}}" labelPlacement="fixed" [(ngModel)]="totppin" name="totppin"
+            required></ion-input>
+          @if(!authService.crx2fa.startsWith('TOTP')) {
           <ion-button *ngIf="" (click)="sendPin()">{{'Send pin'|translate}}</ion-button>
-        }
-    </ion-item>
-    <ion-button style="margin: 10px;" expand="full" color="primary" (click)="checkPin()"
-      [disabled]="!crx2faForm.valid">{{'login' | translate}}</ion-button>
-  </ion-list>
-</form>
-</ng-template>
+          }
+        </ion-item>
+        <ion-button style="margin: 10px;" expand="full" color="primary" (click)="checkPin()"
+          [disabled]="!crx2faForm.valid">{{'login' | translate}}</ion-button>
+      </ion-list>
+    </form>
+  </ng-template>
 </ion-modal>
 
-<ion-modal #addConnectionModal [isOpen]="isAddConnectionOpen">
+<ion-modal #addConnectionModal [isOpen]="isAddConnectionOpen" (onDidDismiss)="isAddConnectionOpen = false">
   <ng-template>
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>
-          Add new connection
-        </ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="addConnectionModal.dismiss()">
-          <ion-icon color="danger" name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-  <ion-content class="ion-padding">
-      <form #loginForm="ngForm">
+    <form #loginForm="ngForm">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{titleAddEdit|translate}}
+          </ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="onLogin()" [disabled]="!loginForm.valid">
+              <ion-icon color="success" name="checkmark"></ion-icon>
+            </ion-button>
+            <ion-button (click)="isAddConnectionOpen = false">
+              <ion-icon color="danger" name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content fullscreen>
         <ion-list>
-        <ion-item>
-          <ion-input labelPlacement="fixed" label="Institutename" type="text" [(ngModel)]="connection.name" name="institute" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-input labelPlacement="fixed" label="Url" type="text" [(ngModel)]="connection.url" name="url" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-input labelPlacement="fixed" label="Benutzername" type="text" [(ngModel)]="connection.user.username" name="username" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-input labelPlacement="fixed" label="Passwort" type="password" [(ngModel)]="connection.user.password" name="password" required></ion-input>
-        </ion-item>
-        @if(newConnection){
-        <ion-item>
-          <ion-toggle [(ngModel)]="saveConnection" name="saveConnection">{{'Save connection'|translate}}</ion-toggle>
-        </ion-item>
-        }
+          <ion-item>
+            <ion-input labelPlacement="fixed" label="Institutename" type="text" [(ngModel)]="connection.name"
+              name="institute" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input labelPlacement="fixed" label="Url" type="text" [(ngModel)]="connection.url" name="url"
+              required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input labelPlacement="fixed" label="Benutzername" type="text" [(ngModel)]="connection.user.username"
+              name="username" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input labelPlacement="fixed" label="Passwort" type="password" [(ngModel)]="connection.user.password"
+              name="password" required>
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </ion-item>
+          @if(newConnection){
+          <ion-item>
+            <ion-toggle [(ngModel)]="saveConnection" name="saveConnection">{{'Save connection'|translate}}</ion-toggle>
+          </ion-item>
+          }
         </ion-list>
-        <ion-button expand="full" type="submit" (click)="onLogin(addConnectionModal)" [disabled]="!loginForm.valid">{{'login'|translate}}</ion-button>
-      </form>
-  </ion-content>
+      </ion-content>
+    </form>
   </ng-template>
 </ion-modal>

@@ -15,11 +15,11 @@ class server {
 
 @Component({
     standalone: false,
-    selector: 'app-login',
+    selector: 'mobil-app-login',
     templateUrl: './mobile-login.page.html',
     styleUrls: ['./login.page.scss'],
 })
-export class LoginPage{
+export class MobileLoginPage{
     connection: server = new server
     isAddConnectionOpen: boolean = false
     saveConnection: boolean = true;
@@ -27,6 +27,7 @@ export class LoginPage{
     totp: boolean = false;
     totppin: string = "";
     newConnection: boolean = false;
+    titleAddEdit: string = ""
 
     constructor(
         public authService: AuthenticationService,
@@ -58,7 +59,7 @@ export class LoginPage{
         })
     }
 
-    onLogin(modal: any) {
+    onLogin() {
         this.utilsService.savedUrl = this.connection.url;
         this.authService.authenticationState.next(false);
         this.authService.setUpSession( this.connection.user, this.connection.name )
@@ -71,19 +72,22 @@ export class LoginPage{
                     this.servers.push(this.connection)
                 }
                 console.log(this.servers)
-                localStorage.setItem("servers",JSON.stringify(this.servers))
+                localStorage.setItem("servers", JSON.stringify(this.servers))
             }
-            modal.dismiss()
+            this.isAddConnectionOpen = false;
         })
         
     }
     
     addEditConnection(i: number){
+        console.log(this.isAddConnectionOpen)
         console.log("addEditConncetion called", i)
         if(i==-1){
+            this.titleAddEdit = 'Add New Connection'
             this.newConnection = true
             this.connection = new server
         }else{
+            this.titleAddEdit = 'Edit Connection'
             this.connection = this.servers[i]
             this.newConnection = false
             this.saveConnection = true

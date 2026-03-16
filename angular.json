@@ -34,7 +34,9 @@
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
-              }
+              },
+	      "src/manifest.json"
+	      }
             ],
             "styles": ["src/global.scss", "src/theme/ion-custom.scss", "src/theme/cranix-custom.scss", "src/theme/fonts.css", "src/theme/variables.scss"],
             "scripts": []

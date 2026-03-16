@@ -18,6 +18,7 @@ import { LanguageService } from './language.service';
 
 export class AuthenticationService {
     authenticationState = new BehaviorSubject(false);
+    isPWA: boolean = false;
     use2fa: boolean = false;
     crx2fa: string = "";
     url: string;
@@ -136,6 +137,9 @@ export class AuthenticationService {
         private languageService: LanguageService,
         private router: Router
     ) {
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+        const isIOSStandalone = (window.navigator as any).standalone === true;
+        this.isPWA = isStandalone || isIOSStandalone;
         this.plt.ready().then(() => {
             this.checkSession();
         });
@@ -340,21 +344,22 @@ export class AuthenticationService {
     }
 
     public logout() {
+        this.appPages = []
+        this.authenticationState.next(false);
+        this.use2fa = false;
+        this.requestedPath = ""
         if (!sessionStorage.getItem('shortName')) {
             console.log('logout', this.session.token)
             this.http.delete(this.utilsService.hostName() + `/sessions/${this.session.token}`, { headers: this.headers }).subscribe({
                 next: (val) => {
-                    this.authenticationState.next(false);
+                    this.session = null;
                     this.router.navigate(['/'])
                 },
                 error: (err) => { this.router.navigate(['/']) },
                 complete: () => { this.router.navigate(['/']) }
             });
         }
-        this.appPages = []
-        this.authenticationState.next(false);
         this.session = null;
-        this.use2fa = false;
         this.router.navigate(['/']);
     }
 
@@ -475,6 +480,9 @@ export class AuthenticationService {
     }
 
     public isMD() {
+        if(this.isPWA) {
+            return true;
+        }
         return window.innerWidth < this.minLgWidth || window.innerHeight < this.minLgHeight;
     }
 

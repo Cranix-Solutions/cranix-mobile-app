@@ -45,7 +45,7 @@ export class AddPrinterComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.object)
-    let subs = this.printersService.getDrivers().subscribe(
+    this.printersService.getDrivers().subscribe(
       (val) => {
         console.log(val)
         for (let man of Object.keys(val).sort()) {
@@ -58,20 +58,14 @@ export class AddPrinterComponent implements OnInit {
             this.models[man].push({ id: mod, name: mod })
           }
         }
-        //this.models = val;
-        //this.manufacturers = Object.keys(this.models).sort();
-      },
-      (err) => { this.authService.log(err) },
-      () => { subs.unsubscribe() }
-    )
+    })
     switch (this.action) {
       case 'queue':
         this.printersService.getPrinterDevices().subscribe(
           (val) => {
             this.printerDevices = val
             this.printerDevices.sort(this.objectService.sortByName);
-          },
-          (err) => { console.log(err) }
+          }
         )
         break;
       case 'add':
@@ -118,15 +112,12 @@ export class AddPrinterComponent implements OnInit {
     this.objectService.deleteObjectDialog(this.printer,'printer','')
     this.modalCtrl.dismiss()
   }
-
-  setModel(ev) {
-    this.printer.model = ev.item.id
-  }
-  onSubmit() {
+  addModify() {
     console.log(this.printer)
     this.objectService.requestSent();
     this.submitted = true;
     let formData: FormData = new FormData();
+    this.printer.model = this.model.name
     if (this.driverFile) {
       formData.append('file', this.driverFile, this.driverFile.name);
     } else if (this.model) {
@@ -189,6 +180,7 @@ export class AddPrinterComponent implements OnInit {
         break
       }
       case 'modify': {
+        console.log(formData.has('file'), this.originalModel, this.printer.model,  this.printer.mac)
         if (formData.has('file') || this.originalModel != this.printer.model || this.originalMac != this.printer.mac) {
           let subs3 = this.printersService.setDriver(this.printer.id, formData).subscribe({
             next: (val) => {
