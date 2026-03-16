@@ -1,0 +1,26 @@
+{
+  "name": "CRANIX",
+  "short_name": "CRANIX",
+  "display": "standalone",
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "CRANIX WebApp CranixSolutions GmbH",
+  "icons": [
+    {
+      "src": "assets/icon/icon-192.png",
+      "sizes": "192x192",
+      "type": "assets/image/png"
+    },
+    {
+      "src": "assets/icon/icon-512.png",
+      "sizes": "512x512",
+      "type": "assets/image/png"
+    },
+    {
+      "src": "assets/icon/icon-180.png",
+      "sizes": "180x180",
+      "type": "assets/image/png"
+    }
+  ]
+}
