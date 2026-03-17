@@ -124,40 +124,41 @@ export const readOnlyAttributes: string[] = [
 	'startIP',
 	'uid',
 	'wlanIp'
-	]
-	/**
-	 * Attributes which we get but need not be shown
-	 */
-	export const hiddenAttributes: string[] = [
-		'appointments',
-		'accessInRooms',
-		'cephalixInstituteId',
-		'color',
-		'deleted',
-		'devices',
-		'fullName',
-		'loggedInId',
-		'network',
-		'creatorId',
-		'partitions',
-		'saveNext',
-		'screenShot',
-		'users'
-	]
-	/**
-	 * Required attributes
-	 */
-	export const required: any = {
-		'givenName': '*',
-		'groupType': '*',
-		'identifier': "*",
-		'instituteType': '*',
-		'importFile': "*",
-		'name': '*',
-		'regCode': '*',
-		'role': '*',
-		'surName': '*'
-	};
+]
+/**
+ * Attributes which we get but need not be shown
+ */
+export const hiddenAttributes: string[] = [
+	'appointments',
+	'accessInRooms',
+	'cephalixInstituteId',
+	'color',
+	'deleted',
+	'devices',
+	'fullName',
+	'loggedInId',
+	'network',
+	'creatorId',
+	'partitions',
+	'saveNext',
+	'screenShot',
+	'users'
+]
+/**
+ * Required attributes
+ */
+export const required: any = {
+	'birthDay': '*',
+	'givenName': '*',
+	'groupType': '*',
+	'identifier': "*",
+	'instituteType': '*',
+	'importFile': "*",
+	'name': '*',
+	'regCode': '*',
+	'role': '*',
+	'surName': '*'
+};
 
 
 export const objectKeys = {
@@ -176,7 +177,9 @@ export const objectKeys = {
 }
 
 export const hiddenColumns: string[] = [
+	'accessInRooms',
 	'adminPW',
+	'appointments',
 	'cephalixPW',
 	'childIds',
 	'classIds',
@@ -185,7 +188,6 @@ export const hiddenColumns: string[] = [
 	'mustChange',
 	'parentIds',
 	'password',
-	'accessInRooms',
 	'cranixUserId',
 	'cranixDeviceId',
 	'color',
@@ -217,7 +219,7 @@ export const hiddenColumns: string[] = [
 	'screenShot',
 	'users',
 	'questions'
-	]
+]
 
 	import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, Course, Crx2fa, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNotice, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
 	import { Article, CephalixCare, Customer, DynDns, Institute, InstituteStatus, Notice, Repository, Ticket} from './cephalix-data-model'

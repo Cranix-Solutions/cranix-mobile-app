@@ -8,7 +8,6 @@ import { AuthenticationService } from './services/auth.service';
 import { GenericObjectService } from './services/generic-object.service';
 import { LanguageService } from './services/language.service';
 import { CrxObjectService } from './services/crx-object-service';
-import { UtilsService } from './services/utils.service';
 
 @Component({
   standalone: false,
@@ -28,8 +27,7 @@ export class AppComponent {
     private languageService: LanguageService,
     private platform: Platform,
     private router: Router,
-    private storage: Storage,
-    private utilService: UtilsService
+    private storage: Storage
   ) {
     console.log("AppComponenet ngOnInit");
     this.storage.create();
