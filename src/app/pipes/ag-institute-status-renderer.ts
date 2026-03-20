@@ -6,9 +6,9 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'institut-status-cell-renderer',
     template: `
-    <ion-button fill="clear" size="small" (click)="details($event)" matTooltip="{{'modify' | translate }}">
+    <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
         <ion-icon name="build-sharp"></ion-icon>
-    </ion-button>
+    </button>
         `
 })
 

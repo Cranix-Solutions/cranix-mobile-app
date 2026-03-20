@@ -6,21 +6,21 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'device-action-cell-renderer',
     template: `
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
+        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
              <ion-icon name="build-sharp"></ion-icon>
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="setPrinters($event)" matTooltip="{{'Set printers' | translate }}">
+        </button>
+        <button class="icon-button" (click)="setPrinters($event)" matTooltip="{{'Set printers' | translate }}">
             <ion-icon name="print" ></ion-icon>
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="setDhcp($event)" matTooltip="{{'Set DHCP parameter' | translate }}">
+        </button>
+        <button class="icon-button" (click)="setDhcp($event)" matTooltip="{{'Set DHCP parameter' | translate }}">
             <ion-icon color="danger" name="server" ></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" size="small" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
-            <ion-icon  name="ellipsis-vertical-sharp"></ion-icon> 
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+        </button>
+        <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
-        </ion-button>
+        </button>
+        <button class="icon-button" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
+            <ion-icon  name="ellipsis-vertical-sharp"></ion-icon>
+        </button>
         ` 
 })
 

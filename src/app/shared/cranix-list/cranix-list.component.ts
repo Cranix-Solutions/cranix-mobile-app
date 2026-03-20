@@ -130,17 +130,17 @@ export class CranixListComponent implements OnInit, OnChanges {
   createColumnDefs() {
     let columnDefs = [];
     var cellRenderer;
-    var actionWidth = 200;
+    var actionWidth = 125;;
     switch (this.objectType) {
       case 'customer': {
         cellRenderer = CustomerActionRenderer; break
       }
       case 'device': {
-        cellRenderer = DeviceActionBTNRenderer; break
+        cellRenderer = DeviceActionBTNRenderer; actionWidth=175; break
       }
       case 'education/group':
       case 'group': {
-        cellRenderer = GroupActionBTNRenderer; break
+        cellRenderer = GroupActionBTNRenderer; actionWidth=175; break
       }
       case 'education/guestUser': {
         cellRenderer = EditBTNRenderer; break
@@ -153,13 +153,13 @@ export class CranixListComponent implements OnInit, OnChanges {
       }
       case 'education/user':
       case 'user': {
-        cellRenderer = UserActionBTNRenderer; break
+        cellRenderer = UserActionBTNRenderer; actionWidth=175; break
       }
       case 'printer': {
         cellRenderer = PrinterActionBTNRenderer; break
       }
       case 'room': {
-        cellRenderer = RoomActionBTNRenderer; actionWidth=250; break
+        cellRenderer = RoomActionBTNRenderer; actionWidth=175; break
       }
       case 'package': {
         cellRenderer = SoftwareEditBTNRenderer; break
@@ -187,8 +187,6 @@ export class CranixListComponent implements OnInit, OnChanges {
             field: 'actions',
             headerName: "",
             width: actionWidth,
-            //suppressSizeToFit: true,
-            cellStyle: { 'padding': '2px' },
             pinned: 'left',
             cellRenderer: cellRenderer
           });

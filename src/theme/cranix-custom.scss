@@ -1,4 +1,30 @@
 /*
+* Styling icon-buttons for tables.
+*/
+.icon-button {
+  width: 25px;
+  height: 25px;
+  display: inline-flex;
+  align-items: center;      /* vertikal zentriert */
+  justify-content: center;  /* horizontal zentriert */
+
+  padding: 4px, 0px, 0px, 0px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin: auto;
+  vertical-align: middle;   /* wichtig für Tabellen */
+}
+.icon-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.icon-button:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/*
 * quill-editor
 */
 quill-editor {

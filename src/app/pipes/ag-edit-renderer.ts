@@ -6,15 +6,13 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'edit-cell-renderer',
     template: `
-        <div class="name-action">
-            <div *ngIf="id">#{{ id }}</div>
-            <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
+            @if(id){#{{ id }}}
+            <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
                 <ion-icon name="build-sharp"></ion-icon>
-            </ion-button>
-            <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+            </button>
+            <button  class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
                 <ion-icon color="danger" name="trash-outline" ></ion-icon>
-            </ion-button>
-        </div>
+            </button>
         ` 
 })
 

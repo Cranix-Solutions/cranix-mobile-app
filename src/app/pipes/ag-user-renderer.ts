@@ -6,23 +6,23 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'user-action-cell-renderer',
     template: `
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
+        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
              <ion-icon name="build-sharp"></ion-icon>
-        </ion-button>
-        @if(noticeUse){
-        <ion-button  style="padding-horizontal : 2px" fill="clear" size="small" (click)="openNotice($event)" matTooltip="{{'notice' | translate }}">
-            <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
-        </ion-button>
-        }
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="groups($event)" matTooltip="{{'groups' | translate }}">
+        </button>
+        <button class="icon-button" (click)="groups($event)" matTooltip="{{'groups' | translate }}">
              <ion-icon name="people"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" size="small" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
-            <ion-icon  name="ellipsis-vertical-sharp"></ion-icon> 
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+        </button>
+        <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
-        </ion-button>
+        </button>
+        @if(noticeUse){
+        <button  class="icon-button" (click)="openNotice($event)" matTooltip="{{'notice' | translate }}">
+            <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
+        </button>
+        }
+        <button class="icon-button" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
+            <ion-icon  name="ellipsis-vertical-sharp"></ion-icon> 
+        </button>
         `
 })
 

@@ -8,17 +8,16 @@ import { WindowRef } from 'src/app/shared/models/ohters'
 @Component({
     standalone: false,
     selector: 'uuid-cell',
-    template: `<div class="uuid-flex">
-    <ion-button fill="clear" size="small" (click)="details($event)" matTooltip="{{'modify' | translate }}">
+    template: `
+    <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
         <ion-icon name="build-sharp"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" size="small" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
+    </button>
+    <button class="icon-button" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
         <ion-icon  name="ellipsis-vertical-sharp"></ion-icon>
-    </ion-button>
-    <ion-button *ngIf="data.ipVPN && data.ipVPN != ''" color="secondary" fill="clear" size="small"  (click)="routeSchool($event)" matTooltip="{{'Connect the institute in a separate window.' | translate }}">
-        <ion-icon name="create-outline" style="height:15px;width:15px"></ion-icon>
-    </ion-button>
-    </div>
+    </button>
+    <button *ngIf="data.ipVPN && data.ipVPN != ''" class="icon-button"  (click)="routeSchool($event)" matTooltip="{{'Connect the institute in a separate window.' | translate }}">
+        <ion-icon name="create-outline" color="secondary"></ion-icon>
+    </button>
     `
 })
 export class InstituteActionCellRenderer implements ICellRendererAngularComp, OnDestroy {

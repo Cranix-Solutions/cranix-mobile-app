@@ -6,33 +6,30 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'group-action-cell-renderer',
     template: `
-
-        
         @if(mayEdit){
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
+        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
              <ion-icon name="build-sharp"></ion-icon>
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="members($event)" matTooltip="{{'Members of the group:' | translate }}">
+        </button>
+        <button class="icon-button" (click)="members($event)" matTooltip="{{'Members of the group:' | translate }}">
              <ion-icon name="people-circle"></ion-icon>
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+        </button>
+        <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
-        </ion-button>
+        </button>
         }@else{
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="showMembers($event)" matTooltip="{{'Members of the group:' | translate }}">
+        <button class="icon-button" (click)="showMembers($event)" matTooltip="{{'Members of the group:' | translate }}">
              <ion-icon name="people-circle"></ion-icon>
-        </ion-button>
+        </button>
         }
         @if(noticeUse){
-        <ion-button  style="padding-horizontal : 2px" fill="clear" size="small" (click)="openNotice($event)" matTooltip="{{'notices' | translate }}">
+        <button  class="icon-button" (click)="openNotice($event)" matTooltip="{{'notices' | translate }}">
             <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
-        </ion-button>
+        </button>
         }
-        <ion-button fill="clear" size="small" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
+        <button class="icon-button" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
             <ion-icon  name="ellipsis-vertical-sharp"></ion-icon>
-        </ion-button>
-        
-        `
+        </button>
+    `
 })
 
 export class GroupActionBTNRenderer implements ICellRendererAngularComp {

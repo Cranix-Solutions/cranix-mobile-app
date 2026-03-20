@@ -6,22 +6,20 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'action-cell-renderer',
     template: `
-    <div class="name-action">
-        <div *ngIf="id">#{{ id }}</div>
-        <ion-button fill="clear" size="small" (click)="details($event)" matTooltip="{{'modify' | translate }}">
+        @if(id){#{{ id }}}
+        <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
              <ion-icon name="build-sharp"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" size="small" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
-            <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+        </button>
+        <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             @if(params.context.componentParent.objectType == 'ticket'){
             <ion-icon color="danger" name="checkmark-done" ></ion-icon>
             }@else{
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
             }
-        </ion-button>
-        </div>
+        </button>
+        <button class="icon-button" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
+            <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+        </button>
         `
 })
 
