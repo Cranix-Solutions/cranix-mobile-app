@@ -72,8 +72,8 @@ export class CranixSupportPage implements OnInit {
   answerArticle(article: Article) {
     this.selectedArticle = article
     this.newText = "".concat(
-      "Hallo " + this.selectedTicket.firstname + " " + this.selectedTicket.lastname + ",<br><br>",
-      "Viele Grüße<br>Cranix-Solutions-Support-Team<br><br>",
+      "Hallo Support,<br><br>",
+      "Viele Grüße<br>", this.authService.session.user.givenName, " ", this.authService.session.user.surName + "<br><br>",
       "--------------------------------------------<br>",
       article.text
     )
@@ -87,6 +87,7 @@ export class CranixSupportPage implements OnInit {
     this.supportSrvice.addArticle(this.selectedTicket.id, article).subscribe(
       (val) => {
         this.objectService.responseMessage(val);
+        this.getTickets();
       }
     )
   }
@@ -110,7 +111,7 @@ export class CranixSupportPage implements OnInit {
       this.selectedTicket = ticket;
     } else {
       var mySupport = new SupportRequest();
-      mySupport.lastname = this.authService.session.user.fullName
+      mySupport.lastname = this.authService.session.user.givenName + " " + this.authService.session.user.surName
       const modal = await this.modalCtrl.create({
         component: CreateSupport,
         cssClass: 'big-modal',
@@ -121,7 +122,6 @@ export class CranixSupportPage implements OnInit {
         showBackdrop: true
       });
       modal.onDidDismiss().then((dataReturned) => {
-        //setTimeout(() => { console.log("Waited for 5 seconds"); }, 5000);
         this.getTickets();
       });
       (await modal).present()
