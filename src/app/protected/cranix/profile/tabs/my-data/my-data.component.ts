@@ -74,7 +74,7 @@ export class MyDataComponent  implements OnInit {
   open(entry: DirEntry) {
     this.disabled = true
     if(entry.type == "d") {
-      if(entry.path.startsWith(this.myHome)){
+      if(entry.path && entry.path.startsWith(this.myHome)){
         this.actDir = entry
         this.listActDir()
       }else{

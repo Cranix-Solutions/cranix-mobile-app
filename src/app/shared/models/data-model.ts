@@ -721,3 +721,4 @@ export class Course {
 	users: User[] = []
 	appointments: CrxCalendar[] = []
 }
+

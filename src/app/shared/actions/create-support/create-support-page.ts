@@ -26,8 +26,9 @@ import { Institute } from '../../models/cephalix-data-model';
     ) { }
   
     ngOnInit() { }
-    onFilesAdded(event) {
+    onFilesAdded(event, modal) {
       this.files = event.target.files;
+      modal.dismiss();
     }
   
     addAttachment() {

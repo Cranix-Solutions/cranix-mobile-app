@@ -27,8 +27,10 @@ export class CranixToolbarComponent  implements OnDestroy {
   fullName: string = "";
   instituteName: string = "";
   newTickets: number = 0;
+  newResponses: number = 0;
   alive: boolean = true;
-  url: string = "";
+  ticketUrl: string = "";
+  responseUrl: string = "";
 
   @Input() title: string;
   constructor(
@@ -45,34 +47,44 @@ export class CranixToolbarComponent  implements OnDestroy {
     this.fullName = authService.session.fullName;
     this.roomName = authService.session.roomName;
     this.instituteName = authService.session.instituteName;
-    this.url = this.utilsService.hostName() + "/tickets/all";
+    this.ticketUrl = this.utilsService.hostName() + "/tickets/status/RN";
+    this.responseUrl = this.utilsService.hostName() + "/support/W"
   }
 
   ngOnDestroy() {
+    console.log("Toolbar closed")
     this.isPopoverOpen = false
     this.alive = false;
   }
   ngAfterViewInit() {
-    if (this.authService.isAllowed("cephalix.ticket")) {
+    console.log("Toolbar initialized")
+    if(this.authService.isAllowed('cepahlix.ticket')){
       this.countTickets();
       interval(30000).pipe(takeWhile(() => this.alive)).subscribe((func => {
         this.countTickets();
       }))
     }
+    if(this.authService.isAllowed('system.support')){
+      this.countResponses();
+      interval(30000).pipe(takeWhile(() => this.alive)).subscribe((func => {
+        this.countResponses();
+      }))
+    }
   }
 
   countTickets(){
-    this.http.get<Ticket[]>(this.url, { headers: this.authService.headers }).subscribe({
+    this.http.get<Ticket[]>(this.ticketUrl, { headers: this.authService.headers }).subscribe({
       next: (val) => {
-        this.newTickets = 0;
-        for(let ticket of val){
-          if( ticket.ticketStatus == "N") {
-            this.newTickets++;
-          }
-        }
+        this.newTickets = val.length
       }})
   }
 
+  countResponses(){
+    this.http.get<Ticket[]>(this.responseUrl, { headers: this.authService.headers }).subscribe({
+      next: (val) => {
+        this.newResponses = val.length
+      }})
+  }
   async logOut() {
     this.isPopoverOpen = false;
     const alert = await this.alertController.create({

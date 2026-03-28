@@ -3,6 +3,10 @@
         <ion-toolbar color="primary">
             <ion-title>{{'Add support' | translate}}</ion-title>
             <ion-buttons slot="end">
+                @if(support.attachmentName){
+                    {{'Attachment'|translate}}:
+                    {{support.attachmentName}}
+                }
                 <ion-button id="add-attachment">
                     <ion-icon slot="icon-only" name="attach"></ion-icon>
                 </ion-button>
@@ -53,21 +57,23 @@
 
 <ion-modal #modal trigger="add-attachment" (willDismiss)="addAttachment()">
     <ng-template>
-        <ion-header>
-            <ion-toolbar color="primary">
-                <ion-title>{{'Add one Attachment'|translate}}</ion-title>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modalController.dismiss()">
-                        <ion-icon slot="icon-only" name="checkmark" color="success"></ion-icon>
-                    </ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-            <ion-item>
-                <ion-input type="file" (change)="onFilesAdded($event)">
-                </ion-input>
-            </ion-item>
-        </ion-content>
+        <ion-card>
+            <ion-card-header>
+                <ion-toolbar color="primary">
+                    <ion-title>{{'Add one Attachment'|translate}}</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button (click)="modalController.dismiss()">
+                            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-card-header>
+            <ion-card-content class="ion-padding">
+                <ion-item>
+                    <ion-input type="file" (change)="onFilesAdded($event, modal)">
+                    </ion-input>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
     </ng-template>
 </ion-modal>

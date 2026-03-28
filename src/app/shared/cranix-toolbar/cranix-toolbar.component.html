@@ -6,6 +6,14 @@
     @if(authService.isMD()){
       <ion-title>{{title}}</ion-title>
       <ion-buttons slot="end">
+        <ion-button *ngIf="authService.isAllowed('system.support')" fill="clear" (click)="route.navigate(['/cranix-support'])">
+          @if(newResponses == 0 ) {
+            <ion-icon color="success" name="help-buoy"></ion-icon>
+          }@else{
+            <ion-icon color="danger" name="help-buoy"></ion-icon>
+            <ion-badge color="danger">{{newResponses}}</ion-badge>
+          }
+        </ion-button>
         <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
           <ion-icon color="tertiary" name="book"></ion-icon>
         </ion-button>
@@ -19,13 +27,20 @@
       </ion-title>
       <ion-buttons slot="end">
         <ion-button *ngIf="authService.isAllowed('cephalix.ticket')" fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
-          <div *ngIf="newTickets">
+          @if(newTickets == 0){
+            <ion-icon color="success" name="ticket"></ion-icon>
+          }@else{
             <ion-icon color="danger" name="ticket"></ion-icon>
             <ion-badge color="danger">{{newTickets}}</ion-badge>
-          </div>
-          <div *ngIf="newTickets == 0">
-            <ion-icon color="success" name="ticket"></ion-icon>
-          </div>
+          }
+        </ion-button>
+        <ion-button *ngIf="authService.isAllowed('system.support')" fill="clear" (click)="route.navigate(['/cranix-support'])" matTooltip="{{ 'Support questions' | translate }}">
+          @if(newResponses == 0 ) {
+            <ion-icon color="success" name="help-buoy"></ion-icon>
+          }@else{
+            <ion-icon color="danger" name="help-buoy"></ion-icon>
+            <ion-badge color="danger">{{newResponses}}</ion-badge>
+          }
         </ion-button>
         <ion-button fill="clear" (click)="reloadAllObjects()"
           matTooltip="{{ 'Refresh all objects' | translate }}">

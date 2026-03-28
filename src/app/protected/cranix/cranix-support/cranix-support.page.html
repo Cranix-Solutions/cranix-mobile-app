@@ -1,0 +1,118 @@
+<cranix-toolbar title=" {{'Cranix Support'|translate}}"></cranix-toolbar>
+<ion-content [fullscreen]="true">
+  @switch(action){
+  @case('tickets'){
+  <ion-toolbar class="page-toolbar">
+    <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="ticketFilter">
+    </ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="redirectToEdit(null)">
+        <ion-icon name="add" color="success"></ion-icon>
+      </ion-button>
+      <ion-checkbox [indeterminate]="true" (ionChange)="closeChanged($event)">{{'Closed'|translate}}</ion-checkbox>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-list>
+    @for( ticket of tickets; track ticket.id){
+    <ion-item button detail="true" (click)="selectTicket(ticket)">
+      @if(ticket.ticketStatus == "D"){
+      <ion-icon name="lock-closed" color="success" style="margin-right: 15px;"></ion-icon>
+      }@else if(ticket.ticketStatus == "W"){
+      <ion-icon name="lock-open" color="danger" style="margin-right: 15px;"></ion-icon>
+      }@else{
+      <ion-icon name="lock-open" color="secondary" style="margin-right: 15px;"></ion-icon>
+      }
+      <ion-label>
+        <h3>#{{ticket.id}} {{ticket.title}}</h3>
+        <p>{{'Last action:'|translate}} {{ticket.modified| date:'yyy-MM-dd HH:mm'}} {{'created'|translate}}
+          {{ticket.created| date:'yyy-MM-dd HH:mm'}}</p>
+      </ion-label>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @case('articles'){
+  <ion-toolbar class="page-toolbar">
+    <ion-title>#{{selectedTicket.id}} {{selectedTicket.title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="action = 'tickets'">
+        <ion-icon name="close" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  @for( article of articles; track article.id){
+  <ion-card>
+    <ion-card-header>
+      <ion-toolbar>
+        <ion-card-subtitle [color]="article.articleType == 'I' ? 'warning' : article.seen ? 'success' : 'danger'">
+          {{article.created | date:'yyyy-MM-dd HH:mm'}}
+          @if(article.articleType == 'I'){
+          <ion-icon name="play-back"></ion-icon>
+          }@else{
+          <ion-icon name="play-forward"></ion-icon>
+          }
+        </ion-card-subtitle>
+        <ion-buttons slot="end">
+          @if(article.articleType == 'O'){
+          <ion-button fill="clear" (click)="answerArticle(article)" matTooltip="{{'Answer the article.' | translate }}">
+            <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
+          </ion-button>
+          }@else{
+          <ion-button fill="clear" (click)="answerArticle(article)"
+            matTooltip="{{'Edit the answer and resend it.' | translate }}">
+            <ion-icon slot="icon-only" name="pencil"></ion-icon>
+          </ion-button>
+          }
+          <ion-button fill="clear" (click)="toggleArticle(article.id)"
+            matTooltip="{{'Open or close the article.' | translate }}">
+            @if(articleOpen[article.id]){
+            <ion-icon slot="icon-only" name="mail"></ion-icon>
+            }@else{
+            <ion-icon slot="icon-only" name="mail-open"></ion-icon>
+            }
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content style="height: 50px; padding: 5px; padding-top: 0px;" [id]="'article' + article.id">
+      @if(isHTML(article.text)){
+      <div [innerHTML]="article.text"></div>
+      }@else{
+      <div [innerText]="article.text"></div>
+      }
+    </ion-card-content>
+  </ion-card>
+  }
+  }
+  @case('details'){
+  <ion-card>
+    <ion-card-header>
+      <ion-toolbar color="primary">
+        <ion-title>
+          #{{selectedTicket.id}} {{ 'Answer:' | translate }} {{selectedTicket.title}}<br>
+          {{'created'|translate}} {{ selectedArticle.created | date:'yy-MM-dd HH:mm'}}
+        </ion-title>
+        <ion-buttons slot="end">
+          <!-- ion-button id="add-attachment">
+          @if(selectedArticle.attachmentName){
+            {{'Attachement'|translate}}:<br> {{selectedArticle.attachmentName}}
+          }@else{
+          <ion-icon slot="icon-only" name="attach"></ion-icon>
+          }
+        </ion-button -->
+          <ion-button class="ion-no-margin" fill="clear" size="small" (click)="sendArticle()">
+            <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" (click)="action = 'articles'">
+            <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content>
+      <quill-editor [(ngModel)]="newText" style="margin: 10px;"></quill-editor>
+    </ion-card-content>
+  </ion-card>
+  }
+}
+</ion-content>
