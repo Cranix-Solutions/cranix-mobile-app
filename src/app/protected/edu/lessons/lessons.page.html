@@ -1,43 +1,43 @@
 <ion-tabs (ionTabsDidChange)="cleanUp()">
   <ion-tab-bar slot="bottom">
-    @if(authS.isAllowed('subject.manage')){
+    @if(authService.isAllowed('subject.manage')){
       <ion-tab-button tab="subjects">
         <ion-icon name="book"></ion-icon>
-        <ion-label>{{ 'Teaching Subjects' | translate }}</ion-label>
+        @if(!authService.isMD()){<ion-label>{{ 'Teaching Subjects' | translate }}</ion-label>}
       </ion-tab-button>
       }
-    @if(authS.isAllowed('challenge.manage')){
+    @if(authService.isAllowed('challenge.manage')){
     <ion-tab-button tab="challenges">
       <ion-icon name="list"></ion-icon>
-      <ion-label>{{ 'Create Tests' | translate }}</ion-label>
+      @if(!authService.isMD()){<ion-label>{{ 'Create Tests' | translate }}</ion-label>}
     </ion-tab-button>
     }
     <ion-tab-button tab="tests">
       <ion-icon name="list"></ion-icon>
-      <ion-label>{{ 'Tests' | translate }}</ion-label>
+      @if(!authService.isMD()){<ion-label>{{ 'Tests' | translate }}</ion-label>}
     </ion-tab-button>
-    @if(authS.isAllowed('education.rooms')){
+    @if(authService.isAllowed('education.rooms')){
     <ion-tab-button tab="roomcontrol">
       <ion-icon name="grid"></ion-icon>
-      <ion-label>{{ 'Room' | translate }}</ion-label>
+      @if(!authService.isMD()){<ion-label>{{ 'Room' | translate }}</ion-label>}
     </ion-tab-button>
     }
-    @if(authS.isAllowed('education.proxy')){
+    @if(authService.isAllowed('education.proxy')){
     <ion-tab-button tab="mypositive">
       <ion-icon name="calendar"></ion-icon>
-      <ion-label>{{ 'Security' | translate }}</ion-label>
+      @if(!authService.isMD()){<ion-label>{{ 'Security' | translate }}</ion-label>}
     </ion-tab-button>
     }
-    @if(authS.isOneOfAllowed(['ptm.manage','ptm.use'])){
+    @if(authService.isOneOfAllowed(['ptm.manage','ptm.use'])){
     <ion-tab-button tab="ptms">
       <ion-icon name="calendar"></ion-icon>
-      <ion-label>{{ 'PTM' | translate }}</ion-label>
+      @if(!authService.isMD()){<ion-label>{{ 'PTM' | translate }}</ion-label>}
     </ion-tab-button>
     }
-    @if(authS.isOneOfAllowed(['course.manage','course.use'])) {
+    @if(authService.isOneOfAllowed(['course.manage','course.use'])) {
       <ion-tab-button tab="courses">
         <ion-icon name="calendar-clear"></ion-icon>
-        <ion-label>{{'Courses'|translate}} </ion-label>
+        @if(!authService.isMD()){<ion-label>{{'Courses'|translate}} </ion-label>}
       </ion-tab-button>
     }
   </ion-tab-bar>

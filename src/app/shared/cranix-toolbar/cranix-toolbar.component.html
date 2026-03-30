@@ -26,7 +26,8 @@
         {{authService.session.fullName}} {{authService.session.instituteName}} {{authService.session.roomName}} <span class="title-class">{{title}}</span>
       </ion-title>
       <ion-buttons slot="end">
-        <ion-button *ngIf="authService.isAllowed('cephalix.ticket')" fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
+        @if(authService.isAllowed('cephalix.ticket')){
+        <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
           @if(newTickets == 0){
             <ion-icon color="success" name="ticket"></ion-icon>
           }@else{
@@ -34,7 +35,8 @@
             <ion-badge color="danger">{{newTickets}}</ion-badge>
           }
         </ion-button>
-        <ion-button *ngIf="authService.isAllowed('system.support')" fill="clear" (click)="route.navigate(['/cranix-support'])" matTooltip="{{ 'Support questions' | translate }}">
+        } @else if(authService.isAllowed('system.support')){
+        <ion-button fill="clear" (click)="route.navigate(['/cranix-support'])" matTooltip="{{ 'Support questions' | translate }}">
           @if(newResponses == 0 ) {
             <ion-icon color="success" name="help-buoy"></ion-icon>
           }@else{
@@ -42,6 +44,7 @@
             <ion-badge color="danger">{{newResponses}}</ion-badge>
           }
         </ion-button>
+        }
         <ion-button fill="clear" (click)="reloadAllObjects()"
           matTooltip="{{ 'Refresh all objects' | translate }}">
           <ion-icon color="tertiary" name="refresh"></ion-icon>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: false,
@@ -8,6 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 })      
 export class DevicesListsPage {
   constructor(
-    public translateService: TranslateService
+    public authService: AuthenticationService
   ) {}  
 }

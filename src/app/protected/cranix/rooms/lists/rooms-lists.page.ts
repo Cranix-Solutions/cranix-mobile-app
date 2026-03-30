@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -8,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 })      
 export class RoomsListsPage {
   constructor(
+    public authService: AuthenticationService,
     public translateService: TranslateService
   ) {}  
 }
