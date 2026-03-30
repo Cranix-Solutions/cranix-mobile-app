@@ -2,28 +2,28 @@
     <ion-tab-bar translucent slot="bottom">
       <ion-tab-button tab="all">
         <ion-icon name="caret-back"></ion-icon>
-        <ion-label>{{ 'All users' | translate}}</ion-label>
+        @if(!authService.isMD()){<ion-label>{{ 'All users' | translate}}</ion-label>}
       </ion-tab-button>
       <ion-tab-button tab="import">
         <ion-icon name="receipt"></ion-icon>
-        <ion-label>{{ 'Import users' | translate}}</ion-label>
+        @if(!authService.isMD()){<ion-label>{{ 'Import users' | translate}}</ion-label>}
       </ion-tab-button>
       @if(authService.isAllowed('2fa.manage')){
       <ion-tab-button tab="crx2fa">
         <ion-icon name="key" ></ion-icon>
-        <ion-label>{{ 'CRX2fa' | translate }}</ion-label>
+        @if(!authService.isMD()){<ion-label>{{ 'CRX2fa' | translate }}</ion-label>}
       </ion-tab-button>
       }
       @if(authService.isAllowed('parent.manage')){
       <ion-tab-button tab="parents">
         <ion-icon name="people-circle" ></ion-icon>
-        <ion-label>{{ 'Parents' | translate }}</ion-label>
+        @if(!authService.isMD()){<ion-label>{{ 'Parents' | translate }}</ion-label>}
       </ion-tab-button>
       }
       @if(authService.isAllowed('idrequest.manage')){
       <ion-tab-button tab="idcards">
         <ion-icon name="id-card" ></ion-icon>
-        <ion-label>{{ 'ID-Cards' | translate }}</ion-label>
+        @if(!authService.isMD()){<ion-label>{{ 'ID-Cards' | translate }}</ion-label>}
       </ion-tab-button>
       }
     </ion-tab-bar>

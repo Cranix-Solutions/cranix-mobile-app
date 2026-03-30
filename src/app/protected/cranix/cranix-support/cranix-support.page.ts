@@ -21,6 +21,7 @@ export class CranixSupportPage implements OnInit {
   selectedArticle: Article;
   selectedTicket: Ticket;
   tickets: Ticket[];
+  allTickets: Ticket[];
   action: string = 'tickets'
   stateOfInterest: string = "NWR"
   newText: string;
@@ -40,8 +41,9 @@ export class CranixSupportPage implements OnInit {
   getTickets() {
     this.supportSrvice.getTickets(this.stateOfInterest).subscribe(
       (val) => {
-        this.tickets = val
+        this.allTickets = val
         this.action = 'tickets'
+        this.onQuickFilterChanged();
       }
     )
   }
@@ -56,7 +58,14 @@ export class CranixSupportPage implements OnInit {
     this.getTickets()
   }
   onQuickFilterChanged() {
-
+    let filteredTickets = []
+    let filter = (<HTMLInputElement>document.getElementById("ticketFilter")).value.toLowerCase();
+    for(let ticket of this.allTickets){
+      if(ticket.title.toLowerCase().indexOf(filter) > -1){
+        filteredTickets.push(ticket)
+      }
+    }
+    this.tickets = filteredTickets
   }
 
   selectTicket(ticket: Ticket) {

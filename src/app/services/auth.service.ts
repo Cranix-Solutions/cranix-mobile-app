@@ -493,7 +493,7 @@ export class AuthenticationService {
     async showInfo() {
         const toast = this.toastController.create({
             position: "middle",
-            message: 'Copyright 2025 Helmuth and Peter Varkoly, Nuremberg Germany<br>' +
+            message: 'Copyright 2026 Helmuth and Peter Varkoly, Nuremberg Germany. Built: ' +
                 'VERSION-PLACE-HOLDER',
             color: "success",
             duration: 5000

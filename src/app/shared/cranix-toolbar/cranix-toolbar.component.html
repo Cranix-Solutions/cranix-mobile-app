@@ -4,62 +4,74 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     @if(authService.isMD()){
-      <ion-title>{{title}}</ion-title>
-      <ion-buttons slot="end">
-        <ion-button *ngIf="authService.isAllowed('system.support')" fill="clear" (click)="route.navigate(['/cranix-support'])">
-          @if(newResponses == 0 ) {
-            <ion-icon color="success" name="help-buoy"></ion-icon>
-          }@else{
-            <ion-icon color="danger" name="help-buoy"></ion-icon>
-            <ion-badge color="danger">{{newResponses}}</ion-badge>
-          }
-        </ion-button>
-        <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
-          <ion-icon color="tertiary" name="book"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" (click)="openPopover()">
-          <ion-icon name="person"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    }@else{
-      <ion-title>
-        {{authService.session.fullName}} {{authService.session.instituteName}} {{authService.session.roomName}} <span class="title-class">{{title}}</span>
-      </ion-title>
-      <ion-buttons slot="end">
-        @if(authService.isAllowed('cephalix.ticket')){
-        <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
-          @if(newTickets == 0){
-            <ion-icon color="success" name="ticket"></ion-icon>
-          }@else{
-            <ion-icon color="danger" name="ticket"></ion-icon>
-            <ion-badge color="danger">{{newTickets}}</ion-badge>
-          }
-        </ion-button>
-        } @else if(authService.isAllowed('system.support')){
-        <ion-button fill="clear" (click)="route.navigate(['/cranix-support'])" matTooltip="{{ 'Support questions' | translate }}">
-          @if(newResponses == 0 ) {
-            <ion-icon color="success" name="help-buoy"></ion-icon>
-          }@else{
-            <ion-icon color="danger" name="help-buoy"></ion-icon>
-            <ion-badge color="danger">{{newResponses}}</ion-badge>
-          }
-        </ion-button>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end">
+      @if(authService.isAllowed('cephalix.ticket')){
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
+        @if(newTickets == 0){
+        <ion-icon color="success" name="ticket"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="ticket"></ion-icon>
+        <ion-badge color="danger">{{newTickets}}</ion-badge>
         }
-        <ion-button fill="clear" (click)="reloadAllObjects()"
-          matTooltip="{{ 'Refresh all objects' | translate }}">
-          <ion-icon color="tertiary" name="refresh"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
-          <ion-icon color="tertiary" name="book"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" (click)="retirectToSettings($event)"
-          matTooltip="{{ 'Edit user preferences' | translate }}">
-          <ion-icon color="success" name="person"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" (click)="logOut()">
-          <ion-icon color="danger" name="log-out"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+      </ion-button>
+      } @else if(authService.isAllowed('system.support')){
+      <ion-button fill="clear"  (click)="route.navigate(['/cranix-support'])">
+        @if(newResponses == 0 ) {
+        <ion-icon color="success" name="help-buoy"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="help-buoy"></ion-icon>
+        <ion-badge color="danger">{{newResponses}}</ion-badge>
+        }
+      </ion-button>
+      }
+      <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
+        <ion-icon color="tertiary" name="book"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="openPopover()">
+        <ion-icon name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    }@else{
+    <ion-title>
+      {{authService.session.fullName}} {{authService.session.instituteName}} {{authService.session.roomName}} <span
+        class="title-class">{{title}}</span>
+    </ion-title>
+    <ion-buttons slot="end">
+      @if(authService.isAllowed('cephalix.ticket')){
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
+        @if(newTickets == 0){
+        <ion-icon color="success" name="ticket"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="ticket"></ion-icon>
+        <ion-badge color="danger">{{newTickets}}</ion-badge>
+        }
+      </ion-button>
+      } @else if(authService.isAllowed('system.support')){
+      <ion-button fill="clear" (click)="route.navigate(['/cranix-support'])"
+        matTooltip="{{ 'Support questions' | translate }}">
+        @if(newResponses == 0 ) {
+        <ion-icon color="success" name="help-buoy"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="help-buoy"></ion-icon>
+        <ion-badge color="danger">{{newResponses}}</ion-badge>
+        }
+      </ion-button>
+      }
+      <ion-button fill="clear" (click)="reloadAllObjects()" matTooltip="{{ 'Refresh all objects' | translate }}">
+        <ion-icon color="tertiary" name="refresh"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
+        <ion-icon color="tertiary" name="book"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="retirectToSettings($event)"
+        matTooltip="{{ 'Edit user preferences' | translate }}">
+        <ion-icon color="success" name="person"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="logOut()">
+        <ion-icon color="danger" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     }
   </ion-toolbar>
 </ion-header>
@@ -69,16 +81,16 @@
     <ion-list>
       <ion-item button fill="clear" (click)="reloadAllObjects()">
         <ion-icon color="tertiary" name="refresh"></ion-icon>
-          <ion-label>{{ 'Refresh all objects' | translate }}</ion-label>
-        </ion-item>
-        <ion-item button fill="clear" (click)="retirectToSettings($event)">
-          <ion-icon color="success" name="person"></ion-icon>
-          <ion-label>{{ 'Edit user preferences' | translate }}"</ion-label>
-        </ion-item>
-        <ion-item button fill="clear" (click)="logOut()">
-          <ion-icon color="danger" name="log-out"></ion-icon>
-          <ion-label>{{'Log out'|translate}} </ion-label>
-        </ion-item>
+        <ion-label>{{ 'Refresh all objects' | translate }}</ion-label>
+      </ion-item>
+      <ion-item button fill="clear" (click)="retirectToSettings($event)">
+        <ion-icon color="success" name="person"></ion-icon>
+        <ion-label>{{ 'Edit user preferences' | translate }}"</ion-label>
+      </ion-item>
+      <ion-item button fill="clear" (click)="logOut()">
+        <ion-icon color="danger" name="log-out"></ion-icon>
+        <ion-label>{{'Log out'|translate}} </ion-label>
+      </ion-item>
     </ion-list>
   </ng-template>
 </ion-popover>
