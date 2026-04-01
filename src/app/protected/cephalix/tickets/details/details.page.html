@@ -33,7 +33,7 @@
   </ion-buttons>
   }
 </ion-toolbar>
-<ion-toolbar>
+<ion-card>
   <ion-grid style="padding: 0px;">
     <ion-row>
       <ion-col style="padding: 0px;">
@@ -50,6 +50,7 @@
             (onChange)="setInstitute()" [itemTextField]="['name','locality']"></cranix-search>
         </ion-item>
       </ion-col>
+      @if(authService.isAllowed('customer.manage')){
       <ion-col style="padding: 0px;">
         <ion-item lines="none">
           <ion-label [position]="authService.settings.labelPlacement">{{'Customer'| translate}}</ion-label>
@@ -58,9 +59,10 @@
           </cranix-search>
         </ion-item>
       </ion-col>
+      }
     </ion-row>
   </ion-grid>
-</ion-toolbar>
+</ion-card>
 <ion-content>
   @if(authService.isMD()){
   <ion-fab slot="fixed" vertical="center" horizontal="end">

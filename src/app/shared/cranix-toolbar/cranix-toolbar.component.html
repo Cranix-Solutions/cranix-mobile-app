@@ -6,7 +6,7 @@
     @if(authService.isMD()){
     <ion-title>{{title}}</ion-title>
     <ion-buttons slot="end">
-      @if(authService.isAllowed('cephalix.ticket')){
+      @if(authService.isAllowed('ticket.manage')){
       <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
         @if(newTickets == 0){
         <ion-icon color="success" name="ticket"></ion-icon>
@@ -38,7 +38,7 @@
         class="title-class">{{title}}</span>
     </ion-title>
     <ion-buttons slot="end">
-      @if(authService.isAllowed('cephalix.ticket')){
+      @if(authService.isAllowed('ticket.manage')){
       <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
         @if(newTickets == 0){
         <ion-icon color="success" name="ticket"></ion-icon>

@@ -58,7 +58,7 @@ export class CranixToolbarComponent  implements OnDestroy {
   }
   ngAfterViewInit() {
     console.log("Toolbar initialized")
-    if(this.authService.isAllowed('cepahlix.ticket')){
+    if(this.authService.isAllowed('ticket.manage')){
       this.countTickets();
       interval(30000).pipe(takeWhile(() => this.alive)).subscribe((func => {
         this.countTickets();

@@ -109,9 +109,15 @@ export class CranixListComponent implements OnInit, OnChanges {
         await new Promise(f => setTimeout(f, 1000));
       }
     }
-    if(this.objectType == '2fa'){
+    if (this.objectType == '2fa') {
       this.hiddenColumns = this.hiddenColumns.filter((val) => val != 'creatorId')
       this.hiddenColumns.push('address')
+    }
+    if (this.objectType == 'ticket') {
+      this.hiddenColumns.push('firstname')
+      if (!this.authService.isAllowed('customer.manage')) {
+        this.hiddenColumns.push('cephalixCustomerId')
+      }
     }
     this.objectKeys = getObjectKeys(this.objectType);
     this.createColumnDefs();
@@ -136,11 +142,11 @@ export class CranixListComponent implements OnInit, OnChanges {
         cellRenderer = CustomerActionRenderer; break
       }
       case 'device': {
-        cellRenderer = DeviceActionBTNRenderer; actionWidth=175; break
+        cellRenderer = DeviceActionBTNRenderer; actionWidth = 175; break
       }
       case 'education/group':
       case 'group': {
-        cellRenderer = GroupActionBTNRenderer; actionWidth=175; break
+        cellRenderer = GroupActionBTNRenderer; actionWidth = 175; break
       }
       case 'education/guestUser': {
         cellRenderer = EditBTNRenderer; break
@@ -153,13 +159,13 @@ export class CranixListComponent implements OnInit, OnChanges {
       }
       case 'education/user':
       case 'user': {
-        cellRenderer = UserActionBTNRenderer; actionWidth=175; break
+        cellRenderer = UserActionBTNRenderer; actionWidth = 175; break
       }
       case 'printer': {
         cellRenderer = PrinterActionBTNRenderer; break
       }
       case 'room': {
-        cellRenderer = RoomActionBTNRenderer; actionWidth=175; break
+        cellRenderer = RoomActionBTNRenderer; actionWidth = 175; break
       }
       case 'package': {
         cellRenderer = SoftwareEditBTNRenderer; break
@@ -197,23 +203,23 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'direct': case 'login': case 'portal': case 'printing': case 'proxy':
         case 'ignoreNetbios': case 'released':
         case 'createAdHocRoom': case 'privateGroup': case 'studentsOnly': {
-            col['cellRenderer'] = YesNoBTNRenderer; break
+          col['cellRenderer'] = YesNoBTNRenderer; break
         }
         case 'created': case 'modified':
         case 'validFrom': case 'validUntil':
-        case 'lastUpdate': 
+        case 'lastUpdate':
         case 'start': case 'end':
         case 'startRegistration': case 'endRegistration':
-        {
+          {
             col['valueFormatter'] = params => {
               try {
                 return new Date(params.value).toISOString().substring(0, 16);
-              }catch{
+              } catch {
                 return ""
               }
             }
             break
-        }
+          }
         case 'cephalixCustomerId': {
           col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('customer', params.data.cephalixCustomerId); break;
         }
@@ -342,7 +348,7 @@ export class CranixListComponent implements OnInit, OnChanges {
         }
         case 'teachingSubject': {
           col['valueGetter'] = function (params) {
-            if(params.data.teachingSubject && params.data.teachingSubject.name){
+            if (params.data.teachingSubject && params.data.teachingSubject.name) {
               return params.data.teachingSubject.name
             }
           }

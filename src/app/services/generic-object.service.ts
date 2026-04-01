@@ -205,6 +205,9 @@ export class GenericObjectService {
 
   idToName(objectType, objectId): string {
     objectType = this.idToPipe(objectType)
+    if(!this.allObjects[objectType]) {
+      return "";
+    }
     for (let obj of this.allObjects[objectType]) {
       if (obj.id === objectId) {
         if (obj.name) {
@@ -218,6 +221,9 @@ export class GenericObjectService {
     return objectId;
   }
   idToUid(objectType, objectId) {
+    if(!this.allObjects[objectType]) {
+      return "";
+    }
     for (let obj of this.allObjects[objectType]) {
       if (obj.id == objectId) {
         return obj.uid;
