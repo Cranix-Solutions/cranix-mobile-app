@@ -64,7 +64,7 @@ export class CranixToolbarComponent  implements OnDestroy {
         this.countTickets();
       }))
     }
-    if(this.authService.isAllowed('system.support')){
+    if(this.authService.isAllowed('cranix.support')){
       this.countResponses();
       interval(30000).pipe(takeWhile(() => this.alive)).subscribe((func => {
         this.countResponses();

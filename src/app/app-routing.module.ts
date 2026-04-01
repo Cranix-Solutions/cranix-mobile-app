@@ -30,8 +30,8 @@ const routes: Routes = [
     loadChildren: () => import('./protected/logout/logout.module').then( m => m.LogoutPageModule)
   },
   {
-    path: 'cranix-support',
-    loadChildren: () => import('./protected/cranix/cranix-support/cranix-support.module').then( m => m.CranixSupportPageModule)
+    path: 'cephalix-support',
+    loadChildren: () => import('./protected/cranix/cephalix-support/cephalix-support.module').then( m => m.CephalixSupportPageModule)
   }
 ];
 

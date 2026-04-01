@@ -5,8 +5,8 @@ import { QuillModule } from 'ngx-quill'
 import { IonicModule } from '@ionic/angular';
 
 import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
-import { CranixSupportPageRoutingModule } from './cranix-support-routing.module';
-import { CranixSupportPage } from './cranix-support.page';
+import { CephalixSupportPageRoutingModule } from './cephalix-support-routing.module';
+import { CephalixSupportPage } from './cephalix-support.page';
 
 @NgModule({
   imports: [
@@ -14,9 +14,9 @@ import { CranixSupportPage } from './cranix-support.page';
     FormsModule,
     IonicModule,
     CranixSharedModule,
-    CranixSupportPageRoutingModule,
+    CephalixSupportPageRoutingModule,
     QuillModule.forRoot()
   ],
-  declarations: [CranixSupportPage]
+  declarations: [CephalixSupportPage]
 })
-export class CranixSupportPageModule {}
+export class CephalixSupportPageModule {}

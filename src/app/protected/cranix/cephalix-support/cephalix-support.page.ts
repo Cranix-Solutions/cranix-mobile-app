@@ -9,11 +9,11 @@ import { SupportRequest } from 'src/app/shared/models/data-model';
 
 @Component({
   standalone: false,
-  selector: 'app-cranix-support',
-  templateUrl: './cranix-support.page.html',
-  styleUrls: ['./cranix-support.page.scss'],
+  selector: 'app-cephalix-support',
+  templateUrl: './cephalix-support.page.html',
+  styleUrls: ['./cephalix-support.page.scss'],
 })
-export class CranixSupportPage implements OnInit {
+export class CephalixSupportPage implements OnInit {
 
   articleOpen = {};
   articles: Article[];

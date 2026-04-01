@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CranixSupportPage } from './cranix-support.page';
+import { CephalixSupportPage } from './cephalix-support.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CranixSupportPage
+    component: CephalixSupportPage
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CranixSupportPageRoutingModule {}
+export class CephalixSupportPageRoutingModule {}
