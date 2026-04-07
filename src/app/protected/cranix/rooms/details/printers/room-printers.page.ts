@@ -49,7 +49,6 @@ export class RoomPrintersPage implements OnInit {
             if (val) {
               this.printers.defaultPrinter = val;
             }
-            console.log(this.printers);
           }
         )
       }
@@ -70,7 +69,6 @@ export class RoomPrintersPage implements OnInit {
   }
 
   setPrinters() {
-    console.log(this.printers)
     let printers = {
       defaultPrinter: [this.printers.defaultPrinter.id],
       availablePrinters: this.printers.availablePrinters.map(a => a.id)

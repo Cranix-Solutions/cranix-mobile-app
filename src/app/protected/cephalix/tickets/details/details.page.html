@@ -1,39 +1,52 @@
 <cranix-toolbar title="{{'Manage tickets' | translate}}"></cranix-toolbar>
 @if(ticket){
-<ion-toolbar class="page-toolbar-full">
-  @if(authService.isMD()){
-  <ion-title>
-    #{{ticket.id}}, {{ticket.created | date:'yyyy-MM-dd HH:mm'}}<br>
-    {{ ticket.title }}
-  </ion-title>
-  }@else{
-  <ion-title>#{{ticket.id}}, {{ticket.created | date:'yyyy-MM-dd HH:mm'}}, {{ticket.title}}<br>
-    @if(institute) { {{ institute.name }} {{ institute.regCode }} {{ institute.ipVPN }}<br> }
-    {{ticket.lastname}},{{ticket.email}}
-  </ion-title>
-  <ion-buttons slot="end">
-    <ion-button fill="clear" (click)="router.navigate(['/pages/cephalix/tickets'])">
-      <ion-icon slot="icon-only" name="caret-back"></ion-icon>
-    </ion-button>
-    @if(institute && institute.ipVPN && institute.ipVPN != ''){
-    <ion-button color="secondary" fill="clear" size="small" (click)="routeToInstitute($event)"
-      matTooltip="{{'Connect the institute in a separate window.' | translate }}">
-      <ion-icon name="create"></ion-icon>
-    </ion-button>
-    }<ion-button fill="clear" (click)="openMergeTicket()">
-      <ion-icon color="warning" slot="icon-only" name="git-merge"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" (click)="assigneTicketToMe()">
-      <ion-icon color="warning" slot="icon-only" name="lock-closed"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" matTooltip="{{'Close the ticket.' | translate }}"
-      (click)="objectService.deleteObjectDialog(this.ticket, 'ticket', '/pages/cephalix/tickets')">
-      <ion-icon color="danger" slot="icon-only" name="checkmark-done-circle"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-  }
-</ion-toolbar>
 <ion-card>
+  <ion-toolbar class="page-toolbar-full">
+    @if(authService.isMD()){
+    <ion-title>
+      #{{ticket.id}}, {{ticket.created | date:'yyyy-MM-dd HH:mm'}}<br>
+      {{ ticket.title }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" id="ticket-info">
+        <ion-icon slot="icon-only" name="information-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-popover trigger="ticket-info" triggerAction="click">
+      <ng-template>
+        <ion-content class="ion-padding">
+          @if(institute) { {{ institute.name }}<br>{{ institute.ipVPN }}<br>}
+          {{ticket.email}} {{ticket.lastname}}, {{ticket.firstname}}
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+    }@else{
+    <ion-title>#{{ticket.id}}, {{ticket.created | date:'yyyy-MM-dd HH:mm'}}, {{ticket.title}}<br>
+      @if(institute) { {{ institute.name }} {{ institute.regCode }} {{ institute.ipVPN }}<br> }
+      {{ticket.lastname}},{{ticket.email}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="router.navigate(['/pages/cephalix/tickets'])">
+        <ion-icon slot="icon-only" name="caret-back"></ion-icon>
+      </ion-button>
+      @if(institute && institute.ipVPN && institute.ipVPN != ''){
+      <ion-button color="secondary" fill="clear" size="small" (click)="routeToInstitute($event)"
+        matTooltip="{{'Connect the institute in a separate window.' | translate }}">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+      }<ion-button fill="clear" (click)="openMergeTicket()">
+        <ion-icon color="warning" slot="icon-only" name="git-merge"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="assigneTicketToMe()">
+        <ion-icon color="warning" slot="icon-only" name="lock-closed"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" matTooltip="{{'Close the ticket.' | translate }}"
+        (click)="objectService.deleteObjectDialog(this.ticket, 'ticket', '/pages/cephalix/tickets')">
+        <ion-icon color="danger" slot="icon-only" name="checkmark-done-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    }
+  </ion-toolbar>
   <ion-grid style="padding: 0px;">
     <ion-row>
       <ion-col style="padding: 0px;">
@@ -65,7 +78,7 @@
 </ion-card>
 <ion-content>
   @if(authService.isMD()){
-  <ion-fab slot="fixed" vertical="center" horizontal="end">
+  <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true">
     <ion-fab-button size="small">
       <ion-icon name="arrow-back-circle"></ion-icon>
     </ion-fab-button>
@@ -90,8 +103,6 @@
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
-  @if(institute) { {{ institute.name }}<br>{{ institute.ipVPN }}<br>}
-  {{ticket.email}} {{ticket.lastname}}, {{ticket.firstname}}
   }
   @for(article of articles; track article.id){
   <ion-card>
@@ -133,9 +144,9 @@
             <ion-icon slot="icon-only" name="mail-open"></ion-icon>
             }
           </ion-button>
-          <ion-button fill="clear" (click)="deleteArticle(article)">
+          <!-- ion-button fill="clear" (click)="deleteArticle(article)">
             <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
-          </ion-button>
+          </ion-button -->
         </ion-buttons>
       </ion-toolbar>
     </ion-card-header>
