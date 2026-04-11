@@ -73,7 +73,7 @@ export class Ticket {
 }
 
 export class Article {
-    id?: number;
+    id?: number = 0;
     cephalixTicketId: number = 0;
     title: string = "";
     sender: string = "";
@@ -91,7 +91,7 @@ export class Article {
     constructor() {}
 }
 export class InstituteStatus {
-    id?: number;
+    id?: number = 0;
     cephalixInstituteId: number = 0;
     errorMessages?: string = "";
     rootUsage: string ="";
@@ -109,7 +109,7 @@ export class InstituteStatus {
     constructor() {}
 }
 export class Repository {
-    id?: number;
+    id?: number = 0;
     name: string = "";
     repositoryType: string = "";
     description: string = "";
@@ -118,7 +118,7 @@ export class Repository {
 }
 
 export class CephalixCare {
-    id?: number;
+    id?: number = 0;
     cephalixInstituteId: number = 0;
     description: string = "";
     access: string = "";
@@ -127,7 +127,7 @@ export class CephalixCare {
 }
 
 export class DynDns {
-    id?: number;
+    id?: number = 0;
     cephalixInstituteId: number = 0;
     hostname: string = "";
     domain: string = "cephalix.eu";
@@ -139,7 +139,7 @@ export class DynDns {
 }
 
 export class Notice {
-    id?: number;
+    id?: number = 0;
     title:       string = "";
     noticeType:  string = "";
     text:        string = "";

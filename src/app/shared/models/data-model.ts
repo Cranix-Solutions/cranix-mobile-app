@@ -11,7 +11,7 @@ export class Hwconf {
 }
 
 export class Partition {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	description: string = "";
 	os: string = "";
@@ -23,7 +23,7 @@ export class Partition {
 }
 
 export class User {
-	id?: number;
+	id?: number = 0;
 	uid?: string = "";
 	uuid?: string = "";
 	surName: string = "";
@@ -90,7 +90,7 @@ export class AccessInRooms {
 }
 
 export class Room {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	description: string = "";
 	ignoreNetbios: boolean = false;
@@ -135,7 +135,7 @@ export class SoftwareFullName {
 	fullName: string = "";
 }
 export class Software {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	description: string = "";
 	weight: number = 0;
@@ -178,7 +178,7 @@ export class InstallStateDev {
 }
 
 export class License {
-	id?: number;
+	id?: number = 0;
 	softwareId: number = 0;
 	licenseType: string = "";
 	count: number = 0;
@@ -187,7 +187,7 @@ export class License {
 	constructor() { }
 }
 export class Device {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	place?: number = 0;
 	row?: number = 0;
@@ -206,7 +206,7 @@ export class Device {
 	constructor() { }
 }
 export class Printer {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	ip: string = "";
 	deviceName: string = "";
@@ -230,7 +230,7 @@ export class Drivers {
 	constructor() { }
 }
 export class Installation {
-	id?: number;
+	id?: number = 0;
 	name?: string = "";
 	description?: string = "";
 	categoryType?: string = "";
@@ -251,7 +251,7 @@ export class Permission {
 }
 
 export class AccessStatus {
-	id?: number;
+	id?: number = 0;
 	accessType?: string = "";
 	action?: string = "";
 	roomId: any = null;
@@ -273,7 +273,7 @@ export class AccessStatus {
 }
 
 export class Announcenement {
-	id?: number;
+	id?: number = 0;
 	issue: string = "";
 	keywords: string = "";
 	text: string = "";
@@ -286,7 +286,7 @@ export class Announcenement {
 }
 
 export class TaskResponse {
-	id?: number;
+	id?: number = 0;
 	parentId: number = 0;
 	creatorId: number = 0;
 	text: string = "";
@@ -297,7 +297,7 @@ export class TaskResponse {
 }
 
 export class FAQ {
-	id?: number;
+	id?: number = 0;
 	abstract: string = "";
 	issue: string = "";
 	text: string = "";
@@ -307,7 +307,7 @@ export class FAQ {
 }
 
 export class Contact {
-	id?: number;
+	id?: number = 0;
 	email: string = "";
 	issue: string = "";
 	name: string = "";
@@ -357,7 +357,7 @@ export class DNSRecord {
 }
 
 export class GuestUsers {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	description: string = "";
 	count: number = 0;
@@ -371,7 +371,7 @@ export class GuestUsers {
 }
 
 export class Category {
-	id?: number;
+	id?: number = 0 ;
 	description: string = "";
 	name: string = "";
 	categoryType: string = "";
@@ -404,7 +404,7 @@ export class SystemConfig {
 }
 
 export class CrxConfig {
-	id: number;
+	id: number = 0;
 	objectType: string;
 	objectId: number;
 	keyword: string;
@@ -413,7 +413,7 @@ export class CrxConfig {
 }
 
 export class EduRoom {
-	id?: number;
+	id?: number = 0;
 	name: string = "";
 	description: string = "";
 	hwconfId: number = 0;
@@ -499,7 +499,7 @@ export class TeachingSubject {
 }
 
 export class CrxQuestionAnswer {
-	id?: number
+	id?: number = 0
 	answer: string = ""
 	correct: boolean = false
 	constructor(answer?: string) {
@@ -532,7 +532,7 @@ export class CrxChallenge {
 }
 
 export class CrxChallengeAnswer {
-	id: number
+	id: number= 0
 	creator_id: number = 0
 	correct: boolean = false
 	constructor() { }

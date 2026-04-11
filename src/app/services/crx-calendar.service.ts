@@ -111,14 +111,14 @@ export class CrxCalendarService {
       const dateObj = startVal instanceof Date ? startVal : new Date(startVal);
       if (isNaN(dateObj.getTime())) continue; // ungültiges Datum überspringen
       const date = this.formatDateKey(dateObj);
-      const hour = dateObj.getHours()
+      const time = dateObj.getHours() +':'+dateObj.getMinutes()
       if (!groups[date]) {
         groups[date] = {};
       }
-      if (!groups[date][hour]) {
-        groups[date][hour] = []
+      if (!groups[date][time]) {
+        groups[date][time] = []
       }
-      groups[date][hour].push(ev);
+      groups[date][time].push(ev);
     }
     return groups;
   }
@@ -168,30 +168,34 @@ export class CrxCalendarService {
     return ""
   }
   
-  public createCalendarFile(events: any[]): void {
-    const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  public formatDate(date: any){
+    const tmp = new Date(date)
+    return tmp.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  }
+  public createCalendarFile(events: any[], title: string): void {
   
-    const eventBlocks = events.map(event => `
-  BEGIN:VEVENT
-  SUMMARY:${event.title}
-  DTSTART:${formatDate(event.start)}
-  DTEND:${formatDate(event.end)}
-  LOCATION:${event.location ?? ""}
-  END:VEVENT`).join("");
+    const eventBlocks = events.map(event => `BEGIN:VEVENT
+SUMMARY:${event.title}
+DSTAMP:${this.formatDate(event.modified)}
+DTSTART:${this.formatDate(event.start)}
+DTEND:${this.formatDate(event.end)}
+UID:${event.uuid}
+LOCATION:${event.room ? event.room.name: "Not known"}
+END:VEVENT
+`).join("");
   
-    const icsContent = `
-  BEGIN:VCALENDAR
-  VERSION:2.0
-  ${eventBlocks}
-  END:VCALENDAR
-  `.trim();
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PROPID:-//MyApp//EN
+${eventBlocks}
+END:VCALENDAR`.trim();
   
     const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
   
     const link = document.createElement("a");
     link.href = url;
-    link.download = "events.ics";
+    link.download = `${title}.ics`;
     link.click();
   
     URL.revokeObjectURL(url);

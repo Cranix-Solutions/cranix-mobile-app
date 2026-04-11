@@ -4,11 +4,12 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { Course, CrxCalendar, Room } from 'src/app/shared/models/data-model';
+import { Course, CrxCalendar } from 'src/app/shared/models/data-model';
 import { CalendarOptions, DateSelectArg, EventChangeArg, EventClickArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridWeek from '@fullcalendar/timegrid';
 import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
+import { WindowRef } from 'src/app/shared/models/ohters';
 @Component({
   standalone: false,
   selector: 'app-courses',
@@ -24,20 +25,23 @@ export class CoursesComponent implements OnInit {
   isModalOpen: boolean = false
   isUpcomming: boolean = false
   isModified: boolean = false
+  nativeWindow: any;
   newAppointment: boolean = true;
   selectedAppointment: CrxCalendar;
   selectedCourse: Course;
   title: string;
 
   constructor(
+    public win: WindowRef,
     private alertController: AlertController,
     public authService: AuthenticationService,
-    private calendarService: CrxCalendarService,
+    public calendarService: CrxCalendarService,
     public courseService: CourseService,
     public objectService: GenericObjectService,
     public utilService: UtilsService
   ) {
     this.context = { componentParent: this }
+    this.nativeWindow = win.getNativeWindow();
   }
 
   ngOnInit() {
@@ -150,6 +154,8 @@ export class CoursesComponent implements OnInit {
       this.selectedCourse = course
       this.title = "Edit Course"
       let start = new Date(this.selectedCourse.startDate).valueOf()
+      this.selectedCourse.startRegistration = this.calendarService.toIonISOString(new Date(course.startRegistration));
+      this.selectedCourse.endRegistration = this.calendarService.toIonISOString(new Date(course.endRegistration));
       this.isUpcomming = (now.valueOf() < start)
     }
     this.createCalendarOptions();
@@ -178,8 +184,13 @@ export class CoursesComponent implements OnInit {
    * Apply all changes.
    */
   addEditCourse(modal: any) {
-    console.log(this.selectedCourse)
+    this.selectedCourse.startRegistration = new Date(this.selectedCourse.startRegistration)
+    this.selectedCourse.endRegistration = new Date(this.selectedCourse.endRegistration)
     this.isModified = false;
+    for(let app of this.selectedCourse.appointments){
+      app.groups = this.selectedCourse.groups
+      app.users = this.selectedCourse.users
+    }
     if (this.selectedCourse.id) {
       for(let app of this.selectedCourse.appointments){
         if(app.id < 1){
@@ -321,5 +332,72 @@ export class CoursesComponent implements OnInit {
         this.objectService.responseMessage(val2)
       })
     })
+  }
+
+  createTable(course: Course){
+    console.log(course)
+    const appointments = this.calendarService.groupEventsByDate(course.appointments)
+    console.log(appointments)
+    let html = '<h2>' + course.title +  ' ' + course.startDate + ' ' + course.endDate + '</h2>\n'
+    html += '<table>\n'
+    let datum = '<tr><th></th>'
+    let owner = '<tr><td></td>'
+    let timeline = '<tr><td></td>'
+    for( let date of Object.keys(appointments).sort()){
+      for( let time of Object.keys(appointments[date]).sort()){
+        for( let app of appointments[date][time]){
+          datum += '<th>' + date + '</th>'
+          timeline += '<td>' +time+ '</td>'
+          owner += '<td>' + (app.creator ? app.creator.fullName : '')  + '</td>'
+        }
+      }
+    }
+    html += datum + '</tr>\n'
+    html += timeline + '</tr>\n'
+    html += owner + '</tr>\n'
+    let candidates = {}
+    let col = 0
+    for( let date of Object.keys(appointments).sort()){
+      for( let time of Object.keys(appointments[date]).sort()){
+        for( let app of appointments[date][time]){
+          let row = 0
+          for( let user of app.users){
+            if(!candidates[row]) {
+              candidates[row] = {}
+            }
+            candidates[row][col] = user.surName + ', ' + user.givenName
+            row ++;
+          }
+          col++;
+        }
+      }
+      console.log(col)
+    }
+    for( let i = 0; i < course.countOfParticipants; i++){
+      html += '<tr><td>' + (i +1 ) + '</td>'
+      for(let j=0; j < col; j++){
+        if(candidates[i] && candidates[i][j]){
+          html += '<td>'+candidates[i][j]['fullName']+'</td>'
+        }else{
+          html += '<td>___</td>'
+        }
+      }
+      html += '</tr>\n'
+    }
+    html += '</table>'
+    console.log(html)
+    var hostname = window.location.hostname;
+    var protocol = window.location.protocol;
+    var port = window.location.port;
+    sessionStorage.setItem('printPage', html);
+    if (port) {
+      this.nativeWindow.open(`${protocol}//${hostname}:${port}`);
+      sessionStorage.removeItem('shortName');
+    } else {
+      this.nativeWindow.open(`${protocol}//${hostname}`);
+      sessionStorage.removeItem('shortName');
+    }
+    sessionStorage.removeItem('printPage');
+    sessionStorage.removeItem('instituteName');
   }
 }

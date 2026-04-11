@@ -21,6 +21,14 @@
           matTooltip="{{'Send mail to the invited groups and users'|translate}}">
           <ion-icon slot="icon-only" name="mail"></ion-icon>
         </ion-button>
+        <ion-button fill="clear" size="small" (click)="calendarService.createCalendarFile(selectedCourse.appointments, selectedCourse.title)"
+          matTooltip="{{'Save appointments into your calendar'|translate}}">
+          <ion-icon slot="icon-only" name="calendar-number"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" size="small" (click)="createTable(selectedCourse)"
+        matTooltip="{{'Print the appointments'|translate}}">
+        <ion-icon slot="icon-only" name="print"></ion-icon>
+      </ion-button>
         }
         @if(selectedCourse.id){
         <ion-button fill="clear" size="small" (click)="deleteSelectedCourse(addEditModal)">
