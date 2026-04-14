@@ -172,7 +172,7 @@ export class CrxCalendarService {
     const tmp = new Date(date)
     return tmp.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   }
-  public createCalendarFile(events: any[], title: string): void {
+  public createCalendarFile(events: any[], title: string): string {
   
     const eventBlocks = events.map(event => `BEGIN:VEVENT
 SUMMARY:${event.title}
@@ -184,12 +184,15 @@ LOCATION:${event.room ? event.room.name: "Not known"}
 END:VEVENT
 `).join("");
   
-    const icsContent = `BEGIN:VCALENDAR
+    return `BEGIN:VCALENDAR
 VERSION:2.0
 PROPID:-//MyApp//EN
 ${eventBlocks}
 END:VCALENDAR`.trim();
+  }
   
+  public downloadCalendarFile(events: any[], title: string) {
+    const icsContent = this.createCalendarFile(events, title)
     const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
   

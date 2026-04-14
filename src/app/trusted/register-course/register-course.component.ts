@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
-import { Course, User } from 'src/app/shared/models/data-model';
+import { Course, CrxCalendar, User } from 'src/app/shared/models/data-model';
 import { EventClickArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridWeek from '@fullcalendar/timegrid';
@@ -21,6 +21,7 @@ export class RegisterCourseComponent implements OnInit {
   selectedCourse: Course
   calendarOptions: any = {}
   events: any[] = []
+  myEvents: CrxCalendar[] = []
   alive: boolean = true
   isOpened: boolean = true
   user: User
@@ -61,6 +62,7 @@ export class RegisterCourseComponent implements OnInit {
   }
   readData() {
     this.events = []
+    this.myEvents = []
     this.courseService.getByIdFree(this.id).subscribe(
       (val) => {
         this.lastSeen = new Date().getTime()
@@ -73,6 +75,7 @@ export class RegisterCourseComponent implements OnInit {
         this.createCalendarOptions()
         for(let app of this.selectedCourse.appointments){
           if(app.userIds.includes(this.user.id)){
+            this.myEvents.push(app)
             app['backgroundColor'] = 'blue'
           }else{
             app['backgroundColor'] = 'green'
@@ -155,6 +158,6 @@ export class RegisterCourseComponent implements OnInit {
   }
 
   calendarRegistration(){
-
+    this.calendarService.downloadCalendarFile(this.myEvents, this.selectedCourse.title)
   }
 }

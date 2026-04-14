@@ -39,6 +39,7 @@ export class CalendarComponent implements OnInit {
     customButtons: {
       selectCalendar: {
         text: this.lanaguageS.trans('Calendar'),
+        hint: this.lanaguageS.trans('Select the groups and rooms whose clanedars you want to display.'),
         click: this.selectCalendar.bind(this)
       },
       addEvent: {
@@ -114,10 +115,7 @@ export class CalendarComponent implements OnInit {
     private calendarService: CrxCalendarService,
   ) {
     console.log("CalendarComponent constructor called")
-    if (this.authService.isAllowed('calendar.manage')) {
-    } else {
-
-    }
+    this.resetFilter(true);
     if (this.roomsForEvents.length == 0) {
       for (let room of this.objectService.allObjects['room']) {
         if (room.roomType == 'AdHocAccess' || room.roomType == 'technicalRoom') {
@@ -167,7 +165,6 @@ export class CalendarComponent implements OnInit {
   loadData(): void {
     if (this.authService.isAllowed('calendar.manage')) {
       this.myGroups = this.objectService.allObjects['group']
-      this.resetFilter(true)
       this.filterEvents(true)
     } else {
       this.userS.getUsersGroups(this.authService.session.userId).subscribe(
@@ -316,8 +313,8 @@ export class CalendarComponent implements OnInit {
   }
   handleEventChange(arg: EventChangeArg) {
     this.calendarS.getById(arg.event.id).subscribe((val) => {
-      val.start = arg.event._instance?.range.start
-      val.end = arg.event._instance?.range.end
+      val.start = new Date(arg.event._instance?.range.start.getTime() + (arg.event._instance?.range.start.getTimezoneOffset() * 60000) )
+      val.end = new Date(arg.event._instance?.range.end.getTime() + (arg.event._instance?.range.end.getTimezoneOffset() * 60000))
       this.calendarS.modify(val).subscribe((val2) => {
         this.loadData()
         this.objectService.responseMessage(val2)

@@ -18,7 +18,9 @@ import { WindowRef } from 'src/app/shared/models/ohters';
 })
 export class CoursesComponent implements OnInit {
 
-  calendarOptions: CalendarOptions;
+  calendarOptions: CalendarOptions = {
+    timeZone: 'local'
+  }
   context: any;
   events: any[];
   isAddAppointmentOpen: boolean = false;
@@ -86,6 +88,7 @@ export class CoursesComponent implements OnInit {
    */
   createCalendarOptions(){
     this.calendarOptions = {
+      timeZone: 'local',
       hiddenDays: this.calendarService.notInRange(this.selectedCourse.startDate, this.selectedCourse.endDate),
       initialDate: this.selectedCourse.startDate,
       locale: 'de',
@@ -325,8 +328,9 @@ export class CoursesComponent implements OnInit {
   handleEventChange(arg: EventChangeArg) {
     console.log(arg.event)
     this.calendarService.getById(arg.event.id).subscribe((val) => {
-      val.start = this.calendarService.oneHourEarlier(arg.event._instance?.range.start)
-      val.end = this.calendarService.oneHourEarlier(arg.event._instance?.range.end)
+      val.start = new Date(arg.event._instance?.range.start.getTime() + (arg.event._instance?.range.start.getTimezoneOffset() * 60000) )
+      val.end = new Date(arg.event._instance?.range.end.getTime() + (arg.event._instance?.range.end.getTimezoneOffset() * 60000))
+      console.log(val)
       this.calendarService.modify(val).subscribe((val2) => {
         this.objectService.getAllObject('course');
         this.objectService.responseMessage(val2)

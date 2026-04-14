@@ -21,7 +21,7 @@
           matTooltip="{{'Send mail to the invited groups and users'|translate}}">
           <ion-icon slot="icon-only" name="mail"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" size="small" (click)="calendarService.createCalendarFile(selectedCourse.appointments, selectedCourse.title)"
+        <ion-button fill="clear" size="small" (click)="calendarService.downloadCalendarFile(selectedCourse.appointments, selectedCourse.title)"
           matTooltip="{{'Save appointments into your calendar'|translate}}">
           <ion-icon slot="icon-only" name="calendar-number"></ion-icon>
         </ion-button>
