@@ -5,13 +5,13 @@
             {{'user'|translate}}: {{user.surName}}, {{user.givenName}}
         </ion-title>
         <ion-buttons slot="end">
-            <ion-button fill="clear" size="small" (click)="calendarRegistration()">
+            <ion-button fill="clear" size="small" (click)="calendarRegistration()" [disabled]="myEvents.length == 0">
                 <ion-icon slot="icon-only" name="calendar"></ion-icon>
             </ion-button>
-            <ion-button fill="clear" size="small" (click)="printRegistration()">
+            <ion-button fill="clear" size="small" (click)="printRegistration()" [disabled]="myEvents.length == 0">
                 <ion-icon slot="icon-only" name="print"></ion-icon>
             </ion-button>
-            <ion-button fill="clear" size="small" (click)="mailRegistration()">
+            <ion-button fill="clear" size="small" (click)="mailRegistration()" [disabled]="myEvents.length == 0">
                 <ion-icon slot="icon-only" name="mail"></ion-icon>
             </ion-button>
         </ion-buttons>

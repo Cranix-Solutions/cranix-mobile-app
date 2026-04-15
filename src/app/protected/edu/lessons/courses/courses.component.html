@@ -43,8 +43,8 @@
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-input [(ngModel)]="selectedCourse.title" name="title" label="{{'Title'|translate}}*"
-            labelPlacement="fixed" required part="custom-label"></ion-input>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Title'|translate}}*</ion-label>
+          <ion-input [(ngModel)]="selectedCourse.title" name="title" required part="custom-label"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}*</ion-label>
@@ -88,6 +88,10 @@
             [multiple]="true"></cranix-search>
         </ion-item>
       </ion-list>
+      <div _ngcontent-ng-c1194602977="" style="display: flex; width: 100%; padding: 0px 16px 5px 16px; margin-bottom: 5px; border-bottom: 1px solid #ccc !important;">
+        <ion-label [position]="authService.settings.labelPlacement">{{'Description'|translate}}</ion-label>
+        <ion-textarea [(ngModel)]="selectedCourse.description" name="description" [autoGrow]="true"></ion-textarea>
+      </div>
       @if(selectedCourse.id){
         <full-calendar #calendar [options]="calendarOptions" [events]="events"></full-calendar>
       }
@@ -116,7 +120,7 @@
     <ion-content style="border-width: 1px;">
       <ion-list>
         <ion-item>
-          <ion-input [(ngModel)]="selectedAppointment.title" name="title" label="{{'Description'|translate}}*"
+          <ion-input [(ngModel)]="selectedAppointment.title" name="title" label="{{'Title'|translate}}*"
             labelPlacement="fixed" required part="custom-label"></ion-input>
         </ion-item>
         <ion-item>

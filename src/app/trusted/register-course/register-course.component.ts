@@ -9,6 +9,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridWeek from '@fullcalendar/timegrid';
 import { interval, takeWhile } from 'rxjs';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
+import { SystemService } from 'src/app/services/system.service';
+import { WindowRef } from 'src/app/shared/models/ohters';
+import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   standalone: false,
@@ -20,8 +23,10 @@ export class RegisterCourseComponent implements OnInit {
 
   selectedCourse: Course
   calendarOptions: any = {}
+  instituteName: string = ""
   events: any[] = []
   myEvents: CrxCalendar[] = []
+  nativeWindow: any
   alive: boolean = true
   isOpened: boolean = true
   user: User
@@ -29,14 +34,19 @@ export class RegisterCourseComponent implements OnInit {
   lastSeen: number;
 
   constructor(
-    private route: ActivatedRoute,
     private authService: AuthenticationService,
+    private langService: LanguageService,
     private objectService: GenericObjectService,
+    private route: ActivatedRoute,
+    private systemService: SystemService,
     public courseService: CourseService,
-    public calendarService: CrxCalendarService
+    public calendarService: CrxCalendarService,
+    public win: WindowRef
   ) {
+    this.systemService.getInstituteName().subscribe((val) => { this.instituteName = val })
     this.user = this.authService.session.user;
     this.id = this.route.snapshot.params['id'];
+    this.nativeWindow = win.getNativeWindow();
     console.log(this.id)
   }
 
@@ -150,7 +160,24 @@ export class RegisterCourseComponent implements OnInit {
   }
 
   printRegistration(){
-
+    let html = '<h2>' + this.selectedCourse.title + '</h2>'
+    //html += this.selectedCourse
+    for(let app of this.myEvents) {
+      html += '<p>' + this.langService.trans("From") + ": " + app.start + this.langService.trans("Until") + ": " + app.end + this.langService.trans("Location") + ": " + app.location + "</p>"
+    }
+    var hostname = window.location.hostname;
+    var protocol = window.location.protocol;
+    var port = window.location.port;
+    sessionStorage.setItem('printPage', html);
+    if (port) {
+      this.nativeWindow.open(`${protocol}//${hostname}:${port}`);
+      sessionStorage.removeItem('shortName');
+    } else {
+      this.nativeWindow.open(`${protocol}//${hostname}`);
+      sessionStorage.removeItem('shortName');
+    }
+    sessionStorage.removeItem('printPage');
+    sessionStorage.removeItem('instituteName');
   }
 
   mailRegistration(){

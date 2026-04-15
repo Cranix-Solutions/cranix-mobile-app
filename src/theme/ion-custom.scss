@@ -19,6 +19,27 @@ ion-content ion-segment {
     padding-left: 3px;
 }
 
+ion-textarea {
+  min-height: 100px !important;
+  background-color: rgba(238, 239, 238, 0.5);
+ /*  --background: #f9f9f9; */
+  --border-radius: 8px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border: 2px solid #ccc;
+}
+
+ion-textarea:focus-within {
+  border: 2px solid #3880ff; /* Ionic Primary Color */
+  box-shadow: 0 0 0 2px rgba(56, 128, 255, 0.2);
+}
+
+.native-textarea {
+   padding: 2px 0px !important;
+}
+
+.sc-ion-textarea-md {
+}
 ion-input {
     background-color: rgba(238, 239, 238, 0.5);
 }

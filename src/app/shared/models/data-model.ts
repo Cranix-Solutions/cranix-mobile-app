@@ -708,6 +708,7 @@ export class Crx2fa {
 export class Course {
 	id: number = 0;
 	title: string = ""
+	description: string = ""
 	creatorId: number = 0;
 	created: Date | string = new Date()
 	modified: Date | string = new Date()

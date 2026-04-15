@@ -86,7 +86,7 @@ export class CoursesComponent implements OnInit {
    * Create calendar options when opening or modifying a course.
    * This is necessary to adapt the valide range
    */
-  createCalendarOptions(){
+  createCalendarOptions() {
     this.calendarOptions = {
       timeZone: 'local',
       hiddenDays: this.calendarService.notInRange(this.selectedCourse.startDate, this.selectedCourse.endDate),
@@ -128,15 +128,18 @@ export class CoursesComponent implements OnInit {
   /**
    * Make appointments of selected course clored based on the count of participants
    */
-  adaptEvents(){
+  adaptEvents() {
     let clonedEvents = structuredClone(this.selectedCourse.appointments)
-    for(let app of clonedEvents){
-      if(app.userIds.length == 0){
+    for (let app of clonedEvents) {
+      if( app.location) {
+        app['title'] += ' Room: ' + app.location
+      }
+      if (app.userIds.length == 0) {
         app['backgroundColor'] = 'green'
-      }else if(app.userIds.length < this.selectedCourse.countOfParticipants ){
+      } else if (app.userIds.length < this.selectedCourse.countOfParticipants) {
         app['backgroundColor'] = 'blue'
-        app['title'] = app['title'] + " \n" + app.userIds.length + ' participants'
-      }else{
+        app['title'] += app.userIds.length + ' participants'
+      } else {
         app['backgroundColor'] = 'red'
       }
     }
@@ -190,13 +193,13 @@ export class CoursesComponent implements OnInit {
     this.selectedCourse.startRegistration = new Date(this.selectedCourse.startRegistration)
     this.selectedCourse.endRegistration = new Date(this.selectedCourse.endRegistration)
     this.isModified = false;
-    for(let app of this.selectedCourse.appointments){
+    for (let app of this.selectedCourse.appointments) {
       app.groups = this.selectedCourse.groups
       app.users = this.selectedCourse.users
     }
     if (this.selectedCourse.id) {
-      for(let app of this.selectedCourse.appointments){
-        if(app.id < 1){
+      for (let app of this.selectedCourse.appointments) {
+        if (app.id < 1) {
           app.id = null
         }
       }
@@ -257,22 +260,34 @@ export class CoursesComponent implements OnInit {
     this.isAddAppointmentOpen = false;
     this.adaptEvents()
   }
-  
+
   /**
    * Apply changes on the selected appointment. This changes will not be saved immediately in the database.
    * @param modal 
    */
   addEditAppointment(modal) {
+    if (this.selectedAppointment.room) {
+      this.selectedAppointment.location = this.selectedAppointment.room.name;
+    }
     if (this.selectedAppointment.creator) {
       this.selectedAppointment.creatorId = this.selectedAppointment.creator.id;
     }
     if (this.newAppointment) {
+      this.selectedAppointment.id = null
       this.selectedCourse.appointments.push(this.selectedAppointment);
     }
-    this.adaptEvents()
-    console.log(this.events)
-    this.isModified = true;
-    this.closeAddEditAppontment(modal)
+    this.courseService.patch(this.selectedCourse).subscribe(
+      (val) => {
+        this.courseService.getById(this.selectedCourse.id).subscribe(
+          (val2) => {
+            this.selectedCourse = val2
+            this.objectService.responseMessage(val)
+            this.closeAddEditAppontment(modal)
+            this.objectService.getAllObject('course');
+          }
+        )
+      }
+    )
   }
 
   deleteAppointment(index: number) {
@@ -311,9 +326,9 @@ export class CoursesComponent implements OnInit {
   handleEventClick(arg: EventClickArg) {
     console.log(arg.event)
     let uuid = arg.event._def.extendedProps.uuid
-    for( let app of this.selectedCourse.appointments){
+    for (let app of this.selectedCourse.appointments) {
       console.log(app)
-      if(app.uuid == uuid){
+      if (app.uuid == uuid) {
         this.selectedAppointment = app
         break
       }
@@ -328,7 +343,7 @@ export class CoursesComponent implements OnInit {
   handleEventChange(arg: EventChangeArg) {
     console.log(arg.event)
     this.calendarService.getById(arg.event.id).subscribe((val) => {
-      val.start = new Date(arg.event._instance?.range.start.getTime() + (arg.event._instance?.range.start.getTimezoneOffset() * 60000) )
+      val.start = new Date(arg.event._instance?.range.start.getTime() + (arg.event._instance?.range.start.getTimezoneOffset() * 60000))
       val.end = new Date(arg.event._instance?.range.end.getTime() + (arg.event._instance?.range.end.getTimezoneOffset() * 60000))
       console.log(val)
       this.calendarService.modify(val).subscribe((val2) => {
@@ -338,21 +353,21 @@ export class CoursesComponent implements OnInit {
     })
   }
 
-  createTable(course: Course){
+  createTable(course: Course) {
     console.log(course)
     const appointments = this.calendarService.groupEventsByDate(course.appointments)
     console.log(appointments)
-    let html = '<h2>' + course.title +  ' ' + course.startDate + ' ' + course.endDate + '</h2>\n'
+    let html = '<h2>' + course.title + ' ' + course.startDate + ' ' + course.endDate + '</h2>\n'
     html += '<table>\n'
     let datum = '<tr><th></th>'
     let owner = '<tr><td></td>'
     let timeline = '<tr><td></td>'
-    for( let date of Object.keys(appointments).sort()){
-      for( let time of Object.keys(appointments[date]).sort()){
-        for( let app of appointments[date][time]){
+    for (let date of Object.keys(appointments).sort()) {
+      for (let time of Object.keys(appointments[date]).sort()) {
+        for (let app of appointments[date][time]) {
           datum += '<th>' + date + '</th>'
-          timeline += '<td>' +time+ '</td>'
-          owner += '<td>' + (app.creator ? app.creator.fullName : '')  + '</td>'
+          timeline += '<td>' + time + '</td>'
+          owner += '<td>' + (app.creator ? app.creator.fullName : '') + '</td>'
         }
       }
     }
@@ -361,28 +376,28 @@ export class CoursesComponent implements OnInit {
     html += owner + '</tr>\n'
     let candidates = {}
     let col = 0
-    for( let date of Object.keys(appointments).sort()){
-      for( let time of Object.keys(appointments[date]).sort()){
-        for( let app of appointments[date][time]){
+    for (let date of Object.keys(appointments).sort()) {
+      for (let time of Object.keys(appointments[date]).sort()) {
+        for (let app of appointments[date][time]) {
           let row = 0
-          for( let user of app.users){
-            if(!candidates[row]) {
+          for (let user of app.users) {
+            if (!candidates[row]) {
               candidates[row] = {}
             }
             candidates[row][col] = user.surName + ', ' + user.givenName
-            row ++;
+            row++;
           }
           col++;
         }
       }
       console.log(col)
     }
-    for( let i = 0; i < course.countOfParticipants; i++){
-      html += '<tr><td>' + (i +1 ) + '</td>'
-      for(let j=0; j < col; j++){
-        if(candidates[i] && candidates[i][j]){
-          html += '<td>'+candidates[i][j]['fullName']+'</td>'
-        }else{
+    for (let i = 0; i < course.countOfParticipants; i++) {
+      html += '<tr><td>' + (i + 1) + '</td>'
+      for (let j = 0; j < col; j++) {
+        if (candidates[i] && candidates[i][j]) {
+          html += '<td>' + candidates[i][j]['fullName'] + '</td>'
+        } else {
           html += '<td>___</td>'
         }
       }
