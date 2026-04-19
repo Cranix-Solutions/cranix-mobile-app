@@ -156,6 +156,9 @@ export class CoursesComponent implements OnInit {
       this.selectedCourse.startDate = this.calendarService.formatDateKey(now);
       this.selectedCourse.endDate = this.calendarService.formatDateKey(now);
       this.title = "Add Course"
+      this.courseService.getSettings().subscribe(
+        (val) => { this.selectedCourse.description = val.LetterTemplate }
+      )
     } else {
       this.selectedCourse = course
       this.title = "Edit Course"

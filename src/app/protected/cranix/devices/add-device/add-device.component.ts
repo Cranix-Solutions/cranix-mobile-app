@@ -9,8 +9,7 @@ import { LanguageService } from 'src/app/services/language.service';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { SelfManagementService } from 'src/app/services/selfmanagement.service';
 import { takeWhile } from 'rxjs/operators';
-import { Observable } from 'rxjs/internal/Observable';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -48,6 +47,8 @@ export class AddDeviceComponent implements OnInit, OnDestroy {
     //Preset mac if any.
     if( this.authService.session.mac ) {
       this.device.mac = this.authService.session.mac;
+      this.checkMac({ detail: { value: this.device.mac } });
+      console.log(this.macOk)
     }
     console.log('room is, :::', this.objectService.selectedRoom);
     if (this.adHocRoom) {
@@ -158,6 +159,7 @@ export class AddDeviceComponent implements OnInit, OnDestroy {
   }
 
   checkMac(ev) {
+    console.log(ev)
     let ok = true;
     let pattern=/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})/;
     let line: string;

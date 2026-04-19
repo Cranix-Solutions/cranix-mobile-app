@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UtilsService } from './utils.service';
 import { AuthenticationService } from './auth.service';
 import { ServerResponse } from 'src/app/shared/models/server-models';
-import { Course, CrxCalendar } from 'src/app/shared/models/data-model';
+import { Course, CourseSettings, CrxCalendar } from 'src/app/shared/models/data-model';
 import { GenericObjectService } from './generic-object.service';
 
 @Injectable({
@@ -61,4 +61,13 @@ export class CourseService {
       (val) => this.objectService.responseMessage(val)
     )
   }
+  getSettings() {
+    const url = `${this.url}/settings`
+    return this.http.get<CourseSettings>(url, { headers: this.authService.headers } )
+  }
+  setSettings(settings: CourseSettings) {
+    const url = `${this.url}/settings`
+    return this.http.post<ServerResponse>(url, settings, { headers: this.authService.headers } )
+  }
+
 }

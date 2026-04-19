@@ -705,6 +705,11 @@ export class Crx2fa {
 	modified: Date | string = new Date()
 }
 
+export class CourseSettings {
+	LetterTemplate: string = "";
+	SubjectTemplate: string = "";
+}
+
 export class Course {
 	id: number = 0;
 	title: string = ""
