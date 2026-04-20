@@ -6,15 +6,19 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'printer-action-cell-renderer',
     template: `
-        <ion-button *ngIf="printerAddAllowed" style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
+        @if(printerAddAllowed){
+        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
              <ion-icon name="build-sharp"></ion-icon>
-        </ion-button>
-        <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="reset($event)" matTooltip="{{'Reset printer' | translate }}">
+        </button>
+        }
+        <button class="icon-button" (click)="reset($event)" matTooltip="{{'Reset printer' | translate }}">
             <ion-icon name="refresh" ></ion-icon>
-        </ion-button>
-        <ion-button *ngIf="printerAddAllowed" style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
+        </button>
+        @if(printerAddAllowed){
+        <button class="icon-button" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
-        </ion-button>
+        </button>
+        }
         `
 })
 
