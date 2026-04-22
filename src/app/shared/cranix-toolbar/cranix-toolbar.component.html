@@ -15,7 +15,8 @@
         <ion-badge color="danger">{{newTickets}}</ion-badge>
         }
       </ion-button>
-      } @else if(authService.isAllowed('cephalix.support')){
+      }
+      @if(authService.isAllowed('cephalix.support')){
       <ion-button fill="clear"  (click)="route.navigate(['/cephalix-support'])">
         @if(newResponses == 0 ) {
         <ion-icon color="success" name="help-buoy"></ion-icon>
@@ -39,7 +40,8 @@
     </ion-title>
     <ion-buttons slot="end">
       @if(authService.isAllowed('ticket.manage')){
-      <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])"
+        matTooltip="{{ 'Ticket system' | translate }}">
         @if(newTickets == 0){
         <ion-icon color="success" name="ticket"></ion-icon>
         }@else{
@@ -47,7 +49,8 @@
         <ion-badge color="danger">{{newTickets}}</ion-badge>
         }
       </ion-button>
-      } @else if(authService.isAllowed('cephalix.support')){
+      }
+      @if(authService.isAllowed('cephalix.support')){
       <ion-button fill="clear" (click)="route.navigate(['/cephalix-support'])"
         matTooltip="{{ 'Support questions' | translate }}">
         @if(newResponses == 0 ) {

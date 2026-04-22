@@ -1,7 +1,7 @@
 <ion-header translucent>
   <ion-toolbar color="primary">
     <ion-title>
-      {{ 'Answer:' | translate }} {{ticket.title}}<br>
+      {{ 'Answer' | translate }}: {{ticket.title}}<br>
       {{article.created | date:'yy-MM-dd HH:mm'}} {{article.title}}
     </ion-title>
     <ion-buttons slot="end">
@@ -23,7 +23,7 @@
 </ion-header>
 <ion-content>
   <ion-item>
-    <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Send to:'}}" [(ngModel)]="article.recipient" type="email" [multiple]="true"></ion-input>
+    <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Send to'|translate}}:" [(ngModel)]="article.recipient" type="email" [multiple]="true"></ion-input>
   </ion-item>
   <quill-editor [(ngModel)]="newText" name="description" style="margin: 10px;"></quill-editor>
 </ion-content>

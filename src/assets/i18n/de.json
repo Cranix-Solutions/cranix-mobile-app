@@ -1,4 +1,10 @@
 {
+    "Create a new ticket":"Neues Ticket erstellen",
+    "Reload tickets":"Tickets aktualisieren.",
+    "Ticket system":"Ticketsystem",
+    "Toggle article as seen/unseen.":"Gelesen/Ungelesen umschalten",
+    "Answer the article.":"Beantworten",
+    "Send to":"Senden an",
     "Support questions":"Supportanfragen",
     "closed":"geschlossen",
     "done":"erledigt",
