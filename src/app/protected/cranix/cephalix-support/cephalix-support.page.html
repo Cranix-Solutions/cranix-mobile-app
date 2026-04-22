@@ -6,10 +6,10 @@
     <ion-searchbar placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged()" id="ticketFilter">
     </ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button (click)="redirectToEdit(null)">
-        <ion-icon name="add" color="success"></ion-icon>
+      <ion-button size="small" fill="solid"  (click)="redirectToEdit(null)">
+        <ion-icon slot=""icon-only name="add-circle"></ion-icon>
       </ion-button>
-      <ion-checkbox [indeterminate]="true" (ionChange)="closeChanged($event)">{{'Closed'|translate}}</ion-checkbox>
+      <ion-checkbox [indeterminate]="true" (ionChange)="closeChanged($event)">{{'done'|translate}}</ion-checkbox>
     </ion-buttons>
   </ion-toolbar>
   <ion-list>

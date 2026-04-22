@@ -10,6 +10,7 @@ import { Institute } from '../../models/cephalix-data-model';
 @Component({
     standalone: false,
     selector: 'create-support-page',
+    styleUrls: ['./create-support.css'],
     templateUrl: 'create-support.html'
   })
   export class CreateSupport implements OnInit {
