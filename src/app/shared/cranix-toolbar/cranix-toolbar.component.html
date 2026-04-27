@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     @if(authService.isMD()){
-    <ion-title>{{title}}</ion-title>
+    <ion-label>{{title}}</ion-label>
     <ion-buttons slot="end">
       @if(authService.isAllowed('ticket.manage')){
       <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
@@ -12,7 +12,6 @@
         <ion-icon color="success" name="ticket"></ion-icon>
         }@else{
         <ion-icon color="danger" name="ticket"></ion-icon>
-        <ion-badge color="danger">{{newTickets}}</ion-badge>
         }
       </ion-button>
       }
@@ -22,12 +21,11 @@
         <ion-icon color="success" name="help-buoy"></ion-icon>
         }@else{
         <ion-icon color="danger" name="help-buoy"></ion-icon>
-        <ion-badge color="danger">{{newResponses}}</ion-badge>
         }
       </ion-button>
       }
       <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
-        <ion-icon color="tertiary" name="book"></ion-icon>
+        <ion-icon color="success" name="book"></ion-icon>
       </ion-button>
       <ion-button fill="clear" (click)="openPopover()">
         <ion-icon name="person"></ion-icon>
@@ -65,7 +63,7 @@
         <ion-icon color="tertiary" name="refresh"></ion-icon>
       </ion-button>
       <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
-        <ion-icon color="tertiary" name="book"></ion-icon>
+        <ion-icon color="success" name="book"></ion-icon>
       </ion-button>
       <ion-button fill="clear" (click)="retirectToSettings($event)"
         matTooltip="{{ 'Edit user preferences' | translate }}">
