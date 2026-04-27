@@ -3,26 +3,26 @@
       @if(authService.isAllowed('permitall')){
         <ion-tab-button tab="myself">
           <ion-icon name="person"></ion-icon>
-          <ion-label>{{ 'mySelf' | translate }}</ion-label>
+          <ion-label *ngIf="!authService.isMD()">{{ 'mySelf' | translate }}</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="myFiles">
           <ion-icon name="folder"></ion-icon>
-          <ion-label>{{ 'myFiles' | translate }}</ion-label>
+          <ion-label *ngIf="!authService.isMD()">{{ 'myFiles' | translate }}</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="mydevice">
           <ion-icon name="desktop" ></ion-icon>
-          <ion-label>{{ 'myDevice' | translate }}</ion-label>
+          <ion-label *ngIf="!authService.isMD()">{{ 'myDevice' | translate }}</ion-label>
         </ion-tab-button>
         @if(vpn){
           <ion-tab-button tab="myVPN" >
             <ion-icon name="security" ></ion-icon>
-            <ion-label>{{ 'VPN' | translate }}</ion-label>
+            <ion-label *ngIf="!authService.isMD()">{{ 'VPN' | translate }}</ion-label>
           </ion-tab-button>
         }
         @if(authService.isAllowed('2fa.use')){
         <ion-tab-button tab="crx2fa" >
           <ion-icon name="key" ></ion-icon>
-          <ion-label>{{ 'CRX2fa' | translate }}</ion-label>
+          <ion-label *ngIf="!authService.isMD()">{{ 'CRX2fa' | translate }}</ion-label>
         </ion-tab-button>
       }
       }
