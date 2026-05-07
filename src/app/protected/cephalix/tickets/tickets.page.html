@@ -1,8 +1,43 @@
 <cranix-toolbar title="{{'Manage tickets' | translate}}"></cranix-toolbar>
 <ion-content>
-@if(authService.isMD()){
-<cranix-md-list objectType="ticket" [context]="context"></cranix-md-list>
-}@else{
-<cranix-list objectType="ticket"  [context]="context"></cranix-list>
-}
+    @if(authService.isMD()){
+    <cranix-md-list objectType="ticket" [context]="context"></cranix-md-list>
+    }@else{
+    <cranix-list objectType="ticket" [context]="context"></cranix-list>
+    }
 </ion-content>
+<ion-modal [isOpen]="isTicketStateOpen">
+    <ng-template>
+        <ion-header>
+            <ion-toolbar color="primary">
+                <ion-title>
+                    {{'Select ticket status to show'|translate}}
+                </ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="readTicketsByState()">
+                        <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="isTicketStateOpen = false">
+                        <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <ion-list>
+                <ion-item>
+                    <ion-checkbox [(ngModel)]="new" name="new">{{'New'|translate}}</ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-checkbox [(ngModel)]="responded" name="responded">{{'New customer respond'|translate}}</ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-checkbox [(ngModel)]="wait" name="wait">{{'Waiting for response from customer'|translate}}</ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-checkbox [(ngModel)]="closed" name="closed">{{'Closed'|translate}}</ion-checkbox>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ng-template>
+</ion-modal>

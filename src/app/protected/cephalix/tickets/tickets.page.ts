@@ -20,6 +20,11 @@ import { CreateSupport } from 'src/app/shared/actions/create-support/create-supp
 export class TicketsPage {
   context;
   alive: boolean;
+  new: boolean = false;
+  wait: boolean = false;
+  responded: boolean = false;
+  closed: boolean = false;
+  isTicketStateOpen: boolean = false;
 
   constructor(
     public authService: AuthenticationService,
@@ -50,5 +55,19 @@ export class TicketsPage {
         (val) => this.objectService.getAllObject('ticekt')
       );
     }
+  }
+
+  readTicketsByState(){
+    var state = ""
+    if( this.new ) { state += "N"}
+    if( this.wait ) { state += "W"}
+    if( this.responded ) { state += "R"}
+    if( this.closed ) { state += "D"}
+    this.cephalixService.getTicketsByState(state).subscribe(
+      (val) => {
+        this.isTicketStateOpen = false;
+        this.objectService.allObjects['ticket'] = val;
+      }
+    )
   }
 }
