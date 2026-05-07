@@ -358,7 +358,8 @@ export class CranixListComponent implements OnInit, OnChanges {
           col['minWidth'] = 60
           col['width'] = 60
           col['cellStyle'] = params => params.data.ticketStatus == "N" ? { 'background-color': 'red' } :
-            params.data.ticketStatus == "R" ? { 'background-color': 'orange' } : { 'background-color': 'green' }
+            params.data.ticketStatus == "R" ? { 'background-color': 'orange' } :
+            params.data.ticketStatus == "W" ? { 'background-color': 'green' } : { 'background-color': 'blue'}
           break
         }
 

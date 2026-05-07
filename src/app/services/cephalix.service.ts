@@ -163,6 +163,11 @@ export class CephalixService {
 		return this.http.get<string[]>(this.url, { headers: this.authService.headers });
 	}
 
+	getTicketsByState(status: string) {
+		this.url = this.hostname + `/tickets/status/${status}`
+		console.log(this.url);
+		return this.http.get<Ticket[]>(this.url, { headers: this.authService.headers });
+	}
 	getCategorieTypes() {
 		this.url = this.hostname + `/institutes/sync`;
 		console.log(this.url);
