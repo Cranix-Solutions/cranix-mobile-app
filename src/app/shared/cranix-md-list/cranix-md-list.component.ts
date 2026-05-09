@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { ChallengesService } from 'src/app/services/challenges.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -27,9 +26,9 @@ export class CranixMdListComponent implements OnInit, OnChanges {
   @Input() objectType: string;
   @Input() context;
   @Input() rowData: any[];
+  @Input() reload!: boolean;
   constructor(
     public authService: AuthenticationService,
-    private challengeService: ChallengesService,
     public crxObjectService: CrxObjectService,
     public languageService: LanguageService,
     public objectService: GenericObjectService,
@@ -128,6 +127,9 @@ export class CranixMdListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes)
+    if( changes['reload']) {
+      this.rowData = null;
+    }
     this.ngOnInit()
   }
   initSteps() {
@@ -237,5 +239,12 @@ export class CranixMdListComponent implements OnInit, OnChanges {
         }
       }
       return  { 'background-color': this.authService.rowColors[count%2] }
+    }
+
+    reloadObjects(){
+      this.objectService.allObjects[this.objectType] = null
+      this.objectService.getAllObject(this.objectType)
+      this.rowData = null
+      this.ngOnInit()
     }
 }

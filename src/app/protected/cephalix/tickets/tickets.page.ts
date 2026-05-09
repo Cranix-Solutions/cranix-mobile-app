@@ -25,6 +25,7 @@ export class TicketsPage {
   responded: boolean = false;
   closed: boolean = false;
   isTicketStateOpen: boolean = false;
+  reload: boolean = false;
 
   constructor(
     public authService: AuthenticationService,
@@ -58,6 +59,7 @@ export class TicketsPage {
   }
 
   readTicketsByState(){
+    this.reload = false;
     var state = ""
     if( this.new ) { state += "N"}
     if( this.wait ) { state += "W"}
@@ -67,6 +69,7 @@ export class TicketsPage {
       (val) => {
         this.isTicketStateOpen = false;
         this.objectService.allObjects['ticket'] = val;
+        this.reload = true;
       }
     )
   }
