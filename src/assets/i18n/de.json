@@ -1,4 +1,8 @@
 {
+    "Select a Room to control to activate positiv lists":"Wählen Sie einen Raum um positive Listen zu aktivieren",
+    "Selected Room":"Gewählter Raum",
+    "One domain name per line. No URLs!":"Ein Domainnamen pro Zeile",
+    "There are bad domain entries":"Es gibt falsche Domainnamen",
     "Create a new ticket":"Neues Ticket erstellen",
     "Reload tickets":"Tickets aktualisieren.",
     "Ticket system":"Ticketsystem",

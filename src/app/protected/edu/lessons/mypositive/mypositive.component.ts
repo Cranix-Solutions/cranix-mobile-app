@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 //Our Stuff
 import { PositivList, SubjectArea, TeachingSubject } from 'src/app/shared/models/data-model'
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { ModalController } from '@ionic/angular';
 import { LanguageService } from 'src/app/services/language.service';
 import { EductaionService } from 'src/app/services/education.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
@@ -20,12 +19,15 @@ export class MypositiveComponent {
   addEditTitle: string = "";
   isAddEditOpen: boolean = false
   action: string
+  disabled: boolean = false
   selectedPositiveList: PositivList
   selectedTeachingSubject: TeachingSubject
   subjectAreas: SubjectArea[]
   rowData: any[];
   selectedIds: number[] = []
   context;
+  isBadlines: boolean = false;
+  badLines: any[];
 
   constructor(
     public authService: AuthenticationService,
@@ -44,10 +46,11 @@ export class MypositiveComponent {
    * Read the owned positive list.
    */
   readDatas() {
-    let subs = this.educationService.getMyPositivLists().subscribe(
-      (val) => { this.rowData = val },
-      (err) => { console.log(err) },
-      () => { subs.unsubscribe() }
+    this.educationService.getMyPositivLists().subscribe(
+      (val) => { 
+        this.rowData = val
+        console.log(val)
+      }
     )
   }
 
@@ -65,22 +68,50 @@ export class MypositiveComponent {
    */
   redirectToAddEdit(positivList: PositivList) {
     if(positivList) {
-      this.selectedPositiveList = positivList
-      this.addEditTitle = "Edit Positive List"
-      this.action = 'modify'
+      this.educationService.getPositivList(positivList.id).subscribe(
+        (val) => {
+          this.selectedPositiveList = val
+          this.addEditTitle = "Edit Positive List"
+          this.action = 'modify'
+          this.isAddEditOpen = true
+        }
+      )
     } else {
       this.selectedPositiveList = new PositivList();
       this.addEditTitle = "Add Positive List"
       this.action = 'add'
+      this.isAddEditOpen = true
     }
-    this.isAddEditOpen = true
   }
 
   addEdit(){
-    this.objectService.applyAction(this.selectedPositiveList,"education/proxy/positiveList", this.action).subscribe(
-      (val) => { this.objectService.responseMessage(val)}
+    this.badLines = this.checkDomains();
+    if(this.badLines.length>0){
+      this.isBadlines = true
+      return;
+    }
+
+    this.disabled = true
+    this.objectService.requestSent();
+    this.objectService.applyAction(this.selectedPositiveList,"education/proxy/positiveList", "add").subscribe(
+      (val) => {
+        this.disabled = false
+        this.isAddEditOpen = false
+        this.objectService.responseMessage(val)
+      }
     )
   }
+
+  deleteList(){
+    this.educationService.deletePositivList(this.selectedPositiveList.id).subscribe(
+      (val) => {
+        this.objectService.responseMessage(val)
+        this.readDatas()
+        this.isAddEditOpen = false
+      }
+    )
+  }
+ 
   /**
    * Activate the selected positive lists in the selected room
    * @param ev 
@@ -114,7 +145,27 @@ export class MypositiveComponent {
   }
 
   getRows(domains: string) : number{
-    let a = domains.split(/\s/).length +1
+    let a = 1
+    if( domains ) {
+      a = domains.split(/\r?\n/).length +1
+    }
     return a
+  }
+
+  checkDomains() {
+    const dnsRegex = /^(?=.{1,253}$)(?!-)[a-zA-Z0-9-]{1,63}(?<!-)(\.(?!-)[a-zA-Z0-9-]{1,63}(?<!-))*$/;
+    const badLines = [];
+    var index = 0;
+    for( var line of this.selectedPositiveList.domains.split(/\r?\n/) ) {
+      const value = line.trim();
+      if (!dnsRegex.test(value)) {
+        badLines.push({
+          index: index + 1,
+          value: value
+        });
+      }
+    }
+    console.log(badLines)
+    return badLines;
   }
 }

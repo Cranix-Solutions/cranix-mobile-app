@@ -80,6 +80,10 @@ export class EductaionService {
 		this.url = `${this.hostname}/education/proxy/positiveLists`;
 		return this.http.get<PositivList[]>(this.url, { headers: this.authService.headers });
 	}
+	getPositivList(id: number) {
+		this.url = `${this.hostname}/education/proxy/positiveLists/${id}`;
+		return this.http.get<PositivList>(this.url, { headers: this.authService.headers });
+	}
 
 	deletePositivList(listId: number) {
 		this.url = this.hostname + `/education/proxy/positiveLists/${listId}`;

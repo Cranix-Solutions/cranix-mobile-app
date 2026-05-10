@@ -24,8 +24,8 @@
     }
     @if(authService.isAllowed('education.proxy')){
     <ion-tab-button tab="mypositive">
-      <ion-icon name="calendar"></ion-icon>
-      @if(!authService.isMD()){<ion-label>{{ 'Security' | translate }}</ion-label>}
+      <ion-icon name="globe"></ion-icon>
+      @if(!authService.isMD()){<ion-label>{{ 'Proxy' | translate }}</ion-label>}
     </ion-tab-button>
     }
     @if(authService.isOneOfAllowed(['ptm.manage','ptm.use'])){

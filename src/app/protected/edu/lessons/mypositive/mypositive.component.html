@@ -1,21 +1,23 @@
 <cranix-toolbar title="{{'Manage positive lists'|translate}}"></cranix-toolbar>
 <ion-toolbar>
-  <ion-item lines="none">
-    <ion-input placeholder="{{'search' | translate }}" (input)="onQuickFilterChanged('mypositivFilter')"
-      id="mypositivFilter">
-    </ion-input>
-  </ion-item>
+  <p>
+  @if(educationService.selectedRoom){
+    {{'Selected Room'|translate}}: {{educationService.selectedRoom.name}}
+  }@else{
+    {{'Select a Room to control to activate positiv lists'|translate}}
+  }
+  </p>
   <ion-buttons slot="end" class="hidden-xs hidden-sm hidden-md">
-    <ion-button size="small" (click)="redirectToAddEdit(null)"
+    <ion-button size="small" (click)="redirectToAddEdit(null)" fill="solid"
       matTooltip="{{'Create new positive list.' | translate }}">
       <ion-icon slot="icon-only" name="add-circle"></ion-icon>
     </ion-button>
-    <ion-button size="small" (click)="activate($event)"
+    <ion-button size="small" (click)="activate($event)" fill="solid"
       matTooltip="{{'Activate selected positive lists in the selected room.' | translate }}"
       [disabled]="! educationService.selectedRoom">
       <ion-icon slot="icon-only" color="success" name="power"></ion-icon>
     </ion-button>
-    <ion-button size="small" (click)="deactivate($event)"
+    <ion-button size="small" (click)="deactivate($event)" fill="solid"
       matTooltip="{{'Deactivate all positive lists in the selected room.' | translate }}"
       [disabled]="! educationService.selectedRoom">
       <ion-icon slot="icon-only" color="dange" name="power"></ion-icon>
@@ -41,33 +43,27 @@
       <ion-col size="4">
         {{ 'description' | translate}}
       </ion-col>
-      <ion-col size="2">
+      <ion-col size="3">
         {{ 'teachingSubject' | translate}}
       </ion-col>
-      <ion-col size="2">
+      <ion-col size="3">
         {{ 'subjectArea' | translate}}
-      </ion-col>
-      <ion-col size="1">
-        {{ 'domains' | translate}}
       </ion-col>
     </ion-row>
     <div class="button-container">
       @for(plist of rowData; track plist.id; let i = $index){
-      <ion-row button (click)="redirectToAddEdit(plist)" style="background-color : {{authService.rowColors[i%2]}}">
+      <ion-row button style="background-color : {{authService.rowColors[i%2]}}">
         <ion-col size="1">
           <ion-checkbox (click)="toggleSelect(plist)"></ion-checkbox>
         </ion-col>
-        <ion-col size="4">
+        <ion-col size="4" (click)="redirectToAddEdit(plist)" >
           {{ plist.description }}
         </ion-col>
-        <ion-col size="3">
+        <ion-col size="3" (click)="redirectToAddEdit(plist)" >
           @if(plist.teachingSubject){{{ plist.teachingSubject.name}}}
         </ion-col>
-        <ion-col size="3">
+        <ion-col size="3" (click)="redirectToAddEdit(plist)" >
           @if(plist.subjectArea){{{ plist.subjectArea.name }}}
-        </ion-col>
-        <ion-col size="1">
-          {{ getRows(plist.domains) - 1  }}
         </ion-col>
       </ion-row>
       }
@@ -79,10 +75,13 @@
     <ion-toolbar color="primary">
       <ion-title>{{addEditTitle| translate}}</ion-title>
       <ion-buttons slot="end">
-        <ion-button size="small" fill="clear" (click)="addEdit()">
+        <ion-button size="small" fill="clear" (click)="addEdit()" [disabled]="disabled">
           <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
         </ion-button>
-        <ion-button size="small" fill="clear" (click)="isAddEditOpen = false">
+        <ion-button size="small" fill="clear" (click)="deleteList()" [disabled]="disabled">
+          <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
+        </ion-button>
+        <ion-button size="small" fill="clear" (click)="isAddEditOpen = false" [disabled]="disabled">
           <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -107,8 +106,26 @@
       </ion-item>
       <ion-item>
         <ion-label [position]="authService.settings.labelPlacement">{{'Domains'| translate}} </ion-label>
+        {{'One domain name per line. No URLs!' | translate}}
       </ion-item>
       <textarea style="margin: 15px;" [(ngModel)]="selectedPositiveList.domains" [rows]="getRows(selectedPositiveList.domains)" cols="40"></textarea>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+<ion-modal [isOpen]="isBadlines" [backdropDismiss]="false">
+  <ng-template>
+    <ion-toolbar color="primary">
+      <ion-title>{{'There are bad domain entries'| translate}}:</ion-title>
+      <ion-buttons slot="end">
+        <ion-button size="small" fill="clear" (click)="isBadlines = false">
+          <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-content>
+      @for(bad of badLines; track bad.index){
+        {{bad.value}}<br>
+      }
     </ion-content>
   </ng-template>
 </ion-modal>
