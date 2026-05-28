@@ -97,6 +97,7 @@ export class MypositiveComponent {
       (val) => {
         this.disabled = false
         this.isAddEditOpen = false
+        this.readDatas()
         this.objectService.responseMessage(val)
       }
     )
