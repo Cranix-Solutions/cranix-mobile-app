@@ -269,6 +269,8 @@ export class CoursesComponent implements OnInit {
    * @param modal 
    */
   addEditAppointment(modal) {
+    this.selectedAppointment.start = new Date(this.selectedAppointment.start)
+    this.selectedAppointment.end = new Date(this.selectedAppointment.end)
     if (this.selectedAppointment.room) {
       this.selectedAppointment.location = this.selectedAppointment.room.name;
     }
