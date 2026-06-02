@@ -249,8 +249,6 @@ export class CoursesComponent implements OnInit {
     } else {
       this.newAppointment = true
     }
-    console.log(this.events)
-    this.events = []
     this.isAddAppointmentOpen = true
   }
 
@@ -269,6 +267,7 @@ export class CoursesComponent implements OnInit {
    * @param modal 
    */
   addEditAppointment(modal) {
+    this.events = []
     this.selectedAppointment.start = new Date(this.selectedAppointment.start)
     this.selectedAppointment.end = new Date(this.selectedAppointment.end)
     if (this.selectedAppointment.room) {
@@ -351,9 +350,15 @@ export class CoursesComponent implements OnInit {
       val.start = new Date(arg.event._instance?.range.start.getTime() + (arg.event._instance?.range.start.getTimezoneOffset() * 60000))
       val.end = new Date(arg.event._instance?.range.end.getTime() + (arg.event._instance?.range.end.getTimezoneOffset() * 60000))
       console.log(val)
-      this.calendarService.modify(val).subscribe((val2) => {
-        this.objectService.getAllObject('course');
-        this.objectService.responseMessage(val2)
+      this.calendarService.modify(val).subscribe((val1) => {
+        this.objectService.responseMessage(val1)
+	this.courseService.getById(this.selectedCourse.id).subscribe(
+          (val2) => {
+            this.selectedCourse = val2
+            this.adaptEvents()
+            this.objectService.getAllObject('course');
+          }
+        )
       })
     })
   }
