@@ -54,7 +54,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     if (this.multiple) {
       this.selection = []
     }
-    console.log("items", this.items)
+    //console.log("items", this.items)
     //console.log(this.emptyLabel)
     this.rowData = this.items
   }
@@ -64,14 +64,14 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
 
   
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
+    //console.log(changes)
     if (changes['items']) {
       this.rowData = this.items
     }
   }
   writeValue(value: any) {
-    console.log("write value called for:" + this.objectType )
-    console.log(value)
+    //console.log("write value called for:" + this.objectType )
+    //console.log(value)
     if(value) {
       this.selection = value;
     }
@@ -94,7 +94,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     this.closeModal(modal);
   }
   closeModal(modal){
-    console.log("closeModal called")
+    //console.log("closeModal called")
     modal.dismiss();
     this.isCranixSearchModalOpen = false
   }
@@ -116,7 +116,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     }
   }
   select(o: any, modal) {
-    console.log(o)
+    //console.log(o)
     this.selection = o;
     this.propagateOnChange(this.selection);
     if(this.callback){
@@ -131,7 +131,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     } else {
       this.selection.push(o)
     }
-    console.log(this.selection)
+    //console.log(this.selection)
   }
   returnValues(modal){
     this.propagateOnChange(this.selection);
