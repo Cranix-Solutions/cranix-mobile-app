@@ -131,6 +131,20 @@ export class CalendarComponent implements OnInit {
     console.log("CalendarComponent ngOnInit called")
     if (this.authService.isMD()) {
       this.initializeSwipeGesture();
+      this.calendarOptions.views =  {
+        dayGridMonth: { // name of view
+          titleFormat: { year: 'numeric', month: '2-digit'}
+        },
+        timeGridWeek: { // name of view
+          titleFormat: { year: 'numeric', month: '2-digit'}
+        },
+        timeGridDay: { // name of view
+          titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit'}
+        },
+        listWeek: { // name of view
+          titleFormat: { year: 'numeric', month: '2-digit'}
+        }
+      }
       this.calendarOptions.headerToolbar = {
         left: 'today',
         center: 'title',
