@@ -4,7 +4,6 @@ import { UtilsService } from './utils.service';
 import { AuthenticationService } from './auth.service';
 import { ParentTeacherMeeting, Room, PTMTeacherInRoom, PTMEvent, Parent, ParentRequest, User } from '../shared/models/data-model';
 import { ServerResponse } from '../shared/models/server-models';
-import { bl } from '@fullcalendar/core/internal-common';
 
 @Injectable()
 export class ParentsService {

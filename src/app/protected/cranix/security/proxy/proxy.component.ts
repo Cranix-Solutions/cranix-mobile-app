@@ -6,7 +6,6 @@ import { SecurityService } from 'src/app/services/security-service';
 import { CheckBoxBTNRenderer } from 'src/app/pipes/ag-checkbox-renderer';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { ApplyCheckBoxBTNRenderer } from 'src/app/pipes/ag-apply-checkbox-renderer';
-import { aC } from '@fullcalendar/core/internal-common';
 
 @Component({
   standalone: false,
