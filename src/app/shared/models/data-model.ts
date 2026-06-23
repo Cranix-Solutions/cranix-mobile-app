@@ -650,6 +650,9 @@ export class CrxNotice {
 	ptmId: number = 0
 	subjectArea: SubjectArea
 	teachingSubject: TeachingSubject
+	late: number
+	absent: string
+	excusedAbsent: string
 }
 
 export class CrxTicketArticle {

@@ -22,6 +22,10 @@ export class CranixNoticesComponent implements OnInit {
     selectedNotice: CrxNotice = new CrxNotice()
     subjectAreas: SubjectArea[] = []
     selectedIssue: string = "";
+    noticeTypes = {
+        'group': ['notice', 'todo'],
+        'user': ['notice', 'grading', 'late', 'absent', 'excusedAbsent']
+    }
     @Input() objectType: string
     @Input() selectedObject: any
     constructor(
