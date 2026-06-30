@@ -22,10 +22,31 @@ export class CranixNoticesComponent implements OnInit {
     selectedNotice: CrxNotice = new CrxNotice()
     subjectAreas: SubjectArea[] = []
     selectedIssue: string = "";
+    absenceDate: string = "";
+    absence
     noticeTypes = {
-        'group': ['notice', 'todo'],
-        'user': ['notice', 'grading', 'late', 'absent', 'excusedAbsent']
+        'group': ['performance', 'todo'],
+        'user': ['performance', 'grading', 'late', 'absence', 'excused-absence']
     }
+    filteredNotices: CrxNotice[] = [];
+    selectedType: string = 'all';
+    noticeTypeConfig = [];
+    noticeTypeConfigUser = [
+        { type: 'all', label: 'all', icon: 'funnel' },
+        { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' },
+        { type: 'grading', label: 'grading', icon: 'school', color: 'success' },
+        { type: 'late', label: 'late', icon: 'time', color: 'warning' },
+        { type: 'absence', label: 'unexcused', icon: 'close-circle', color: 'danger' },
+        { type: 'excused-absence', label: 'excused', icon: 'checkmark-circle', color: 'tertiary' },
+    ];
+    noticeTypeConfigGroup = [
+        { type: 'all', label: 'all', icon: 'funnel' },
+        { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' },
+        { type: 'todo', label: 'todo', icon: 'hammer', color: 'success' }
+    ];
+
+    lessonNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+
     @Input() objectType: string
     @Input() selectedObject: any
     constructor(
@@ -42,6 +63,12 @@ export class CranixNoticesComponent implements OnInit {
         console.log("Constructor CranixNoticesComponent")
         console.log(this.objectType)
         console.log(this.selectedObject)
+        if(this.objectType.indexOf('user') != -1 ) {
+            this.noticeTypeConfig = this.noticeTypeConfigUser
+        }
+        if(this.objectType.indexOf('group') != -1 ) {
+            this.noticeTypeConfig = this.noticeTypeConfigGroup
+        }
         this.readData()
     }
 
@@ -52,10 +79,26 @@ export class CranixNoticesComponent implements OnInit {
         this.noticeService.getByFilter(notice).subscribe(
             (val) => {
                 this.notices = val
+                this.applyFilter()
             }
         )
     }
-
+    applyFilter() {
+        if (this.selectedType === 'all') {
+            this.filteredNotices = [...this.notices].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+        } else {
+            this.filteredNotices = this.notices
+                .filter(n => n.noticeType === this.selectedType)
+                .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+        }
+    }
+    getTypeConfig(type: string) {
+        return this.noticeTypeConfig.find(c => c.type === type);
+    }
+    filterBy(type: string) {
+        this.selectedType = type;
+        this.applyFilter();
+    }
     selectTeachingSubject() {
         this.subjectAreas = this.selectedNotice.teachingSubject.subjectAreaList
     }
@@ -123,5 +166,46 @@ export class CranixNoticesComponent implements OnInit {
             ]
         });
         await alert.present();
+    }
+
+
+    editAllowed() {
+        switch(this.authService.session.role) {
+            case "sysadmins": { return true; }
+            case "students": { return false; }
+            case "teachers": {
+                if(!this.selectedNotice.id){
+                    return true;
+                }
+                if(this.selectedNotice.creator.id == this.authService.session.userId) {
+                    return true;
+                }
+                return this.authService.isAllowed("notice.manage");
+            }
+            default: {
+             return this.authService.isAllowed("notice.manage")
+            }
+        }
+    }
+    noticeTypeLabel(notice: CrxNotice): string {
+        switch (notice.noticeType) {
+            case 'performance': return 'Performance Note';
+            case 'grading': return `${notice.teachingSubject.name} - ${notice.title}`;
+            case 'late': return `Late (${notice.late} min)`;
+            case 'unexcused-absence': return `Unexcused Absence`;
+            case 'excused-absence': return `Excused Absence`;
+            default: return '';
+        }
+    }
+
+    noticeDataPreview(notice: CrxNotice): string {
+        switch (notice.noticeType) {
+          case 'performance': return notice.title;
+          case 'grading': return `${notice.grading}  ${notice.weighting}`;
+          case 'late': return `${notice.absence1} ${notice.absence2} ${notice.late}`;
+          case 'absence': return `${notice.absence1} ${notice.absence2}`;
+          case 'excused-absence': return `${notice.absence1} → ${notice.absence2}`;
+          default: return '';
+        }
     }
 }

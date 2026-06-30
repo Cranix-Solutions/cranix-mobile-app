@@ -1,4 +1,8 @@
 {
+    "performance":"Beurteilung",
+    "late":"verspätet",
+    "excused":"entschuldigt",
+    "unexcused":"unentschuldigt",
     "Select a Room to control to activate positiv lists":"Wählen Sie einen Raum um positive Listen zu aktivieren",
     "Selected Room":"Gewählter Raum",
     "One domain name per line. No URLs!":"Ein Domainnamen pro Zeile",

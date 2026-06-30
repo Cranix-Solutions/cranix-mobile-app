@@ -651,9 +651,10 @@ export class CrxNotice {
 	subjectArea: SubjectArea
 	teachingSubject: TeachingSubject
 	late: number
-	absent: string
-	excusedAbsent: string
+	absence1: string
+	absence2: string
 }
+export type NoticeType = 'performance' | 'grading' | 'late' | 'unexcused-absence' | 'excused-absence';
 
 export class CrxTicketArticle {
 	id: number = 0
