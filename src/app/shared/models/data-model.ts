@@ -650,7 +650,12 @@ export class CrxNotice {
 	ptmId: number = 0
 	subjectArea: SubjectArea
 	teachingSubject: TeachingSubject
+	late: string = ""
+	absence1: string = ""
+	absence2: string = ""
+	private: boolean = true
 }
+export type NoticeType = 'performance' | 'grading' | 'late' | 'unexcused-absence' | 'excused-absence';
 
 export class CrxTicketArticle {
 	id: number = 0
