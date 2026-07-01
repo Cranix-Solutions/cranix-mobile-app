@@ -45,7 +45,7 @@ export class CranixNoticesComponent implements OnInit {
         { type: 'todo', label: 'todo', icon: 'hammer', color: 'success' }
     ];
 
-    lessonNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+    lessonNumbers = ["0","1", "2", "3", "4", "5", "6", "7", "8","9", "10", "11", "12"];
 
     @Input() objectType: string
     @Input() selectedObject: any
@@ -206,6 +206,17 @@ export class CranixNoticesComponent implements OnInit {
           case 'absence': return `${notice.absence1} ${notice.absence2}`;
           case 'excused-absence': return `${notice.absence1} → ${notice.absence2}`;
           default: return '';
+        }
+    }
+
+    changeNoticeType(event: any) {
+        console.log(event)
+        if(this.selectedNotice.noticeType === 'late' || this.selectedNotice.noticeType === 'absence') {
+            this.selectedNotice.absence1 = new Date().toISOString().split('T')[0]
+        }
+        if(this.selectedNotice.noticeType === 'excused-absence') {
+            this.selectedNotice.absence1 = new Date().toISOString().split('T')[0]
+            this.selectedNotice.absence2 = new Date().toISOString().split('T')[0]
         }
     }
 }

@@ -1,20 +1,22 @@
 @if(isNoticeOpen){
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>
-            @if(selectedNotice.noticeType){
-            {{selectedNotice.noticeType + " for"|translate}}
-            }@else{
-            {{'Notice for:'|translate}}
-            }
-            <em>
-                @if(objectType.indexOf('user') != -1) {
-                {{selectedObject.surName}}, {{selectedObject.givenName}}
+        <div class="crx-item">
+            <div class="crx-label">
+                @if(selectedNotice.noticeType){
+                {{selectedNotice.noticeType |translate}}
                 }@else{
-                {{selectedObject.name}}, {{selectedObject.description}}
+                {{'Notice for:'|translate}}
                 }
-            </em>
-        </ion-title>
+            </div>
+            @if(objectType.indexOf('user') != -1) {
+            <div class="crx-label">{{'user'|translate}}:</div>
+            <div class="crx-text">{{selectedObject.surName}}, {{selectedObject.givenName}}</div>
+            }@else{
+            <div class="crx-label">{{'group'|translate}}</div>
+            <div class="crx-text">{{selectedObject.name}}, {{selectedObject.description}}</div>
+            }
+        </div>
         <ion-buttons slot="end">
             @if(editAllowed()){
             <ion-button (click)="saveNotice()" [disabled]="isDisabled">
@@ -52,7 +54,7 @@
             </ion-select>
         </ion-item>
         <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Minutes Late'|translate}}: </ion-label>
+            <ion-label [position]="authService.settings.labelPlacement">{{'Late in Minutes'|translate}}: </ion-label>
             <ion-input [(ngModel)]="selectedNotice.late" placeholder="{{'Late in minutes'|translate}}"
                 type="number"></ion-input>
         </ion-item>
@@ -120,13 +122,15 @@
         }@else{
         <ion-item>
             <ion-select label="{{'Type of the notice'|translate}}" placeholder="{{'Select notice type'|translate}}"
-                [(ngModel)]="selectedNotice.noticeType">
-                <ion-select-option *ngFor="let cfg of noticeTypeConfig" [value]="cfg.type">{{cfg.label|translate}}</ion-select-option>
+                [(ngModel)]="selectedNotice.noticeType" (ionChange)="changeNoticeType($event)">
+                <ion-select-option *ngFor="let cfg of noticeTypeConfig"
+                    [value]="cfg.type">{{cfg.label|translate}}</ion-select-option>
             </ion-select>
         </ion-item>
         }
     </ion-list>
-    @if(selectedNotice.noticeType == 'grading' || selectedNotice.noticeType == 'performance'|| selectedNotice.noticeType == 'todo' ){
+    @if(selectedNotice.noticeType == 'grading' || selectedNotice.noticeType == 'performance'|| selectedNotice.noticeType
+    == 'todo' ){
     <quill-editor [(ngModel)]="selectedNotice.text" style="height: auto; margin-left: 10px;  "></quill-editor>
     }
     @if(selectedNotice.id){

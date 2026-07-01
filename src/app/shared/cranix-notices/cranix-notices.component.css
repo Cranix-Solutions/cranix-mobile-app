@@ -72,3 +72,9 @@
     padding-left: 5px;
     font-size: small;
   }
+
+  .crx-item {
+    display: flex;
+    width: 100%;
+    padding-left: 5px;
+  }
