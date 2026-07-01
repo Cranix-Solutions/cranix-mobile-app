@@ -24,10 +24,7 @@ export class CranixNoticesComponent implements OnInit {
     selectedIssue: string = "";
     absenceDate: string = "";
     absence
-    noticeTypes = {
-        'group': ['performance', 'todo'],
-        'user': ['performance', 'grading', 'late', 'absence', 'excused-absence']
-    }
+    noticeTypes = []
     filteredNotices: CrxNotice[] = [];
     selectedType: string = 'all';
     noticeTypeConfig = [];
@@ -68,6 +65,11 @@ export class CranixNoticesComponent implements OnInit {
         }
         if(this.objectType.indexOf('group') != -1 ) {
             this.noticeTypeConfig = this.noticeTypeConfigGroup
+        }
+        for(let conf of this.noticeTypeConfig){
+            if(conf.type != 'all' ){
+                this.noticeTypes.push(conf)
+            }
         }
         this.readData()
     }
@@ -155,6 +157,7 @@ export class CranixNoticesComponent implements OnInit {
                             next: (val) => {
                                 this.objectService.responseMessage(val);
                                 this.readData()
+                                this.closeNotice()
                             },
                             error: (err) => {
                                 this.objectService.errorMessage(this.languageS.trans("An error was accoured"));

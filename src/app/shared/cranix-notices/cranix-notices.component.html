@@ -123,7 +123,7 @@
         <ion-item>
             <ion-select label="{{'Type of the notice'|translate}}" placeholder="{{'Select notice type'|translate}}"
                 [(ngModel)]="selectedNotice.noticeType" (ionChange)="changeNoticeType($event)">
-                <ion-select-option *ngFor="let cfg of noticeTypeConfig"
+                <ion-select-option *ngFor="let cfg of noticeTypes"
                     [value]="cfg.type">{{cfg.label|translate}}</ion-select-option>
             </ion-select>
         </ion-item>
