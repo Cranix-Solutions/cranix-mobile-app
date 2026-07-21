@@ -17,6 +17,11 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
             }
         </button>
+        @if(noticeUse){
+        <button  class="icon-button" (click)="openNotice($event)" matTooltip="{{'notice' | translate }}">
+            <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
+        </button>
+        }
         <button class="icon-button" (click)="openAction($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
             <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
         </button>
@@ -26,8 +31,10 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
 export class ActionBTNRenderer implements ICellRendererAngularComp {
     public params: any;
     public  id;
+    public noticeUse: boolean = false;
     agInit(params: any ): void {
         this.params = params;
+        this.noticeUse = this.params.context.componentParent.noticeUse;
         if( this.params.colDef.field == "id") {
             this.id = this.params.value;
         }
@@ -44,6 +51,10 @@ export class ActionBTNRenderer implements ICellRendererAngularComp {
     public delete(event) {
         event.stopPropagation();
         this.params.context.componentParent.redirectToDelete(this.params.data);
+    }
+    public openNotice(event) {
+        event.stopPropagation();
+        this.params.context.componentParent.openNotice(this.params.data);
     }
 
     refresh(params: any): boolean {

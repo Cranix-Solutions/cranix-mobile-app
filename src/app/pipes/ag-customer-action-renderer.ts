@@ -16,14 +16,21 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
         <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
         </button>
+        @if(noticeUse){
+        <button  class="icon-button" (click)="openNotice($event)" matTooltip="{{'notice' | translate }}">
+            <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
+        </button>
+        }
         `
 })
 
 export class CustomerActionRenderer implements ICellRendererAngularComp {
     private params: any;
     public  id;
+    public noticeUse: boolean = false;
     agInit(params: any ): void {
         this.params = params;
+        this.noticeUse = this.params.context.componentParent.noticeUse;
         if( this.params.colDef.field == "id") {
             this.id = this.params.value;
         }
@@ -40,6 +47,10 @@ export class CustomerActionRenderer implements ICellRendererAngularComp {
     public delete(event) {
         event.stopPropagation();
         this.params.context.componentParent.redirectToDelete(this.params.data);
+    }
+    public openNotice(event) {
+        event.stopPropagation();
+        this.params.context.componentParent.openNotice(this.params.data);
     }
 
     refresh(params: any): boolean {

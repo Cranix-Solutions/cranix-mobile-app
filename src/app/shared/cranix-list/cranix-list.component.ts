@@ -93,7 +93,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilsService.actMdList = this;
-    this.noticeUse = this.authService.isAllowed('notice.use')
+    this.noticeUse = this.authService.isOneOfAllowed(['notice.use','crxnotice.use'])
   }
 
   async ngOnInit() {
