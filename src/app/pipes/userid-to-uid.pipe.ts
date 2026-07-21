@@ -13,7 +13,7 @@ export class UseridToUidPipe implements PipeTransform {
     if ( value == 0 ) {
       return this.languageService.trans("nobody");
     }
-    for (let obj of this.gOS.allObjects['user'].getValue()) {
+    for (let obj of this.gOS.allObjects['user']) {
       if (obj.id === value) {
         return obj.uid ;
       }
