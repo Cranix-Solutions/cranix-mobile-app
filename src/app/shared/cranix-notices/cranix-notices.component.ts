@@ -2,10 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { NoticesService } from 'src/app/services/notices.service';
-import { CrxNotice, SubjectArea } from '../models/data-model';
+import { CrxNotice, NoticeDescription, SubjectArea } from '../models/data-model';
 import { LanguageService } from 'src/app/services/language.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
+import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 @Component({
     standalone: false,
     selector: 'cranix-notices',
@@ -24,22 +25,29 @@ export class CranixNoticesComponent implements OnInit {
     selectedIssue: string = "";
     absenceDate: string = "";
     absence
-    noticeTypes = []
+    noticeTypes: NoticeDescription[] = []
     filteredNotices: CrxNotice[] = [];
     selectedType: string = 'all';
-    noticeTypeConfig = [];
-    noticeTypeConfigUser = [
+    noticeTypeConfig: NoticeDescription[] = [
         { type: 'all', label: 'all', icon: 'funnel' },
+        { type: 'generic', label: 'generic', icon: 'clipboard', color: 'tertiary' },
+        { type: 'todo', label: 'todo', icon: 'hammer', color: 'success' }
+    ];
+    noticeTypeConfigUser: NoticeDescription[] = [
         { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' },
         { type: 'grading', label: 'grading', icon: 'school', color: 'success' },
         { type: 'late', label: 'late', icon: 'time', color: 'warning' },
         { type: 'absence', label: 'unexcused', icon: 'close-circle', color: 'danger' },
-        { type: 'excused-absence', label: 'excused', icon: 'checkmark-circle', color: 'tertiary' },
+        { type: 'excused-absence', label: 'excused', icon: 'checkmark-circle', color: 'tertiary' }
     ];
-    noticeTypeConfigGroup = [
-        { type: 'all', label: 'all', icon: 'funnel' },
-        { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' },
-        { type: 'todo', label: 'todo', icon: 'hammer', color: 'success' }
+    noticeTypeConfigGroup: NoticeDescription[] = [
+        { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' }
+    ];
+    noticeTypeConfigDevice: NoticeDescription[] = [
+        { type: 'access', label: 'access', icon: 'key', color: 'danger' }
+    ];
+    noticeTypeConfigInstitute: NoticeDescription[] = [
+        { type: 'access', label: 'access', icon: 'key', color: 'danger' }
     ];
 
     lessonNumbers = ["0","1", "2", "3", "4", "5", "6", "7", "8","9", "10", "11", "12"];
@@ -54,6 +62,7 @@ export class CranixNoticesComponent implements OnInit {
         public crxObjectService: CrxObjectService,
         private modalController: ModalController,
         private alerController: AlertController,
+        private calendarService: CrxCalendarService
     ) { }
 
     ngOnInit() {
@@ -61,10 +70,16 @@ export class CranixNoticesComponent implements OnInit {
         console.log(this.objectType)
         console.log(this.selectedObject)
         if(this.objectType.indexOf('user') != -1 ) {
-            this.noticeTypeConfig = this.noticeTypeConfigUser
+            this.noticeTypeConfig.push(...this.noticeTypeConfigUser)
         }
         if(this.objectType.indexOf('group') != -1 ) {
-            this.noticeTypeConfig = this.noticeTypeConfigGroup
+            this.noticeTypeConfig.push(...this.noticeTypeConfigGroup)
+        }
+        if(this.objectType === 'device' ) {
+            this.noticeTypeConfig.push(...this.noticeTypeConfigDevice)
+        }
+        if(this.objectType === 'institute' ) {
+            this.noticeTypeConfig.push(...this.noticeTypeConfigInstitute)
         }
         for(let conf of this.noticeTypeConfig){
             if(conf.type != 'all' ){
@@ -108,6 +123,9 @@ export class CranixNoticesComponent implements OnInit {
     openNotice(notice: CrxNotice) {
         if (notice) {
             this.selectedNotice = notice;
+            if(notice.reminder){
+                this.selectedNotice.reminder = this.calendarService.toIonISOString(new Date(notice.reminder))
+            }
         } else {
             this.selectedNotice = new CrxNotice();
             this.selectedNotice.objectType = this.objectType
@@ -183,10 +201,10 @@ export class CranixNoticesComponent implements OnInit {
                 if(this.selectedNotice.creator.id == this.authService.session.userId) {
                     return true;
                 }
-                return this.authService.isAllowed("notice.manage");
+                return this.authService.isOneOfAllowed(["notice.manage","crxnotice.manage"]);
             }
             default: {
-             return this.authService.isAllowed("notice.manage")
+             return this.authService.isOneOfAllowed(["notice.manage","crxnotice.manage"])
             }
         }
     }
@@ -203,12 +221,11 @@ export class CranixNoticesComponent implements OnInit {
 
     noticeDataPreview(notice: CrxNotice): string {
         switch (notice.noticeType) {
-          case 'performance': return notice.title;
           case 'grading': return `${notice.grading}  ${notice.weighting}`;
           case 'late': return `${notice.absence1} ${notice.absence2} ${notice.late}`;
           case 'absence': return `${notice.absence1} ${notice.absence2}`;
           case 'excused-absence': return `${notice.absence1} → ${notice.absence2}`;
-          default: return '';
+          default: return notice.title;
         }
     }
 

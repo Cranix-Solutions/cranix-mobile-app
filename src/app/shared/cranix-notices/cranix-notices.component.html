@@ -13,7 +13,7 @@
             <div class="crx-label">{{'user'|translate}}:</div>
             <div class="crx-text">{{selectedObject.surName}}, {{selectedObject.givenName}}</div>
             }@else{
-            <div class="crx-label">{{'group'|translate}}</div>
+            <div class="crx-label">{{objectType|translate}}</div>
             <div class="crx-text">{{selectedObject.name}}, {{selectedObject.description}}</div>
             }
         </div>
@@ -118,6 +118,13 @@
             <ion-input type="number" [(ngModel)]="selectedNotice.weighting"></ion-input>
         </ion-item>
         }
+        @case ('todo') {
+        <ion-item>
+            <ion-label [position]="authService.settings.labelPlacement">{{'reminder'|translate}}:</ion-label>
+            <input style="margin-left: auto;" [(ngModel)]="selectedNotice.reminder" name="reminder"
+                type="datetime-local" required />
+        </ion-item>
+        }
         }
         }@else{
         <ion-item>
@@ -129,9 +136,8 @@
         </ion-item>
         }
     </ion-list>
-    @if(selectedNotice.noticeType == 'grading' || selectedNotice.noticeType == 'performance'|| selectedNotice.noticeType
-    == 'todo' ){
-    <quill-editor [(ngModel)]="selectedNotice.text" style="height: auto; margin-left: 10px;  "></quill-editor>
+    @if(selectedNotice.noticeType && selectedNotice.noticeType != 'late' && !selectedNotice.noticeType.endsWith('absence')){
+    <quill-editor [(ngModel)]="selectedNotice.text" style="height: min-content; margin-left: 10px;  "></quill-editor>
     }
     @if(selectedNotice.id){
     <div class="crx-notice">
@@ -151,7 +157,7 @@
                 @if(objectType.indexOf('user') != -1){
                 {{selectedObject.surName}}, {{selectedObject.givenName}}
                 }@else{
-                {{selectedObject.description}}
+                @if(selectedObject.description){{{selectedObject.description}}}@else{{{selectedObject.name}}}
                 }
             </em>
         </ion-title>
