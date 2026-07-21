@@ -93,7 +93,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilsService.actMdList = this;
-    this.noticeUse = this.authService.isAllowed('notice.use')
+    this.noticeUse = this.authService.isOneOfAllowed(['notice.use','crxnotice.use'])
   }
 
   async ngOnInit() {
@@ -136,13 +136,13 @@ export class CranixListComponent implements OnInit, OnChanges {
   createColumnDefs() {
     let columnDefs = [];
     var cellRenderer;
-    var actionWidth = 125;;
+    var actionWidth = 145;;
     switch (this.objectType) {
       case 'customer': {
         cellRenderer = CustomerActionRenderer; break
       }
       case 'device': {
-        cellRenderer = DeviceActionBTNRenderer; actionWidth = 175; break
+        cellRenderer = DeviceActionBTNRenderer; actionWidth = 195; break
       }
       case 'education/group':
       case 'group': {

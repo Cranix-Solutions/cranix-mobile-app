@@ -655,7 +655,12 @@ export class CrxNotice {
 	absence2: string = ""
 	private: boolean = true
 }
-export type NoticeType = 'performance' | 'grading' | 'late' | 'unexcused-absence' | 'excused-absence';
+export interface NoticeDescription {
+	type: string,
+	label: string,
+	icon: string,
+	color?: string
+}
 
 export class CrxTicketArticle {
 	id: number = 0

@@ -1,4 +1,7 @@
 {
+    "Select notice type":"Art der Notiz wählen",
+    "absence":"unentschuldigt",
+    "excused-absence":"entschuldigt",
     "Type of the notice":"Art der Notiz",
     "all":"alle",
     "Late in Minutes":"Verspätung in Minuten",

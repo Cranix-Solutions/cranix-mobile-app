@@ -15,8 +15,7 @@ import { objectsTemlate, enumerates, selects, hiddenAttributes, readOnlyAttribut
   providedIn: 'root'
 })
 export class GenericObjectService {
-  //allObjects: {} = {};
-  allObjects: Map<string, any[]> = new Map<string, any[]>();
+  allObjects: { [key: string]: any[] } = {};
   selectedObject: any = null;
   selectedObjectType: string = null;
   selection: any[] = [];
