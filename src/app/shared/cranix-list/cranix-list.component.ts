@@ -72,7 +72,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   listContext: any;
   objectKeys: string[] = [];
   listFilterName: string = ""
-
+  now: number = 0;
   noticeUse: boolean = false;
   @Input({ required: true }) objectType: string;
   @Input() context;
@@ -97,6 +97,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   }
 
   async ngOnInit() {
+    this.now = new Date().getTime();
     this.listFilterName = "filterFor" + this.objectType
     this.addToolTip = this.languageService.trans("Create a new " + this.objectType);
     let val = await this.storage.get(this.objectType + "_hidden_collums");
@@ -121,7 +122,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     }
     this.objectKeys = getObjectKeys(this.objectType);
     this.createColumnDefs();
-    console.log(this.context, this.objectType, this.objectKeys, this.columnDefs)
+    console.log(this.context, this.objectType, this.objectKeys, this.columnDefs, this.gridOptions)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -155,7 +156,7 @@ export class CranixListComponent implements OnInit, OnChanges {
         cellRenderer = InstituteActionCellRenderer; break
       }
       case 'institutestatus': {
-        cellRenderer = InstituteStatusRenderer; break
+        cellRenderer = InstituteStatusRenderer; actionWidth = 60; break
       }
       case 'education/user':
       case 'user': {
@@ -205,7 +206,25 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'createAdHocRoom': case 'privateGroup': case 'studentsOnly': {
           col['cellRenderer'] = YesNoBTNRenderer; break
         }
-        case 'created': case 'modified':
+        case 'created': {
+          col['valueFormatter'] = params => {
+            try {
+              return new Date(params.value).toISOString().substring(0, 16);
+            } catch {
+              return ""
+            }
+          }
+          if(this.objectType === 'institutestatus'){
+            col['cellStyle'] = function (params) {
+              if (params.context.componentParent.now - params.data.created > 36000000) {
+                return { 'background-color': 'red' }
+              }
+              return { 'background-color': '#2dd36f' }
+            }
+          }
+          break;
+        }
+        case 'modified':
         case 'validFrom': case 'validUntil':
         case 'lastUpdate':
         case 'start': case 'end':
@@ -226,7 +245,7 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'cephalixInstituteId': {
           col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('institute', params.data.cephalixInstituteId);
           if (this.objectType == 'institutestatus') {
-            col['minWidth'] = 170;
+            col['minWidth'] = 200;
             col['suppressSizeToFit'] = true;
             col['pinned'] = 'left';
             col['flex'] = '1';
@@ -234,7 +253,7 @@ export class CranixListComponent implements OnInit, OnChanges {
             columnDefs.push(col);
             columnDefs.push({
               headerName: "",
-              minWidth: 200,
+              width: actionWidth,
               suppressSizeToFit: true,
               cellStyle: { 'padding': '2px' },
               field: 'actions',

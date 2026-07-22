@@ -98,12 +98,12 @@ export class InstituteStatus {
     srvUsage: string = "";
     varUsage: string ="";
     homeUsage: string = "";
+    created: any = new Date();
     runningKernel: string ="";
     installedKernel: string ="";
     availableUpdates: string = "";
     lastUpdate: any =new Date();
     version: string ="";
-    created: any = new Date();
     modified: any = new Date();
     uptime: string ="";
     constructor() {}

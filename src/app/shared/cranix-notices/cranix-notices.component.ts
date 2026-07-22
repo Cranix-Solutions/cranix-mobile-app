@@ -120,7 +120,7 @@ export class CranixNoticesComponent implements OnInit {
         this.subjectAreas = this.selectedNotice.teachingSubject.subjectAreaList
     }
 
-    openNotice(notice: CrxNotice) {
+    openNotice(notice: CrxNotice|null) {
         if (notice) {
             this.selectedNotice = notice;
             if(notice.reminder){
