@@ -1,3 +1,6 @@
+@use 'sass:map';
+@use 'sass:list';
+
 /*
 * Styling icon-buttons for tables.
 */
@@ -250,20 +253,20 @@ $grid-breakpoints :(xs: 0,
   lg: 992px,
   xl: 1200px);
 
-$breakpoints-keys  : map-keys($grid-breakpoints);
-$breakpoints-values: map-values($grid-breakpoints);
-@for $i from 1 to length($breakpoints-keys)+1 {
-  @if $i < length($breakpoints-keys) {
-    .hidden-#{nth($breakpoints-keys, $i)} {
-      @media (min-width: nth($breakpoints-values, $i)) and (max-width: #{nth($breakpoints-values, $i+1) - 1}) {
+$breakpoints-keys  : map.keys($grid-breakpoints);
+$breakpoints-values: map.values($grid-breakpoints);
+@for $i from 1 to list.length($breakpoints-keys)+1 {
+  @if $i < list.length($breakpoints-keys) {
+    .hidden-#{list.nth($breakpoints-keys, $i)} {
+      @media (min-width: list.nth($breakpoints-values, $i)) and (max-width: #{list.nth($breakpoints-values, $i+1) - 1}) {
         display: none !important;
       }
     }
   }
 
   @else {
-    .hidden-#{nth($breakpoints-keys, $i)} {
-      @media (min-width: nth($breakpoints-values, $i)) {
+    .hidden-#{list.nth($breakpoints-keys, $i)} {
+      @media (min-width: list.nth($breakpoints-values, $i)) {
         display: none !important;
       }
     }
