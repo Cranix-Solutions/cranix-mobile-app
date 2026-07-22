@@ -178,12 +178,12 @@
         <ion-chip *ngFor="let cfg of noticeTypeConfig" [outline]="selectedType !== cfg.type"
             [color]="selectedType === cfg.type ? (cfg.color || 'medium') : 'medium'" (click)="filterBy(cfg.type)">
             <ion-icon [name]="cfg.icon"></ion-icon>
-            <ion-label>
+            <div class="crx-label">
                 {{ cfg.label| translate }}
                 @if(cfg.type === selectedType) {
                 #{{ filteredNotices.length }}
                 }
-            </ion-label>
+            </div>
         </ion-chip>
     </div>
     <ion-grid>
