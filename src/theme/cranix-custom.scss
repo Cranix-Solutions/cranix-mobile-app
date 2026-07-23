@@ -454,3 +454,35 @@ ion-card-title{
   display: flex;
   justify-content: space-between; /* A links, B rechts */
 }
+
+/*
+* our own item/notice format
+  Label uses capitalized text
+  <div class="crx-item">
+     <div class="crx-label">Label</div>
+     <div class="crx-text"></div>
+  </div>
+*/
+
+.crx-label {
+  margin-right: 4px;
+  text-transform: capitalize;
+}
+
+.crx-text {
+  margin-right: 4px;
+  color: var(--ion-color-medium);
+}
+
+.crx-notice {
+  display: flex;
+  width: 100%;
+  padding-left: 5px;
+  font-size: small;
+}
+
+.crx-item {
+  display: flex;
+  width: 100%;
+  padding-left: 10px;
+}
