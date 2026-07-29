@@ -4,11 +4,11 @@
         <div [class]="authService.isMD() ? '': 'crx-item'">
             <div class="crx-label">
                 @if(selectedNotice.noticeType){
-                {{selectedNotice.noticeType |translate}} {{'for'|translate}} &MediumSpace;:
-
+                {{selectedNotice.noticeType|translate}}
                 }@else{
-                {{'Notice for:'|translate}}
+                {{'Notice'|translate}}
                 }
+                {{'for'|translate}} :
                 {{objectType|translate}}
             </div>
             <div class="crx-text">
@@ -39,103 +39,103 @@
 <ion-content fullscreen>
     <ion-list>
         @if(selectedNotice.noticeType){
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Title'|translate}}: </ion-label>
+        <div class="crx-item">
+            <div class="crx-label">{{'Title'|translate}}: </div>
             <ion-input [(ngModel)]="selectedNotice.title" placeholder="{{'Insert title'|translate}}"></ion-input>
-        </ion-item>
+        </div>
         @switch(selectedNotice.noticeType){
         @case('late'){
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Date'|translate}}: </ion-label>
+        <div class="crx-item">
+            <div class="crx-label">{{'Date'|translate}}: </div>
             <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Lesson'|translate}}: </ion-label>
+        </div>
+        <div class="crx-item">
+            <div class="crx-label">{{'Lesson'|translate}}: </div>
             <ion-select [(ngModel)]="selectedNotice.absence2">
                 <ion-select-option *ngFor="let l of lessonNumbers" [value]="l">{{ l }}</ion-select-option>
             </ion-select>
-        </ion-item>
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Late in Minutes'|translate}}: </ion-label>
+        </div>
+        <div class="crx-item">
+            <div class="crx-label">{{'Late in Minutes'|translate}}: </div>
             <ion-input [(ngModel)]="selectedNotice.late" placeholder="{{'Late in minutes'|translate}}"
                 type="number"></ion-input>
-        </ion-item>
+        </div>
         }
         @case('absence'){
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Date'|translate}}: </ion-label>
+        <div class="crx-item">
+            <div class="crx-label">{{'Date'|translate}}: </div>
             <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Lesson'|translate}}: </ion-label>
+        </div>
+        <div class="crx-item">
+            <div class="crx-label">{{'Lesson'|translate}}: </div>
             <ion-select [(ngModel)]="selectedNotice.absence2">
                 <ion-select-option *ngFor="let l of lessonNumbers" [value]="l">{{ l }}</ion-select-option>
             </ion-select>
-        </ion-item>
+        </div>
         }
         @case('excused-absence')
         {
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'From'|translate}}: </ion-label>
+        <div class="crx-item">
+            <div class="crx-label">{{'From'|translate}}: </div>
             <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Until'|translate}}: </ion-label>
+        </div>
+        <div class="crx-item">
+            <div class="crx-label">{{'Until'|translate}}: </div>
             <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
-        </ion-item>
+        </div>
         }
         @case('performance')
         {
-        <ion-item>
+        <div class="crx-item">
             @if( selectedNotice.ptmId != 0 ) {
-            <ion-label>{{'PTM'|translate}}</ion-label>
+            <div class="crx-label">{{'PTM'|translate}}</div>
             }
-            <ion-label [position]="authService.settings.labelPlacement">{{'teachingSubject'|translate}}:</ion-label>
+            <div class="crx-label">{{'teachingSubject'|translate}}:</div>
             <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
                 [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.teachingSubject"
                 (callback)="selectTeachingSubject()"></cranix-search>
             <!-- ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label -->
             <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
                 [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
-        </ion-item>
+        </div>
         }
         @case('grading')
         {
-        <ion-item>
+        <div class="crx-item">
             @if( selectedNotice.ptmId != 0 ) {
-            <ion-label>{{'PTM'|translate}}</ion-label>
+            <div class="crx-label">{{'PTM'|translate}}</div>
             }
-            <ion-label [position]="authService.settings.labelPlacement">{{'teachingSubject'|translate}}:</ion-label>
+            <div class="crx-label">{{'teachingSubject'|translate}}:</div>
             <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
                 [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.teachingSubject"
                 (callback)="selectTeachingSubject()"></cranix-search>
             <!-- ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label -->
             <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
                 [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
-        </ion-item>
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'grading'|translate}}:</ion-label>
+        </div>
+        <div class="crx-item">
+            <div class="crx-label">{{'grading'|translate}}:</div>
             <ion-input type="number" [(ngModel)]="selectedNotice.grading"></ion-input>
-            <ion-label [position]="authService.settings.labelPlacement">{{'weighting'|translate}}:</ion-label>
+            <div class="crx-label">{{'weighting'|translate}}:</div>
             <ion-input type="number" [(ngModel)]="selectedNotice.weighting"></ion-input>
-        </ion-item>
+        </div>
         }
         @case ('todo') {
-        <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'reminder'|translate}}:</ion-label>
+        <div class="crx-item">
+            <div class="crx-label">{{'reminder'|translate}}:</div>
             <input style="margin-left: auto;" [(ngModel)]="selectedNotice.reminder" name="reminder"
                 type="datetime-local" required />
-        </ion-item>
+        </div>
         }
         }
         }@else{
-        <ion-item>
+        <div class="crx-item">
             <ion-select label="{{'Type of the notice'|translate}}" placeholder="{{'Select notice type'|translate}}"
                 [(ngModel)]="selectedNotice.noticeType" (ionChange)="changeNoticeType($event)">
                 <ion-select-option *ngFor="let cfg of noticeTypes"
                     [value]="cfg.type">{{cfg.label|translate}}</ion-select-option>
             </ion-select>
-        </ion-item>
+        </div>
         }
     </ion-list>
     @switch(selectedNotice.noticeType){
@@ -147,7 +147,7 @@
     @case ('excused-absence')
     {}
     @default {
-    <quill-editor [(ngModel)]="selectedNotice.text" style="height: min-content; margin-left: 10px;  "></quill-editor>
+    @if(selectedNotice.noticeType){<quill-editor [(ngModel)]="selectedNotice.text" style="height: min-content; margin-left: 10px;  "></quill-editor>}
     }
     }
     @if(selectedNotice.id){

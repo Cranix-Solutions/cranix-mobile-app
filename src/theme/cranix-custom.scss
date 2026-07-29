@@ -467,6 +467,8 @@ ion-card-title{
 .crx-label {
   margin-right: 4px;
   text-transform: capitalize;
+  min-width: 150px;
+  max-width: 30%;
 }
 
 .crx-text {
@@ -477,12 +479,13 @@ ion-card-title{
 .crx-notice {
   display: flex;
   width: 100%;
-  padding-left: 5px;
+  padding-left: 10px;
   font-size: small;
 }
 
 .crx-item {
   display: flex;
+  align-items: center;
   width: 100%;
   padding-left: 10px;
 }
