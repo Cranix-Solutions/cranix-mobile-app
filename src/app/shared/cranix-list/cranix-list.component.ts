@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { ChallengesService } from 'src/app/services/challenges.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -93,7 +92,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilsService.actMdList = this;
-    this.noticeUse = this.authService.isOneOfAllowed(['notice.use','crxnotice.use'])
+    this.noticeUse = this.authService.isOneOfAllowed(['notice.use', 'crxnotice.use'])
   }
 
   async ngOnInit() {
@@ -214,7 +213,7 @@ export class CranixListComponent implements OnInit, OnChanges {
               return ""
             }
           }
-          if(this.objectType === 'institutestatus'){
+          if (this.objectType === 'institutestatus') {
             col['cellStyle'] = function (params) {
               if (params.context.componentParent.now - params.data.created > 36000000) {
                 return { 'background-color': 'red' }
@@ -351,17 +350,25 @@ export class CranixListComponent implements OnInit, OnChanges {
           }
           break;
         }
+        case 'priority': {
+          col['resizable'] = false
+          col['maxWidth'] = 60
+          col['minWidth'] = 60
+        }
         case 'runningKernel': {
           col['width'] = 60
           col['valueGetter'] = function (params) {
-            let index = params.data.runningKernel.indexOf("-default");
-            let run = params.data.runningKernel.substring(0, index);
-            let inst = params.data.installedKernel.substring(0, index);
-            if (run == inst) {
-              return "OK"
-            } else {
-              return "reboot"
+            if (params.data.runningKernel) {
+              let index = params.data.runningKernel.indexOf("-default");
+              let run = params.data.runningKernel.substring(0, index);
+              let inst = params.data.installedKernel.substring(0, index);
+              if (run == inst) {
+                return "OK"
+              } else {
+                return "reboot"
+              }
             }
+            return "";
           }
           break;
         }
@@ -374,11 +381,12 @@ export class CranixListComponent implements OnInit, OnChanges {
           break;
         }
         case 'ticketStatus': {
+          col['resizable'] = false
+          col['maxWidth'] = 60
           col['minWidth'] = 60
-          col['width'] = 60
           col['cellStyle'] = params => params.data.ticketStatus == "N" ? { 'background-color': 'red' } :
             params.data.ticketStatus == "R" ? { 'background-color': 'orange' } :
-            params.data.ticketStatus == "W" ? { 'background-color': 'green' } : { 'background-color': 'blue'}
+              params.data.ticketStatus == "W" ? { 'background-color': 'green' } : { 'background-color': 'blue' }
           break
         }
 
