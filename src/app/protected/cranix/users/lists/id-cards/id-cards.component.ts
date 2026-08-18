@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { UsersService } from 'src/app/services/users.service';
@@ -155,10 +156,13 @@ export class IdCardsComponent implements AfterViewInit {
 
   async release(){
     this.releasing = true
+    let tmp = this.authService.settings.okMessageDuration;
+    this.authService.settings.okMessageDuration = 1;
     for(let request of this.requests){
       request.allowed = true
       request.validUntil = this.nextValidity
-      let resp = await this.userService.setIdRequest(request).toPromise()
+      let resp = await firstValueFrom(this.userService.setIdRequest(request))
+      this.objectService.responseMessage(resp);
       console.log(resp)
     }
     if(this.start <this.allRequests.length){
@@ -167,6 +171,7 @@ export class IdCardsComponent implements AfterViewInit {
       this.readData()
     }
     this.releasing = false
+    this.authService.settings.okMessageDuration = tmp;
     console.log("done")
   }
 

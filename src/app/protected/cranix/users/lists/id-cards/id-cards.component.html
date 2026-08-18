@@ -32,11 +32,11 @@
                     {{request.creator.surName}}, {{request.creator.givenName}}
                 </span>
                 @if(workMode == "overview"){
-                <button (click)="deleteIdRequest(request)">
+                <button [disabled]="releasing" (click)="deleteIdRequest(request)">
                     <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
                 </button>
                 }@else{
-                <button (click)="doNotRelease(idx)">
+                <button [disabled]="releasing" (click)="doNotRelease(idx)">
                     <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
                 </button>
                 }
@@ -45,7 +45,7 @@
                 <span>
                     {{'validUntil'|translate}}: {{request.validUntil}}
                 </span>
-                <button>
+                <button [disabled]="releasing">
                     @if(request.allowed){
                     <ion-icon slot="icon-only" color="success" name="checkmark" aria-label="released"></ion-icon>
                     }@else{
