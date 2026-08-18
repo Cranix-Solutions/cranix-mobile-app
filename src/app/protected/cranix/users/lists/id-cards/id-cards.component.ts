@@ -17,12 +17,14 @@ export class IdCardsComponent implements AfterViewInit {
   isEditIdModalOpen: boolean = false
   isDeleteAlertOpen: boolean = false
   openedOnly: boolean = true
-  workMode: string = "overview"
+  workMode: string = "open"
+  workModes: string[] = ['all','open','expired','valide']
   releasing: boolean = false
   requests: IdRequest[] = []
   selectedRequest: IdRequest = new IdRequest()
   start: number = -1
   nextValidity: string;
+  now: number = new Date().getTime()
 
   constructor(
     public authService: AuthenticationService,
@@ -37,6 +39,7 @@ export class IdCardsComponent implements AfterViewInit {
     this.userService.getIdRequests().subscribe(
       (val) => {
         this.allRequests = val
+        console.log(val.length)
         this.searchRequests()
       }
     )
@@ -49,8 +52,10 @@ export class IdCardsComponent implements AfterViewInit {
     }
     let tmp = []
     for (let o of this.allRequests) {
-      if (this.openedOnly && o.allowed) {
-        continue;
+      switch(this.workMode) {
+        case 'open': if(o.allowed) continue;
+        case 'expired': if(new Date(o.validUntil).getTime() > this.now) continue;
+        case 'valide': if(!o.allowed || new Date(o.validUntil).getTime() < this.now) continue;
       }
       if (
         (o.creator.fullName.toLowerCase().indexOf(filter) > -1) ||
@@ -58,6 +63,7 @@ export class IdCardsComponent implements AfterViewInit {
       ) {
         tmp.push(o)
       }
+      console.log(o)
     }
     this.requests = tmp;
   }
@@ -125,11 +131,9 @@ export class IdCardsComponent implements AfterViewInit {
 
   changeMode(event){
     console.log(event)
-    if(this.workMode == "overview"){
-      this.searchRequests()
-    }else{
-      this.doReView(true)
-    }
+    this.workMode = event.detail.value;
+    this.searchRequests();
+    //this.doReView(true)
   }
   doReView(reset: boolean){
     if(reset){

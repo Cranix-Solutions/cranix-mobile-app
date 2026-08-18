@@ -30,7 +30,7 @@ export class User {
 	givenName: string = "";
 	birthDay?: string = "";
 	password?: string = "";
-	role?: string = "";
+	role: string = "";
 	mustChange?: boolean = true;
 	classes?: string = "";
 	msQuota?: number = 0;

@@ -3,20 +3,17 @@
     <ion-item>
         <ion-select aria-label="processing" [(ngModel)]="workMode" (ionChange)="changeMode($event)" fill="outline"
             style="max-width: 200px;">
-            <ion-select-option value="overview">{{'Overview'|translate}} </ion-select-option>
-            <ion-select-option value="batch">{{'Batch processing'|translate}} </ion-select-option>
+            @for(mode of workModes; track mode){
+            <ion-select-option [value]="mode">{{mode|translate}} </ion-select-option>
+            }
         </ion-select>
         <div class="card">
             {{'Next Validity'|translate}}:
             <input style="margin-right: 8px;" type="date" [(ngModel)]="nextValidity">
         </div>
-        @if(workMode == "overview") {
-        <ion-toggle (ionChange)="searchRequests()" [(ngModel)]="openedOnly" name="openedOnlyToogle"
-            [enableOnOffLabels]="true">
-            {{'Opened Only'|translate}}</ion-toggle>
         <ion-searchbar id="search-requests" (input)="searchRequests()"></ion-searchbar>
         #{{requests.length}}
-        }@else{
+        @if(workMode == "open"){
         <ion-button (click)="release()" [disabled]="releasing || !nextValidity">
             {{'Release all shown cards'|translate}}
         </ion-button>
@@ -109,4 +106,5 @@
 </ion-modal>
 <ion-alert [isOpen]="isDeleteAlertOpen" header="{{'Do you realy want to delete?'|translate}}"
     [subHeader]="selectedRequest.creator.fullName" [buttons]="alertDeleteButtons"
-    (didDismiss)="isDeleteAlertOpen = false"></ion-alert>
+    (didDismiss)="isDeleteAlertOpen = false">
+</ion-alert>
