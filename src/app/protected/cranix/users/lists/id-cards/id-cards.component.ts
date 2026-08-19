@@ -7,7 +7,7 @@ import { IdRequest } from 'src/app/shared/models/data-model';
 
 @Component({
   standalone: false,
-    selector: 'app-id-cards',
+  selector: 'app-id-cards',
   templateUrl: './id-cards.component.html',
   styleUrl: './id-cards.component.css'
 })
@@ -17,20 +17,23 @@ export class IdCardsComponent implements AfterViewInit {
   isEditIdModalOpen: boolean = false
   isDeleteAlertOpen: boolean = false
   openedOnly: boolean = true
-  workMode: string = "open"
-  workModes: string[] = ['all','open','expired','valide']
+  workMode: string = "all"
+  workModes: string[] = ['all', 'opened', 'expired', 'valid', 'release']
   releasing: boolean = false
   requests: IdRequest[] = []
   selectedRequest: IdRequest = new IdRequest()
   start: number = -1
   nextValidity: string;
   now: number = new Date().getTime()
+  isDeleteAllShownOpen: boolean = false;
+  picturesProSite: number = 30
+  pictures: number[] = [8, 15, 30, 40, 50, 60, 70]
 
   constructor(
     public authService: AuthenticationService,
     private objectService: GenericObjectService,
     public userService: UsersService
-  ) {}
+  ) { }
 
   ngAfterViewInit() {
     this.readData()
@@ -39,23 +42,32 @@ export class IdCardsComponent implements AfterViewInit {
     this.userService.getIdRequests().subscribe(
       (val) => {
         this.allRequests = val
-        console.log(val.length)
         this.searchRequests()
       }
     )
   }
   searchRequests() {
+    this.requests = []
     let search = (<HTMLInputElement>document.getElementById('search-requests'))
     let filter = ""
-    if( search) {
+    if (search) {
       filter = search.value.toLowerCase()
     }
     let tmp = []
     for (let o of this.allRequests) {
-      switch(this.workMode) {
-        case 'open': if(o.allowed) continue;
-        case 'expired': if(new Date(o.validUntil).getTime() > this.now) continue;
-        case 'valide': if(!o.allowed || new Date(o.validUntil).getTime() < this.now) continue;
+      switch (this.workMode) {
+        case 'opened': {
+          if (o.allowed) continue;
+          break;
+        }
+        case 'expired': {
+          if (!o.allowed || !this.isDateWithinNext30Days(o.validUntil)) continue;
+          break;
+        }
+        case 'valid': {
+          if (!o.allowed || this.isDateWithinNext30Days(o.validUntil)) continue;
+          break;
+        }
       }
       if (
         (o.creator.fullName.toLowerCase().indexOf(filter) > -1) ||
@@ -63,12 +75,11 @@ export class IdCardsComponent implements AfterViewInit {
       ) {
         tmp.push(o)
       }
-      console.log(o)
     }
     this.requests = tmp;
   }
-  changeAllowed(){
-    if(this.nextValidity && this.selectedRequest.allowed){
+  changeAllowed() {
+    if (this.nextValidity && this.selectedRequest.allowed) {
       this.selectedRequest.validUntil = this.nextValidity;
     }
   }
@@ -78,7 +89,6 @@ export class IdCardsComponent implements AfterViewInit {
       (val) => {
         this.objectService.responseMessage(val)
         this.readData()
-        console.log("id modified")
         this.closePopOver(popOver)
       }
     )
@@ -90,7 +100,6 @@ export class IdCardsComponent implements AfterViewInit {
       role: 'cancel',
       handler: () => {
         this.isDeleteAlertOpen = false
-        console.log('Alert canceled');
       },
     },
     {
@@ -98,13 +107,34 @@ export class IdCardsComponent implements AfterViewInit {
       role: 'confirm',
       handler: () => {
         this.userService.deleteIdRequest(this.selectedRequest.id).subscribe(
-        (val) => {
-          this.selectedRequest = new IdRequest()
+          (val) => {
+            this.selectedRequest = new IdRequest()
+            this.objectService.responseMessage(val)
+            this.isDeleteAlertOpen = false
+            this.readData()
+          });
+      },
+    },
+  ];
+
+  public alertAllDeleteButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        this.isDeleteAlertOpen = false
+      },
+    },
+    {
+      text: 'OK',
+      role: 'confirm',
+      handler: async () => {
+        for (let request of this.requests) {
+          let val = await firstValueFrom(this.userService.deleteIdRequest(request.id))
           this.objectService.responseMessage(val)
-          this.isDeleteAlertOpen = false
-          this.readData()
-        })
-        console.log('Alert confirmed');
+        }
+        this.readData()
+        this.isDeleteAllShownOpen = false;
       },
     },
   ];
@@ -117,7 +147,6 @@ export class IdCardsComponent implements AfterViewInit {
   getIdRequest(id: number) {
     this.userService.getIdRequest(id).subscribe(
       (val) => {
-        console.log(val)
         this.selectedRequest = val
         this.selectedRequest.picture = "data:image/jpg;base64," + val.picture
         this.isEditIdModalOpen = true
@@ -129,57 +158,57 @@ export class IdCardsComponent implements AfterViewInit {
     this.isEditIdModalOpen = false;
   }
 
-  changeMode(event){
-    console.log(event)
+  changeMode(event) {
     this.workMode = event.detail.value;
-    this.searchRequests();
-    //this.doReView(true)
+    if (this.workMode == 'release') {
+      this.doRelease(true);
+    } else {
+      this.searchRequests();
+    }
   }
-  doReView(reset: boolean){
-    if(reset){
+  doRelease(reset: boolean) {
+    if (reset) {
       this.start = -1
     }
     this.requests = []
-    while(true){
+    while (true) {
       this.start++
-      if(this.allRequests.length == this.start || this.requests.length > 36) {
+      if (this.allRequests.length == this.start || this.requests.length == this.picturesProSite) {
         break;
       }
       let request = this.allRequests[this.start]
       //todo list expiered IDs also
-      if(request && request.allowed && !this.isDateWithinNext30Days(request.validUntil)) {
+      if (request && request.allowed && !this.isDateWithinNext30Days(request.validUntil)) {
         continue
       }
       this.getPictureOfRequest(request)
       this.requests.push(request)
     }
   }
-  doNotRelease(indx: number){
-    this.requests.splice(indx,1)
+  doNotRelease(indx: number) {
+    this.requests.splice(indx, 1)
   }
 
-  async release(){
+  async release() {
     this.releasing = true
     let tmp = this.authService.settings.okMessageDuration;
     this.authService.settings.okMessageDuration = 1;
-    for(let request of this.requests){
+    for (let request of this.requests) {
       request.allowed = true
       request.validUntil = this.nextValidity
       let resp = await firstValueFrom(this.userService.setIdRequest(request))
       this.objectService.responseMessage(resp);
-      console.log(resp)
     }
-    if(this.start <this.allRequests.length){
-      this.doReView(false)
-    }else{
+    if (this.start < this.allRequests.length) {
+      this.doRelease(false)
+    } else {
       this.readData()
     }
     this.releasing = false
     this.authService.settings.okMessageDuration = tmp;
-    console.log("done")
   }
 
-  getPictureOfRequest(request){
+  getPictureOfRequest(request) {
     this.userService.getIdRequest(request.id).subscribe(
       (val) => {
         request.picture = "data:image/jpg;base64," + val.picture
@@ -188,9 +217,10 @@ export class IdCardsComponent implements AfterViewInit {
   }
 
   isDateWithinNext30Days(dateStr: string): boolean {
+    if (!dateStr) return true;
     // Erwartetes Format: YYYY-MM-DD
     const parts = dateStr.split('-');
-    if (parts.length !== 3) return false;
+    if (parts.length !== 3) return true;
 
     const year = Number(parts[0]);
     const month = Number(parts[1]); // 1-12
@@ -201,7 +231,7 @@ export class IdCardsComponent implements AfterViewInit {
       Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day) ||
       month < 1 || month > 12 || day < 1 || day > 31
     ) {
-      return false;
+      return true;
     }
 
     // Konstruktion des Datums (Monatsangabe in JS Date ist 0-basiert)
