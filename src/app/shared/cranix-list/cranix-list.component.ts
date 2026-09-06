@@ -402,6 +402,16 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.gridApi.setGridOption('quickFilterText', filter);
   }
 
+  selectionChanged() {
+    this.objectService.selectedIds = []
+    this.objectService.selectedObjects = this.gridApi.getSelectedRows();
+    for (let o of this.objectService.selectedObjects) {
+      this.objectService.selectedNames.push(o.name ? o.name : o.uid)
+      this.objectService.selectedIds.push(o.id)
+    }
+  }
+
+/*
   getSelection() {
     this.objectService.selectedIds = []
     for (let i = 0; i < this.gridApi.getSelectedRows().length; i++) {
@@ -409,6 +419,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     }
     this.objectService.selectedObjects = this.gridApi.getSelectedRows()
   }
+*/
 
   redirectToAddInstitute() {
     let selection = this.gridApi.getSelectedRows();
@@ -461,7 +472,6 @@ export class CranixListComponent implements OnInit, OnChanges {
       this.objectService.selectedIds = [object.id]
       this.objectService.selectedObjects = [object]
     } else {
-      this.getSelection();
       if (this.objectService.selectedObjects.length == 0) {
         this.objectService.selectObject();
         return;

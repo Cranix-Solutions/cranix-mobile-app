@@ -75,6 +75,7 @@
   [rowMultiSelectWithClick]="authService.settings.rowMultiSelectWithClick"
   [rowData]="rowData"
   [selectionColumnDef]="selectionColumnDef"
+  (selectionChanged)="selectionChanged()"
   (gridReady)="onGridReady($event)">
 </ag-grid-angular>
 }@else{
@@ -89,6 +90,7 @@
   [rowMultiSelectWithClick]="authService.settings.rowMultiSelectWithClick"
   [rowData]="objectService.allObjects[objectType]"
   [selectionColumnDef]="selectionColumnDef"
+  (selectionChanged)="selectionChanged()"
   (gridReady)="onGridReady($event)">
 </ag-grid-angular>
 }

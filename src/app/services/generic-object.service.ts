@@ -18,9 +18,9 @@ export class GenericObjectService {
   allObjects: { [key: string]: any[] } = {};
   selectedObject: any = null;
   selectedObjectType: string = null;
-  selection: any[] = [];
   selectedObjects: any[] = [];
   selectedIds: number[] = [];
+  selectedNames: string[] = [];
   selectedRoom: any = null;
   selectedGroup: any = null;
   packagesAvailable: Package[] = [];
@@ -29,7 +29,6 @@ export class GenericObjectService {
   initialized: number = 0;
   selects = selects;
   required = required;
-
 
   constructor(
     public alertCtrl: AlertController,
@@ -611,9 +610,9 @@ export class GenericObjectService {
   async openActions(objectType: string, object: any, gridApi: any) {
     if (object) {
       this.selectedIds.push(object.id)
-      this.selection.push(object)
+      this.selectedObjects.push(object)
     } else {
-      if (this.selection.length == 0) {
+      if (this.selectedObjects.length == 0) {
         this.selectObject();
         return;
       }
@@ -623,7 +622,7 @@ export class GenericObjectService {
       componentProps: {
         objectType: objectType,
         objectIds: this.selectedIds,
-        selection: this.selection,
+        selectedObjects: this.selectedObjects,
         gridApi: gridApi
       },
       translucent: true,

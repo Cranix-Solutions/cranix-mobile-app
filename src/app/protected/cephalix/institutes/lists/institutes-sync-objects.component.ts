@@ -19,6 +19,13 @@ export class InstitutesSyncObjectsComponent {
   selectedObjects: any[] = []
   items: any[]
   institute;
+  icon = {
+    'user': 'person',
+    'group': 'people',
+    'hwconf':'file-tray-stacked',
+    'software':'software',
+    'faq':'information-circle'
+  }
   constructor(
     public authService: AuthenticationService,
     public cephalixService: CephalixService,
@@ -31,6 +38,7 @@ export class InstitutesSyncObjectsComponent {
   segmentChanged(event) {
     this.items = null
     this.segment = event.detail.value;
+    console.log(this.segment)
     this.items = this.memberData[this.segment]
   }
   readMembers() {

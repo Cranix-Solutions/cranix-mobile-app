@@ -24,8 +24,6 @@ export class CephalixService {
 	url: string;
 	res: any;
 	headers: any;
-	selectedInstitutes: Institute[] = [];
-	selectedList: string[] = [];
 	loadingStatus: boolean = false;
 
 	constructor(

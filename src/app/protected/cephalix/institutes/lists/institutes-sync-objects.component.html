@@ -5,22 +5,26 @@
   {{'You have to select some institutes to be able to use this site.'}}
 </ion-title>
 }@else{
-<ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="user">
-  @for( seg of objectsToSync; track seg){
-  <ion-segment-button [value]="seg">
-    <ion-label>{{ seg | translate}}</ion-label>
-  </ion-segment-button>
-  }
-</ion-segment>
 <ion-content>
   <ion-toolbar class="page-toolbar">
+    <ion-segment (ionChange)="segmentChanged($event)" color="secondary" value="user" [scrollable]="true">
+      @for( seg of objectsToSync; track seg){
+      <ion-segment-button [value]="seg">
+        @if(authService.isMD()){
+          <ion-icon [name]="icon[seg]"></ion-icon>
+        }@else{
+        <ion-label>{{ seg | translate}}</ion-label>
+        }
+      </ion-segment-button>
+      }
+    </ion-segment>
     <ion-buttons slot="end">
       <ion-button size="small" (click)="startSync($event)"
-        matTooltip="{{'Start  synchronisation of selected objects to the selected institutes.' | translate }} {{ cephalixService.selectedList }}">
+        matTooltip="{{'Start  synchronisation of selected objects to the selected institutes.' | translate }} {{ objectService.selectedNames }}">
         <ion-icon slot="icon-only" color="success" name="code-working"></ion-icon>
       </ion-button>
       <ion-button size="small" (click)="stopSync($event)"
-        matTooltip="{{'Stop  synchronisation of selected objects to the selected institutes.' | translate }}  {{ cephalixService.selectedList }}">
+        matTooltip="{{'Stop  synchronisation of selected objects to the selected institutes.' | translate }}  {{ objectService.selectedNames }}">
         <ion-icon slot="icon-only" color="danger" name="code-working"></ion-icon>
       </ion-button>
     </ion-buttons>
