@@ -442,8 +442,8 @@ export class AuthenticationService {
             case "/pages/cranix/groups": { return this.isAllowed('group.manage') }
             case "/pages/cranix/hwconfs": { return this.isAllowed('hwconf.manage') }
             case "/pages/cranix/informations": { return this.isAllowed('permitall') }
-            case "/pages/cranix/mygroups": { return this.isAllowed('education.groups') }
-            case "/pages/cranix/myusers": { return this.isAllowed('education.users') }
+            case "/pages/cranix/mygroups": { return this.isAllowed('education.group') }
+            case "/pages/cranix/myusers": { return this.isAllowed('education.user') }
             case "/pages/cranix/profile": { return this.isOneOfAllowed(['permitall', '2fa.use']) }
             case "/pages/cranix/profile/myFiles": { return this.isAllowed('permitall') }
             case "/pages/cranix/profile/myself": { return this.isAllowed('permitall') }
@@ -460,7 +460,7 @@ export class AuthenticationService {
             case "/pages/edu/lessons": { return this.isAllowed('permitall') }
             case "/pages/edu/lessons/tests": { return this.isAllowed('permitall') }
             case "/pages/edu/lessons/challenges": { return this.isAllowed('challenge.manage') }
-            case "/pages/edu/lessons/roomcontrol": { return this.isAllowed('education.rooms') }
+            case "/pages/edu/lessons/roomcontrol": { return this.isAllowed('education.room') }
             case "institutes/:id": { return this.isAllowed('cephalix.modify') }
             case "customers/:id": { return this.isAllowed('customer.modify') }
             case "tickets/:id": { return this.isAllowed('cephalix.ticket') }

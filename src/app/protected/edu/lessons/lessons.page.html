@@ -16,7 +16,7 @@
       <ion-icon name="list"></ion-icon>
       @if(!authService.isMD()){<ion-label>{{ 'Tests' | translate }}</ion-label>}
     </ion-tab-button>
-    @if(authService.isAllowed('education.rooms')){
+    @if(authService.isAllowed('education.room')){
     <ion-tab-button tab="roomcontrol">
       <ion-icon name="grid"></ion-icon>
       @if(!authService.isMD()){<ion-label>{{ 'Room' | translate }}</ion-label>}
