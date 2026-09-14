@@ -634,14 +634,14 @@ export class IdRequest {
 	appleUrl: string = ""
 }
 
-export class CrxNotice {
+export class CrxNote {
 	id: number = 0
 	creator: User = new User()
 	created: Date | string = new Date()
 	modified: Date | string = new Date()
 	reminder: Date | string = ""
 	title: string = ""
-	noticeType: string = ""
+	noteType: string = ""
 	text: string = ""
 	grading: number = 0
 	weighting: number = 1
@@ -655,7 +655,7 @@ export class CrxNotice {
 	absence2: string = ""
 	private: boolean = true
 }
-export interface NoticeDescription {
+export interface NoteDescription {
 	type: string,
 	label: string,
 	icon: string,

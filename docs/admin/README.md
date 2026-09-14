@@ -34,7 +34,7 @@ This documentation provides comprehensive step-by-step guides for **CRANIX/Cepha
 - [Groups Management](en/cranix/groups.md) - Group creation, membership, permissions
 - [Hardware Configurations (HWConfs)](en/cranix/hwconfs.md) - Hardware profiles, deployment
 - [Informations & Announcements](en/cranix/informations.md) - Create announcements, surveys, target audiences
-- [My Groups (Teacher View)](en/cranix/mygroups.md) - Teacher's group overview, attendance, notices
+- [My Groups (Teacher View)](en/cranix/mygroups.md) - Teacher's group overview, attendance, notes
 - [User Profile & Settings](en/cranix/profile.md) - Personal data, password, 2FA, VPN, file storage
 - [Rooms Management](en/cranix/rooms.md) - Room lists, ad-hoc booking, room printers
 - [Security (Firewall, Proxy, DNS, Access)](en/cranix/security.md) - Firewall rules, proxy config, Unbound DNS, room access, access logs

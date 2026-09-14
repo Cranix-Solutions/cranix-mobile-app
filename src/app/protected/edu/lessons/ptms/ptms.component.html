@@ -75,7 +75,7 @@
                 <ion-row>
                     <ion-col>{{'Time'|translate}}</ion-col>
                     <ion-col>{{'Student'|translate}}</ion-col>
-                    <ion-col>{{'Notices'|translate}}</ion-col>
+                    <ion-col>{{'Notes'|translate}}</ion-col>
                 </ion-row>
                 <ion-row *ngFor="let event of myPTMTeacherInRoom.events.sort(compare)">
                     <ion-col>{{event.start|date:'HH:mm'}}</ion-col>
@@ -105,7 +105,7 @@
                     </ion-col>
                     <ion-col>
                         @if(event.student){
-                        <ion-button fill="clear" size="small" (click)="createNotices(event)">
+                        <ion-button fill="clear" size="small" (click)="createNotes(event)">
                             <ion-icon name="clipboard" color="tertiary"></ion-icon>
                         </ion-button>
                         }
@@ -157,19 +157,19 @@
         </ion-content>
     </ng-template>
 </ion-modal>
-<ion-modal #noticeModal [isOpen]="isNoticeOpen" [backdropDismiss]="false">
+<ion-modal #noteModal [isOpen]="isNoteOpen" [backdropDismiss]="false">
     <ng-template>
         <ion-header>
             <ion-toolbar color="primary">
                 <ion-title>
-                    {{'Create notice for:'|translate}} {{selectedEvent.student.surName}},
+                    {{'Create note for:'|translate}} {{selectedEvent.student.surName}},
                     {{selectedEvent.student.givenName}}
                 </ion-title>
                 <ion-buttons slot="end">
-                    <ion-button class="ion-no-margin" (click)="saveNotice()">
+                    <ion-button class="ion-no-margin" (click)="saveNote()">
                         <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
                     </ion-button>
-                    <ion-button fill="clear" size="small" (click)="closeNotice(noticeModal)">
+                    <ion-button fill="clear" size="small" (click)="closeNote(noteModal)">
                         <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
                     </ion-button>
                 </ion-buttons>
@@ -178,17 +178,17 @@
         <ion-content>
             <ion-list>
                 <ion-list-header>
-                    <ion-input label="{{'title'|translate}}:" [(ngModel)]="selectedNotice.title"
+                    <ion-input label="{{'title'|translate}}:" [(ngModel)]="selectedNote.title"
                         fill="solid"></ion-input>
                 </ion-list-header>
                 <ion-item>
                     <ion-label [position]="authService.settings.labelPlacement">{{'teachingSubject'|translate}}:</ion-label>
-                    <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
+                    <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.teachingSubject" (callback)="selectTeachingSubject()"></cranix-search>
                     <ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label>
-                    <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
+                    <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.subjectArea"></cranix-search>
                 </ion-item>
                 <ion-item>
-                    <quill-editor [(ngModel)]="selectedNotice.text"></quill-editor>
+                    <quill-editor [(ngModel)]="selectedNote.text"></quill-editor>
                 </ion-item>
             </ion-list>
         </ion-content>

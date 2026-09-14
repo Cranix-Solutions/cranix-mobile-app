@@ -91,7 +91,7 @@ export const selects: any = {
     'supporttype': ['Error', 'FeatureRequest', 'Feedback', 'ProductOrder']
 }
 export const enumerates: string[] = [
-	'instituteType', 'groupType', 'deviceType', 'roomType', 'roomControl', 'network', 'accessType', 'role', 'noticeType'
+	'instituteType', 'groupType', 'deviceType', 'roomType', 'roomControl', 'network', 'accessType', 'role', 'noteType'
 ];
 
 export const multivalued: string[] = [
@@ -221,7 +221,7 @@ export const hiddenColumns: string[] = [
 	'questions'
 ]
 
-	import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, Course, Crx2fa, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNotice, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
+	import { AccessInRooms, AccessStatus, AdHocRoom, Announcenement, Category, Contact, Course, Crx2fa, CrxCalendar, CrxChallenge, CrxChallengeAnswer, CrxConfig, CrxNote, CrxQuestion, CrxQuestionAnswer, CrxTicket, CrxTicketArticle, Device, DNSRecord, Drivers, EduRoom, FAQ, Group, GuestUsers, Hwconf, IdRequest, Installation, InstallStateDev, License, Package, Parent, ParentRequest, ParentTeacherMeeting, Partition, Permission, PositivList, Printer, PTMEvent, PTMTeacherInRoom, RecRule, RepoSoftware, Room, Software, SoftwareFullName, SoftwareStatus, SoftwareVersion, SubjectArea, SupportRequest, SystemConfig, TaskResponse, TeachingSubject, User, UsersImport } from './data-model'
 	import { Article, CephalixCare, Customer, DynDns, Institute, InstituteStatus, Notice, Repository, Ticket} from './cephalix-data-model'
 
 	export function getObjectKeys(objectType: string) {
@@ -238,7 +238,7 @@ export const hiddenColumns: string[] = [
 			case 'challenge': return Object.getOwnPropertyNames(new CrxChallenge)
 			case 'crxchallengeanswer': return Object.getOwnPropertyNames(new CrxChallengeAnswer)
 			case 'crxconfig': return Object.getOwnPropertyNames(new CrxConfig)
-			case 'crxnotice': return Object.getOwnPropertyNames(new CrxNotice)
+			case 'crxnote': return Object.getOwnPropertyNames(new CrxNote)
 			case 'crxquestion': return Object.getOwnPropertyNames(new CrxQuestion)
 			case 'crxquestionanswer': return Object.getOwnPropertyNames(new CrxQuestionAnswer)
 			case 'crxticket': return Object.getOwnPropertyNames(new CrxTicket)

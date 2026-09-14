@@ -3,11 +3,11 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
-import { NoticesService } from 'src/app/services/notices.service';
+import { NotesService } from 'src/app/services/notes.service';
 import { ParentsService } from 'src/app/services/parents.service';
 import { SystemService } from 'src/app/services/system.service';
 import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
-import { CrxNotice, ParentTeacherMeeting, PTMEvent, PTMTeacherInRoom, Room, SubjectArea, User } from 'src/app/shared/models/data-model';
+import { CrxNote, ParentTeacherMeeting, PTMEvent, PTMTeacherInRoom, Room, SubjectArea, User } from 'src/app/shared/models/data-model';
 import { WindowRef } from 'src/app/shared/models/ohters';
 
 @Component({
@@ -25,9 +25,9 @@ export class PtmsComponent implements OnInit {
   selectedPTM: ParentTeacherMeeting
   selectedEvent: PTMEvent = new PTMEvent()
   selectedEventRegistered: boolean = false
-  selectedNotice: CrxNotice = new CrxNotice()
+  selectedNote: CrxNote = new CrxNote()
   subjectAreas: SubjectArea[] = []
-  isNoticeOpen: boolean = false
+  isNoteOpen: boolean = false
   isRegisterEventOpen = false
   instituteName: string = ""
   nextPtms: ParentTeacherMeeting[] = []
@@ -41,7 +41,7 @@ export class PtmsComponent implements OnInit {
     public crxObjectService: CrxObjectService,
     private languageS: LanguageService,
     private objectService: GenericObjectService,
-    private noticeService: NoticesService,
+    private noteService: NotesService,
     public ptmService: ParentsService,
     private calendarService: CrxCalendarService,
     private systemService: SystemService
@@ -125,33 +125,33 @@ export class PtmsComponent implements OnInit {
       }
     )
   }
-  closeNotice(modal) {
+  closeNote(modal) {
     modal.dismiss()
-    this.isNoticeOpen = false
+    this.isNoteOpen = false
   }
-  createNotices(event: PTMEvent) {
+  createNotes(event: PTMEvent) {
     this.selectedEvent = event
-    this.selectedNotice = new CrxNotice()
-    this.selectedNotice.title = this.languageS.trans('PTM') + " " + new Date(event.start).toLocaleString()
-    this.selectedNotice.objectType = "user"
-    this.selectedNotice.objectId = event.student.id
-    this.selectedNotice.ptmId = event.id
-    this.noticeService.getByFilter(this.selectedNotice).subscribe(
+    this.selectedNote = new CrxNote()
+    this.selectedNote.title = this.languageS.trans('PTM') + " " + new Date(event.start).toLocaleString()
+    this.selectedNote.objectType = "user"
+    this.selectedNote.objectId = event.student.id
+    this.selectedNote.ptmId = event.id
+    this.noteService.getByFilter(this.selectedNote).subscribe(
       (val) => {
         if (val.length > 0) {
-          this.selectedNotice = val[0]
+          this.selectedNote = val[0]
         }
       })
-    this.isNoticeOpen = true
+    this.isNoteOpen = true
     console.log(event)
   }
-  saveNotice(){
-    this.noticeService.add(this.selectedNotice).subscribe(
+  saveNote(){
+    this.noteService.add(this.selectedNote).subscribe(
       (val) => { this.objectService.responseMessage(val)}
     )
   }
   selectTeachingSubject() {
-    this.subjectAreas = this.selectedNotice.teachingSubject.subjectAreaList
+    this.subjectAreas = this.selectedNote.teachingSubject.subjectAreaList
 }
 
   registerEvent(event) {

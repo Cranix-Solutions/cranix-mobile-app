@@ -1,12 +1,12 @@
-@if(isNoticeOpen){
+@if(isNoteOpen){
 <ion-header>
     <ion-toolbar color="primary">
         <div [class]="authService.isMD() ? '': 'crx-item'">
             <div class="crx-label">
-                @if(selectedNotice.noticeType){
-                {{selectedNotice.noticeType|translate}}
+                @if(selectedNote.noteType){
+                {{selectedNote.noteType|translate}}
                 }@else{
-                {{'Notice'|translate}}
+                {{'Note'|translate}}
                 }
                 {{'for'|translate}} :
                 {{objectType|translate}}
@@ -21,16 +21,16 @@
         </div>
         <ion-buttons slot="end">
             @if(editAllowed()){
-            <ion-button (click)="saveNotice()" [disabled]="isDisabled">
+            <ion-button (click)="saveNote()" [disabled]="isDisabled">
                 <ion-icon name="checkmark" color="success"></ion-icon>
             </ion-button>
-            @if(selectedNotice.id > 0){
-            <ion-button (click)="deleteNotice(selectedNotice)" [disabled]="isDisabled">
+            @if(selectedNote.id > 0){
+            <ion-button (click)="deleteNote(selectedNote)" [disabled]="isDisabled">
                 <ion-icon name="trash" color="danger"></ion-icon>
             </ion-button>
             }
             }
-            <ion-button (click)="closeNotice()" [disabled]="isDisabled">
+            <ion-button (click)="closeNote()" [disabled]="isDisabled">
                 <ion-icon name="close" color="danger"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -38,37 +38,37 @@
 </ion-header>
 <ion-content fullscreen>
     <ion-list>
-        @if(selectedNotice.noticeType){
+        @if(selectedNote.noteType){
         <div class="crx-item">
             <div class="crx-label">{{'Title'|translate}}: </div>
-            <ion-input [(ngModel)]="selectedNotice.title" placeholder="{{'Insert title'|translate}}"></ion-input>
+            <ion-input [(ngModel)]="selectedNote.title" placeholder="{{'Insert title'|translate}}"></ion-input>
         </div>
-        @switch(selectedNotice.noticeType){
+        @switch(selectedNote.noteType){
         @case('late'){
         <div class="crx-item">
             <div class="crx-label">{{'Date'|translate}}: </div>
-            <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
+            <ion-input [(ngModel)]="selectedNote.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
         </div>
         <div class="crx-item">
             <div class="crx-label">{{'Lesson'|translate}}: </div>
-            <ion-select [(ngModel)]="selectedNotice.absence2">
+            <ion-select [(ngModel)]="selectedNote.absence2">
                 <ion-select-option *ngFor="let l of lessonNumbers" [value]="l">{{ l }}</ion-select-option>
             </ion-select>
         </div>
         <div class="crx-item">
             <div class="crx-label">{{'Late in Minutes'|translate}}: </div>
-            <ion-input [(ngModel)]="selectedNotice.late" placeholder="{{'Late in minutes'|translate}}"
+            <ion-input [(ngModel)]="selectedNote.late" placeholder="{{'Late in minutes'|translate}}"
                 type="number"></ion-input>
         </div>
         }
         @case('absence'){
         <div class="crx-item">
             <div class="crx-label">{{'Date'|translate}}: </div>
-            <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
+            <ion-input [(ngModel)]="selectedNote.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
         </div>
         <div class="crx-item">
             <div class="crx-label">{{'Lesson'|translate}}: </div>
-            <ion-select [(ngModel)]="selectedNotice.absence2">
+            <ion-select [(ngModel)]="selectedNote.absence2">
                 <ion-select-option *ngFor="let l of lessonNumbers" [value]="l">{{ l }}</ion-select-option>
             </ion-select>
         </div>
@@ -77,85 +77,85 @@
         {
         <div class="crx-item">
             <div class="crx-label">{{'From'|translate}}: </div>
-            <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
+            <ion-input [(ngModel)]="selectedNote.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
         </div>
         <div class="crx-item">
             <div class="crx-label">{{'Until'|translate}}: </div>
-            <ion-input [(ngModel)]="selectedNotice.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
+            <ion-input [(ngModel)]="selectedNote.absence1" placeholder="{{'Date'|translate}}" type="date"></ion-input>
         </div>
         }
         @case('performance')
         {
         <div class="crx-item">
-            @if( selectedNotice.ptmId != 0 ) {
+            @if( selectedNote.ptmId != 0 ) {
             <div class="crx-label">{{'PTM'|translate}}</div>
             }
             <div class="crx-label">{{'teachingSubject'|translate}}:</div>
             <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
-                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.teachingSubject"
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.teachingSubject"
                 (callback)="selectTeachingSubject()"></cranix-search>
             <!-- ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label -->
             <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
-                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.subjectArea"></cranix-search>
         </div>
         }
         @case('grading')
         {
         <div class="crx-item">
-            @if( selectedNotice.ptmId != 0 ) {
+            @if( selectedNote.ptmId != 0 ) {
             <div class="crx-label">{{'PTM'|translate}}</div>
             }
             <div class="crx-label">{{'teachingSubject'|translate}}:</div>
             <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
-                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.teachingSubject"
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.teachingSubject"
                 (callback)="selectTeachingSubject()"></cranix-search>
             <!-- ion-label [position]="authService.settings.labelPlacement">{{'subjectArea'|translate}}:</ion-label -->
             <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
-                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNotice.subjectArea"></cranix-search>
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.subjectArea"></cranix-search>
         </div>
         <div class="crx-item">
             <div class="crx-label">{{'grading'|translate}}:</div>
-            <ion-input type="number" [(ngModel)]="selectedNotice.grading"></ion-input>
+            <ion-input type="number" [(ngModel)]="selectedNote.grading"></ion-input>
             <div class="crx-label">{{'weighting'|translate}}:</div>
-            <ion-input type="number" [(ngModel)]="selectedNotice.weighting"></ion-input>
+            <ion-input type="number" [(ngModel)]="selectedNote.weighting"></ion-input>
         </div>
         }
         @case ('todo') {
         <div class="crx-item">
             <div class="crx-label">{{'reminder'|translate}}:</div>
-            <input style="margin-left: auto;" [(ngModel)]="selectedNotice.reminder" name="reminder"
+            <input style="margin-left: auto;" [(ngModel)]="selectedNote.reminder" name="reminder"
                 type="datetime-local" required />
         </div>
         }
         }
         }@else{
         <div class="crx-item">
-            <ion-select label="{{'Type of the notice'|translate}}" placeholder="{{'Select notice type'|translate}}"
-                [(ngModel)]="selectedNotice.noticeType" (ionChange)="changeNoticeType($event)">
-                <ion-select-option *ngFor="let cfg of noticeTypes"
+            <ion-select label="{{'Type of the note'|translate}}" placeholder="{{'Select note type'|translate}}"
+                [(ngModel)]="selectedNote.noteType" (ionChange)="changeNoteType($event)">
+                <ion-select-option *ngFor="let cfg of noteTypes"
                     [value]="cfg.type">{{cfg.label|translate}}</ion-select-option>
             </ion-select>
         </div>
         }
     </ion-list>
-    @switch(selectedNotice.noticeType){
+    @switch(selectedNote.noteType){
     @case ('access') {
-    <ion-textarea [autoGrow]="true" [(ngModel)]="selectedNotice.text"></ion-textarea>
+    <ion-textarea [autoGrow]="true" [(ngModel)]="selectedNote.text"></ion-textarea>
     }
     @case ('late')
     @case ('absence')
     @case ('excused-absence')
     {}
     @default {
-    @if(selectedNotice.noticeType){<quill-editor [(ngModel)]="selectedNotice.text" style="height: min-content; margin-left: 10px;  "></quill-editor>}
+    @if(selectedNote.noteType){<quill-editor [(ngModel)]="selectedNote.text" style="height: min-content; margin-left: 10px;  "></quill-editor>}
     }
     }
-    @if(selectedNotice.id){
-    <div class="crx-notice">
+    @if(selectedNote.id){
+    <div class="crx-note">
         <div class="crx-label">{{'created'|translate}}:</div>
-        <div class="crx-text">{{selectedNotice.created|date:'yyyy-MM-dd'}}</div>
+        <div class="crx-text">{{selectedNote.created|date:'yyyy-MM-dd'}}</div>
         <div class="crx-label">{{'modified'|translate}}:</div>
-        <div class="crx-text">{{selectedNotice.modified|date:'yyyy-MM-dd'}}</div>
+        <div class="crx-text">{{selectedNote.modified|date:'yyyy-MM-dd'}}</div>
     </div>
     }
 </ion-content>
@@ -164,7 +164,7 @@
     <ion-toolbar color="primary">
         <div [class]="authService.isMD() ? '': 'crx-item'">
             <div class="crx-label">
-                {{'Notices for'|translate}} {{objectType|translate}}:
+                {{'Notes for'|translate}} {{objectType|translate}}:
             </div>
             <div class="crx-text">
                 @if(objectType.indexOf('user') != -1){
@@ -176,11 +176,11 @@
         </div>
         <ion-buttons slot="end">
             @if(editAllowed()){
-            <ion-button (click)="openNotice(null)">
+            <ion-button (click)="openNote(null)">
                 <ion-icon slot="icon-only" name="add-circle"></ion-icon>
             </ion-button>
             }
-            <ion-button (click)="closeNotices()" [disabled]="isDisabled">
+            <ion-button (click)="closeNotes()" [disabled]="isDisabled">
                 <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -188,33 +188,33 @@
 </ion-header>
 <ion-content>
     <div class="filter-bar">
-        <ion-chip *ngFor="let cfg of noticeTypeConfig" [outline]="selectedType !== cfg.type"
+        <ion-chip *ngFor="let cfg of noteTypeConfig" [outline]="selectedType !== cfg.type"
             [color]="selectedType === cfg.type ? (cfg.color || 'medium') : 'medium'" (click)="filterBy(cfg.type)">
             <ion-icon [name]="cfg.icon"></ion-icon>
             <div class="crx-label">
                 {{ cfg.label| translate }}
                 @if(cfg.type === selectedType) {
-                #{{ filteredNotices.length }}
+                #{{ filteredNotes.length }}
                 }
             </div>
         </ion-chip>
     </div>
     <ion-grid>
         <ion-row>
-            @for(notice of filteredNotices; track notice.id){
+            @for(note of filteredNotes; track note.id){
             <ion-col size="2" size-xs="12" size-sm="6" size-md="4">
-                <ion-card (click)="openNotice(notice)">
+                <ion-card (click)="openNote(note)">
                     <ion-card-header>
                         <ion-card-subtitle>
-                            <ion-icon [name]="getTypeConfig(notice.noticeType)?.icon || 'document'"
-                                [color]="getTypeConfig(notice.noticeType)?.color"></ion-icon>
-                            {{ getTypeConfig(notice.noticeType)?.label || notice.noticeType }} &middot;
+                            <ion-icon [name]="getTypeConfig(note.noteType)?.icon || 'document'"
+                                [color]="getTypeConfig(note.noteType)?.color"></ion-icon>
+                            {{ getTypeConfig(note.noteType)?.label || note.noteType }} &middot;
                         </ion-card-subtitle>
-                        <ion-card-title>{{ noticeTypeLabel(notice) }}</ion-card-title>
+                        <ion-card-title>{{ noteTypeLabel(note) }}</ion-card-title>
                     </ion-card-header>
                     <ion-card-content>
-                        <p>{{ noticeDataPreview(notice) }}</p>
-                        <ion-text color="medium"><small>{{ notice.created | date:'short' }}</small></ion-text>
+                        <p>{{ noteDataPreview(note) }}</p>
+                        <ion-text color="medium"><small>{{ note.created | date:'short' }}</small></ion-text>
                     </ion-card-content>
                 </ion-card>
             </ion-col>

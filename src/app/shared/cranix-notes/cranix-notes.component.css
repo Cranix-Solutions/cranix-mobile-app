@@ -32,15 +32,15 @@ ion-card-content {
   max-width: none;
 }
 
-.notice-list {
+.note-list {
   padding: 0 12px 80px;
 }
 
-.notice-card {
+.note-card {
   margin-bottom: 10px;
 }
 
-.notice-card ion-card-subtitle {
+.note-card ion-card-subtitle {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -63,6 +63,6 @@ ion-card-content {
   gap: 2px;
 }
 
-.notice-card ion-card-header {
+.note-card ion-card-header {
   position: relative;
 }

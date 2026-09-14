@@ -79,7 +79,7 @@
 │   │   ├── cranix-mygroups.md
 │   │   ├── cranix-profile.md
 │   │   ├── cranix-informations.md
-│   │   └── cranix-notices.md
+│   │   └── cranix-notes.md
 │   └── edu/
 │       ├── edu-lessons-tests.md
 │       ├── edu-lessons-challenges.md
@@ -94,10 +94,10 @@
 | # | Card | Route | Key Feature |
 |---|------|-------|-------------|
 | 1 | **Calendar** | `/pages/cranix/calendar` | Lessons, room booking, recurring events |
-| 2 | **My Groups** | `/pages/cranix/mygroups` | Class overview, attendance, notices |
+| 2 | **My Groups** | `/pages/cranix/mygroups` | Class overview, attendance, notes |
 | 3 | **Profile** | `/pages/cranix/profile/*` | Personal data, 2FA, VPN, files |
 | 4 | **Informations** | `/pages/cranix/informations` | Announcements, homework, surveys |
-| 5 | **Notices** | Context action (any list) | **Quick message** to students/parents |
+| 5 | **Notes** | Context action (any list) | **Quick message** to students/parents |
 | 6 | **Lessons/Tests** | `/pages/edu/lessons/tests` | Create tests, auto-grade, feedback |
 | 7 | **Challenges** | `/pages/edu/lessons/challenges` | Gamified team/individual challenges |
 | 8 | **Room Control** | `/pages/edu/lessons/roomcontrol` | Projector, screen, access, CO2 monitoring |
@@ -116,7 +116,7 @@
 
 ### 🎓 Teachers (Start Here)
 1. Read [`/docs/teacher/README.md`](teacher/README.md#quick-start-teachers-first-day)
-2. Print relevant cards: **Profile** → **My Groups** → **Calendar** → **Informations/Notices**
+2. Print relevant cards: **Profile** → **My Groups** → **Calendar** → **Informations/Notes**
 3. Advanced: **Lessons/Tests** → **Challenges** → **Room Control**
 
 ### 🔧 Administrators (Start Here)

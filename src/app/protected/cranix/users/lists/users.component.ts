@@ -54,7 +54,7 @@ export class UsersComponent {
   ];
   context;
   defaultMustChange: boolean = true;
-  noticeUse: boolean = false;
+  noteUse: boolean = false;
   constructor(
     public authService: AuthenticationService,
     public objectService: GenericObjectService,
@@ -64,7 +64,7 @@ export class UsersComponent {
     private systemService: SystemService
   ) {
     this.context = { componentParent: this };
-    this.noticeUse = this.authService.isAllowed('notice.use')
+    this.noteUse = this.authService.isAllowed('note.use')
     this.systemService.getSystemConfigValue("DEFAULT_MUST_CHANGE").subscribe(
       (val) => {
         if (val == "no") {

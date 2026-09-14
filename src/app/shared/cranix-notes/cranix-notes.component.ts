@@ -1,52 +1,52 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { NoticesService } from 'src/app/services/notices.service';
-import { CrxNotice, NoticeDescription, SubjectArea } from '../models/data-model';
+import { NotesService } from 'src/app/services/notes.service';
+import { CrxNote, NoteDescription, SubjectArea } from '../models/data-model';
 import { LanguageService } from 'src/app/services/language.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
 import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
 @Component({
     standalone: false,
-    selector: 'cranix-notices',
-    templateUrl: './cranix-notices.component.html',
-    styleUrl: './cranix-notices.component.css'
+    selector: 'cranix-notes',
+    templateUrl: './cranix-notes.component.html',
+    styleUrl: './cranix-notes.component.css'
 })
-export class CranixNoticesComponent implements OnInit {
+export class CranixNotesComponent implements OnInit {
     issue: string;
     isDisabled: boolean = false;
-    isNoticeOpen: boolean = false;
+    isNoteOpen: boolean = false;
     labels = {};
-    notices: CrxNotice[] = []
-    allNotices: CrxNotice[] = []
-    selectedNotice: CrxNotice = new CrxNotice()
+    notes: CrxNote[] = []
+    allNotes: CrxNote[] = []
+    selectedNote: CrxNote = new CrxNote()
     subjectAreas: SubjectArea[] = []
     selectedIssue: string = "";
     absenceDate: string = "";
     absence
-    noticeTypes: NoticeDescription[] = []
-    filteredNotices: CrxNotice[] = [];
+    noteTypes: NoteDescription[] = []
+    filteredNotes: CrxNote[] = [];
     selectedType: string = 'all';
-    noticeTypeConfig: NoticeDescription[] = [
+    noteTypeConfig: NoteDescription[] = [
         { type: 'all', label: 'all', icon: 'funnel' },
         { type: 'generic', label: 'generic', icon: 'clipboard', color: 'tertiary' },
         { type: 'todo', label: 'todo', icon: 'hammer', color: 'success' }
     ];
-    noticeTypeConfigUser: NoticeDescription[] = [
+    noteTypeConfigUser: NoteDescription[] = [
         { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' },
         { type: 'grading', label: 'grading', icon: 'school', color: 'success' },
         { type: 'late', label: 'late', icon: 'time', color: 'warning' },
         { type: 'absence', label: 'unexcused', icon: 'close-circle', color: 'danger' },
         { type: 'excused-absence', label: 'excused', icon: 'checkmark-circle', color: 'tertiary' }
     ];
-    noticeTypeConfigGroup: NoticeDescription[] = [
+    noteTypeConfigGroup: NoteDescription[] = [
         { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' }
     ];
-    noticeTypeConfigDevice: NoticeDescription[] = [
+    noteTypeConfigDevice: NoteDescription[] = [
         { type: 'access', label: 'access', icon: 'key', color: 'danger' }
     ];
-    noticeTypeConfigInstitute: NoticeDescription[] = [
+    noteTypeConfigInstitute: NoteDescription[] = [
         { type: 'access', label: 'access', icon: 'key', color: 'danger' }
     ];
 
@@ -57,7 +57,7 @@ export class CranixNoticesComponent implements OnInit {
     constructor(
         public authService: AuthenticationService,
         private languageS: LanguageService,
-        private noticeService: NoticesService,
+        private noteService: NotesService,
         private objectService: GenericObjectService,
         public crxObjectService: CrxObjectService,
         private modalController: ModalController,
@@ -66,103 +66,103 @@ export class CranixNoticesComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        console.log("Constructor CranixNoticesComponent")
+        console.log("Constructor CranixNotesComponent")
         console.log(this.objectType)
         console.log(this.selectedObject)
         if(this.objectType.indexOf('user') != -1 ) {
-            this.noticeTypeConfig.push(...this.noticeTypeConfigUser)
+            this.noteTypeConfig.push(...this.noteTypeConfigUser)
         }
         if(this.objectType.indexOf('group') != -1 ) {
-            this.noticeTypeConfig.push(...this.noticeTypeConfigGroup)
+            this.noteTypeConfig.push(...this.noteTypeConfigGroup)
         }
         if(this.objectType === 'device' ) {
-            this.noticeTypeConfig.push(...this.noticeTypeConfigDevice)
+            this.noteTypeConfig.push(...this.noteTypeConfigDevice)
         }
         if(this.objectType === 'institute' ) {
-            this.noticeTypeConfig.push(...this.noticeTypeConfigInstitute)
+            this.noteTypeConfig.push(...this.noteTypeConfigInstitute)
         }
-        for(let conf of this.noticeTypeConfig){
+        for(let conf of this.noteTypeConfig){
             if(conf.type != 'all' ){
-                this.noticeTypes.push(conf)
+                this.noteTypes.push(conf)
             }
         }
         this.readData()
     }
 
     readData() {
-        let notice = new CrxNotice();
-        notice.objectType = this.objectType
-        notice.objectId = this.selectedObject.id
-        this.noticeService.getByFilter(notice).subscribe(
+        let note = new CrxNote();
+        note.objectType = this.objectType
+        note.objectId = this.selectedObject.id
+        this.noteService.getByFilter(note).subscribe(
             (val) => {
-                this.notices = val
+                this.notes = val
                 this.applyFilter()
             }
         )
     }
     applyFilter() {
         if (this.selectedType === 'all') {
-            this.filteredNotices = [...this.notices].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+            this.filteredNotes = [...this.notes].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
         } else {
-            this.filteredNotices = this.notices
-                .filter(n => n.noticeType === this.selectedType)
+            this.filteredNotes = this.notes
+                .filter(n => n.noteType === this.selectedType)
                 .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
         }
     }
     getTypeConfig(type: string) {
-        return this.noticeTypeConfig.find(c => c.type === type);
+        return this.noteTypeConfig.find(c => c.type === type);
     }
     filterBy(type: string) {
         this.selectedType = type;
         this.applyFilter();
     }
     selectTeachingSubject() {
-        this.subjectAreas = this.selectedNotice.teachingSubject.subjectAreaList
+        this.subjectAreas = this.selectedNote.teachingSubject.subjectAreaList
     }
 
-    openNotice(notice: CrxNotice|null) {
-        if (notice) {
-            this.selectedNotice = notice;
-            if(notice.reminder){
-                this.selectedNotice.reminder = this.calendarService.toIonISOString(new Date(notice.reminder))
+    openNote(note: CrxNote|null) {
+        if (note) {
+            this.selectedNote = note;
+            if(note.reminder){
+                this.selectedNote.reminder = this.calendarService.toIonISOString(new Date(note.reminder))
             }
         } else {
-            this.selectedNotice = new CrxNotice();
-            this.selectedNotice.objectType = this.objectType
-            this.selectedNotice.objectId = this.selectedObject.id
+            this.selectedNote = new CrxNote();
+            this.selectedNote.objectType = this.objectType
+            this.selectedNote.objectId = this.selectedObject.id
         }
-        this.isNoticeOpen = true
+        this.isNoteOpen = true
     }
 
-    saveNotice() {
+    saveNote() {
         this.isDisabled = true;
-        console.log(this.selectedNotice)
-        this.noticeService.add(this.selectedNotice).subscribe(
+        console.log(this.selectedNote)
+        this.noteService.add(this.selectedNote).subscribe(
             (val) => {
                 this.objectService.responseMessage(val)
                 if (val.code == "OK") {
                     this.readData()
-                    this.isNoticeOpen = false;
+                    this.isNoteOpen = false;
                     this.isDisabled = false
                 }
             }
         )
     }
 
-    closeNotice() {
-        this.isNoticeOpen = false;
-        this.selectedNotice = new CrxNotice()
+    closeNote() {
+        this.isNoteOpen = false;
+        this.selectedNote = new CrxNote()
     }
 
-    closeNotices() {
+    closeNotes() {
         this.modalController.dismiss()
     }
 
-    async deleteNotice(notice: CrxNotice) {
+    async deleteNote(note: CrxNote) {
         const alert = await this.alerController.create({
             header: this.languageS.trans('Confirm!'),
             subHeader: this.languageS.trans('Do you realy want to delete?'),
-            message: notice.title,
+            message: note.title,
             buttons: [
                 {
                     text: this.languageS.trans('Cancel'),
@@ -171,11 +171,11 @@ export class CranixNoticesComponent implements OnInit {
                     text: 'OK',
                     handler: () => {
                         this.objectService.requestSent();
-                        var a = this.noticeService.delete(notice.id).subscribe({
+                        var a = this.noteService.delete(note.id).subscribe({
                             next: (val) => {
                                 this.objectService.responseMessage(val);
                                 this.readData()
-                                this.closeNotice()
+                                this.closeNote()
                             },
                             error: (err) => {
                                 this.objectService.errorMessage(this.languageS.trans("An error was accoured"));
@@ -195,48 +195,48 @@ export class CranixNoticesComponent implements OnInit {
             case "sysadmins": { return true; }
             case "students": { return false; }
             case "teachers": {
-                if(!this.selectedNotice.id){
+                if(!this.selectedNote.id){
                     return true;
                 }
-                if(this.selectedNotice.creator.id == this.authService.session.userId) {
+                if(this.selectedNote.creator.id == this.authService.session.userId) {
                     return true;
                 }
-                return this.authService.isOneOfAllowed(["notice.manage","crxnotice.manage"]);
+                return this.authService.isOneOfAllowed(["note.manage","crxnote.manage"]);
             }
             default: {
-             return this.authService.isOneOfAllowed(["notice.manage","crxnotice.manage"])
+             return this.authService.isOneOfAllowed(["note.manage","crxnote.manage"])
             }
         }
     }
-    noticeTypeLabel(notice: CrxNotice): string {
-        switch (notice.noticeType) {
+    noteTypeLabel(note: CrxNote): string {
+        switch (note.noteType) {
             case 'performance': return 'Performance Note';
-            case 'grading': return `${notice.teachingSubject.name} - ${notice.title}`;
-            case 'late': return `Late (${notice.late} min)`;
+            case 'grading': return `${note.teachingSubject.name} - ${note.title}`;
+            case 'late': return `Late (${note.late} min)`;
             case 'unexcused-absence': return `Unexcused Absence`;
             case 'excused-absence': return `Excused Absence`;
             default: return '';
         }
     }
 
-    noticeDataPreview(notice: CrxNotice): string {
-        switch (notice.noticeType) {
-          case 'grading': return `${notice.grading}  ${notice.weighting}`;
-          case 'late': return `${notice.absence1} ${notice.absence2} ${notice.late}`;
-          case 'absence': return `${notice.absence1} ${notice.absence2}`;
-          case 'excused-absence': return `${notice.absence1} → ${notice.absence2}`;
-          default: return notice.title;
+    noteDataPreview(note: CrxNote): string {
+        switch (note.noteType) {
+          case 'grading': return `${note.grading}  ${note.weighting}`;
+          case 'late': return `${note.absence1} ${note.absence2} ${note.late}`;
+          case 'absence': return `${note.absence1} ${note.absence2}`;
+          case 'excused-absence': return `${note.absence1} → ${note.absence2}`;
+          default: return note.title;
         }
     }
 
-    changeNoticeType(event: any) {
+    changeNoteType(event: any) {
         console.log(event)
-        if(this.selectedNotice.noticeType === 'late' || this.selectedNotice.noticeType === 'absence') {
-            this.selectedNotice.absence1 = new Date().toISOString().split('T')[0]
+        if(this.selectedNote.noteType === 'late' || this.selectedNote.noteType === 'absence') {
+            this.selectedNote.absence1 = new Date().toISOString().split('T')[0]
         }
-        if(this.selectedNotice.noticeType === 'excused-absence') {
-            this.selectedNotice.absence1 = new Date().toISOString().split('T')[0]
-            this.selectedNotice.absence2 = new Date().toISOString().split('T')[0]
+        if(this.selectedNote.noteType === 'excused-absence') {
+            this.selectedNote.absence1 = new Date().toISOString().split('T')[0]
+            this.selectedNote.absence2 = new Date().toISOString().split('T')[0]
         }
     }
 }

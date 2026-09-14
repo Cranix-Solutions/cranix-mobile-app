@@ -14,7 +14,7 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
 ├─────────────────────────────────────────────────────────────────┤
 │ [Filter: All ▼] [Search: ___________] [Columns]                │
 ├────┬──────────┬──────────┬──────────┬──────────┬────────┬───────┤
-│ ☐  │ Name     │ Description│ Group Type│ Members │ Notice │ Act. │
+│ ☐  │ Name     │ Description│ Group Type│ Members │ Note │ Act. │
 ├────┼──────────┼──────────┼──────────┼──────────┼────────┼───────┤
 │ ☐  │ 10A      │ Class 10A │ class     │ 24      │ Yes    │ ⋮    │
 │ ☐  │ 10B_Math │ Math 10B  │ course    │ 18      │ Yes    │ ⋮    │
@@ -30,7 +30,7 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
 | **Description** | Human-readable description |
 | **Group Type** | class / course / workgroup / primary / system |
 | **Members** | Number of users in group |
-| **Notice** | Whether group can receive notices |
+| **Note** | Whether group can receive notes |
 | **Actions** | Edit, Members, Delete |
 
 **Group Types:**
@@ -52,12 +52,12 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
    - **Name**: Unique identifier (e.g., "10A", "Math_Advanced")
    - **Description**: Display name (e.g., "Class 10A", "Advanced Mathematics")
    - **Group Type**: class / course / workgroup / primary / system
-   - **Notice**: Enable to allow sending notices to this group
+   - **Note**: Enable to allow sending notes to this group
 3. **Save** → Group created, appears in list
 
 #### 2. Edit Group
 1. Click **⋮ Actions** → **Edit** on group row
-2. Modify: Description, Group Type, Notice setting
+2. Modify: Description, Group Type, Note setting
 3. **Name** cannot be changed after creation
 4. **Save**
 
@@ -73,11 +73,11 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
    - Select users in left panel → Click **← Remove**
 5. **Close** → Changes saved automatically
 
-#### 4. Send Notice to Group
-**Prerequisite**: Group has `Notice` enabled, user has `notice.use` ACL
-1. Click **⋮ Actions** → **Write Notice** (or from any list: select group → Actions → Write Notice)
+#### 4. Send Note to Group
+**Prerequisite**: Group has `Note` enabled, user has `note.use` ACL
+1. Click **⋮ Actions** → **Write Note** (or from any list: select group → Actions → Write Note)
 2. Pre-filled: Recipients = all group members
-3. Compose & send (see Notices documentation)
+3. Compose & send (see Notes documentation)
 
 #### 5. Delete Group
 ⚠️ **Warning**: Removes group membership for all users!
@@ -109,7 +109,7 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
 - **Bulk Actions** (select multiple):
   - **Delete** multiple groups
   - **Export** to CSV/Excel/PDF
-  - **Enable/Disable Notices** for multiple
+  - **Enable/Disable Notes** for multiple
 
 ---
 
@@ -121,7 +121,7 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
 | Create | `group.manage` |
 | Edit | `group.modify` |
 | Manage Members | `group.manage` |
-| Send Notice | `group.manage` + `notice.use` |
+| Send Note | `group.manage` + `note.use` |
 | Delete | `group.manage` + confirmation |
 
 ---
@@ -132,7 +132,7 @@ The **Groups** page (`/pages/cranix/groups`) manages user groups (classes, cours
 |-------|----------|
 | Can't change group name | Names are immutable - create new group instead |
 | Members not showing | Check: Users exist, not already in group (for add panel) |
-| Notice button missing | Enable `Notice` on group, verify `notice.use` ACL |
+| Note button missing | Enable `Note` on group, verify `note.use` ACL |
 | Primary group missing | System creates primary groups automatically |
 | Deleting class group affects grades | Warning: Only delete if no grading data depends on it |
 
@@ -168,7 +168,7 @@ Die **Gruppen**-Seite (`/pages/cranix/groups`) verwaltet Benutzergruppen (Klasse
 | **Beschreibung** | Anzeigename |
 | **Gruppentyp** | class / course / workgroup / primary / system |
 | **Mitglieder** | Anzahl Benutzer in Gruppe |
-| **Mitteilung** | Ob Gruppe Mitteilungen empfangen kann |
+| **Notiz** | Ob Gruppe Notizen empfangen kann |
 | **Aktionen** | Bearbeiten, Mitglieder, Löschen |
 
 **Gruppentypen:**
@@ -190,12 +190,12 @@ Die **Gruppen**-Seite (`/pages/cranix/groups`) verwaltet Benutzergruppen (Klasse
    - **Name**: Eindeutiger Bezeichner (z.B. "10A", "Mathe_Fortgeschritten")
    - **Beschreibung**: Anzeigename (z.B. "Klasse 10A", "Fortgeschrittene Mathematik")
    - **Gruppentyp**: class / course / workgroup / primary / system
-   - **Mitteilung**: Aktivieren um Mitteilungen an diese Gruppe zu erlauben
+   - **Notiz**: Aktivieren um Notizen an diese Gruppe zu erlauben
 3. **Speichern** → Gruppe erstellt, erscheint in Liste
 
 #### 2. Gruppe Bearbeiten
 1. **⋮ Aktionen** → **Bearbeiten** in Gruppenzeile klicken
-2. Ändern: Beschreibung, Gruppentyp, Mitteilung-Einstellung
+2. Ändern: Beschreibung, Gruppentyp, Notiz-Einstellung
 3. **Name** kann nach Erstellung nicht geändert werden
 4. **Speichern**
 
@@ -211,11 +211,11 @@ Die **Gruppen**-Seite (`/pages/cranix/groups`) verwaltet Benutzergruppen (Klasse
    - Benutzer im linken Bereich auswählen → **← Entfernen** klicken
 5. **Schließen** → Änderungen werden automatisch gespeichert
 
-#### 4. Mitteilung An Gruppe Senden
-**Voraussetzung**: Gruppe hat `Mitteilung` aktiviert, Benutzer hat `notice.use` ACL
-1. **⋮ Aktionen** → **Mitteilung schreiben** (oder aus beliebiger Liste: Gruppe auswählen → Aktionen → Mitteilung schreiben)
+#### 4. Notiz An Gruppe Senden
+**Voraussetzung**: Gruppe hat `Notiz` aktiviert, Benutzer hat `note.use` ACL
+1. **⋮ Aktionen** → **Notiz schreiben** (oder aus beliebiger Liste: Gruppe auswählen → Aktionen → Notiz schreiben)
 2. Vorgefüllt: Empfänger = alle Gruppenmitglieder
-3. Verfassen & senden (siehe Mitteilungen-Dokumentation)
+3. Verfassen & senden (siehe Notizen-Dokumentation)
 
 #### 5. Gruppe Löschen
 ⚠️ **Warnung**: Entfernt Gruppenmitgliedschaft für alle Benutzer!
@@ -247,7 +247,7 @@ Die **Gruppen**-Seite (`/pages/cranix/groups`) verwaltet Benutzergruppen (Klasse
 - **Massenaktionen** (mehrere auswählen):
   - **Mehrere Gruppen löschen**
   - **Exportieren** nach CSV/Excel/PDF
-  - **Mitteilungen aktivieren/deaktivieren** für mehrere
+  - **Notizen aktivieren/deaktivieren** für mehrere
 
 ---
 
@@ -259,7 +259,7 @@ Die **Gruppen**-Seite (`/pages/cranix/groups`) verwaltet Benutzergruppen (Klasse
 | Erstellen | `group.manage` |
 | Bearbeiten | `group.modify` |
 | Mitglieder verwalten | `group.manage` |
-| Mitteilung senden | `group.manage` + `notice.use` |
+| Notiz senden | `group.manage` + `note.use` |
 | Löschen | `group.manage` + Bestätigung |
 
 ---
@@ -270,6 +270,6 @@ Die **Gruppen**-Seite (`/pages/cranix/groups`) verwaltet Benutzergruppen (Klasse
 |---------|--------|
 | Gruppennamen nicht änderbar | Namen sind unveränderlich - neue Gruppe erstellen |
 | Mitglieder werden nicht angezeigt | Prüfen: Benutzer existieren, nicht bereits in Gruppe (für Hinzufügen-Panel) |
-| Mitteilungs-Button fehlt | `Mitteilung` bei Gruppe aktivieren, `notice.use` ACL prüfen |
+| Notiz-Button fehlt | `Notiz` bei Gruppe aktivieren, `note.use` ACL prüfen |
 | Primärgruppe fehlt | System erstellt Primärgruppen automatisch |
 | Klassen-Gruppe löschen wirkt auf Noten | Warnung: Nur löschen wenn keine Notendaten davon abhängen |

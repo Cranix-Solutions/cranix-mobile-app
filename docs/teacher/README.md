@@ -26,10 +26,10 @@ All cards are **bilingual** (English + German in same file).
 | # | Card | Route | Menu | ACL | Purpose |
 |---|------|-------|------|-----|---------|
 | 1 | [Calendar](en/cranix/cranix-calendar.md) | `/pages/cranix/calendar` | Calendar | `calendar.read/use/manage` | Schedule lessons, book rooms, view timetable |
-| 2 | [My Groups](en/cranix/cranix-mygroups.md) | `/pages/cranix/mygroups` | My Groups | `education.groups` | View classes, attendance, send notices |
+| 2 | [My Groups](en/cranix/cranix-mygroups.md) | `/pages/cranix/mygroups` | My Groups | `education.groups` | View classes, attendance, send notes |
 | 3 | [Profile](en/cranix/cranix-profile.md) | `/pages/cranix/profile/*` | Profile (avatar) | `permitall` / `2fa.use` | Personal data, password, 2FA, VPN, files |
 | 4 | [Informations](en/cranix/cranix-informations.md) | `/pages/cranix/informations` | Informations | `permitall` | Create announcements, homework, surveys |
-| 5 | [Notices](en/cranix/cranix-notices.md) | Context action | (from any list) | `permitall` | **Quick notice** to students/parents from lists |
+| 5 | [Notes](en/cranix/cranix-notes.md) | Context action | (from any list) | `permitall` | **Quick note** to students/parents from lists |
 
 ### Education Module (`/docs/teacher/en/edu/` & `/docs/teacher/de/edu/`)
 
@@ -55,7 +55,7 @@ All cards are **bilingual** (English + German in same file).
 
 ### For Onboarding New Teachers
 1. Start with: **Profile** → **My Groups** → **Calendar**
-2. Then: **Informations** → **Notices** (communication)
+2. Then: **Informations** → **Notes** (communication)
 3. Advanced: **Lessons/Tests** → **Challenges** → **Room Control**
 
 ---
@@ -71,7 +71,7 @@ All cards are **bilingual** (English + German in same file).
 | Profile (basic) | `permitall` | ✓ |
 | 2FA Setup | `2fa.use` | ✓ (if enabled) |
 | Informations | `permitall` | ✓ |
-| Notices (context) | `permitall` | ✓ |
+| Notes (context) | `permitall` | ✓ |
 | Create Tests | `permitall` | ✓ |
 | Challenges | `challenge.manage` | ✓ (if enabled) |
 | Room Control | `education.rooms` | ✓ (if enabled) |
@@ -103,9 +103,9 @@ All cards are **bilingual** (English + German in same file).
 - [ ] Type: "Homework" or "Announcement"
 - [ ] Send test message
 
-### 5. Quick Notice from List (1 min)
+### 5. Quick Note from List (1 min)
 - [ ] Go to **Users → All Users** → Filter your class
-- [ ] Select all → **⋮ Actions → Write Notice**
+- [ ] Select all → **⋮ Actions → Write Note**
 - [ ] Type quick reminder → Send
 
 **Total: ~15 minutes to productive!**

@@ -12,8 +12,8 @@ import { WindowRef } from 'src/app/shared/models/ohters'
     <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
         <ion-icon name="build-sharp"></ion-icon>
     </button>
-    @if(noticeUse){
-    <button  class="icon-button" (click)="openNotice($event)" matTooltip="{{'notice' | translate }}">
+    @if(noteUse){
+    <button  class="icon-button" (click)="openNote($event)" matTooltip="{{'note' | translate }}">
         <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
     </button>
     }
@@ -28,7 +28,7 @@ import { WindowRef } from 'src/app/shared/models/ohters'
 export class InstituteActionCellRenderer implements ICellRendererAngularComp, OnDestroy {
     public params: any;
     public data: any;
-    public noticeUse: boolean = false;
+    public noteUse: boolean = false;
     nativeWindow: any
 
     alive: boolean = true;
@@ -45,7 +45,7 @@ export class InstituteActionCellRenderer implements ICellRendererAngularComp, On
     agInit(params: any): void {
         this.params = params;
         this.data = params.data;
-        this.noticeUse = this.params.context.componentParent.noticeUse;
+        this.noteUse = this.params.context.componentParent.noteUse;
     }
 
     public details(event) {
@@ -56,9 +56,9 @@ export class InstituteActionCellRenderer implements ICellRendererAngularComp, On
         event.stopPropagation();
         this.params.context.componentParent.openActions(event, this.data.id)
     }
-    public openNotice(event) {
+    public openNote(event) {
         event.stopPropagation();
-        this.params.context.componentParent.openNotice(this.data);
+        this.params.context.componentParent.openNote(this.data);
     }
     public routeSchool(event) {
         event.stopPropagation();

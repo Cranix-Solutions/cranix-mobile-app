@@ -21,7 +21,7 @@ export class GroupsPage {
   sortableColumns: string[] = ['name', 'description', 'groupType'];
   context;
   mayGroupEdit: boolean = false
-  noticeUse: boolean = false
+  noteUse: boolean = false
   isShowMemberOpen: boolean = false
   constructor(
     public authService: AuthenticationService,
@@ -32,7 +32,7 @@ export class GroupsPage {
     public route: Router
   ) {
     this.context = { componentParent: this };
-    this.noticeUse    = this.authService.isAllowed('notice.use')
+    this.noteUse    = this.authService.isAllowed('note.use')
     this.mayGroupEdit = this.authService.isOneOfAllowed(['group.modify','group.manage'])
   }
 

@@ -21,7 +21,7 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { SelectColumnsComponent } from 'src/app/shared/select-columns/select-columns.component';
 import { hiddenColumns, getObjectKeys } from 'src/app/shared/models/constants';
 import { YesNoBTNRenderer } from 'src/app/pipes/ag-yesno-renderer';
-import { CranixNoticesComponent } from '../cranix-notices/cranix-notices.component';
+import { CranixNotesComponent } from '../cranix-notes/cranix-notes.component';
 import { EditBTNRenderer } from 'src/app/pipes/ag-edit-renderer';
 import { UpdateRenderer } from 'src/app/pipes/ag-update-renderer';
 import { FileSystemUsageRenderer } from 'src/app/pipes/ag-filesystem-usage-renderer';
@@ -72,7 +72,7 @@ export class CranixListComponent implements OnInit, OnChanges {
   objectKeys: string[] = [];
   listFilterName: string = ""
   now: number = 0;
-  noticeUse: boolean = false;
+  noteUse: boolean = false;
   @Input({ required: true }) objectType: string;
   @Input() context;
   @Input() rowData;
@@ -92,7 +92,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.listContext = { componentParent: this };
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilsService.actMdList = this;
-    this.noticeUse = this.authService.isOneOfAllowed(['notice.use', 'crxnotice.use'])
+    this.noteUse = this.authService.isOneOfAllowed(['note.use', 'crxnote.use'])
   }
 
   async ngOnInit() {
@@ -513,9 +513,9 @@ export class CranixListComponent implements OnInit, OnChanges {
     (await modal).present()
   }
 
-  async openNotice(object) {
+  async openNote(object) {
     const modal = await this.modalCtrl.create({
-      component: CranixNoticesComponent,
+      component: CranixNotesComponent,
       componentProps: {
         selectedObject: object,
         objectType: this.objectType

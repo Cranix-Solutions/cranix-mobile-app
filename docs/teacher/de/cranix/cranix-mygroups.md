@@ -24,7 +24,7 @@
 - **Overview**: Students, schedule, room
 - **Timetable**: Weekly schedule view
 - **Grades**: Grade book (if enabled)
-- **Notices**: Group announcements
+- **Notes**: Group announcements
 
 ## Top Workflows
 
@@ -44,9 +44,9 @@
 2. See weekly schedule with rooms
 3. **Print** → Weekly plan for classroom door
 
-### 4. Send Notice to Group
-1. Click group → **Notices** tab
-2. Click **[+ New Notice]**
+### 4. Send Note to Group
+1. Click group → **Notes** tab
+2. Click **[+ New Note]**
 3. **Title**, **Content** (Markdown supported)
 4. **Priority**: Normal / High / Urgent
 5. **Send** → Push notification to students/parents
@@ -75,7 +75,7 @@
 |---------|-----|
 | Group not listed | Check `education.groups` ACL, verify assignment in admin |
 | Attendance button missing | Only shows on lesson days (check calendar) |
-| Can't send notice | Verify group has students, check notice permissions |
+| Can't send note | Verify group has students, check note permissions |
 | Guest link not working | Check expiry date, regenerate if expired |
 
 ---
@@ -106,7 +106,7 @@
 - **Übersicht**: Schüler, Stundenplan, Raum
 - **Stundenplan**: Wöchentliche Ansicht
 - **Noten**: Notenbuch (falls aktiviert)
-- **Mitteilungen**: Gruppen-Ankündigungen
+- **Notizen**: Gruppen-Ankündigungen
 
 ### Top-Workflows
 
@@ -126,9 +126,9 @@
 2. Wöchenplan mit Räumen sehen
 3. **Drucken** → Wochenplan für Klassenzimmertür
 
-#### 4. Mitteilung an Gruppe Senden
-1. Gruppe klicken → **Mitteilungen**-Tab
-2. **[+ Neue Mitteilung]** klicken
+#### 4. Notiz an Gruppe Senden
+1. Gruppe klicken → **Notizen**-Tab
+2. **[+ Neue Notiz]** klicken
 3. **Titel**, **Inhalt** (Markdown unterstützt)
 4. **Priorität**: Normal / Hoch / Dringend
 5. **Senden** → Push-Benachrichtigung an Schüler/Eltern
@@ -157,5 +157,5 @@
 |---------|--------|
 | Gruppe nicht gelistet | `education.groups` ACL prüfen, Zuordnung im Admin verifizieren |
 | Anwesenheits-Button fehlt | Zeigt nur an Unterrichtstagen (Kalender prüfen) |
-| Mitteilung nicht sendbar | Prüfen ob Gruppe Schüler hat, Berechtigungen prüfen |
+| Notiz nicht sendbar | Prüfen ob Gruppe Schüler hat, Berechtigungen prüfen |
 | Gastlink funktioniert nicht | Ablaufdatum prüfen, neu generieren falls abgelaufen |

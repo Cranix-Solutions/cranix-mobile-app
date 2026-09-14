@@ -5,7 +5,7 @@ import { CrxObjectService } from 'src/app/services/crx-object-service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { CranixNoticesComponent } from 'src/app/shared/cranix-notices/cranix-notices.component'
+import { CranixNotesComponent } from 'src/app/shared/cranix-notes/cranix-notes.component'
 import { ActionsComponent } from '../actions/actions.component';
 
 @Component({
@@ -22,7 +22,7 @@ export class CranixMdListComponent implements OnInit, OnChanges {
   left1: string;
   left2: string;
   left3: string;
-  noticeUse: boolean = false;
+  noteUse: boolean = false;
   @Input() objectType: string;
   @Input() context;
   @Input() rowData: any[];
@@ -38,7 +38,7 @@ export class CranixMdListComponent implements OnInit, OnChanges {
   ) {
     this.authService.log("CranixMdListComponent constructor was called")
     this.utilsService.actMdList = this;
-    this.noticeUse = this.authService.isOneOfAllowed(['notice.use','crxnotice.use'])
+    this.noteUse = this.authService.isOneOfAllowed(['note.use','crxnote.use'])
   }
 
   ngAfterContentInit() {
@@ -190,9 +190,9 @@ export class CranixMdListComponent implements OnInit, OnChanges {
   }
 
 
-  async openNotice(object) {
+  async openNote(object) {
     const modal = await this.modalCtrl.create({
-      component: CranixNoticesComponent,
+      component: CranixNotesComponent,
       componentProps: {
         selectedObject: object,
         objectType: this.objectType

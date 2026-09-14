@@ -15,8 +15,8 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
         <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
         </button>
-        @if(noticeUse){
-        <button  class="icon-button" (click)="openNotice($event)" matTooltip="{{'notice' | translate }}">
+        @if(noteUse){
+        <button  class="icon-button" (click)="openNote($event)" matTooltip="{{'note' | translate }}">
             <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
         </button>
         }
@@ -28,11 +28,11 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
 
 export class UserActionBTNRenderer implements ICellRendererAngularComp {
     private params: any;
-    public noticeUse: boolean = false;
+    public noteUse: boolean = false;
 
     agInit(params: any): void {
         this.params = params;
-        this.noticeUse = this.params.context.componentParent.noticeUse;
+        this.noteUse = this.params.context.componentParent.noteUse;
     }
 
     public details(event) {
@@ -51,9 +51,9 @@ export class UserActionBTNRenderer implements ICellRendererAngularComp {
         event.stopPropagation();
         this.params.context.componentParent.redirectToDelete(this.params.data);
     }
-    public openNotice(event) {
+    public openNote(event) {
         event.stopPropagation();
-        this.params.context.componentParent.openNotice(this.params.data);
+        this.params.context.componentParent.openNote(this.params.data);
     }
     refresh(params: any): boolean {
         return true;

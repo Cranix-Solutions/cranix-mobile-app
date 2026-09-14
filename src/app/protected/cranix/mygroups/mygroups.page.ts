@@ -24,7 +24,7 @@ export class MyGroupsPage implements OnInit {
   segment: string = 'education/group';
   context;
   rowData = [];
-  noticeUse: boolean = false;
+  noteUse: boolean = false;
   mayGroupEdit: boolean = false;
   selectedGroup: Group = new Group()
   groupMembers: User[] = []
@@ -41,7 +41,7 @@ export class MyGroupsPage implements OnInit {
     private groupService: GroupsService
   ) {
     this.context = { componentParent: this}
-    this.noticeUse = this.authService.isAllowed('notice.use')
+    this.noteUse = this.authService.isAllowed('note.use')
     this.mayGroupEdit = this.authService.isOneOfAllowed(['group.modify','group.manage'])
   }
   async ngOnInit() {

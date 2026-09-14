@@ -11,7 +11,7 @@ import { CheckBoxBTNRenderer } from 'src/app/pipes/ag-checkbox-renderer';
 import { CommonModule } from '@angular/common';
 import { CranixListComponent } from 'src/app/shared/cranix-list/cranix-list.component'
 import { CranixMdListComponent } from 'src/app/shared/cranix-md-list/cranix-md-list.component'
-import { CranixNoticesComponent } from './cranix-notices/cranix-notices.component';
+import { CranixNotesComponent } from './cranix-notes/cranix-notes.component';
 import { CranixPtmViewComponent } from 'src/app/shared/cranix-ptm-view/cranix-ptm-view.component'
 import { CranixSearchComponent } from './cranix-search/cranix-search.component';
 import { CranixSearchListComponent } from './cranix-search/cranix-search-list.component';
@@ -75,7 +75,7 @@ import { QuillModule } from 'ngx-quill'
     CheckBoxBTNRenderer,
     CranixListComponent,
     CranixMdListComponent,
-    CranixNoticesComponent,
+    CranixNotesComponent,
     CranixPtmViewComponent,
     CranixSearchComponent,
     CranixSearchListComponent,
@@ -137,7 +137,7 @@ import { QuillModule } from 'ngx-quill'
     CommonModule,
     CranixListComponent,
     CranixMdListComponent,
-    CranixNoticesComponent,
+    CranixNotesComponent,
     CranixPtmViewComponent,
     CranixSearchComponent,
     CranixSearchListComponent,
