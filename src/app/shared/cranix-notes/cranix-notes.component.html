@@ -101,6 +101,42 @@
         }
         @case('grading')
         {
+        @if(isGroupGrading()){
+        <div class="crx-item">
+            @if( selectedNote.ptmId != 0 ) {
+            <div class="crx-label">{{'PTM'|translate}}</div>
+            }
+            <div class="crx-label">{{'teachingSubject'|translate}}:</div>
+            <cranix-search objectType="teachingSubject" [multiple]="false" [items]="crxObjectService.subjects"
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.teachingSubject"
+                (callback)="selectTeachingSubject()"></cranix-search>
+            <cranix-search objectType="subjectArea" [multiple]="false" [items]="subjectAreas"
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedNote.subjectArea"></cranix-search>
+        </div>
+        <div class="crx-item">
+            <div class="crx-label">{{'weighting'|translate}}:</div>
+            <ion-input type="number" [(ngModel)]="selectedNote.weighting"></ion-input>
+        </div>
+        <ion-grid>
+            <ion-row class="crx-item">
+                <ion-col size="5"><div class="crx-label">{{'name'|translate}}</div></ion-col>
+                <ion-col size="1"><div class="crx-label">{{'grading'|translate}}</div></ion-col>
+                <ion-col size="6"><div class="crx-label">{{'text'|translate}}</div></ion-col>
+            </ion-row>
+            @for(row of memberGradeRows; track row.user.id){
+            <ion-row class="crx-item">
+                <ion-col size="5">{{row.user.fullName}}</ion-col>
+                <ion-col size="1" [class.crx-bad-grading]="row.grading == 0"><ion-input type="number" [(ngModel)]="row.grading"></ion-input></ion-col>
+                <ion-col size="6"><ion-input [(ngModel)]="row.text"></ion-input></ion-col>
+            </ion-row>
+            }
+            @if(memberGradeRows.length == 0){
+            <ion-row class="crx-item">
+                <ion-col><div class="crx-label">{{'No members'|translate}}</div></ion-col>
+            </ion-row>
+            }
+        </ion-grid>
+        }@else{
         <div class="crx-item">
             @if( selectedNote.ptmId != 0 ) {
             <div class="crx-label">{{'PTM'|translate}}</div>
@@ -119,6 +155,7 @@
             <div class="crx-label">{{'weighting'|translate}}:</div>
             <ion-input type="number" [(ngModel)]="selectedNote.weighting"></ion-input>
         </div>
+        }
         }
         @case ('todo') {
         <div class="crx-item">
@@ -141,6 +178,9 @@
     @switch(selectedNote.noteType){
     @case ('access') {
     <ion-textarea [autoGrow]="true" [(ngModel)]="selectedNote.text"></ion-textarea>
+    }
+    @case('grading'){
+    @if(!isGroupGrading()){<quill-editor [(ngModel)]="selectedNote.text" style="height: min-content; margin-left: 10px;  "></quill-editor>}
     }
     @case ('late')
     @case ('absence')
@@ -202,20 +242,17 @@
     <ion-grid>
         <ion-row>
             @for(note of filteredNotes; track note.id){
-            <ion-col size="2" size-xs="12" size-sm="6" size-md="4">
+            <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" size="1">
                 <ion-card (click)="openNote(note)">
-                    <ion-card-header>
-                        <ion-card-subtitle>
-                            <ion-icon [name]="getTypeConfig(note.noteType)?.icon || 'document'"
-                                [color]="getTypeConfig(note.noteType)?.color"></ion-icon>
-                            {{ getTypeConfig(note.noteType)?.label || note.noteType }} &middot;
-                        </ion-card-subtitle>
-                        <ion-card-title>{{ noteTypeLabel(note) }}</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        <p>{{ noteDataPreview(note) }}</p>
-                        <ion-text color="medium"><small>{{ note.created | date:'short' }}</small></ion-text>
-                    </ion-card-content>
+                   <div class="crx-item" style="margin: 6 0 6 0; ">
+                       <div class="crx-text">
+                           <ion-icon slot="start" [name]="getTypeConfig(note.noteType)?.icon || 'document'"
+                                  [color]="getTypeConfig(note.noteType)?.color">
+                           </ion-icon>
+                       </div>
+                       <div class="crx-text-fix">{{ noteDataPreview(note) }}</div>
+                       <div class="crx-text-end">{{note.created|date:'yyyy-MM-dd'}}</div>
+                   </div>
                 </ion-card>
             </ion-col>
             }

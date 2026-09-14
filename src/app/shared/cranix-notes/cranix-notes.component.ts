@@ -1,12 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { GroupsService } from 'src/app/services/groups.service';
 import { NotesService } from 'src/app/services/notes.service';
-import { CrxNote, NoteDescription, SubjectArea } from '../models/data-model';
+import { CrxNote, NoteDescription, SubjectArea, User } from '../models/data-model';
 import { LanguageService } from 'src/app/services/language.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
 import { CrxCalendarService } from 'src/app/services/crx-calendar.service';
+
+export interface MemberGradeRow {
+    user: User;
+    grading: number;
+    text: string;
+}
 @Component({
     standalone: false,
     selector: 'cranix-notes',
@@ -41,7 +48,8 @@ export class CranixNotesComponent implements OnInit {
         { type: 'excused-absence', label: 'excused', icon: 'checkmark-circle', color: 'tertiary' }
     ];
     noteTypeConfigGroup: NoteDescription[] = [
-        { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' }
+        { type: 'performance', label: 'performance', icon: 'document-text', color: 'primary' },
+        { type: 'grading', label: 'grading', icon: 'school', color: 'success' }
     ];
     noteTypeConfigDevice: NoteDescription[] = [
         { type: 'access', label: 'access', icon: 'key', color: 'danger' }
@@ -54,10 +62,13 @@ export class CranixNotesComponent implements OnInit {
 
     @Input() objectType: string
     @Input() selectedObject: any
+    groupMembers: User[] = []
+    memberGradeRows: MemberGradeRow[] = []
     constructor(
         public authService: AuthenticationService,
         private languageS: LanguageService,
         private noteService: NotesService,
+        private groupService: GroupsService,
         private objectService: GenericObjectService,
         public crxObjectService: CrxObjectService,
         private modalController: ModalController,
@@ -135,6 +146,10 @@ export class CranixNotesComponent implements OnInit {
     }
 
     saveNote() {
+        if(this.isGroupGrading()) {
+            this.saveGroupGradingNotes()
+            return
+        }
         this.isDisabled = true;
         console.log(this.selectedNote)
         this.noteService.add(this.selectedNote).subscribe(
@@ -147,6 +162,64 @@ export class CranixNotesComponent implements OnInit {
                 }
             }
         )
+    }
+
+    saveGroupGradingNotes() {
+        let rows = this.memberGradeRows.filter((row) => {
+            return row.text.trim() != '' || (row.grading != 0 && row.grading != null)
+        });
+        if(rows.length == 0) {
+            this.objectService.errorMessage(this.languageS.trans('No members to save'));
+            return;
+        }
+        this.isDisabled = true;
+        let toDo = rows.length;
+        let done = 0;
+        let ok = 0;
+        let err = 0;
+        for(let row of rows) {
+            let note = new CrxNote();
+            note.noteType = 'grading';
+            note.objectType = 'user';
+            note.objectId = row.user.id;
+            note.title = this.selectedNote.title;
+            note.teachingSubject = this.selectedNote.teachingSubject;
+            note.subjectArea = this.selectedNote.subjectArea;
+            note.grading = row.grading;
+            note.weighting = this.selectedNote.weighting;
+            note.text = row.text;
+            this.noteService.add(note).subscribe(
+                (val) => {
+                    done++;
+                    if (val.code == "OK") {
+                        ok++;
+                    } else {
+                        err++;
+                    }
+                    if(done == toDo) {
+                        if(err == 0) {
+                            this.objectService.okMessage(`${ok} ${this.languageS.trans("notes")}`);
+                        } else {
+                            this.objectService.errorMessage(this.languageS.trans("An error was accoured"));
+                        }
+                        this.memberGradeRows = []
+                        this.readData()
+                        this.isNoteOpen = false;
+                        this.isDisabled = false
+                    }
+                },
+                (error) => {
+                    done++;
+                    err++;
+                    if(done == toDo) {
+                        this.objectService.errorMessage(this.languageS.trans('An error was accoured'));
+                        this.readData()
+                        this.isNoteOpen = false;
+                        this.isDisabled = false
+                    }
+                }
+            );
+        }
     }
 
     closeNote() {
@@ -221,8 +294,8 @@ export class CranixNotesComponent implements OnInit {
 
     noteDataPreview(note: CrxNote): string {
         switch (note.noteType) {
-          case 'grading': return `${note.grading}  ${note.weighting}`;
-          case 'late': return `${note.absence1} ${note.absence2} ${note.late}`;
+          case 'grading': return `${note.grading}; ${note.weighting}; ${note.title}`;
+          case 'late': return `${note.absence1}; ${note.absence2}; ${note.late}`;
           case 'absence': return `${note.absence1} ${note.absence2}`;
           case 'excused-absence': return `${note.absence1} → ${note.absence2}`;
           default: return note.title;
@@ -231,6 +304,9 @@ export class CranixNotesComponent implements OnInit {
 
     changeNoteType(event: any) {
         console.log(event)
+        if(this.isGroupGrading()) {
+            this.ensureGroupMembers()
+        }
         if(this.selectedNote.noteType === 'late' || this.selectedNote.noteType === 'absence') {
             this.selectedNote.absence1 = new Date().toISOString().split('T')[0]
         }
@@ -238,5 +314,28 @@ export class CranixNotesComponent implements OnInit {
             this.selectedNote.absence1 = new Date().toISOString().split('T')[0]
             this.selectedNote.absence2 = new Date().toISOString().split('T')[0]
         }
+    }
+
+    isGroupGrading(): boolean {
+        return !this.selectedNote.id && this.objectType.indexOf('group') != -1 && this.selectedNote.noteType === 'grading';
+    }
+
+    ensureGroupMembers() {
+        if(this.groupMembers.length == 0) {
+            this.groupService.getMembers(this.selectedObject.id).subscribe(
+                (val) => {
+                    this.groupMembers = val.filter(m => m.role == 'students')
+                    this.initGradeRows()
+                }
+            )
+        } else {
+            this.initGradeRows()
+        }
+    }
+
+    initGradeRows() {
+        this.memberGradeRows = this.groupMembers.map((member) => {
+            return { user: member, grading: 0, text: '' };
+        });
     }
 }
