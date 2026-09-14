@@ -139,6 +139,12 @@ export class CranixNotesComponent implements OnInit {
             }
         } else {
             this.selectedNote = new CrxNote();
+            if(this.selectedType != 'all') {
+                this.selectedNote.noteType = this.selectedType
+                if(this.isGroupGrading()) {
+                    this.ensureGroupMembers()
+                }
+            }
             this.selectedNote.objectType = this.objectType
             this.selectedNote.objectId = this.selectedObject.id
         }
