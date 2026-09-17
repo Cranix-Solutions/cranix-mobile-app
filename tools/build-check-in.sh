@@ -9,7 +9,11 @@ if [ $b != "y" ]; then
 	exit
 fi
 cp src/index-prod.html src/index.html
-sed -i "" "s/VERSION-PLACE-HOLDER/${DATE}/" src/app/services/auth.service.ts
+if [ -e /etc/os-release ]; then
+	sed -i "s/VERSION-PLACE-HOLDER/${DATE}/" src/app/services/auth.service.ts
+else
+	sed -i "" "s/VERSION-PLACE-HOLDER/${DATE}/" src/app/services/auth.service.ts
+fi
 ionic build --prod
 git stash
 echo -n "Can we checkin y/n "; read b
