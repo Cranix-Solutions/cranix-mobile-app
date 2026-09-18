@@ -92,6 +92,11 @@ export class AuthenticationService {
         icon: 'desktop'
       },
       {
+        title: 'Documents',
+        url: '/pages/cranix/documents',
+        icon: 'folder'
+      },
+      {
         title: 'Softwares',
         url: '/pages/cranix/softwares',
         icon: 'software'
@@ -437,6 +442,7 @@ export class AuthenticationService {
             case "/pages/cephalix/institutes/all": { return this.isAllowed('cephalix.manage') }
             case "/pages/cephalix/tickets": { return this.isAllowed('cephalix.ticket') }
             case "/pages/cranix/calendar": { return this.isOneOfAllowed(['calendar.manage', 'calendar.use', 'calendar.read']) }
+            case "/pages/cranix/documents": { return this.isAllowed('documents.search') }
             case "/pages/cranix/devices": { return this.isAllowed('device.manage') }
             case "/pages/cranix/devices/all": { return this.isAllowed('device.manage') }
             case "/pages/cranix/groups": { return this.isAllowed('group.manage') }

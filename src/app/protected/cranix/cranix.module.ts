@@ -3,6 +3,7 @@ import { CommonModule }        from '@angular/common';
 //Own Stuff
 import { CalendarModule } from './calendar/calendar.module'
 import { DevicesListsModule } from './devices/lists/devices-lists.module';
+import { DocumentsPageModule } from './documents/documents.module';
 import { HwconfsPageModule }   from './hwconfs/hwconfs.module';
 import { GroupsPageModule }    from './groups/groups.module';
 import { InformationsModule }    from './informations/informations.module';
@@ -21,6 +22,7 @@ import { UsersListsPageModule } from './users/lists/users-lists.module';
     CommonModule,
     CalendarModule,
     DevicesListsModule,
+    DocumentsPageModule,
     HwconfsPageModule,
     GroupsPageModule,
     InformationsModule,

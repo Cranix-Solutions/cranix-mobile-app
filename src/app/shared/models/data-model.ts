@@ -738,3 +738,54 @@ export class Course {
 	appointments: CrxCalendar[] = []
 }
 
+export class DocumentRight {
+	id: number = 0
+	creator: User = new User()
+	created: Date | string = new Date()
+	userId: number = 0
+	groupId: number = 0
+	mayWrite: boolean = false
+}
+
+export class DocumentVersion {
+	id: number = 0
+	creator: User = new User()
+	created: Date | string = new Date()
+	versionNumber: number = 0
+	fileName: string = ""
+	mimeType: string = ""
+	size: number = 0
+	checkSum: string = ""
+	comment: string = ""
+	isCurrent: boolean = false
+}
+
+export class DocumentFolder {
+	id: number = 0
+	creator: User = new User()
+	created: Date | string = new Date()
+	name: string = ""
+	description: string = ""
+	parentFolderId: number = null
+}
+
+export class Document {
+	id: number = 0
+	creator: User = new User()
+	creatorId: number = 0
+	created: Date | string = new Date()
+	name: string = ""
+	description: string = ""
+	tags: string = ""
+	fileName: string = ""
+	mimeType: string = ""
+	size: number = 0
+	checkSum: string = ""
+	currentVersion: number = 0
+	comment: string = ""
+	folderId: number = 0
+	userId: number = 0
+	groupId: number = 0
+	rights: DocumentRight[] = []
+}
+
