@@ -863,6 +863,7 @@
     "current": "aktuell",
     "Documents": "Dokumente",
     "Download": "Herunterladen",
+    "Edit document": "Dokument bearbeiten",
     "File": "Datei",
     "Folder": "Ordner",
     "Grant access": "Zugriff erteilen",
@@ -873,7 +874,9 @@
     "New folder": "Neuer Ordner",
     "New version": "Neue Version",
     "No documents found": "Keine Dokumente gefunden",
+    "Only the creator can set the current version.": "Nur der Ersteller kann die aktuelle Version festlegen.",
     "Parent folder": "Übergeordneter Ordner",
+    "Save": "Speichern",
     "Search documents": "Dokumente suchen",
     "Shared with me": "Mit mir geteilt",
     "Please select a file to upload!": "Bitte wählen Sie eine Datei zum Hochladen!",
@@ -886,5 +889,7 @@
     "Select a user": "Benutzer auswählen",
     "Tags": "Schlagwörter",
     "Upload": "Hochladen",
-    "Versions of": "Versionen von"
+    "Version protected": "Versionen geschützt",
+    "Versions of": "Versionen von",
+    "You are not allowed to delete this version!": "Sie sind nicht berechtigt, diese Version zu löschen!"
 }

@@ -783,6 +783,7 @@ export class Document {
 	checkSum: string = ""
 	currentVersion: number = 0
 	comment: string = ""
+	isVersionProtected: boolean = false
 	folderId: number = 0
 	userId: number = 0
 	groupId: number = 0

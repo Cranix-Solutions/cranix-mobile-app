@@ -24,7 +24,6 @@ export class IdToNamePipe implements PipeTransform {
       return obj.name;
     }
     if( obj.uid ) {
-      console.log("uid found")
       return obj.uid + " (" + obj.givenName + " " + obj.surName + ")";
     }
     return value;

@@ -641,6 +641,7 @@
     "current": "current",
     "Documents": "Documents",
     "Download": "Download",
+    "Edit document": "Edit document",
     "File": "File",
     "Folder": "Folder",
     "Grant access": "Grant access",
@@ -651,7 +652,9 @@
     "New folder": "New folder",
     "New version": "New version",
     "No documents found": "No documents found",
+    "Only the creator can set the current version.": "Only the creator can set the current version.",
     "Parent folder": "Parent folder",
+    "Save": "Save",
     "Search documents": "Search documents",
     "Shared with me": "Shared with me",
     "Please select a file to upload!": "Please select a file to upload!",
@@ -664,5 +667,7 @@
     "Select a user": "Select a user",
     "Tags": "Tags",
     "Upload": "Upload",
-    "Versions of": "Versions of"
+    "Version protected": "Version protected",
+    "Versions of": "Versions of",
+    "You are not allowed to delete this version!": "You are not allowed to delete this version!"
 }
