@@ -1,0 +1,8 @@
+:host {
+  .page-toolbar {
+    --min-height: 44px;
+  }
+  ion-breadcrumbs {
+    --color: var(--ion-color-primary);
+  }
+}

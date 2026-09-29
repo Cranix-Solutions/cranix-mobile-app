@@ -1,0 +1,414 @@
+<cranix-toolbar title="{{'Documents' | translate}}"></cranix-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-segment (ionChange)="scopeChanged()" [(ngModel)]="scope" color="secondary">
+    <ion-segment-button value="my" layout="icon-start">
+      <ion-label [position]="authService.settings.labelPlacement" class="hidden-xs hidden-sm">{{'My documents' | translate}}</ion-label>
+      <ion-icon name="folder-open"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="shared" layout="icon-start">
+      <ion-label [position]="authService.settings.labelPlacement" class="hidden-xs hidden-sm">{{'Shared with me' | translate}}</ion-label>
+      <ion-icon name="people"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-searchbar placeholder="{{'Search documents' | translate}}" [(ngModel)]="searchText"
+    (ionChange)="readData()" (ionClear)="readData()"></ion-searchbar>
+</ion-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-buttons slot="start">
+    @if(scope=='my' && currentFolder){
+    <ion-button fill="clear" (click)="enterParentFolder()" matTooltip="{{'Parent folder' | translate}}">
+      <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
+    </ion-button>
+    }
+    @if(scope=='my' && (currentFolder || folderPath.length > 0)){
+    <ion-button fill="clear" (click)="goToRoot()" matTooltip="{{'Root folder' | translate}}">
+      <ion-icon slot="icon-only" name="home"></ion-icon>
+    </ion-button>
+    }
+  </ion-buttons>
+  @if(scope=='my'){
+  <ion-breadcrumbs>
+    @for(folder of folderPath; track folder.id){
+    <ion-breadcrumb (click)="goToRoot()">{{folder.name}}</ion-breadcrumb>
+    }
+    @if(currentFolder){
+    <ion-breadcrumb>{{currentFolder.name}}</ion-breadcrumb>
+    }
+  </ion-breadcrumbs>
+  }
+  <ion-buttons slot="end">
+    @if(scope=='my' && authService.isAllowed('documents.add')){
+    <ion-button fill="clear" (click)="isFolderFormOpen = true" matTooltip="{{'New folder' | translate}}">
+      <ion-icon slot="icon-only" color="tertiary" name="folder-open"></ion-icon>
+    </ion-button>
+    }
+    @if(authService.isAllowed('documents.add')){
+    <ion-button fill="clear" (click)="isDocumentFormOpen = true" matTooltip="{{'New document' | translate}}">
+      <ion-icon slot="icon-only" color="success" name="cloud-upload"></ion-icon>
+    </ion-button>
+    }
+    <ion-button fill="clear" (click)="setViewMode('list')" matTooltip="{{'List view' | translate}}">
+      <ion-icon slot="icon-only" [color]="viewMode=='list' ? 'primary' : 'medium'" name="list"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" (click)="setViewMode('grid')" matTooltip="{{'Grid view' | translate}}">
+      <ion-icon slot="icon-only" [color]="viewMode=='grid' ? 'primary' : 'medium'" name="grid"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" (click)="readData()" matTooltip="{{'Refresh' | translate}}">
+      <ion-icon slot="icon-only" color="tertiary" name="refresh"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content>
+  @if(currentDocs.length == 0 && currentFolders.length == 0){
+  <ion-text color="medium">
+    <h5 class="ion-text-center">
+      {{'No documents found' | translate}}
+    </h5>
+  </ion-text>
+  }
+  <div class="crx-list" [class.crx-grid]="viewMode=='grid'">
+    @for(folder of currentFolders; track folder.id){
+    <div class="crx-list-item" (click)="enterFolder(folder)">
+      <div class="crx-text">
+        <p>
+          <ion-icon name="folder" color="tertiary"></ion-icon>
+          <b>{{folder.name}}</b>
+	</p>
+        @if(folder.description && folder.description.length > 0){
+        <p>{{folder.description}}</p>
+        }
+      </div>
+      <div class="crx-text-end">
+        @if(authService.isAllowed('documents.delete')){
+        <ion-button fill="clear" color="danger" (click)="deleteFolder(folder); $event.stopPropagation()">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        }
+      </div>
+    </div>
+    }
+    @for(document of currentDocs; track document.id){
+    <div class="crx-list-item">
+      <div class="crx-text" (click)="downloadDocument(document)">
+        <p>
+           <ion-icon [name]="mimeIcon(document)" color="primary"></ion-icon>
+           <b>{{document.name}}</b>
+        </p>
+        <p>
+          {{document.fileName}} &middot; {{formatSize(document.size)}}
+          &middot; {{'Version' | translate}} {{document.currentVersion}}
+          @if(document.description && document.description.length > 0){ &middot; {{document.description}} }
+        </p>
+      </div>
+      <div class="crx-text-end">
+        @if(authService.isAllowed('documents.search')){
+        <ion-button fill="clear" (click)="downloadDocument(document)" matTooltip="{{'Download' | translate}}">
+          <ion-icon slot="icon-only" name="download" color="primary"></ion-icon>
+        </ion-button>
+        }
+        @if(authService.isAllowed('documents.modify')){
+        <ion-button fill="clear" (click)="openEdit(document)" matTooltip="{{'Edit document' | translate}}">
+          <ion-icon slot="icon-only" name="create" color="success"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="openMove(document)" matTooltip="{{'Move to folder' | translate}}">
+          <ion-icon slot="icon-only" name="git-branch" color="tertiary"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="openRights(document)" matTooltip="{{'Set ACL' | translate}}">
+          <ion-icon slot="icon-only" name="key" color="secondary"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="openVersions(document)" matTooltip="{{'Manage versions' | translate}}">
+          <ion-icon slot="icon-only" name="archive" color="medium"></ion-icon>
+        </ion-button>
+        }
+        @if(authService.isAllowed('documents.delete')){
+        <ion-button fill="clear" color="danger" (click)="deleteDocument(document)" matTooltip="{{'Delete' | translate}}">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</ion-content>
+
+<ion-modal #documentForm [isOpen]="isDocumentFormOpen" (didDismiss)="isDocumentFormOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>{{'New document' | translate}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeDocumentForm()" fill="clear">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'File' | translate}}</ion-label>
+          <input type="file" (change)="onDocFileSelected($event)">
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Name' | translate}}</ion-label>
+          <ion-input [(ngModel)]="docName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Description' | translate}}</ion-label>
+          <ion-input [(ngModel)]="docDescription"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Tags' | translate}}</ion-label>
+          <ion-input [(ngModel)]="docTags"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="docProtected"> {{'Version protected' | translate}}</ion-checkbox>
+        </ion-item>
+        @if(currentFolder){
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Folder' | translate}}</ion-label>
+          <ion-note slot="end">{{currentFolder.name}}</ion-note>
+        </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-button expand="block" (click)="submitDocument()">{{'Upload' | translate}}</ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #editForm [isOpen]="isEditOpen" (didDismiss)="isEditOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>{{'Edit document' | translate}} {{selectedDocument.name}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isEditOpen = false" fill="clear">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Name' | translate}}</ion-label>
+          <ion-input [(ngModel)]="editName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Description' | translate}}</ion-label>
+          <ion-input [(ngModel)]="editDescription"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Tags' | translate}}</ion-label>
+          <ion-input [(ngModel)]="editTags"></ion-input>
+        </ion-item>
+        @if(ownDocument(selectedDocument)){
+        <ion-item>
+          <ion-checkbox [(ngModel)]="editProtected"> {{'Version protected' | translate}}</ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-note>{{'Only the creator can set the current version.' | translate}}</ion-note>
+        </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-button expand="block" (click)="submitEdit()">{{'Save' | translate}}</ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #folderForm [isOpen]="isFolderFormOpen" (didDismiss)="isFolderFormOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>{{'New folder' | translate}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeFolderForm()" fill="clear">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Name' | translate}}</ion-label>
+          <ion-input [(ngModel)]="newFolderName" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Description' | translate}}</ion-label>
+          <ion-input [(ngModel)]="newFolderDescription"></ion-input>
+        </ion-item>
+        @if(currentFolder){
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Parent folder' | translate}}</ion-label>
+          <ion-note slot="end">{{currentFolder.name}}</ion-note>
+        </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-button expand="block" (click)="submitFolder()">{{'Create' | translate}}</ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #versionsModal [isOpen]="isVersionsOpen" (didDismiss)="isVersionsOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>{{'Versions of' | translate}} {{selectedDocument.name}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isVersionsOpen = false" fill="clear">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        @for(version of versions; track version.id){
+        <div class="crx-list-item">
+          <div class="crx-text">
+            <p><b>{{'Version' | translate}} {{version.versionNumber}} {{'Creator' | translate}}: {{ version.creator.fullName }} @if(version.isCurrent){ ({{'current' | translate}})}
+            </b></p>
+            <p>{{version.fileName}} &middot; {{formatSize(version.size)}} &middot; {{version.created | date:'short'}}</p>
+            @if(version.comment && version.comment.length > 0){
+            <p>{{version.comment}}</p>
+            }
+          </div>
+          <div class="crx-text-end">
+            <ion-button fill="clear" (click)="downloadVersion(version)">
+              <ion-icon slot="icon-only" name="download" color="primary"></ion-icon>
+            </ion-button>
+            @if(authService.isAllowed('documents.modify') && !version.isCurrent
+                 && (!selectedDocument.isVersionProtected || ownDocument(selectedDocument))){
+            <ion-button fill="clear" (click)="restoreVersion(version)">
+              <ion-icon slot="icon-only" name="refresh" color="tertiary"></ion-icon>
+            </ion-button>
+            }
+            @if(authService.isAllowed('documents.modify') && (ownDocument(selectedDocument) || isVersionOwner(version))){
+            <ion-button fill="clear" color="danger" (click)="deleteVersion(version)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+            }
+          </div>
+        </div>
+        }
+      </ion-list>
+      @if(selectedDocument.isVersionProtected){
+      <ion-text color="medium">
+        <p class="ion-padding-start ion-padding-end">{{'Only the creator can set the current version.' | translate}}</p>
+      </ion-text>
+      }
+      @if(authService.isAllowed('documents.modify')){
+      <ion-list>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'New version' | translate}}</ion-label>
+          <input type="file" (change)="onVersionFileSelected($event)">
+        </ion-item>
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">{{'Comment' | translate}}</ion-label>
+          <ion-input [(ngModel)]="newVersionComment"></ion-input>
+        </ion-item>
+        <ion-button expand="block" (click)="addVersion()">{{'Upload' | translate}}</ion-button>
+      </ion-list>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #rightsModal [isOpen]="isRightsOpen" (didDismiss)="isRightsOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>{{'Access rights of' | translate}} {{selectedDocument.name}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isRightsOpen = false" fill="clear">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        @for(right of rights; track right.id){
+        <ion-item>
+          <ion-label [position]="authService.settings.labelPlacement">
+            <h2>{{rightLabel(right)}}</h2>
+            <p>{{right.mayWrite ? ('Read and write' | translate) : ('Read only' | translate)}}</p>
+          </ion-label>
+          @if(authService.isAllowed('documents.modify')){
+          <ion-button slot="end" fill="clear" color="danger" (click)="removeRight(right)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+          }
+        </ion-item>
+        }
+      </ion-list>
+      @if(authService.isAllowed('documents.modify')){
+      <ion-list>
+        <ion-item>
+          <cranix-search objectType="user" [items]="users" emptyLabel="Select a user"
+            (onChange)="rightUser = $event.value"></cranix-search>
+        </ion-item>
+        <ion-item>
+          <cranix-search objectType="group" [items]="groups" emptyLabel="Select a group"
+            (onChange)="rightGroup = $event.value"></cranix-search>
+        </ion-item>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="rightMayWrite"> {{'May write' | translate}}</ion-checkbox>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="block" (click)="addRight()">{{'Grant access' | translate}}</ion-button>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #moveModal [isOpen]="isMoveOpen" (didDismiss)="isMoveOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>{{'Move' | translate}} {{selectedDocument.name}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isMoveOpen = false" fill="clear">
+            <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-radio-group [(ngModel)]="moveTarget">
+        <ion-list>
+          <ion-item>
+            <ion-label [position]="authService.settings.labelPlacement">{{'Root folder' | translate}}</ion-label>
+            <ion-radio slot="start" [value]="0"></ion-radio>
+          </ion-item>
+          @for(folder of moveFolders; track folder.id){
+          <ion-item>
+            <ion-label [position]="authService.settings.labelPlacement">{{folder.name}}</ion-label>
+            <ion-radio slot="start" [value]="folder.id"></ion-radio>
+          </ion-item>
+          }
+        </ion-list>
+      </ion-radio-group>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-button expand="block" (click)="submitMove()">{{'Move' | translate}}</ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
