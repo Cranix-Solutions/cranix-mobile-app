@@ -72,12 +72,9 @@
     @for(folder of currentFolders; track folder.id){
     <div class="crx-list-item" (click)="enterFolder(folder)">
       <div class="crx-text">
-        <p>
-          <ion-icon name="folder" color="tertiary"></ion-icon>
-          <b>{{folder.name}}</b>
-	</p>
+        <ion-icon name="folder" color="tertiary"></ion-icon> <b>{{folder.name}}</b><br>
         @if(folder.description && folder.description.length > 0){
-        <p>{{folder.description}}</p>
+        {{folder.description}}<br>
         }
       </div>
       <div class="crx-text-end">
@@ -92,15 +89,14 @@
     @for(document of currentDocs; track document.id){
     <div class="crx-list-item">
       <div class="crx-text" (click)="downloadDocument(document)">
-        <p>
-           <ion-icon [name]="mimeIcon(document)" color="primary"></ion-icon>
-           <b>{{document.name}}</b>
-        </p>
-        <p>
-          {{document.fileName}} &middot; {{formatSize(document.size)}}
-          &middot; {{'Version' | translate}} {{document.currentVersion}}
-          @if(document.description && document.description.length > 0){ &middot; {{document.description}} }
-        </p>
+        <ion-icon [name]="mimeIcon(document)" color="primary"></ion-icon> <b>{{document.name}}</b><br>
+        @if(scope == 'shared' && document.creator) {
+           {{ 'Creator' | translate }}: {{ document.creator.fullName }}<br>
+        }
+        {{document.fileName}} &middot; {{formatSize(document.size)}}
+        &middot; {{'Version' | translate}} {{document.currentVersion}}
+        @if(document.description && document.description.length > 0){ &middot; {{document.description}} }
+        <br>
       </div>
       <div class="crx-text-end">
         @if(authService.isAllowed('documents.search')){
@@ -112,17 +108,19 @@
         <ion-button fill="clear" (click)="openEdit(document)" matTooltip="{{'Edit document' | translate}}">
           <ion-icon slot="icon-only" name="create" color="success"></ion-icon>
         </ion-button>
+        @if( scope=='my' ) {
         <ion-button fill="clear" (click)="openMove(document)" matTooltip="{{'Move to folder' | translate}}">
           <ion-icon slot="icon-only" name="git-branch" color="tertiary"></ion-icon>
         </ion-button>
         <ion-button fill="clear" (click)="openRights(document)" matTooltip="{{'Set ACL' | translate}}">
           <ion-icon slot="icon-only" name="key" color="secondary"></ion-icon>
         </ion-button>
+        }
         <ion-button fill="clear" (click)="openVersions(document)" matTooltip="{{'Manage versions' | translate}}">
           <ion-icon slot="icon-only" name="archive" color="medium"></ion-icon>
         </ion-button>
         }
-        @if(authService.isAllowed('documents.delete')){
+        @if(authService.isAllowed('documents.delete') && scope=='my' ){
         <ion-button fill="clear" color="danger" (click)="deleteDocument(document)" matTooltip="{{'Delete' | translate}}">
           <ion-icon slot="icon-only" name="trash"></ion-icon>
         </ion-button>
@@ -139,6 +137,9 @@
       <ion-toolbar color="primary">
         <ion-title>{{'New document' | translate}}</ion-title>
         <ion-buttons slot="end">
+          <ion-button class="ion-no-margin" (click)="submitDocument()">
+             <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
           <ion-button (click)="closeDocumentForm()" fill="clear">
             <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
@@ -174,11 +175,6 @@
         }
       </ion-list>
     </ion-content>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-button expand="block" (click)="submitDocument()">{{'Upload' | translate}}</ion-button>
-      </ion-toolbar>
-    </ion-footer>
   </ng-template>
 </ion-modal>
 
@@ -188,6 +184,9 @@
       <ion-toolbar color="primary">
         <ion-title>{{'Edit document' | translate}} {{selectedDocument.name}}</ion-title>
         <ion-buttons slot="end">
+          <ion-button class="ion-no-margin" (click)="submitEdit()">
+             <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
           <ion-button (click)="isEditOpen = false" fill="clear">
             <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
@@ -218,11 +217,6 @@
         }
       </ion-list>
     </ion-content>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-button expand="block" (click)="submitEdit()">{{'Save' | translate}}</ion-button>
-      </ion-toolbar>
-    </ion-footer>
   </ng-template>
 </ion-modal>
 
@@ -232,6 +226,9 @@
       <ion-toolbar color="primary">
         <ion-title>{{'New folder' | translate}}</ion-title>
         <ion-buttons slot="end">
+          <ion-button class="ion-no-margin" (click)="submitFolder()">
+             <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
           <ion-button (click)="closeFolderForm()" fill="clear">
             <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
@@ -256,11 +253,6 @@
         }
       </ion-list>
     </ion-content>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-button expand="block" (click)="submitFolder()">{{'Create' | translate}}</ion-button>
-      </ion-toolbar>
-    </ion-footer>
   </ng-template>
 </ion-modal>
 
@@ -281,11 +273,10 @@
         @for(version of versions; track version.id){
         <div class="crx-list-item">
           <div class="crx-text">
-            <p><b>{{'Version' | translate}} {{version.versionNumber}} {{'Creator' | translate}}: {{ version.creator.fullName }} @if(version.isCurrent){ ({{'current' | translate}})}
-            </b></p>
-            <p>{{version.fileName}} &middot; {{formatSize(version.size)}} &middot; {{version.created | date:'short'}}</p>
+            <b>{{'Version' | translate}} {{version.versionNumber}} {{'Creator' | translate}}: {{ version.creator.fullName }} @if(version.isCurrent){ ({{'current' | translate}})}</b><br>
+            {{version.fileName}} &middot; {{formatSize(version.size)}} &middot; {{version.created | date:'short'}}<br>
             @if(version.comment && version.comment.length > 0){
-            <p>{{version.comment}}</p>
+            {{version.comment}}<br>
             }
           </div>
           <div class="crx-text-end">
@@ -294,7 +285,7 @@
             </ion-button>
             @if(authService.isAllowed('documents.modify') && !version.isCurrent
                  && (!selectedDocument.isVersionProtected || ownDocument(selectedDocument))){
-            <ion-button fill="clear" (click)="restoreVersion(version)">
+            <ion-button fill="clear" (click)="restoreVersion(version)" matTooltip="{{'Set this as current version'|translate}}">
               <ion-icon slot="icon-only" name="refresh" color="tertiary"></ion-icon>
             </ion-button>
             }
@@ -313,17 +304,21 @@
       </ion-text>
       }
       @if(authService.isAllowed('documents.modify')){
+      <ion-footer>
       <ion-list>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'New version' | translate}}</ion-label>
           <input type="file" (change)="onVersionFileSelected($event)">
+          <ion-button slot="end" fill="clear" (click)="addVersion()">
+              <ion-icon slot="icon-only" name="cloud-upload" color="success"></ion-icon>
+          </ion-button>
         </ion-item>
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">{{'Comment' | translate}}</ion-label>
           <ion-input [(ngModel)]="newVersionComment"></ion-input>
         </ion-item>
-        <ion-button expand="block" (click)="addVersion()">{{'Upload' | translate}}</ion-button>
       </ion-list>
+      </ion-footer>
       }
     </ion-content>
   </ng-template>
@@ -347,7 +342,7 @@
         <ion-item>
           <ion-label [position]="authService.settings.labelPlacement">
             <h2>{{rightLabel(right)}}</h2>
-            <p>{{right.mayWrite ? ('Read and write' | translate) : ('Read only' | translate)}}</p>
+            {{right.mayWrite ? ('Read and write' | translate) : ('Read only' | translate)}}<br>
           </ion-label>
           @if(authService.isAllowed('documents.modify')){
           <ion-button slot="end" fill="clear" color="danger" (click)="removeRight(right)">
@@ -383,6 +378,9 @@
       <ion-toolbar color="primary">
         <ion-title>{{'Move' | translate}} {{selectedDocument.name}}</ion-title>
         <ion-buttons slot="end">
+          <ion-button class="ion-no-margin" (click)="submitMove()">
+             <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
           <ion-button (click)="isMoveOpen = false" fill="clear">
             <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
           </ion-button>
@@ -405,10 +403,5 @@
         </ion-list>
       </ion-radio-group>
     </ion-content>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-button expand="block" (click)="submitMove()">{{'Move' | translate}}</ion-button>
-      </ion-toolbar>
-    </ion-footer>
   </ng-template>
 </ion-modal>
