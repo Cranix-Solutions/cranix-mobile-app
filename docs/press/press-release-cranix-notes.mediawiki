@@ -1,0 +1,108 @@
+= CRANIX Introduces CranixNotes with a Built-in Grade Manager =
+
+'''Cranix-Solutions announces CranixNotes, a new module in the CRANIX that turns everyday notes into structured communication — and gives teachers a full Grade Manager to record, weight and review the grades of every student directly on their device.'''
+
+<code>[CITY], [DATE]</code> — Cranix-Solutions today announced the release of '''CranixNotes''' in the CRANIX (version <code>[VERSION]</code>). The component combines a contextual note system with a powerful grading engine, so the same tool teachers already use to communicate with classes and parents also serves as their grade book.
+
+== Notes that do more than inform ==
+
+CranixNotes is available from any object list in the app via '''⋮ Actions → Write Note'''. Whether it is a single student, an entire class, a device or a room, users write the note exactly where the context already exists — no switching tools, no re-entering recipients.
+
+The module distinguishes between general communication and student-related records. General notes (generic, to-do) can be sent to individuals or whole groups, while user-related note types cover exactly the cases schools deal with every day: performance, grading, lateness and excused or unexcused absence.
+
+== The Grade Manager at the centre ==
+
+The standout capability of CranixNotes is the '''Grade Manager (NotenManager)'''. It lets authorised users manage the grades of individual students in a structured, traceable way:
+
+* '''Per-student grading''' — Each grade note records the teaching subject and subject area, the grade value, a weighting and a free-text comment.
+* '''Weighted grades''' — The weighting field allows different assessments to count differently, reflecting how schools actually calculate final marks.
+* '''Bulk entry for a whole class''' — When opened on a group, the Grade Manager presents every student in one table. Teachers enter grades and comments for the entire class in a single pass instead of switching between records.
+* '''Subject-aware''' — Grades are tied to the teaching subject and its subject areas, so entries stay meaningful and easy to filter.
+* '''Full history''' — Every entry is stored with its type, creator and timestamp, and can be filtered, reviewed, edited or deleted afterwards.
+* '''Access-controlled''' — Editing follows the existing CRANIX permission model (<code>note.manage</code>, <code>crxnote.manage</code>), and teachers automatically retain control over the entries they created themselves.
+
+== Bringing order to school communication ==
+
+Beyond grading, CranixNotes gives schools a single, consistent channel for communication:
+
+* '''Contextual notes''' — Start from any list; recipients are pre-filled from the current selection, group, lesson or event.
+* '''Multiple note types''' — Generic, to-do, performance, grading, lateness and excused/unexcused absence, plus access notes for devices and institute objects.
+* '''Filtering''' — Notes are grouped by type and sorted by date, so the latest information is always on top.
+* '''Reminders''' — A reminder date can be attached to a note so nothing is forgotten.
+* '''Role-aware editing''' — Administrators can manage everything; teachers can create new notes and edit their own; students only read.
+* '''Built on a clean API''' — Notes are managed through the CRANIX <code>/crxNotes</code> interface with create, update, filter and delete operations.
+
+== Benefits for schools ==
+
+For teachers, CranixNotes means one place for both communication and grades — a class list becomes a grade book in a few taps, and a comment to a student becomes a documented record. For school administrators, it means grade-related information follows the same permission and audit model as the rest of the CRANIX platform, rather than living in spreadsheets on individual devices.
+
+== Availability ==
+
+CranixNotes is available now in the CRANIX  It appears in the app for users whose roles include the corresponding note permissions; no separate installation is required.
+
+== About Cranix-Solutions ==
+
+Cranix-Solutions develops CRANIX, a comprehensive open platform for the administration of schools and educational institutions — covering users, devices, rooms, software and much more. The CRANIX extends this platform to smartphones and tablets as a Progressive Web App.
+
+== Press contact ==
+
+<code>[Name]</code><br />
+<code>[E-Mail]</code><br />
+<code>[Phone]</code>
+
+----
+
+= CRANIX führt CranixNotes mit integriertem NotenManager ein =
+
+'''Cranix-Solutions stellt CranixNotes vor, ein neues Modul im CRANIX  das aus alltäglichen Notizen strukturierte Kommunikation macht — und Lehrkräften einen vollwertigen NotenManager an die Hand gibt, um Noten jeder Schülerin und jedes Schülers direkt auf dem Gerät zu erfassen, zu gewichten und zu überblicken.'''
+
+<code>[ORT], [DATUM]</code> — Cranix-Solutions gibt die Veröffentlichung von '''CranixNotes''' im CRANIX (Version <code>[VERSION]</code>) bekannt. Die Komponente verbindet ein kontextbezogenes Notizsystem mit einer leistungsfähigen Notenverwaltung. Dasselbe Werkzeug, das Lehrkräfte für die Kommunikation mit Klassen und Eltern nutzen, dient damit zugleich als Notenbuch.
+
+== Notizen, die mehr können als informieren ==
+
+CranixNotes ist aus jeder Objektliste der App über '''⋮ Aktionen → Notiz schreiben''' erreichbar. Ob einzelne Schülerin, ganze Klasse, Gerät oder Raum: Die Notiz wird genau dort verfasst, wo der Kontext bereits vorhanden ist — ohne Werkzeugwechsel, ohne erneute Empfängereingabe.
+
+Das Modul unterscheidet zwischen allgemeiner Kommunikation und schülerbezogenen Einträgen. Allgemeine Notizen (allgemein, To-do) lassen sich an Einzelpersonen oder ganze Gruppen senden. Die benutzerbezogenen Notizarten decken genau die Fälle ab, mit denen Schulen täglich zu tun haben: Leistung, Benotung, Verspätung sowie entschuldigte oder unentschuldigte Abwesenheit.
+
+== Der NotenManager im Zentrum ==
+
+Die herausragende Fähigkeit von CranixNotes ist der '''NotenManager'''. Er ermöglicht berechtigten Nutzerinnen und Nutzern die strukturierte und nachvollziehbare Verwaltung der Noten einzelner Lernender:
+
+* '''Benotung pro Schülerin und Schüler''' — Jede Notiz speichert Unterrichtsfach und Sachgebiet, Notenwert, Gewichtung und einen frei wählbaren Kommentar.
+* '''Gewichtete Noten''' — Über das Feld für die Gewichtung können unterschiedliche Leistungsnachweise unterschiedlich zählen — so, wie Schulen ihre Endnoten tatsächlich berechnen.
+* '''Sammelerfassung für die ganze Klasse''' — Wird der NotenManager für eine Gruppe geöffnet, erscheint jede Schülerin und jeder Schüler in einer Tabelle. Lehrkräfte erfassen Noten und Kommentare für die gesamte Klasse in einem Durchgang, statt zwischen Datensätzen zu wechseln.
+* '''Fachbezogen''' — Noten sind an das Unterrichtsfach und dessen Sachgebiete gebunden, sodass Einträge aussagekräftig und leicht filterbar bleiben.
+* '''Vollständige Historie''' — Jeder Eintrag wird mit Art, Ersteller und Zeitstempel gespeichert und lässt sich später filtern, einsehen, bearbeiten oder löschen.
+* '''Zugriffsgesteuert''' — Die Bearbeitung folgt dem bestehenden CRANIX-Berechtigungsmodell (<code>note.manage</code>, <code>crxnote.manage</code>); Lehrkräfte behalten automatisch die Kontrolle über die von ihnen selbst erstellten Einträge.
+
+== Ordnung in der schulischen Kommunikation ==
+
+Über die Benotung hinaus gibt CranixNotes Schulen einen einheitlichen Kanal für die Kommunikation:
+
+* '''Kontextbezogene Notizen''' — Start aus jeder Liste; Empfänger werden aus aktueller Auswahl, Gruppe, Unterricht oder Termin vorbelegt.
+* '''Vielfältige Notizarten''' — Allgemein, To-do, Leistung, Benotung, Verspätung sowie entschuldigte/unentschuldigte Abwesenheit, dazu Zugriffsnotizen für Geräte- und Institutsobjekte.
+* '''Filterung''' — Notizen werden nach Art gruppiert und nach Datum sortiert, sodass die neuesten Informationen immer oben stehen.
+* '''Erinnerungen''' — Ein Erinnerungsdatum kann an eine Notiz angehängt werden, damit nichts vergessen wird.
+* '''Rollenbewusste Bearbeitung''' — Administration verwaltet alles; Lehrkräfte erstellen neue Notizen und bearbeiten ihre eigenen; Schülerinnen und Schüler lesen nur.
+* '''Saubere API''' — Notizen werden über die CRANIX-Schnittstelle <code>/crxNotes</code> mit Anlegen, Aktualisieren, Filtern und Löschen verwaltet.
+
+== Nutzen für Schulen ==
+
+Für Lehrkräfte bedeutet CranixNotes einen einzigen Ort für Kommunikation und Noten: Aus einer Klassenliste wird mit wenigen Tipps ein Notenbuch, aus einem Kommentar an eine Schülerin oder einen Schüler ein dokumentierter Eintrag. Für die Schulverwaltung bedeutet es, dass notenbezogene Informationen demselben Berechtigungs- und Nachvollziehbarkeitsmodell folgen wie der Rest der CRANIX-Plattform — statt in Tabellen auf einzelnen Geräten zu liegen.
+
+== Verfügbarkeit ==
+
+CranixNotes ist ab sofort im CRANIX verfügbar. Es erscheint in der App für Nutzerinnen und Nutzer, deren Rollen die entsprechenden Notizberechtigungen enthalten; eine separate Installation ist nicht erforderlich.
+
+== Über Cranix-Solutions ==
+
+Cranix-Solutions entwickelt CRANIX, eine umfassende offene Plattform für die Verwaltung von Schulen und Bildungseinrichtungen — von Benutzern über Geräte und Räume bis hin zu Software. Der CRANIX erweitert diese Plattform als Progressive Web App auf Smartphones und Tablets.
+
+== Pressekontakt ==
+
+<code>[Name]</code><br />
+<code>[E-Mail]</code><br />
+<code>[Telefon]</code>
+
+[[Category:CranixNotes]]
+[[Category:Press releases]]

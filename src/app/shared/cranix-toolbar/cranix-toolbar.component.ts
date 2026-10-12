@@ -82,7 +82,11 @@ export class CranixToolbarComponent  implements OnDestroy {
   countResponses(){
     this.http.get<Ticket[]>(this.responseUrl, { headers: this.authService.headers }).subscribe({
       next: (val) => {
-        this.newResponses = val.length
+	 if ( val ) {
+            this.newResponses = val.length
+	 } else {
+            this.newResponses = 0
+	 }
       }})
   }
   async logOut() {

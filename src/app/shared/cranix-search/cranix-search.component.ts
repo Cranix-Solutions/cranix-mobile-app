@@ -86,11 +86,11 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     this.isCranixSearchModalOpen = true
   }
   breakModal(modal){
-    if(this.multiple){
+    /*if(this.multiple){
       this.selection = []
     }else{
       this.selection = null
-    }
+    }*/
     this.closeModal(modal);
   }
   closeModal(modal){
@@ -134,6 +134,7 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
     //console.log(this.selection)
   }
   returnValues(modal){
+    //console.log("returnValues called");
     this.propagateOnChange(this.selection);
     this.isCranixSearchModalOpen = false
     if(this.callback){

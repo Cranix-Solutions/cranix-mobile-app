@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Room } from 'src/app/shared/models/data-model';
 import { EductaionService } from 'src/app/services/education.service';
 import { takeWhile } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { FilesCollectComponent } from 'src/app/shared/actions/files-collect/files-collect.component';
 import { FilesUploadComponent } from 'src/app/shared/actions/files-upload/files-upload.component';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { CranixSearchComponent } from 'src/app/shared/cranix-search/cranix-search.component';
 @Component({
   standalone: false,
     selector: 'cranix-room-control',
@@ -22,9 +23,9 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
   proxy: boolean;
   setExceptionsModalIsOpen: boolean = false;
   allowedDomains: string;
-  selectRoomOpen: boolean = false
   gridSize: number = 2;
   gridSizes = [1, 2, 3, 4, 6, 12]
+  @ViewChild('selectRoom') selectRoomRef: CranixSearchComponent;
 
   constructor(
     public eduS: EductaionService,
@@ -33,7 +34,6 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
     private objectS: GenericObjectService,
     public authService: AuthenticationService
   ) {
-    this.eduS.getMyRooms();
   }
   ngOnInit() {
     this.eduS.selectedRoom = null;
@@ -56,7 +56,9 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
       this.eduS.getEduRoomStatus(true);
       this.eduS.statusTimer();
     } else {
-      this.selectRoomOpen = true
+      this.eduS.getMyRooms().subscribe(() => {
+        this.selectRoomRef.openModal();
+      });
     }
   }
 
@@ -72,7 +74,6 @@ export class RoomControlComponent implements OnInit, OnDestroy, AfterViewInit {
       this.eduS.getEduRoomStatus(true);
       this.eduS.statusTimer();
     }
-    this.selectRoomOpen = false
   }
 
   /**

@@ -15,7 +15,7 @@ import { AuthenticationService } from './auth.service';
 import { GenericObjectService } from './generic-object.service';
 import { LanguageService } from './language.service';
 import { interval } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, tap } from 'rxjs/operators';
 
 @Injectable()
 export class EductaionService {
@@ -111,9 +111,8 @@ export class EductaionService {
 
 	getMyRooms() {
 		this.url = `${this.hostname}/education/myRooms`;
-		console.log(this.url);
-		this.http.get<Room[]>(this.url, { headers: this.authService.headers }).subscribe(
-			(val) => { this.myRooms = val }
+		return this.http.get<Room[]>(this.url, { headers: this.authService.headers }).pipe(
+			tap((val) => { this.myRooms = val })
 		)
 	}
 
