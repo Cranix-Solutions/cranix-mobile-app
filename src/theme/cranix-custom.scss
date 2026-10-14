@@ -525,11 +525,24 @@ ion-card-title{
 
 .crx-grid > .crx-list-item {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   border: 1px solid var(--ion-color-light-shade);
   border-radius: 6px;
   padding: 8px;
+}
+
+.crx-grid > .crx-list-item .crx-text {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.crx-grid > .crx-list-item.crx-folder {
+  background: rgba(var(--ion-color-tertiary-rgb), 0.12);
+  border-color: var(--ion-color-tertiary-tint);
+  box-shadow: inset 4px 0 0 0 var(--ion-color-tertiary);
 }
 
 .crx-grid > .crx-list-item .crx-text-end {

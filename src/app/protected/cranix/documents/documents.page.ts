@@ -17,6 +17,7 @@ export class DocumentsPage implements OnInit {
 
     scope: string = 'my'
     viewMode: string = 'list'
+    showAllFiles: boolean = false
     users: any[] = []
     groups: any[] = []
     searchText: string = ""
@@ -87,6 +88,24 @@ export class DocumentsPage implements OnInit {
         this.storage.set('documentsViewMode', mode);
     }
 
+    toggleShowAllFiles() {
+        this.showAllFiles = !this.showAllFiles;
+        this.updateCurrentView();
+    }
+
+    documentFolderPath(document: Document): string {
+        if (!document.folderId) {
+            return this.languageS.trans('Root folder');
+        }
+        let names: string[] = [];
+        let folder = this.folders.find(f => f.id == document.folderId);
+        while (folder) {
+            names.unshift(folder.name);
+            folder = this.folders.find(f => f.id == folder.parentFolderId);
+        }
+        return names.join(' / ');
+    }
+
     loadSelectors() {
         this.objectService.getObjects('user').then(resp => resp.json()).then(val => this.users = val);
         this.objectService.getObjects('group').then(resp => resp.json()).then(val => this.groups = val);
@@ -132,7 +151,7 @@ export class DocumentsPage implements OnInit {
     }
 
     canLock(document: Document) {
-        return this.mayModify(document) && !document.isVersionProtected && !document.locked;
+        return this.mayModify(document) && document.mayWrite && !document.isVersionProtected && !document.locked;
     }
 
     mayUnlock(document: Document) {
@@ -146,6 +165,11 @@ export class DocumentsPage implements OnInit {
             return;
         }
         let owned = this.allDocs.filter(d => this.ownDocument(d));
+        if (this.showAllFiles) {
+            this.currentFolders = [];
+            this.currentDocs = owned;
+            return;
+        }
         let folderIds = this.folders.map(f => f.id);
         if (this.currentFolder) {
             this.currentFolders = this.folders.filter(f => f.parentFolderId == this.currentFolder.id);
@@ -218,33 +242,8 @@ export class DocumentsPage implements OnInit {
         this.docUploadFile = null;
     }
 
-    async downloadDocument(document: Document) {
-        if (this.canLock(document)) {
-            const alert = await this.alertCtrl.create({
-                header: this.languageS.trans('Confirm!'),
-                message: this.languageS.trans('Do you want to lock the document?'),
-                buttons: [
-                    {
-                        text: this.languageS.trans('Cancel'),
-                        role: 'cancel',
-                        handler: () => { this.fetchContent(document); }
-                    },
-                    {
-                        text: this.languageS.trans('OK'),
-                        handler: () => {
-                            this.documentsService.lock(document.id).subscribe(val => {
-                                this.objectService.responseMessage(val);
-                                this.fetchContent(document);
-                                this.readData();
-                            });
-                        }
-                    }
-                ]
-            });
-            alert.present();
-        } else {
-            this.fetchContent(document);
-        }
+    downloadDocument(document: Document) {
+        this.fetchContent(document);
     }
 
     fetchContent(document: Document) {
@@ -397,34 +396,7 @@ export class DocumentsPage implements OnInit {
             this.newVersionComment = "";
             this.loadVersions();
             this.readData();
-            if (val.code == 'OK') {
-                this.askUnlockAfterUpload();
-            }
         });
-    }
-
-    async askUnlockAfterUpload() {
-        if (!this.mayUnlock(this.selectedDocument)) {
-            return;
-        }
-        const alert = await this.alertCtrl.create({
-            header: this.languageS.trans('Confirm!'),
-            message: this.languageS.trans('Do you want to unlock the document?'),
-            buttons: [
-                { text: this.languageS.trans('Cancel'), role: 'cancel' },
-                {
-                    text: this.languageS.trans('OK'),
-                    handler: () => {
-                        this.documentsService.unlock(this.selectedDocument.id).subscribe(val => {
-                            this.objectService.responseMessage(val);
-                            this.readData();
-                            this.loadVersions();
-                        });
-                    }
-                }
-            ]
-        });
-        alert.present();
     }
 
     downloadVersion(version: DocumentVersion) {

@@ -12,23 +12,19 @@
   </ion-segment>
 </ion-toolbar>
 <ion-toolbar class="page-toolbar">
-  <ion-searchbar placeholder="{{'Search documents' | translate}}" [(ngModel)]="searchText"
-    (ionChange)="readData()" (ionClear)="readData()"></ion-searchbar>
-</ion-toolbar>
-<ion-toolbar class="page-toolbar">
   <ion-buttons slot="start">
-    @if(scope=='my' && currentFolder){
+    @if(scope=='my' && !showAllFiles && currentFolder){
     <ion-button fill="clear" (click)="enterParentFolder()" matTooltip="{{'Parent folder' | translate}}">
       <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
     </ion-button>
     }
-    @if(scope=='my' && (currentFolder || folderPath.length > 0)){
+    @if(scope=='my' && !showAllFiles && (currentFolder || folderPath.length > 0)){
     <ion-button fill="clear" (click)="goToRoot()" matTooltip="{{'Root folder' | translate}}">
       <ion-icon slot="icon-only" name="home"></ion-icon>
     </ion-button>
     }
   </ion-buttons>
-  @if(scope=='my'){
+  @if(scope=='my' && !showAllFiles){
   <ion-breadcrumbs>
     @for(folder of folderPath; track folder.id){
     <ion-breadcrumb (click)="goToRoot()">{{folder.name}}</ion-breadcrumb>
@@ -60,6 +56,18 @@
     </ion-button>
   </ion-buttons>
 </ion-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-searchbar placeholder="{{'Search documents' | translate}}" [(ngModel)]="searchText"
+    (ionChange)="readData()" (ionClear)="readData()"></ion-searchbar>
+  @if(scope=='my'){
+  <ion-buttons slot="end">
+    <ion-button fill="clear" (click)="toggleShowAllFiles()"
+      matTooltip="{{ (showAllFiles ? 'Show folders' : 'Show all files') | translate }}">
+      <ion-icon slot="icon-only" [color]="showAllFiles ? 'primary' : 'medium'" name="documents"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  }
+</ion-toolbar>
 <ion-content>
   @if(currentDocs.length == 0 && currentFolders.length == 0){
   <ion-text color="medium">
@@ -70,7 +78,7 @@
   }
   <div class="crx-list" [class.crx-grid]="viewMode=='grid'">
     @for(folder of currentFolders; track folder.id){
-    <div class="crx-list-item" (click)="enterFolder(folder)">
+    <div class="crx-list-item crx-folder" (click)="enterFolder(folder)">
       <div class="crx-text">
         <ion-icon name="folder" color="tertiary"></ion-icon> <b>{{folder.name}}</b><br>
         @if(folder.description && folder.description.length > 0){
@@ -90,6 +98,9 @@
     <div class="crx-list-item">
       <div class="crx-text" (click)="downloadDocument(document)">
         <ion-icon [name]="mimeIcon(document)" color="primary"></ion-icon> <b>{{document.name}}</b><br>
+        @if(showAllFiles && scope=='my'){
+        <ion-icon name="folder" color="tertiary"></ion-icon> {{documentFolderPath(document)}}<br>
+        }
         @if(scope == 'shared' && document.creator) {
            {{ 'Creator' | translate }}: {{ document.creator.fullName }}<br>
         }
@@ -100,12 +111,12 @@
         <br>
       </div>
       <div class="crx-text-end">
-        @if(authService.isAllowed('documents.search')){
-        <ion-button fill="clear" (click)="downloadDocument(document)" matTooltip="{{'Download' | translate}}">
-          <ion-icon slot="icon-only" name="download" color="primary"></ion-icon>
+        @if(authService.isAllowed('documents.modify')){
+        @if(canLock(document)){
+        <ion-button fill="clear" (click)="lockDocument(document)" matTooltip="{{'Lock' | translate}}">
+          <ion-icon slot="icon-only" name="lock-closed" color="warning"></ion-icon>
         </ion-button>
         }
-        @if(authService.isAllowed('documents.modify')){
         @if(mayUnlock(document)){
         <ion-button fill="clear" (click)="unlockDocument(document)" matTooltip="{{'Unlock' | translate}}">
           <ion-icon slot="icon-only" name="lock-open" color="warning"></ion-icon>

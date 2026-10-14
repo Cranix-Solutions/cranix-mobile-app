@@ -786,6 +786,7 @@ export class Document {
 	isVersionProtected: boolean = false
 	locked: boolean = false
 	lockedBy: User = null
+	mayWrite: boolean = false
 	folderId: number = 0
 	userId: number = 0
 	groupId: number = 0
