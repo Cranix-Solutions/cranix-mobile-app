@@ -119,6 +119,26 @@ export class DocumentsPage implements OnInit {
         return !!version.creator && version.creator.id == this.authService.session.userId;
     }
 
+    mayModify(document: Document) {
+        return this.authService.isAllowed('documents.modify');
+    }
+
+    isLockedByMe(document: Document) {
+        return !!document.lockedBy && document.lockedBy.id == this.authService.session.userId;
+    }
+
+    isLockedByOther(document: Document) {
+        return !!document.lockedBy && !this.isLockedByMe(document);
+    }
+
+    canLock(document: Document) {
+        return this.mayModify(document) && !document.isVersionProtected && !document.locked;
+    }
+
+    mayUnlock(document: Document) {
+        return document.locked && (this.ownDocument(document) || this.isLockedByMe(document));
+    }
+
     updateCurrentView() {
         if (this.scope == 'shared') {
             this.currentFolders = [];
@@ -198,9 +218,52 @@ export class DocumentsPage implements OnInit {
         this.docUploadFile = null;
     }
 
-    downloadDocument(document: Document) {
+    async downloadDocument(document: Document) {
+        if (this.canLock(document)) {
+            const alert = await this.alertCtrl.create({
+                header: this.languageS.trans('Confirm!'),
+                message: this.languageS.trans('Do you want to lock the document?'),
+                buttons: [
+                    {
+                        text: this.languageS.trans('Cancel'),
+                        role: 'cancel',
+                        handler: () => { this.fetchContent(document); }
+                    },
+                    {
+                        text: this.languageS.trans('OK'),
+                        handler: () => {
+                            this.documentsService.lock(document.id).subscribe(val => {
+                                this.objectService.responseMessage(val);
+                                this.fetchContent(document);
+                                this.readData();
+                            });
+                        }
+                    }
+                ]
+            });
+            alert.present();
+        } else {
+            this.fetchContent(document);
+        }
+    }
+
+    fetchContent(document: Document) {
         this.documentsService.getContent(document.id).subscribe(resp => {
             this.documentsService.download(resp, document.fileName);
+        });
+    }
+
+    lockDocument(document: Document) {
+        this.documentsService.lock(document.id).subscribe(val => {
+            this.objectService.responseMessage(val);
+            this.readData();
+        });
+    }
+
+    unlockDocument(document: Document) {
+        this.documentsService.unlock(document.id).subscribe(val => {
+            this.objectService.responseMessage(val);
+            this.readData();
         });
     }
 
@@ -334,7 +397,34 @@ export class DocumentsPage implements OnInit {
             this.newVersionComment = "";
             this.loadVersions();
             this.readData();
+            if (val.code == 'OK') {
+                this.askUnlockAfterUpload();
+            }
         });
+    }
+
+    async askUnlockAfterUpload() {
+        if (!this.mayUnlock(this.selectedDocument)) {
+            return;
+        }
+        const alert = await this.alertCtrl.create({
+            header: this.languageS.trans('Confirm!'),
+            message: this.languageS.trans('Do you want to unlock the document?'),
+            buttons: [
+                { text: this.languageS.trans('Cancel'), role: 'cancel' },
+                {
+                    text: this.languageS.trans('OK'),
+                    handler: () => {
+                        this.documentsService.unlock(this.selectedDocument.id).subscribe(val => {
+                            this.objectService.responseMessage(val);
+                            this.readData();
+                            this.loadVersions();
+                        });
+                    }
+                }
+            ]
+        });
+        alert.present();
     }
 
     downloadVersion(version: DocumentVersion) {

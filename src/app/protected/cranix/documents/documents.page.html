@@ -96,6 +96,7 @@
         {{document.fileName}} &middot; {{formatSize(document.size)}}
         &middot; {{'Version' | translate}} {{document.currentVersion}}
         @if(document.description && document.description.length > 0){ &middot; {{document.description}} }
+        @if(document.locked && document.lockedBy){ <br>{{'Locked by' | translate}}: {{document.lockedBy.fullName}} }
         <br>
       </div>
       <div class="crx-text-end">
@@ -105,6 +106,11 @@
         </ion-button>
         }
         @if(authService.isAllowed('documents.modify')){
+        @if(mayUnlock(document)){
+        <ion-button fill="clear" (click)="unlockDocument(document)" matTooltip="{{'Unlock' | translate}}">
+          <ion-icon slot="icon-only" name="lock-open" color="warning"></ion-icon>
+        </ion-button>
+        }
         <ion-button fill="clear" (click)="openEdit(document)" matTooltip="{{'Edit document' | translate}}">
           <ion-icon slot="icon-only" name="create" color="success"></ion-icon>
         </ion-button>
@@ -298,6 +304,11 @@
         </div>
         }
       </ion-list>
+      @if(selectedDocument.locked && selectedDocument.lockedBy){
+      <ion-text color="warning">
+        <p class="ion-padding-start ion-padding-end">{{'Locked by' | translate}}: {{selectedDocument.lockedBy.fullName}}</p>
+      </ion-text>
+      }
       @if(selectedDocument.isVersionProtected){
       <ion-text color="medium">
         <p class="ion-padding-start ion-padding-end">{{'Only the creator can set the current version.' | translate}}</p>

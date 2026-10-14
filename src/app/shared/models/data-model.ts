@@ -784,6 +784,8 @@ export class Document {
 	currentVersion: number = 0
 	comment: string = ""
 	isVersionProtected: boolean = false
+	locked: boolean = false
+	lockedBy: User = null
 	folderId: number = 0
 	userId: number = 0
 	groupId: number = 0

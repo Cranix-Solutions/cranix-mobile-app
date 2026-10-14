@@ -124,6 +124,14 @@ export class DocumentsService {
         return this.http.delete<ServerResponse>(this.url + `/${id}/folder`, { headers: this.authService.headers });
     }
 
+    lock(id: number) {
+        return this.http.put<ServerResponse>(this.url + `/${id}/lock`, null, { headers: this.authService.headers });
+    }
+
+    unlock(id: number) {
+        return this.http.delete<ServerResponse>(this.url + `/${id}/lock`, { headers: this.authService.headers });
+    }
+
     download(resp: HttpResponse<Blob>, fallbackName: string) {
         const contentType = resp.headers.get('Content-Type') || 'application/octet-stream';
         const blob: Blob = new Blob([resp.body!], { type: contentType });
