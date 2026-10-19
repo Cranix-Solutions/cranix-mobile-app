@@ -62,6 +62,16 @@ export class AuthenticationService {
         icon: 'pricetags'
       },
       {
+        title: 'Help Desk',
+        url: '/pages/cranix/helpdesk',
+        icon: 'help-buoy'
+      },
+      {
+        title: 'Tickets',
+        url: '/pages/cranix/tickets',
+        icon: 'ticket'
+      },
+      {
         title: 'Calendar',
         url: '/pages/cranix/calendar',
         icon: 'calendar'
@@ -435,6 +445,13 @@ export class AuthenticationService {
      * @returns True or false
      */
     public isRouteAllowed(route: string) {
+        if (route.startsWith('/pages/cranix/tickets')) {
+            return this.isOneOfAllowed(['crxticket.worker', 'crxticket.manager'])
+        }
+        if (route.startsWith('/pages/cranix/helpdesk')) {
+            return this.isAllowed('crxticket.use') &&
+                !this.isOneOfAllowed(['crxticket.worker', 'crxticket.manager'])
+        }
         switch (route) {
             case '/logout': { return true }
             case "/pages/cephalix/customers": { return this.isAllowed('customer.manage') }

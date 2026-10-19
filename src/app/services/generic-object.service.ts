@@ -128,18 +128,25 @@ export class GenericObjectService {
    * @param objectType
    */
   async getAllObject(objectType: string) {
-    if( !this.authService.isOneOfAllowed([objectType.replace('/','.'), objectType, objectType+".search", objectType+".manage"])) {
+    let allowed = this.authService.isOneOfAllowed([objectType.replace('/','.'), objectType, objectType+".search", objectType+".manage"]);
+    if (!allowed && objectType == 'crxticket') {
+      allowed = this.authService.isOneOfAllowed(['crxticket.use', 'crxticket.worker', 'crxticket.manager']);
+    }
+    if (!allowed && (objectType == 'device' || objectType == 'room') && this.authService.isAllowed('crxticket.use')) {
+      allowed = true;
+    }
+    if( !allowed) {
       console.log('getAllObject not allowed to load:', objectType);
       return
     }
-    if (this.objects.indexOf(objectType) == -1) {
+    if (this.objects.indexOf(objectType) == -1 && objectType != 'crxticket') {
       console.log("Unknown object type:", objectType)
       return;
     }
     try {
       let respons = await this.getObjects(objectType)
       let val = await respons.json()
-      if (objectType == 'ticket') {
+      if (objectType == 'ticket' || objectType == 'crxticket') {
         val.sort(this.sortByModified)
       }
       this.allObjects[objectType] = val;
@@ -285,7 +292,8 @@ export class GenericObjectService {
         name = object.uid + " ( " + object.givenName + " " + object.surName + " )";
         break;
       }
-      case 'ticket': {
+      case 'ticket':
+      case 'crxticket': {
         name = object.title;
         break;
       }
@@ -295,7 +303,7 @@ export class GenericObjectService {
     }
     const alert = await this.alertCtrl.create({
       header: this.languageS.trans('Confirm!'),
-      subHeader: objectType == 'ticket'? this.languageS.trans('Do you realy want to close?'): this.languageS.trans('Do you realy want to delete?'),
+      subHeader: (objectType == 'ticket' || objectType == 'crxticket') ? this.languageS.trans('Do you realy want to close?'): this.languageS.trans('Do you realy want to delete?'),
       message: name,
       buttons: [
         {
@@ -603,6 +611,7 @@ export class GenericObjectService {
       case 'education/user':
       case 'user': return ['uid', 'givenName', 'surName', 'role']
       case 'ticket': return ['title', 'email', 'firstname', 'lastname']
+      case 'crxticket': return ['title']
       default: return ['name', 'description']
     }
   }

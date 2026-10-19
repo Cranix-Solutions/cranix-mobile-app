@@ -37,7 +37,7 @@
       <ion-icon name="refresh-outline"></ion-icon>
     </ion-fab-button>
     }
-    @if(objectType == 'ticket') {
+    @if(objectType == 'ticket' || objectType == 'crxticket') {
     <ion-fab-button fill="solid" (click)="context.componentParent.isTicketStateOpen = true">
       <ion-icon color="secondary" name="stats-chart"></ion-icon>
     </ion-fab-button>
@@ -136,6 +136,10 @@
           <p>{{ object.created | date:'yy-MM-dd HH:mm' }}</p>
           @if(object.cephalixInstituteId){<p>{{ object.cephalixInstituteId | idToName:'institute' }}</p>}
           }
+          @else if(objectType == 'crxticket'){
+          <p>{{ object.created | date:'yy-MM-dd HH:mm' }}</p>
+          @if(object.assignee){<p>{{ object.assignee.fullName }}</p>}
+          }
           @if(objectType == 'challenge' && object.creatorId == authService.session.userId) {
           <ion-item>
             @if(object.released){
@@ -210,9 +214,9 @@
       <ion-item-option color="tertiary" (click)="openActions($event,object)">
         <ion-icon slot="icon-only" name="ellipsis-vertical-sharp"></ion-icon>
       </ion-item-option>
-      @if(authService.session.userId == object.creatorId || authService.isAllowed(objectType + '.delete')){
+      @if(authService.session.userId == object.creatorId || authService.isAllowed(objectType + '.delete') || (objectType == 'crxticket' && authService.isOneOfAllowed(['crxticket.worker','crxticket.manager']))){
       <ion-item-option color="danger" (click)="redirectToDelete(object)">
-        @if(objectType == 'ticket'){
+        @if(objectType == 'ticket' || objectType == 'crxticket'){
           <ion-icon slot="icon-only" name="checkmark-done" color="danger"></ion-icon>
           }@else{
           <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>

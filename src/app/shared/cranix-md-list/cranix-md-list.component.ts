@@ -90,6 +90,12 @@ export class CranixMdListComponent implements OnInit, OnChanges {
         this.left3 = "firstname"
         break
       }
+      case 'crxticket': {
+        this.left1 = "title"
+        this.left2 = ""
+        this.left3 = ""
+        break
+      }
     }
     if (!this.rowData) {
       while (!this.objectService.allObjects[this.objectType]) {
@@ -232,7 +238,7 @@ export class CranixMdListComponent implements OnInit, OnChanges {
     }
 
     getStyle(object: any, count: number){
-      if(this.objectType == "ticket"){
+      if(this.objectType == "ticket" || this.objectType == "crxticket"){
         switch(object.ticketStatus){
           case "N": return { 'background-color': 'red' }
           case "R": return { 'background-color': 'orange' }

@@ -1,0 +1,67 @@
+<form #crxTicketForm="ngForm">
+    <ion-header translucent>
+        <ion-toolbar color="primary">
+            <ion-title>{{'Create a ticket' | translate}}</ion-title>
+            <ion-buttons slot="end">
+                @if(ticket.attachmentName){
+                {{'Attachment'|translate}}:
+                {{ticket.attachmentName}}
+                }
+                <ion-button id="add-attachment">
+                    <ion-icon slot="icon-only" name="attach"></ion-icon>
+                </ion-button>
+                <ion-button class="ion-no-margin" (click)="onSubmit()"
+                    [disabled]="disabled || !crxTicketForm.valid">
+                    <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="modalController.dismiss('closed')"
+                    [disabled]="disabled">
+                    <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content fullscreen>
+        <ion-list>
+            <ion-item>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Title' | translate}}*</ion-label>
+                <ion-input [(ngModel)]="ticket.title" name="title" required></ion-input>
+            </ion-item>
+            <ion-item lines="none">
+                <ion-label [position]="authService.settings.labelPlacement">{{'Devices' | translate}}</ion-label>
+                <cranix-search objectType="device" [multiple]="true" [(ngModel)]="ticket.devices"
+                    name="ticketDevices" itemTextField="name"></cranix-search>
+            </ion-item>
+            <ion-item lines="none">
+                <ion-label [position]="authService.settings.labelPlacement">{{'Rooms' | translate}}</ion-label>
+                <cranix-search objectType="room" [multiple]="true" [(ngModel)]="ticket.rooms"
+                    name="ticketRooms" itemTextField="name"></cranix-search>
+            </ion-item>
+        </ion-list>
+        <quill-editor style="margin-left: 20px;" [(ngModel)]="ticket.text" name="text">{{'Describe your issue ...' |
+            translate}}</quill-editor>
+    </ion-content>
+</form>
+
+<ion-modal #modal trigger="add-attachment" (willDismiss)="addAttachment()">
+    <ng-template>
+        <ion-card>
+            <ion-card-header>
+                <ion-toolbar color="primary">
+                    <ion-title>{{'Add one Attachment'|translate}}</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button (click)="modalController.dismiss()">
+                            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-card-header>
+            <ion-card-content class="ion-padding">
+                <ion-item>
+                    <ion-input type="file" (change)="onFilesAdded($event, modal)">
+                    </ion-input>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+    </ng-template>
+</ion-modal>

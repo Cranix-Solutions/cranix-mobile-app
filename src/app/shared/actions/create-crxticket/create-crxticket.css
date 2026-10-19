@@ -1,0 +1,5 @@
+ion-label {
+    min-width: 230px !important;
+    overflow: hidden;
+    white-space: normal;
+}

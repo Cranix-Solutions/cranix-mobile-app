@@ -9,6 +9,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ObjectsEditComponent } from 'src/app/shared/objects-edit/objects-edit.component';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
+import { CrxTicketService } from 'src/app/services/crxticket.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Settings } from 'src/app/shared/models/server-models';
 import { Ticket } from 'src/app/shared/models/cephalix-data-model';
@@ -28,6 +29,7 @@ export class CranixToolbarComponent  implements OnDestroy {
   instituteName: string = "";
   newTickets: number = 0;
   newResponses: number = 0;
+  crxTickets: number = 0;
   alive: boolean = true;
   ticketUrl: string = "";
   responseUrl: string = "";
@@ -40,6 +42,7 @@ export class CranixToolbarComponent  implements OnDestroy {
     public storage: Storage,
     public translateService: LanguageService,
     public objectService: GenericObjectService,
+    public crxTicketService: CrxTicketService,
     public modalConroller: ModalController,
     public route: Router,
     public utilsService: UtilsService
@@ -70,6 +73,30 @@ export class CranixToolbarComponent  implements OnDestroy {
         this.countResponses();
       }))
     }
+    if(this.authService.isOneOfAllowed(['crxticket.use','crxticket.worker','crxticket.manager'])){
+      this.countCrxTickets();
+      interval(30000).pipe(takeWhile(() => this.alive)).subscribe((func => {
+        this.countCrxTickets();
+      }))
+    }
+  }
+
+  countCrxTickets(){
+    this.crxTicketService.getStatus().subscribe({
+      next: (val) => {
+        this.crxTickets = (val.N || 0) + (val.R || 0) + (val.W || 0);
+      },
+      error: (err) => { this.crxTickets = 0; }
+    })
+  }
+
+  isHelpDeskUser(){
+    return this.authService.isAllowed('crxticket.use') &&
+      !this.authService.isOneOfAllowed(['crxticket.worker','crxticket.manager']);
+  }
+
+  isTicketWorker(){
+    return this.authService.isOneOfAllowed(['crxticket.worker','crxticket.manager']);
   }
 
   countTickets(){

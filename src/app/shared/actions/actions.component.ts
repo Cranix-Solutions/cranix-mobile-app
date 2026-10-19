@@ -96,6 +96,11 @@ export class ActionsComponent implements OnInit {
       this.menu = this.commonMenu.concat(instituteMenu).concat(this.commonLastMenu);
     } else if (this.objectType == "ticket") {
       this.menu = this.commonMenu.concat(ticketMenu).concat(this.commonLastMenu);
+    } else if (this.objectType == "crxticket") {
+      this.menu = this.commonMenu;
+      if (this.authS.isAllowed('crxticket.manager')) {
+        this.menu = this.menu.concat(this.commonLastMenu);
+      }
     } else if (this.objectType == "hwconf") {
       this.menu = this.commonMenu.concat(hwconfMenu).concat(this.commonLastMenu);
     } else if (this.objectType == "printer") {

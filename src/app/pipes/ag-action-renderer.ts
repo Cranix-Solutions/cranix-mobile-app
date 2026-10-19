@@ -11,7 +11,7 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
              <ion-icon name="build-sharp"></ion-icon>
         </button>
         <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
-            @if(params.context.componentParent.objectType == 'ticket'){
+            @if(params.context.componentParent.objectType == 'ticket' || params.context.componentParent.objectType == 'crxticket'){
             <ion-icon color="danger" name="checkmark-done" ></ion-icon>
             }@else{
             <ion-icon color="danger" name="trash-outline" ></ion-icon>

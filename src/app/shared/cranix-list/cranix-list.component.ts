@@ -101,9 +101,7 @@ export class CranixListComponent implements OnInit, OnChanges {
     this.addToolTip = this.languageService.trans("Create a new " + this.objectType);
     let val = await this.storage.get(this.objectType + "_hidden_collums");
     let myArray = JSON.parse(val);
-    if (myArray) {
-      this.hiddenColumns = myArray;
-    }
+    this.hiddenColumns = myArray ? myArray : [...hiddenColumns];
     if (typeof this.rowData == "undefined") {
       while (!this.objectService.allObjects[this.objectType]) {
         await new Promise(f => setTimeout(f, 1000));
@@ -118,6 +116,10 @@ export class CranixListComponent implements OnInit, OnChanges {
       if (!this.authService.isAllowed('customer.manage')) {
         this.hiddenColumns.push('cephalixCustomerId')
       }
+    }
+    if (this.objectType == 'crxticket') {
+      this.hiddenColumns = this.hiddenColumns.filter(c => c != 'creatorId' && c != 'assigneeId')
+      this.hiddenColumns.push('creator', 'assignee', 'rooms', 'devices', 'printers', 'text', 'attachment', 'attachmentName')
     }
     this.objectKeys = getObjectKeys(this.objectType);
     this.createColumnDefs();
@@ -279,7 +281,25 @@ export class CranixListComponent implements OnInit, OnChanges {
           break
         }
         case 'creatorId': {
-          col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('user', params.data.creatorId); break;
+          col['valueFormatter'] = params => {
+            if (params.data.creator) {
+              return ((params.data.creator.givenName || '') + ' ' + (params.data.creator.surName || '')).trim() || params.data.creator.uid;
+            }
+            return params.context['componentParent'].objectService.idToName('user', params.data.creatorId);
+          };
+          break;
+        }
+        case 'assigneeId': {
+          col['valueFormatter'] = params => {
+            if (params.data.assignee) {
+              return ((params.data.assignee.givenName || '') + ' ' + (params.data.assignee.surName || '')).trim() || params.data.assignee.uid;
+            }
+            if (!params.data.assigneeId) {
+              return "";
+            }
+            return params.context['componentParent'].objectService.idToName('user', params.data.assigneeId);
+          };
+          break;
         }
         case 'groupId': {
           col['valueFormatter'] = params => params.context['componentParent'].objectService.idToName('group', params.data.groupId); break;

@@ -671,12 +671,16 @@ export class CrxTicketArticle {
 	seen: boolean = false
 	workTime: number = 0
 	text: string = ""
+	attachment: string = ""
+	attachmentName: string = ""
 }
 
 export class CrxTicket {
 	id: number = 0
 	creator: User = new User()
+	creatorId: number = 0
 	assignee: User = new User()
+	assigneeId: number = 0
 	created: Date | string = new Date()
 	modified: Date | string = new Date()
 	title: string = ""
@@ -685,6 +689,8 @@ export class CrxTicket {
 	devices: Device[] = []
 	printers: Printer[] = []
 	text: string = ""
+	attachment: string = ""
+	attachmentName: string = ""
 }
 
 export class DirEntry {

@@ -38,12 +38,12 @@
       <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
     </ion-button>
     }
-    @if(objectType == 'ticket') {
+    @if(objectType == 'ticket' || objectType == 'crxticket') {
     <ion-button fill="solid" (click)="context.componentParent.isTicketStateOpen = true"
       matTooltip="{{'Select status of tickets to shown' | translate }}">
       <ion-icon color="secondary" slot="icon-only" name="stats-chart"></ion-icon>
     </ion-button>
-    <ion-button fill="solid" (click)="context.componentParent.objectService.getAllObject('ticket')"
+    <ion-button fill="solid" (click)="context.componentParent.objectService.getAllObject(objectType)"
       matTooltip="{{'Reload tickets' | translate }}">
       <ion-icon color="secondary" slot="icon-only" name="refresh"></ion-icon>
     </ion-button>

@@ -24,6 +24,24 @@
         }
       </ion-button>
       }
+      @if(isTicketWorker()){
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cranix/tickets'])">
+        @if(crxTickets == 0){
+        <ion-icon color="success" name="ticket"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="ticket"></ion-icon>
+        }
+      </ion-button>
+      }
+      @if(isHelpDeskUser()){
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cranix/helpdesk'])">
+        @if(crxTickets == 0){
+        <ion-icon color="success" name="help-buoy"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="help-buoy"></ion-icon>
+        }
+      </ion-button>
+      }
       <ion-button fill="clear" target="_blank" href="https://wiki.cephalix.eu">
         <ion-icon color="success" name="book"></ion-icon>
       </ion-button>
@@ -56,6 +74,28 @@
         }@else{
         <ion-icon color="danger" name="help-buoy"></ion-icon>
         <ion-badge color="danger">{{newResponses}}</ion-badge>
+        }
+      </ion-button>
+      }
+      @if(isTicketWorker()){
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cranix/tickets'])"
+        matTooltip="{{ 'Ticket system' | translate }}">
+        @if(crxTickets == 0){
+        <ion-icon color="success" name="ticket"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="ticket"></ion-icon>
+        <ion-badge color="danger">{{crxTickets}}</ion-badge>
+        }
+      </ion-button>
+      }
+      @if(isHelpDeskUser()){
+      <ion-button fill="clear" (click)="route.navigate(['/pages/cranix/helpdesk'])"
+        matTooltip="{{ 'Help Desk' | translate }}">
+        @if(crxTickets == 0){
+        <ion-icon color="success" name="help-buoy"></ion-icon>
+        }@else{
+        <ion-icon color="danger" name="help-buoy"></ion-icon>
+        <ion-badge color="danger">{{crxTickets}}</ion-badge>
         }
       </ion-button>
       }

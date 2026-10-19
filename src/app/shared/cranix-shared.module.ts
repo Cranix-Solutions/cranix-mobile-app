@@ -17,6 +17,7 @@ import { CranixSearchComponent } from './cranix-search/cranix-search.component';
 import { CranixSearchListComponent } from './cranix-search/cranix-search-list.component';
 import { CranixToolbarComponent } from './cranix-toolbar/cranix-toolbar.component';
 import { CreateSupport } from 'src/app/shared/actions/create-support/create-support-page';
+import { CreateCrxTicket } from 'src/app/shared/actions/create-crxticket/create-crxticket-page';
 import { CustomerActionRenderer } from 'src/app/pipes/ag-customer-action-renderer';
 import { DateCellRenderer } from 'src/app/pipes/ag-date-renderer';
 import { DateTimeCellRenderer } from 'src/app/pipes/ag-datetime-renderer';
@@ -81,6 +82,7 @@ import { QuillModule } from 'ngx-quill'
     CranixSearchListComponent,
     CranixToolbarComponent,
     CreateSupport,
+    CreateCrxTicket,
     CustomerActionRenderer,
     DateCellRenderer,
     DateTimeCellRenderer,
