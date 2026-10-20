@@ -1,4 +1,6 @@
 {
+    "assignee":"zugewiesen an",
+    "assigneeId":"zugewiesen an",
     "opened":"offen",
     "Next Validity":"Nächste Gültigkeit",
     "valid":"gültig",
@@ -740,7 +742,7 @@
     "okMessageDuration": "Dauer der Erfolgsmeldungen in Sekunden",
     "open": "öffnen",
     "other": "Andere Institution",
-    "creatorId": "Besitzer",
+    "creatorId": "Ersteller",
     "creatorName": "Besitzer",
     "password": "Passwort",
     "phone": "Telefon",
