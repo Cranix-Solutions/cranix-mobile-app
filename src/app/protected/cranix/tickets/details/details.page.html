@@ -1,6 +1,6 @@
 <cranix-toolbar title="{{'Ticket' | translate}} #{{ticketId}}"></cranix-toolbar>
 @if(ticket){
-<ion-card>
+<ion-card class="crx-ticket-card">
   <ion-toolbar class="page-toolbar">
     <ion-title>
       #{{ticket.id}} {{ticket.title}}<br>
@@ -84,9 +84,9 @@
 </ion-card>
 <ion-content>
   @for( article of articles; track article.id){
-  <ion-card>
+  <ion-card class="crx-ticket-card">
     <ion-card-header>
-      <ion-toolbar>
+      <ion-toolbar style="height: 40px;">
         <ion-card-subtitle [color]="isOwnArticle(article) ? 'success' : 'warning'">
           {{article.created | date:'yyyy-MM-dd HH:mm'}}
           @if(isOwnArticle(article)){
@@ -113,6 +113,7 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-card-header>
+    <div class="crx-ticket-tear"></div>
     <ion-card-content style="height: 50px; padding: 5px; padding-top: 0px;" [id]="'article' + article.id">
       @if(isHTML(article.text)){
       <div [innerHTML]="article.text"></div>
@@ -123,8 +124,8 @@
   </ion-card>
   }
   @if(ticket.ticketStatus != "D"){
-  <ion-card>
-    <ion-card-header>
+  <ion-card class="crx-ticket-card">
+    <ion-card-header style="padding-left: 0px; padding-right: 0px;">
       <ion-toolbar color="primary">
         <ion-title>{{'Answer' | translate}}</ion-title>
         <ion-buttons slot="end">

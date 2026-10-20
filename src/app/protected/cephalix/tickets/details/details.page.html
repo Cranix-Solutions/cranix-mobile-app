@@ -1,6 +1,6 @@
 <cranix-toolbar title="{{'Manage tickets' | translate}}"></cranix-toolbar>
 @if(ticket){
-<ion-card>
+<ion-card class="crx-ticket-card">
   <ion-toolbar class="page-toolbar-full">
     @if(authService.isMD()){
     <ion-title>
@@ -105,9 +105,9 @@
   </ion-fab>
   }
   @for(article of articles; track article.id){
-  <ion-card>
+  <ion-card class="crx-ticket-card">
     <ion-card-header>
-      <ion-toolbar>
+      <ion-toolbar style="height: 40px;">
         <ion-card-subtitle [color]="article.articleType == 'O' ? 'warning' : article.seen ? 'success' : 'danger'">
           {{article.created | date:'yyyy-MM-dd HH:mm'}}
           @if(article.articleType == 'O'){
@@ -145,6 +145,7 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-card-header>
+    <div class="crx-ticket-tear"></div>
     <ion-card-content style="height: 50px; padding: 5px; padding-top: 0px;" [id]="'article' + article.id">
       @if(isHTML(article.text)){
       <div [innerHTML]="article.text"></div>
@@ -155,8 +156,8 @@
   </ion-card>
   }
   @if(ticket.ticketStatus != "D"){
-  <ion-card>
-    <ion-card-header>
+  <ion-card class="crx-ticket-card">
+    <ion-card-header style="padding-left: 0px; padding-right: 0px;">
       <ion-toolbar color="primary">
         <ion-title>{{'Answer' | translate}}</ion-title>
         <ion-buttons slot="end">
@@ -175,6 +176,7 @@
       </ion-toolbar>
     </ion-card-header>
     <ion-card-content>
+         <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Send to'|translate}}:" [(ngModel)]="recipient" type="email" [multiple]="true"></ion-input>
       <quill-editor [(ngModel)]="newText" style="margin: 10px;"></quill-editor>
     </ion-card-content>
   </ion-card>

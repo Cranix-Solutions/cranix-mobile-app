@@ -29,6 +29,7 @@ export class DetailsPage implements OnInit {
   isOpenMergeTicketModal: boolean = false;
   tickets: Ticket[];
   newText: string = "";
+  recipient: string = "";
   answerFiles = [];
   answerAttachment: string = "";
   answerAttachmentName: string = "";
@@ -58,6 +59,7 @@ export class DetailsPage implements OnInit {
         console.log("getTicketById was called", this.ticketId)
         this.workers = this.objectService.allObjects['user'].filter(o => o.role == 'sysadmins').sort((a, b) => a.fullName > b.fullName ? 0 : 1);
         this.ticket = val;
+	this.recipient = this.ticket.email;
         this.ticketCreator = this.objectService.getObjectById('user', this.ticket.creatorId);
         this.institute = this.objectService.getObjectById('institute', this.ticket.cephalixInstituteId);
         this.customer = this.objectService.getObjectById('customer', this.ticket.cephalixCustomerId);
@@ -113,7 +115,7 @@ export class DetailsPage implements OnInit {
 
   sendArticle() {
     let article = new Article();
-    article.recipient = this.ticket.email;
+    article.recipient = this.recipient;
     article.title = this.ticket.firstname + " " + this.ticket.lastname;
     article.articleType = 'O';
     article.text = this.newText;
