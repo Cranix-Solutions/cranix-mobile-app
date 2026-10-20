@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { SupportService } from 'src/app/services/support.service';
@@ -18,13 +18,17 @@ export class CephalixSupportPage implements OnInit {
   articleOpen = {};
   articles: Article[];
   context;
-  selectedArticle: Article;
   selectedTicket: Ticket;
   tickets: Ticket[];
   allTickets: Ticket[];
   action: string = 'tickets'
   stateOfInterest: string = "NWR"
-  newText: string;
+  newText: string = "";
+  answerFiles = [];
+  answerAttachment: string = "";
+  answerAttachmentName: string = "";
+
+  @ViewChild(IonContent) content: IonContent;
 
   constructor(
     public authService: AuthenticationService,
@@ -70,33 +74,66 @@ export class CephalixSupportPage implements OnInit {
 
   selectTicket(ticket: Ticket) {
     this.selectedTicket = ticket;
-    this.supportSrvice.getArticles(ticket.id).subscribe(
+    this.prefillAnswer();
+    this.refreshArticles();
+    this.action = 'articles';
+  }
+
+  refreshArticles() {
+    this.supportSrvice.getArticles(this.selectedTicket.id).subscribe(
       (val) => {
         this.articles = val
-        this.action = 'articles'
+        this.scrollToEnd();
       }
     )
   }
 
-  answerArticle(article: Article) {
-    this.selectedArticle = article
-    this.newText = "".concat(
-      "Hallo Support,<br><br>",
-      "Viele Grüße<br>", this.authService.session.user.givenName, " ", this.authService.session.user.surName + "<br><br>",
-      "--------------------------------------------<br>",
-      article.text
-    )
-    this.action = 'details'
+  prefillAnswer() {
+    this.newText = "Hallo,<br><br>Viele Grüße<br>" +
+      this.authService.session.user.givenName + " " + this.authService.session.user.surName;
+  }
+
+  scrollToEnd() {
+    setTimeout(() => {
+      if (this.content) {
+        this.content.scrollToBottom(300);
+      }
+    }, 200);
+  }
+
+  onFilesAdded(event, modal) {
+    this.answerFiles = event.target.files;
+    modal.dismiss();
+  }
+
+  addAttachment() {
+    for (let file of this.answerFiles) {
+      this.answerAttachmentName = file.name;
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        let index = e.target.result.toString().indexOf("base64,") + 7;
+        this.answerAttachment = e.target.result.toString().substring(index);
+      }
+      fileReader.readAsDataURL(file);
+    }
   }
 
   sendArticle() {
     var article = new Article();
     article.articleType = 'I'
     article.text = this.newText
+    article.attachment = this.answerAttachment;
+    article.attachmentName = this.answerAttachmentName;
     this.supportSrvice.addArticle(this.selectedTicket.id, article).subscribe(
       (val) => {
         this.objectService.responseMessage(val);
-        this.getTickets();
+        if (val.code == "OK") {
+          this.answerAttachment = "";
+          this.answerAttachmentName = "";
+          this.answerFiles = [];
+          this.prefillAnswer();
+          this.refreshArticles();
+        }
       }
     )
   }

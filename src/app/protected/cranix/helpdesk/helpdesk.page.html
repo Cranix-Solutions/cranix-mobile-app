@@ -1,5 +1,66 @@
 <cranix-toolbar title=" {{'Help Desk'|translate}}"></cranix-toolbar>
-<ion-content [fullscreen]="true">
+@if(action == 'articles' && selectedTicket){
+<ion-card>
+  <ion-toolbar class="page-toolbar">
+    <ion-title>
+      #{{selectedTicket.id}} {{selectedTicket.title}}<br>
+      <small>{{selectedTicket.ticketStatus}}</small>
+    </ion-title>
+    <ion-buttons slot="end">
+      @if(selectedTicket.ticketStatus != "D"){
+      <ion-button size="small" fill="clear" (click)="closeTicket(selectedTicket)"
+        matTooltip="{{'Close ticket' | translate }}">
+        <ion-icon slot="icon-only" color="warning" name="checkmark-done-circle"></ion-icon>
+      </ion-button>
+      }
+      <ion-button (click)="getTickets()" matTooltip="{{'Back to the ticket list.' | translate}}">
+        <ion-icon name="close" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-grid style="padding: 0px;">
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item lines="none">
+          <ion-label>
+            <h3>{{'Created'|translate}}</h3>
+            <p>{{selectedTicket.created | date:'yyyy-MM-dd HH:mm'}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item lines="none">
+          <ion-label>
+            <h3>{{'Last action:'|translate}}</h3>
+            <p>{{selectedTicket.modified | date:'yyyy-MM-dd HH:mm'}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      @if(selectedTicket.devices && selectedTicket.devices.length > 0){
+      <ion-col size="12" size-md="6">
+        <ion-item lines="none">
+          <ion-label>
+            <h3>{{'Devices'|translate}}</h3>
+            <p>@for(device of selectedTicket.devices; track device.id){ {{device.name}} }</p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      }
+      @if(selectedTicket.rooms && selectedTicket.rooms.length > 0){
+      <ion-col size="12" size-md="6">
+        <ion-item lines="none">
+          <ion-label>
+            <h3>{{'Rooms'|translate}}</h3>
+            <p>@for(room of selectedTicket.rooms; track room.id){ {{room.name}} }</p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+</ion-card>
+}
+<ion-content>
   @switch(action){
   @case('tickets'){
   <ion-toolbar class="page-toolbar">
@@ -34,24 +95,6 @@
   </ion-list>
   }
   @case('articles'){
-  <ion-toolbar class="page-toolbar">
-    <ion-title>#{{selectedTicket.id}} {{selectedTicket.title}}</ion-title>
-    <ion-buttons slot="end">
-      @if(selectedTicket.ticketStatus != "D"){
-      <ion-button size="small" fill="clear" (click)="closeTicket(selectedTicket)"
-        matTooltip="{{'Close ticket' | translate }}">
-        <ion-icon slot="icon-only" color="warning" name="checkmark-done-circle"></ion-icon>
-      </ion-button>
-      <ion-button size="small" fill="clear" (click)="answerArticle(articles[articles.length-1])"
-        matTooltip="{{'Answer the ticket.' | translate }}">
-        <ion-icon slot="icon-only" color="success" name="arrow-undo"></ion-icon>
-      </ion-button>
-      }
-      <ion-button (click)="getTickets()">
-        <ion-icon name="close" color="danger"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
   @for( article of articles; track article.id){
   <ion-card>
     <ion-card-header>
@@ -91,20 +134,22 @@
     </ion-card-content>
   </ion-card>
   }
-  }
-  @case('details'){
+  @if(selectedTicket.ticketStatus != "D"){
   <ion-card>
     <ion-card-header>
       <ion-toolbar color="primary">
-        <ion-title>
-          #{{selectedTicket.id}} {{ 'Answer:' | translate }} {{selectedTicket.title}}
-        </ion-title>
+        <ion-title>{{'Answer' | translate}}</ion-title>
         <ion-buttons slot="end">
-          <ion-button class="ion-no-margin" fill="clear" size="small" (click)="sendArticle()">
-            <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          <ion-button fill="clear" id="answer-attachment" matTooltip="{{'Attachment' | translate}}">
+            @if(answerAttachmentName){
+            <ion-icon slot="icon-only" color="success" name="attach"></ion-icon>
+            {{answerAttachmentName}}
+            }@else{
+            <ion-icon slot="icon-only" name="attach"></ion-icon>
+            }
           </ion-button>
-          <ion-button fill="clear" size="small" (click)="action = 'articles'">
-            <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+          <ion-button fill="clear" (click)="sendArticle()" matTooltip="{{'Send the answer' | translate}}">
+            <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -114,5 +159,27 @@
     </ion-card-content>
   </ion-card>
   }
-}
+  }
+  }
 </ion-content>
+<ion-modal #answerAttachmentModal trigger="answer-attachment" (willDismiss)="addAttachment()">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{'Add one Attachment' | translate}}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="answerAttachmentModal.dismiss()">
+              <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-input type="file" (change)="onFilesAdded($event, answerAttachmentModal)"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>

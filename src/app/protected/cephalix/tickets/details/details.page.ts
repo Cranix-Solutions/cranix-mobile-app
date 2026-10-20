@@ -1,18 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 //own
 import { Ticket, Article, Institute, Customer } from 'src/app/shared/models/cephalix-data-model';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonContent } from '@ionic/angular';
 import { User } from 'src/app/shared/models/data-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { WindowRef } from 'src/app/shared/models/ohters';
 import { LanguageService } from 'src/app/services/language.service';
-import { quillFullToolbar } from 'src/app/shared/models/constants';
+
 @Component({
   standalone: false,
-    selector: 'cranix-details',
+  selector: 'cranix-details',
   templateUrl: './details.page.html',
   styleUrls: ['./details.page.scss'],
 })
@@ -28,6 +28,13 @@ export class DetailsPage implements OnInit {
   nativeWindow: any
   isOpenMergeTicketModal: boolean = false;
   tickets: Ticket[];
+  newText: string = "";
+  answerFiles = [];
+  answerAttachment: string = "";
+  answerAttachmentName: string = "";
+
+  @ViewChild(IonContent) content: IonContent;
+
   constructor(
     public authService: AuthenticationService,
     public router: Router,
@@ -35,7 +42,6 @@ export class DetailsPage implements OnInit {
     private alertController: AlertController,
     private cephalixService: CephalixService,
     private languageS: LanguageService,
-    private modalController: ModalController,
     private route: ActivatedRoute,
     private win: WindowRef
   ) {
@@ -46,6 +52,7 @@ export class DetailsPage implements OnInit {
 
   ngOnInit() {
     console.log("Ticket details ngOnInit called", this.ticketId)
+    this.prefillAnswer();
     this.cephalixService.getTicketById(this.ticketId).subscribe({
       next: (val) => {
         console.log("getTicketById was called", this.ticketId)
@@ -65,13 +72,65 @@ export class DetailsPage implements OnInit {
     while (document.getElementsByTagName('mat-tooltip-component').length > 0) { document.getElementsByTagName('mat-tooltip-component')[0].remove(); }
   }
 
+  prefillAnswer() {
+    this.newText = "Hallo,<br><br>Viele Grüße<br>Cranix-Solutions-Support-Team<br><br>";
+  }
+
+  scrollToEnd() {
+    setTimeout(() => {
+      if (this.content) {
+        this.content.scrollToBottom(300);
+      }
+    }, 200);
+  }
+
   public readArcticles() {
     this.articles = [];
     this.cephalixService.getArticklesOfTicket(this.ticketId).subscribe(
       (val) => {
         this.articles = val
+        this.scrollToEnd();
       }
     );
+  }
+
+  onFilesAdded(event, modal) {
+    this.answerFiles = event.target.files;
+    modal.dismiss();
+  }
+
+  addAttachment() {
+    for (let file of this.answerFiles) {
+      this.answerAttachmentName = file.name;
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        let index = e.target.result.toString().indexOf("base64,") + 7;
+        this.answerAttachment = e.target.result.toString().substring(index);
+      }
+      fileReader.readAsDataURL(file);
+    }
+  }
+
+  sendArticle() {
+    let article = new Article();
+    article.recipient = this.ticket.email;
+    article.title = this.ticket.firstname + " " + this.ticket.lastname;
+    article.articleType = 'O';
+    article.text = this.newText;
+    article.attachment = this.answerAttachment;
+    article.attachmentName = this.answerAttachmentName;
+    this.cephalixService.addArticleToTicket(article, this.ticket.id).subscribe(
+      (val) => {
+        this.objectService.responseMessage(val);
+        if (val.code == "OK") {
+          this.answerAttachment = "";
+          this.answerAttachmentName = "";
+          this.answerFiles = [];
+          this.prefillAnswer();
+          this.readArcticles();
+        }
+      }
+    )
   }
 
   public assigneTicketToMe() {
@@ -100,26 +159,6 @@ export class DetailsPage implements OnInit {
         this.objectService.errorMessage(err)
       }
     })
-  }
-
-  async answerArticle(article: Article) {
-    article.recipient = this.ticket.email;
-    article.title = this.ticket.firstname + " " + this.ticket.lastname;
-    const modal = await this.modalController.create({
-      component: EditArticle,
-      cssClass: "big-modal",
-      componentProps: {
-        ticket: this.ticket,
-        article: article
-      },
-      animated: true,
-      showBackdrop: true
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      this.objectService.getAllObject('ticket');
-      this.readArcticles();
-    });
-    (await modal).present();
   }
 
   public filterTickets(){
@@ -271,83 +310,5 @@ export class DetailsPage implements OnInit {
     //var htmlRegex = new RegExp("<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)</\1>");
     var htmlRegex = new RegExp("<([A-Za-z][A-Za-z0-9]*)>");
     return htmlRegex.test(s);
-  }
-}
-
-@Component({
-  standalone: false,
-    selector: 'cranix-edit-article',
-  templateUrl: './edit-article.html',
-  styleUrls: ['./edit-article.css'],
-})
-export class EditArticle implements OnInit {
-
-  @Input() article: Article;
-  @Input() ticket: Ticket;
-  newText: string = "";
-  disabled: boolean = false;
-  files = [];
-
-  constructor(
-    private cephalixService: CephalixService,
-    public authService: AuthenticationService,
-    public modalController: ModalController,
-    public objectService: GenericObjectService
-  ) { }
-
-  ngOnInit() {
-    console.log(this.article)
-    this.newText = "".concat(
-      "Hallo " + this.ticket.firstname + " " + this.ticket.lastname + ",<br><br>",
-      "Viele Grüße<br>Cranix-Solutions-Support-Team<br><br>",
-      "--------------------------------------------<br>",
-      this.article.text
-    )
-    console.log(this.newText)
-  }
-
-  onFilesAdded(event) {
-    this.files = event.target.files;
-  }
-
-  addAttachment(popover) {
-    console.log("addP")
-    for (let file of this.files) {
-      this.article.attachmentName = file.name;
-      let fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        let index = e.target.result.toString().indexOf("base64,") + 7;
-        this.article.attachment = e.target.result.toString().substring(index);
-      }
-      fileReader.readAsDataURL(file);
-    }
-    popover.dismiss()
-  }
-
-  clearAttachement(popover){
-    delete(this.article.attachmentName )
-    delete(this.article.attachment)
-    popover.dismiss()
-  }
-  sendArticle() {
-    this.article.created = new Date()
-    this.article.articleType = 'O';
-    this.article.text = this.newText;
-    this.disabled = true;
-    this.objectService.requestSent();
-
-    let sub = this.cephalixService.addArticleToTicket(this.article, this.ticket.id).subscribe(
-      (val) => {
-        this.objectService.responseMessage(val)
-        if (val.code == "OK") {
-          this.modalController.dismiss();
-        }
-      },
-      (err) => { this.objectService.errorMessage(err) },
-      () => {
-        this.disabled = false
-        sub.unsubscribe()
-      }
-    )
   }
 }
