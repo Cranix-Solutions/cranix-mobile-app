@@ -181,7 +181,7 @@ export class CranixListComponent implements OnInit, OnChanges {
         case 'title':
         case 'name':
         case 'uid': {
-          col['minWidth'] = 170;
+          col['width'] = 200;
           col['suppressSizeToFit'] = true;
           col['pinned'] = 'left';
           col['flex'] = '1';

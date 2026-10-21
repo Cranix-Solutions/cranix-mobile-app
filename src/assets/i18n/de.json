@@ -1,4 +1,5 @@
 {
+    "ticketType":"Art der Anfrage",
     "assignee":"zugewiesen an",
     "assigneeId":"zugewiesen an",
     "opened":"offen",
@@ -346,6 +347,7 @@
     "Insert you email address": "Tragen Sie Ihre E-Mailadresse ein",
     "Installation Status": "Installationstatus",
     "Installation sets": "Installationssets",
+    "Institute": "Institution",
     "Institutes": "Institutionen",
     "It is recomended to setup all 2FA types": "Es ist  empfohlen alle 2FA Typen zu konfigurieren.",
     "Lessons": "Unterricht",
