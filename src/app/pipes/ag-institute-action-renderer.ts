@@ -9,9 +9,6 @@ import { WindowRef } from 'src/app/shared/models/ohters'
     standalone: false,
     selector: 'uuid-cell',
     template: `
-    <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
-        <ion-icon name="build-sharp"></ion-icon>
-    </button>
     @if(noteUse){
     <button  class="icon-button" (click)="openNote($event)" matTooltip="{{'note' | translate }}">
         <ion-icon slot="icon-only" name="clipboard" color="tertiary"></ion-icon>
@@ -48,10 +45,6 @@ export class InstituteActionCellRenderer implements ICellRendererAngularComp, On
         this.noteUse = this.params.context.componentParent.noteUse;
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.data);
-    }
     public openAction(event) {
         event.stopPropagation();
         this.params.context.componentParent.openActions(event, this.data.id)

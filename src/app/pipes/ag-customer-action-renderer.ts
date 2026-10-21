@@ -7,9 +7,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     selector: 'action-cell-renderer',
     template: `
         @if(id){#{{ id }}}
-        <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </button>
         <button class="icon-button" (click)="editInstitutes($event)" matTooltip="{{'Apply actions on the selected objects' | translate }}">
             <ion-icon name="business"></ion-icon>
         </button>
@@ -36,10 +33,6 @@ export class CustomerActionRenderer implements ICellRendererAngularComp {
         }
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public editInstitutes(event){
         event.stopPropagation();
         this.params.context.componentParent.editInstitutes(this.params.data);

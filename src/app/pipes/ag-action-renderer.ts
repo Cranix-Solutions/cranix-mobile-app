@@ -7,9 +7,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     selector: 'action-cell-renderer',
     template: `
         @if(id){#{{ id }}}
-        <button class="icon-button" (click)="details($event)" matTooltip="{{'modify' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </button>
         <button class="icon-button" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             @if(params.context.componentParent.objectType == 'ticket' || params.context.componentParent.objectType == 'crxticket'){
             <ion-icon color="danger" name="checkmark-done" ></ion-icon>
@@ -40,10 +37,6 @@ export class ActionBTNRenderer implements ICellRendererAngularComp {
         }
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public openAction(event){
         event.stopPropagation();
         this.params.context.componentParent.openActions(event,this.params.data);

@@ -6,9 +6,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'device-action-cell-renderer',
     template: `
-        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </button>
         <button class="icon-button" (click)="setPrinters($event)" matTooltip="{{'Set printers' | translate }}">
             <ion-icon name="print" ></ion-icon>
         </button>
@@ -38,10 +35,6 @@ export class DeviceActionBTNRenderer implements ICellRendererAngularComp {
         this.noteUse = this.params.context.componentParent.noteUse;
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public openAction(event){
         event.stopPropagation();
         this.params.context.componentParent.openActions(event, this.params.data )

@@ -6,9 +6,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'edit-cell',
     template: `
-        <ion-button style="padding-horizontal : 2px" fill="clear" size="small" (click)="details($event)" matTooltip="{{'edit' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </ion-button>
         <ion-button style="padding-horizontal : 2px" fill="clear"  size="small" (click)="delete($event)" matTooltip="{{'delete' | translate }}">
             <ion-icon color="danger" name="trash-outline" ></ion-icon>
         </ion-button>
@@ -34,10 +31,6 @@ export class SoftwareEditBTNRenderer implements ICellRendererAngularComp {
         )
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public licenses(event) {
         event.stopPropagation();
         this.params.context.componentParent.context.componentParent.redirectToLicenses(this.params.data);

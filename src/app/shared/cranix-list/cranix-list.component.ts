@@ -27,7 +27,6 @@ import { UpdateRenderer } from 'src/app/pipes/ag-update-renderer';
 import { FileSystemUsageRenderer } from 'src/app/pipes/ag-filesystem-usage-renderer';
 import { SoftwareEditBTNRenderer } from 'src/app/pipes/ag-software-edit-renderer';
 import { SoftwareService } from 'src/app/services/softwares.service';
-import { InstituteStatusRenderer } from 'src/app/pipes/ag-institute-status-renderer';
 
 @Component({
   standalone: false,
@@ -138,36 +137,33 @@ export class CranixListComponent implements OnInit, OnChanges {
   createColumnDefs() {
     let columnDefs = [];
     var cellRenderer;
-    var actionWidth = 145;;
+    var actionWidth = 100;;
     switch (this.objectType) {
       case 'customer': {
         cellRenderer = CustomerActionRenderer; break
       }
-      case 'device': {
-        cellRenderer = DeviceActionBTNRenderer; actionWidth = 195; break
+      case 'institute': {
+        cellRenderer = InstituteActionCellRenderer; break
       }
       case 'education/group':
       case 'group': {
-        cellRenderer = GroupActionBTNRenderer; actionWidth = 175; break
+        cellRenderer = GroupActionBTNRenderer; actionWidth = 125; break
+      }
+      case 'education/user':
+      case 'user': {
+        cellRenderer = UserActionBTNRenderer; actionWidth = 125; break
       }
       case 'education/guestUser': {
         cellRenderer = EditBTNRenderer; break
       }
-      case 'institute': {
-        cellRenderer = InstituteActionCellRenderer; break
+      case 'room': {
+        cellRenderer = RoomActionBTNRenderer; actionWidth = 125; break
       }
-      case 'institutestatus': {
-        cellRenderer = InstituteStatusRenderer; actionWidth = 60; break
-      }
-      case 'education/user':
-      case 'user': {
-        cellRenderer = UserActionBTNRenderer; actionWidth = 175; break
+      case 'device': {
+        cellRenderer = DeviceActionBTNRenderer; actionWidth = 145; break
       }
       case 'printer': {
         cellRenderer = PrinterActionBTNRenderer; break
-      }
-      case 'room': {
-        cellRenderer = RoomActionBTNRenderer; actionWidth = 175; break
       }
       case 'package': {
         cellRenderer = SoftwareEditBTNRenderer; break
@@ -190,6 +186,10 @@ export class CranixListComponent implements OnInit, OnChanges {
           col['pinned'] = 'left';
           col['flex'] = '1';
           col['colId'] = '1';
+          col['suppressRowClickSelection'] = true;
+          col['cellStyle'] = params => this.mayEditObject(params.data) ?
+            { cursor: 'pointer', color: 'var(--ion-color-primary)', textDecoration: 'underline' } : {};
+          col['onCellClicked'] = params => this.onIdentifierClicked(params);
           columnDefs.push(col);
           columnDefs.push({
             field: 'actions',
@@ -251,16 +251,11 @@ export class CranixListComponent implements OnInit, OnChanges {
             col['pinned'] = 'left';
             col['flex'] = '1';
             col['colId'] = '1';
+            col['suppressRowClickSelection'] = true;
+            col['cellStyle'] = params => this.mayEditObject(params.data) ?
+              { cursor: 'pointer', color: 'var(--ion-color-primary)', textDecoration: 'underline' } : {};
+            col['onCellClicked'] = params => this.onIdentifierClicked(params);
             columnDefs.push(col);
-            columnDefs.push({
-              headerName: "",
-              width: actionWidth,
-              suppressSizeToFit: true,
-              cellStyle: { 'padding': '2px' },
-              field: 'actions',
-              pinned: 'left',
-              cellRenderer: cellRenderer
-            });
             continue;
           }
           break;
@@ -458,6 +453,34 @@ export class CranixListComponent implements OnInit, OnChanges {
   }
   redirectToEdit = (object) => {
     this.context.componentParent.redirectToEdit(object)
+  }
+
+  mayEditObject(object): boolean {
+    if (!object || !this.context || !this.context.componentParent || !this.context.componentParent.redirectToEdit) {
+      return false;
+    }
+    switch (this.objectType) {
+      case 'education/group':
+      case 'group': {
+        return this.context.componentParent.mayGroupEdit ||
+          this.authService.session.userId == object.creatorId;
+      }
+      case 'printer': {
+        return this.authService.isAllowed('printer.add');
+      }
+      case 'room': {
+        return object.name != 'ANON_DHCP' && object.roomType != 'ANON_DHCP';
+      }
+      default: {
+        return true;
+      }
+    }
+  }
+
+  onIdentifierClicked(params) {
+    if (this.mayEditObject(params.data)) {
+      this.redirectToEdit(params.data);
+    }
   }
   reset = (object) => {
     this.context.componentParent.reset(object)

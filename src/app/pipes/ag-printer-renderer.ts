@@ -6,11 +6,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     standalone: false,
     selector: 'printer-action-cell-renderer',
     template: `
-        @if(printerAddAllowed){
-        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </button>
-        }
         <button class="icon-button" (click)="reset($event)" matTooltip="{{'Reset printer' | translate }}">
             <ion-icon name="refresh" ></ion-icon>
         </button>
@@ -31,10 +26,6 @@ export class PrinterActionBTNRenderer implements ICellRendererAngularComp {
         this.printerAddAllowed = this.params.context.componentParent.authService.isAllowed('printer.add');
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public reset(event) {
         event.stopPropagation();
         this.params.context.componentParent.reset(this.params.data.id)

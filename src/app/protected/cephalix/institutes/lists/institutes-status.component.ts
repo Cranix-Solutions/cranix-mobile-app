@@ -7,7 +7,6 @@ import { Storage } from '@ionic/storage-angular';
 import { ActionsComponent } from 'src/app/shared/actions/actions.component';
 import { DateTimeCellRenderer } from 'src/app/pipes/ag-datetime-renderer';
 import { FileSystemUsageRenderer } from 'src/app/pipes/ag-filesystem-usage-renderer';
-import { InstituteStatusRenderer } from 'src/app/pipes/ag-institute-status-renderer';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CephalixService } from 'src/app/services/cephalix.service';
 import { LanguageService } from 'src/app/services/language.service';

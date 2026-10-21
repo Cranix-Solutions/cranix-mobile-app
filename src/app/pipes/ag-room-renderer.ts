@@ -7,9 +7,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     selector: 'room-action-cell-renderer',
     template: `
     <div *ngIf="params.data.name != 'ANON_DHCP' && params.data.roomType != 'ANON_DHCP'">
-        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </button>
         <button class="icon-button" (click)="devices($event)" matTooltip="{{'Devices' | translate }}">
             <ion-icon name="desktop" ></ion-icon>
         </button>
@@ -43,11 +40,6 @@ export class RoomActionBTNRenderer implements ICellRendererAngularComp {
         this.noteUse = this.params.context.componentParent.noteUse;
     }
 
-    public details(event) {
-        event.stopPropagation();
-        console.log("Edit", this.params.data);
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public devices(event) {
         event.stopPropagation();
         this.params.context.componentParent.devices(this.params.data);

@@ -35,7 +35,6 @@ import { GroupIdCellRenderer } from 'src/app/pipes/ag-groupid-renderer';
 import { GroupMembersPage } from 'src/app/shared/actions/group-members/group-members.page';
 import { HwconfIdCellRenderer } from 'src/app/pipes/ag-hwconfid-renderer';
 import { InstituteActionCellRenderer } from 'src/app/pipes/ag-institute-action-renderer';
-import { InstituteStatusRenderer } from 'src/app/pipes/ag-institute-status-renderer'
 import { IonicModule } from '@ionic/angular';
 import { ManageDhcpComponent } from 'src/app/shared/actions/manage-dhcp/manage-dhcp.component'
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -99,7 +98,6 @@ import { QuillModule } from 'ngx-quill'
     GroupMembersPage,
     HwconfIdCellRenderer,
     InstituteActionCellRenderer,
-    InstituteStatusRenderer,
     ManageDhcpComponent,
     ObjectsEditComponent,
     PrinterActionBTNRenderer,

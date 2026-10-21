@@ -7,9 +7,6 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     selector: 'group-action-cell-renderer',
     template: `
         @if(mayEdit){
-        <button class="icon-button" (click)="details($event)" matTooltip="{{'edit' | translate }}">
-             <ion-icon name="build-sharp"></ion-icon>
-        </button>
         <button class="icon-button" (click)="members($event)" matTooltip="{{'Members of the group:' | translate }}">
              <ion-icon name="people-circle"></ion-icon>
         </button>
@@ -45,10 +42,6 @@ export class GroupActionBTNRenderer implements ICellRendererAngularComp {
         this.noteUse = this.params.context.componentParent.noteUse;
     }
 
-    public details(event) {
-        event.stopPropagation();
-        this.params.context.componentParent.redirectToEdit(this.params.data);
-    }
     public members(event) {
         event.stopPropagation();
         this.params.context.componentParent.redirectToMembers(this.params.data);

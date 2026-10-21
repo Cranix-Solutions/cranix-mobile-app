@@ -38,7 +38,7 @@ export class UtilsService {
                 //console.log("From utils: " + url);
                 //return "https://192.168.178.199:444/api"
                 //return "https://cranix-test:444/api"
-                //return "https://admin.cephalix.eu/api"
+                return "https://admin.cephalix.eu/api"
                 //return "https://remscheid.cephalix.eu/api"
                 //return "https://gif1.bbs1-gifhorn.de:444/api"
                 return "https://admin.test-cephalix.cephalix.eu/api"
