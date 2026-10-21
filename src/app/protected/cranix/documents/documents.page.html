@@ -1,4 +1,5 @@
 <cranix-toolbar title="{{'Documents' | translate}}"></cranix-toolbar>
+@if(authService.isAllowed('documents.add')){
 <ion-toolbar class="page-toolbar">
   <ion-segment (ionChange)="scopeChanged()" [(ngModel)]="scope" color="secondary">
     <ion-segment-button value="my" layout="icon-start">
@@ -11,6 +12,7 @@
     </ion-segment-button>
   </ion-segment>
 </ion-toolbar>
+}
 <ion-toolbar class="page-toolbar">
   <ion-buttons slot="start">
     @if(scope=='my' && !showAllFiles && currentFolder){
@@ -24,50 +26,43 @@
     </ion-button>
     }
   </ion-buttons>
-  @if(scope=='my' && !showAllFiles){
-  <ion-breadcrumbs>
-    @for(folder of folderPath; track folder.id){
-    <ion-breadcrumb (click)="goToRoot()">{{folder.name}}</ion-breadcrumb>
-    }
-    @if(currentFolder){
-    <ion-breadcrumb>{{currentFolder.name}}</ion-breadcrumb>
-    }
-  </ion-breadcrumbs>
-  }
+  <ion-searchbar placeholder="{{'Search documents' | translate}}" [(ngModel)]="searchText"
+    (ionChange)="readData()" (ionClear)="readData()"></ion-searchbar>
   <ion-buttons slot="end">
+    @if(scope=='my'){
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="toggleShowAllFiles()"
+        matTooltip="{{ (showAllFiles ? 'Show folders' : 'Show all files') | translate }}">
+        <ion-icon slot="icon-only" [color]="showAllFiles ? 'primary' : 'medium'" name="documents"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    }
     @if(scope=='my' && authService.isAllowed('documents.add')){
     <ion-button fill="clear" (click)="isFolderFormOpen = true" matTooltip="{{'New folder' | translate}}">
       <ion-icon slot="icon-only" color="tertiary" name="folder-open"></ion-icon>
     </ion-button>
-    }
-    @if(authService.isAllowed('documents.add')){
     <ion-button fill="clear" (click)="isDocumentFormOpen = true" matTooltip="{{'New document' | translate}}">
       <ion-icon slot="icon-only" color="success" name="cloud-upload"></ion-icon>
     </ion-button>
     }
-    <ion-button fill="clear" (click)="setViewMode('list')" matTooltip="{{'List view' | translate}}">
-      <ion-icon slot="icon-only" [color]="viewMode=='list' ? 'primary' : 'medium'" name="list"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" (click)="setViewMode('grid')" matTooltip="{{'Grid view' | translate}}">
-      <ion-icon slot="icon-only" [color]="viewMode=='grid' ? 'primary' : 'medium'" name="grid"></ion-icon>
+    <ion-button fill="clear" (click)="setViewMode()" matTooltip="{{'Toggle view mode' | translate}}">
+      <ion-icon slot="icon-only" color="primary" [name]="viewModes[viewMode]"></ion-icon>
     </ion-button>
     <ion-button fill="clear" (click)="readData()" matTooltip="{{'Refresh' | translate}}">
       <ion-icon slot="icon-only" color="tertiary" name="refresh"></ion-icon>
     </ion-button>
   </ion-buttons>
 </ion-toolbar>
-<ion-toolbar class="page-toolbar">
-  <ion-searchbar placeholder="{{'Search documents' | translate}}" [(ngModel)]="searchText"
-    (ionChange)="readData()" (ionClear)="readData()"></ion-searchbar>
-  @if(scope=='my'){
-  <ion-buttons slot="end">
-    <ion-button fill="clear" (click)="toggleShowAllFiles()"
-      matTooltip="{{ (showAllFiles ? 'Show folders' : 'Show all files') | translate }}">
-      <ion-icon slot="icon-only" [color]="showAllFiles ? 'primary' : 'medium'" name="documents"></ion-icon>
-    </ion-button>
-  </ion-buttons>
+@if(scope=='my' && !showAllFiles){
+<ion-breadcrumbs>
+  @for(folder of folderPath; track folder.id){
+  <ion-breadcrumb (click)="goToRoot()">{{folder.name}}</ion-breadcrumb>
   }
-</ion-toolbar>
+  @if(currentFolder){
+  <ion-breadcrumb>{{currentFolder.name}}</ion-breadcrumb>
+  }
+</ion-breadcrumbs>
+}
 <ion-content>
   @if(currentDocs.length == 0 && currentFolders.length == 0){
   <ion-text color="medium">
@@ -76,7 +71,7 @@
     </h5>
   </ion-text>
   }
-  <div class="crx-list" [class.crx-grid]="viewMode=='grid'">
+  <div class="crx-list" [class.crx-grid]="viewModes[viewMode]=='grid'">
     @for(folder of currentFolders; track folder.id){
     <div class="crx-list-item crx-folder" (click)="enterFolder(folder)">
       <div class="crx-text">

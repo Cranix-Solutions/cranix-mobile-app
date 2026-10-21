@@ -16,7 +16,8 @@ import { Document, DocumentFolder, DocumentRight, DocumentVersion, Group, User }
 export class DocumentsPage implements OnInit {
 
     scope: string = 'my'
-    viewMode: string = 'list'
+    viewMode: number = 0;
+    viewModes: string[] = ['list', 'grid'];
     showAllFiles: boolean = false
     users: any[] = []
     groups: any[] = []
@@ -74,18 +75,29 @@ export class DocumentsPage implements OnInit {
     }
 
     ngOnInit() {
+	console.log(this.viewMode)
+	if( !this.authService.isAllowed('documents.add') ){
+		this.scope = "shared"
+	}
         this.storage.get('documentsViewMode').then(val => {
-            if (val) {
+            if (val && Number.isInteger(val) ) {
                 this.viewMode = val;
             }
         });
+	console.log(this.viewMode)
         this.loadSelectors();
         this.readData();
     }
 
-    setViewMode(mode: string) {
-        this.viewMode = mode;
-        this.storage.set('documentsViewMode', mode);
+    setViewMode() {
+	console.log(this.viewMode)
+	if( this.viewMode+1  == this.viewModes.length ){
+		this.viewMode = 0
+	} else {
+		this.viewMode = this.viewMode +1;
+	}
+	console.log(this.viewMode)
+        this.storage.set('documentsViewMode', this.viewMode);
     }
 
     toggleShowAllFiles() {
