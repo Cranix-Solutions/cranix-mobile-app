@@ -57,7 +57,7 @@ export class AuthenticationService {
         icon: 'business'
       },
       {
-        title: 'Tickets',
+        title: 'CEPHALIX Tickets',
         url: '/pages/cephalix/tickets',
         icon: 'pricetags'
       },

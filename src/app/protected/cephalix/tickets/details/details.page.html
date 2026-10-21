@@ -1,6 +1,6 @@
 <cranix-toolbar title="{{'Manage tickets' | translate}}"></cranix-toolbar>
 @if(ticket){
-<ion-card>
+<ion-card class="crx-ticket-card">
   <ion-toolbar class="page-toolbar-full">
     @if(authService.isMD()){
     <ion-title>
@@ -105,9 +105,9 @@
   </ion-fab>
   }
   @for(article of articles; track article.id){
-  <ion-card>
+  <ion-card class="crx-ticket-card">
     <ion-card-header>
-      <ion-toolbar>
+      <ion-toolbar style="height: 40px;">
         <ion-card-subtitle [color]="article.articleType == 'O' ? 'warning' : article.seen ? 'success' : 'danger'">
           {{article.created | date:'yyyy-MM-dd HH:mm'}}
           @if(article.articleType == 'O'){
@@ -122,18 +122,16 @@
             <ion-icon slot="icon-only" name="download"></ion-icon>
           </ion-button>
           }
+          @if(article.attachmentName){
+          <ion-button size="small" fill="clear" [href]="'data:application/octet-stream;base64,' + article.attachment"
+            [download]="article.attachmentName" target="_blank" matTooltip="{{'Download attachment' | translate }}">
+            <ion-icon slot="icon-only" name="download"></ion-icon>
+          </ion-button>
+          }
           @if(article.articleType == 'I'){
           <ion-button [color]="article.seen ? 'success' : 'danger'" fill="clear" (click)="setSeenOnArticle(article)"
             matTooltip="{{'Set article as seen.' | translate }}">
             <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-          </ion-button>
-          <ion-button fill="clear" (click)="answerArticle(article)" matTooltip="{{'Answer the article.' | translate }}">
-            <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
-          </ion-button>
-          }@else{
-          <ion-button fill="clear" (click)="answerArticle(article)"
-            matTooltip="{{'Edit the answer and resend it.' | translate }}">
-            <ion-icon slot="icon-only" name="pencil"></ion-icon>
           </ion-button>
           }
           <ion-button fill="clear" (click)="toggleArticle(article.id)"
@@ -144,12 +142,10 @@
             <ion-icon slot="icon-only" name="mail-open"></ion-icon>
             }
           </ion-button>
-          <!-- ion-button fill="clear" (click)="deleteArticle(article)">
-            <ion-icon slot="icon-only" color="danger" name="trash"></ion-icon>
-          </ion-button -->
         </ion-buttons>
       </ion-toolbar>
     </ion-card-header>
+    <div class="crx-ticket-tear"></div>
     <ion-card-content style="height: 50px; padding: 5px; padding-top: 0px;" [id]="'article' + article.id">
       @if(isHTML(article.text)){
       <div [innerHTML]="article.text"></div>
@@ -159,8 +155,55 @@
     </ion-card-content>
   </ion-card>
   }
+  @if(ticket.ticketStatus != "D"){
+  <ion-card class="crx-ticket-card">
+    <ion-card-header style="padding-left: 0px; padding-right: 0px;">
+      <ion-toolbar color="primary">
+        <ion-title>{{'Answer' | translate}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" id="answer-attachment" matTooltip="{{'Attachment' | translate}}">
+            @if(answerAttachmentName){
+            <ion-icon slot="icon-only" color="success" name="attach"></ion-icon>
+            {{answerAttachmentName}}
+            }@else{
+            <ion-icon slot="icon-only" name="attach"></ion-icon>
+            }
+          </ion-button>
+          <ion-button fill="clear" (click)="sendArticle()" matTooltip="{{'Send the answer' | translate}}">
+            <ion-icon slot="icon-only" color="success" name="checkmark-sharp"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content>
+         <ion-input [labelPlacement]="authService.settings.labelPlacement" label="{{'Send to'|translate}}:" [(ngModel)]="recipient" type="email" [multiple]="true"></ion-input>
+      <quill-editor [(ngModel)]="newText" style="margin: 10px;"></quill-editor>
+    </ion-card-content>
+  </ion-card>
+  }
 </ion-content>
 }
+<ion-modal #answerAttachmentModal trigger="answer-attachment" (willDismiss)="addAttachment()">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{'Add one Attachment' | translate}}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="answerAttachmentModal.dismiss()">
+              <ion-icon slot="icon-only" color="success" name="checkmark"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-input type="file" (change)="onFilesAdded($event, answerAttachmentModal)"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>
 <ion-modal #mergeTicketModal [isOpen]="isOpenMergeTicketModal">
   <ng-template>
     <ion-header>

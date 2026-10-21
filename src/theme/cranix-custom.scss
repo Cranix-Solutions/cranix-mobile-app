@@ -550,3 +550,57 @@ ion-card-title{
   margin-left: 0;
   margin-top: 4px;
 }
+
+/*
+ * Old paper-ticket look: dashed tear line with triangular notches on the
+ * card edges (tip pointing inward). Apply to a ticket <ion-card> and add a
+ * <div class="crx-ticket-tear"> between the header (ion-card-header /
+ * ion-toolbar) and the body (ion-card-content / ion-grid).
+ */
+.crx-ticket-card {
+  --crx-ticket-tear-inset: 10px;                         /* left/right indent of the dashed line */
+  --crx-ticket-tear-color: var(--ion-color-light-shade); /* dashed line color (subtle) */
+  --crx-ticket-notch-size: 10px;                         /* notch triangle size */
+  --crx-ticket-notch-color: var(--crx-ticket-tear-color);/* notch triangle color */
+
+  >.crx-ticket-tear+ion-card-content {
+    /* keep Ionic's "no top padding under a card header" behavior */
+    padding-top: 0;
+  }
+}
+
+.crx-ticket-card>.crx-ticket-tear {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  height: var(--crx-ticket-notch-size, 10px);
+  margin: 2px 0;
+  background-repeat: no-repeat;
+  background-image: repeating-linear-gradient(to right,
+      var(--crx-ticket-tear-color, var(--ion-color-light-shade, #d7d8da)) 0,
+      var(--crx-ticket-tear-color, var(--ion-color-light-shade, #d7d8da)) 4px,
+      transparent 4px, transparent 8px);
+  background-size: calc(100% - 2 * var(--crx-ticket-tear-inset, 10px)) 1px;
+  background-position: center;
+}
+
+/* triangular notches on the card edges, tip pointing inward */
+.crx-ticket-card>.crx-ticket-tear::before,
+.crx-ticket-card>.crx-ticket-tear::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--crx-ticket-notch-size, 10px);
+  background: var(--crx-ticket-notch-color, var(--crx-ticket-tear-color, var(--ion-color-light-shade, #d7d8da)));
+}
+
+.crx-ticket-card>.crx-ticket-tear::before {
+  left: 0;
+  clip-path: polygon(0 0, 0 100%, 100% 50%);
+}
+
+.crx-ticket-card>.crx-ticket-tear::after {
+  right: 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 50%);
+}

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonContent } from '@ionic/angular';
 
 //own modules
 import { AuthenticationService } from 'src/app/services/auth.service';
@@ -21,6 +21,11 @@ export class DetailsPage implements OnInit {
   articles: CrxTicketArticle[] = [];
   articleOpen = {};
   newText: string = "";
+  answerFiles = [];
+  answerAttachment: string = "";
+  answerAttachmentName: string = "";
+
+  @ViewChild(IonContent) content: IonContent;
 
   constructor(
     public authService: AuthenticationService,
@@ -42,6 +47,7 @@ export class DetailsPage implements OnInit {
     this.crxTicketService.getTicket(this.ticketId).subscribe({
       next: (val) => {
         this.ticket = val;
+        this.prefillAnswer();
         this.readArticles();
       },
       error: (err) => this.objectService.errorMessage(err)
@@ -52,9 +58,40 @@ export class DetailsPage implements OnInit {
     this.crxTicketService.getArticles(this.ticketId).subscribe({
       next: (val) => {
         this.articles = val ? val : [];
+        this.scrollToEnd();
       },
       error: (err) => this.objectService.errorMessage(err)
     });
+  }
+
+  prefillAnswer() {
+    this.newText = "Hallo,<br><br>Viele Grüße<br>" +
+      this.authService.session.user.givenName + " " + this.authService.session.user.surName;
+  }
+
+  scrollToEnd() {
+    setTimeout(() => {
+      if (this.content) {
+        this.content.scrollToBottom(300);
+      }
+    }, 200);
+  }
+
+  onFilesAdded(event, modal) {
+    this.answerFiles = event.target.files;
+    modal.dismiss();
+  }
+
+  addAttachment() {
+    for (let file of this.answerFiles) {
+      this.answerAttachmentName = file.name;
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        let index = e.target.result.toString().indexOf("base64,") + 7;
+        this.answerAttachment = e.target.result.toString().substring(index);
+      }
+      fileReader.readAsDataURL(file);
+    }
   }
 
   isStaff() {
@@ -144,11 +181,15 @@ export class DetailsPage implements OnInit {
   sendArticle() {
     let article = new CrxTicketArticle();
     article.text = this.newText;
+    article.attachment = this.answerAttachment;
+    article.attachmentName = this.answerAttachmentName;
     this.crxTicketService.addArticle(this.ticketId, article).subscribe({
       next: (val) => {
         this.objectService.responseMessage(val);
         if (val.code == "OK") {
-          this.newText = "";
+          this.answerAttachment = "";
+          this.answerAttachmentName = "";
+          this.answerFiles = [];
           this.readTicket();
         }
       },
