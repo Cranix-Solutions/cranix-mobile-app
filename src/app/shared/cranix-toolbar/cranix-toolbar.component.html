@@ -9,9 +9,9 @@
       @if(authService.isAllowed('ticket.manage')){
       <ion-button fill="clear" (click)="route.navigate(['/pages/cephalix/tickets'])">
         @if(newTickets == 0){
-        <ion-icon color="success" name="ticket"></ion-icon>
+        <ion-icon color="success" name="pricetags"></ion-icon>
         }@else{
-        <ion-icon color="danger" name="ticket"></ion-icon>
+        <ion-icon color="danger" name="pricetags"></ion-icon>
         }
       </ion-button>
       }

@@ -43,6 +43,14 @@ export class DocumentsPage implements OnInit {
     isMoveOpen: boolean = false
     isEditOpen: boolean = false
 
+    isDocumentMenuOpen: boolean = false
+    isFolderMenuOpen: boolean = false
+    isVersionMenuOpen: boolean = false
+    menuEvent: any
+    menuDocument: Document = null
+    menuFolder: DocumentFolder = null
+    menuVersion: DocumentVersion = null
+
     docName: string = ""
     docDescription: string = ""
     docTags: string = ""
@@ -196,6 +204,12 @@ export class DocumentsPage implements OnInit {
         this.currentFolder = null;
         this.folderPath = [];
         this.readData();
+    }
+
+    enterFolderIndex(idx: number) {
+	this.currentFolder = this.folderPath[idx];
+	this.folderPath.splice(idx);
+        this.updateCurrentView();
     }
 
     enterFolder(folder: DocumentFolder) {
@@ -417,7 +431,8 @@ export class DocumentsPage implements OnInit {
             if (version.creator && version.creator.id != this.selectedDocument.creatorId) {
                 fileName = version.creator.fullName + "_" + fileName;
             }
-            this.documentsService.download(resp, fileName);
+	    console.log(fileName);
+            this.documentsService.download(resp, fileName, true);
         });
     }
 
@@ -528,6 +543,24 @@ export class DocumentsPage implements OnInit {
                 this.readData();
             });
         }
+    }
+
+    openDocumentMenu(ev: any, document: Document) {
+        this.menuEvent = ev;
+        this.menuDocument = document;
+        this.isDocumentMenuOpen = true;
+    }
+
+    openFolderMenu(ev: any, folder: DocumentFolder) {
+        this.menuEvent = ev;
+        this.menuFolder = folder;
+        this.isFolderMenuOpen = true;
+    }
+
+    openVersionMenu(ev: any, version: DocumentVersion) {
+        this.menuEvent = ev;
+        this.menuVersion = version;
+        this.isVersionMenuOpen = true;
     }
 
     mimeIcon(document: Document) {

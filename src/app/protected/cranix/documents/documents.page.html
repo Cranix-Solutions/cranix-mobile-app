@@ -36,32 +36,35 @@
         <ion-icon slot="icon-only" [color]="showAllFiles ? 'primary' : 'medium'" name="documents"></ion-icon>
       </ion-button>
     </ion-buttons>
-    }
-    @if(scope=='my' && authService.isAllowed('documents.add')){
     <ion-button fill="clear" (click)="isFolderFormOpen = true" matTooltip="{{'New folder' | translate}}">
       <ion-icon slot="icon-only" color="tertiary" name="folder-open"></ion-icon>
     </ion-button>
     <ion-button fill="clear" (click)="isDocumentFormOpen = true" matTooltip="{{'New document' | translate}}">
       <ion-icon slot="icon-only" color="success" name="cloud-upload"></ion-icon>
     </ion-button>
-    }
-    <ion-button fill="clear" (click)="setViewMode()" matTooltip="{{'Toggle view mode' | translate}}">
-      <ion-icon slot="icon-only" color="primary" [name]="viewModes[viewMode]"></ion-icon>
-    </ion-button>
+    }@else{
     <ion-button fill="clear" (click)="readData()" matTooltip="{{'Refresh' | translate}}">
       <ion-icon slot="icon-only" color="tertiary" name="refresh"></ion-icon>
     </ion-button>
+    }
+    <!-- ion-button fill="clear" (click)="setViewMode()" matTooltip="{{'Toggle view mode' | translate}}">
+      <ion-icon slot="icon-only" color="primary" [name]="viewModes[viewMode]"></ion-icon>
+    </ion-button -->
   </ion-buttons>
 </ion-toolbar>
 @if(scope=='my' && !showAllFiles){
-<ion-breadcrumbs>
-  @for(folder of folderPath; track folder.id){
-  <ion-breadcrumb (click)="goToRoot()">{{folder.name}}</ion-breadcrumb>
-  }
-  @if(currentFolder){
-  <ion-breadcrumb>{{currentFolder.name}}</ion-breadcrumb>
-  }
-</ion-breadcrumbs>
+<div class="crx-list-item">
+  <ion-breadcrumbs>
+    @for(folder of folderPath; track folder.id; let idx = $index){
+    <ion-breadcrumb (click)="enterFolderIndex(idx)">{{folder.name}}</ion-breadcrumb>
+    }
+    @if(currentFolder){
+    <ion-breadcrumb>{{currentFolder.name}}</ion-breadcrumb>
+    }@else{
+    <ion-breadcrumb>{{'Home Directory'|translate}}</ion-breadcrumb>
+    }
+  </ion-breadcrumbs>
+</div>
 }
 <ion-content>
   @if(currentDocs.length == 0 && currentFolders.length == 0){
@@ -75,16 +78,27 @@
     @for(folder of currentFolders; track folder.id){
     <div class="crx-list-item crx-folder" (click)="enterFolder(folder)">
       <div class="crx-text">
-        <ion-icon name="folder" color="tertiary"></ion-icon> <b>{{folder.name}}</b><br>
+        <ion-icon name="folder" color="tertiary" size="large"></ion-icon>
+      </div>
+      <div class="crx-text">
+        <b>{{folder.name}}</b><br>
         @if(folder.description && folder.description.length > 0){
         {{folder.description}}<br>
         }
       </div>
       <div class="crx-text-end">
-        @if(authService.isAllowed('documents.delete')){
-        <ion-button fill="clear" color="danger" (click)="deleteFolder(folder); $event.stopPropagation()">
-          <ion-icon slot="icon-only" name="trash"></ion-icon>
-        </ion-button>
+        @if(authService.isMD()){
+          @if(authService.isAllowed('documents.delete')){
+          <ion-button fill="clear" (click)="openFolderMenu($event, folder); $event.stopPropagation()">
+            <ion-icon slot="icon-only" name="ellipsis-vertical-sharp"></ion-icon>
+          </ion-button>
+          }
+        }@else{
+          @if(authService.isAllowed('documents.delete')){
+          <ion-button fill="clear" color="danger" (click)="deleteFolder(folder); $event.stopPropagation()">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+          }
         }
       </div>
     </div>
@@ -92,7 +106,10 @@
     @for(document of currentDocs; track document.id){
     <div class="crx-list-item">
       <div class="crx-text" (click)="downloadDocument(document)">
-        <ion-icon [name]="mimeIcon(document)" color="primary"></ion-icon> <b>{{document.name}}</b><br>
+        <ion-icon [name]="mimeIcon(document)" color="primary" size="large"></ion-icon>
+      </div>
+      <div class="crx-text" (click)="downloadDocument(document)">
+        <b>{{document.name}}</b><br>
         @if(showAllFiles && scope=='my'){
         <ion-icon name="folder" color="tertiary"></ion-icon> {{documentFolderPath(document)}}<br>
         }
@@ -106,42 +123,108 @@
         <br>
       </div>
       <div class="crx-text-end">
-        @if(authService.isAllowed('documents.modify')){
-        @if(canLock(document)){
-        <ion-button fill="clear" (click)="lockDocument(document)" matTooltip="{{'Lock' | translate}}">
-          <ion-icon slot="icon-only" name="lock-closed" color="warning"></ion-icon>
-        </ion-button>
-        }
-        @if(mayUnlock(document)){
-        <ion-button fill="clear" (click)="unlockDocument(document)" matTooltip="{{'Unlock' | translate}}">
-          <ion-icon slot="icon-only" name="lock-open" color="warning"></ion-icon>
-        </ion-button>
-        }
-        <ion-button fill="clear" (click)="openEdit(document)" matTooltip="{{'Edit document' | translate}}">
-          <ion-icon slot="icon-only" name="create" color="success"></ion-icon>
-        </ion-button>
-        @if( scope=='my' ) {
-        <ion-button fill="clear" (click)="openMove(document)" matTooltip="{{'Move to folder' | translate}}">
-          <ion-icon slot="icon-only" name="git-branch" color="tertiary"></ion-icon>
-        </ion-button>
-        <ion-button fill="clear" (click)="openRights(document)" matTooltip="{{'Set ACL' | translate}}">
-          <ion-icon slot="icon-only" name="key" color="secondary"></ion-icon>
-        </ion-button>
-        }
-        <ion-button fill="clear" (click)="openVersions(document)" matTooltip="{{'Manage versions' | translate}}">
-          <ion-icon slot="icon-only" name="archive" color="medium"></ion-icon>
-        </ion-button>
-        }
-        @if(authService.isAllowed('documents.delete') && scope=='my' ){
-        <ion-button fill="clear" color="danger" (click)="deleteDocument(document)" matTooltip="{{'Delete' | translate}}">
-          <ion-icon slot="icon-only" name="trash"></ion-icon>
-        </ion-button>
+        @if(authService.isMD()){
+          @if(authService.isAllowed('documents.modify') || (authService.isAllowed('documents.delete') && scope=='my')){
+          <ion-button fill="clear" (click)="openDocumentMenu($event, document)">
+            <ion-icon slot="icon-only" name="ellipsis-vertical-sharp"></ion-icon>
+          </ion-button>
+          }
+        }@else{
+          @if(authService.isAllowed('documents.modify')){
+          @if(canLock(document)){
+          <ion-button fill="clear" (click)="lockDocument(document)" matTooltip="{{'Lock' | translate}}">
+            <ion-icon slot="icon-only" name="lock-closed" color="warning"></ion-icon>
+          </ion-button>
+          }
+          @if(mayUnlock(document)){
+          <ion-button fill="clear" (click)="unlockDocument(document)" matTooltip="{{'Unlock' | translate}}">
+            <ion-icon slot="icon-only" name="lock-open" color="warning"></ion-icon>
+          </ion-button>
+          }
+          @if( scope=='my' ) {
+          <ion-button fill="clear" (click)="openEdit(document)" matTooltip="{{'Edit document' | translate}}">
+            <ion-icon slot="icon-only" name="create" color="success"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="openMove(document)" matTooltip="{{'Move to folder' | translate}}">
+            <ion-icon slot="icon-only" name="git-branch" color="tertiary"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="openRights(document)" matTooltip="{{'Set ACL' | translate}}">
+            <ion-icon slot="icon-only" name="key" color="secondary"></ion-icon>
+          </ion-button>
+          }
+          <ion-button fill="clear" (click)="openVersions(document)" matTooltip="{{'Manage versions' | translate}}">
+            <ion-icon slot="icon-only" name="archive" color="medium"></ion-icon>
+          </ion-button>
+          }
+          @if(authService.isAllowed('documents.delete') && scope=='my' ){
+          <ion-button fill="clear" color="danger" (click)="deleteDocument(document)" matTooltip="{{'Delete' | translate}}">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+          }
         }
       </div>
     </div>
     }
   </div>
 </ion-content>
+
+<ion-popover [isOpen]="isDocumentMenuOpen" [event]="menuEvent" (didDismiss)="isDocumentMenuOpen = false">
+  <ng-template>
+    <ion-list lines="none">
+      @if(menuDocument && authService.isAllowed('documents.modify')){
+      @if(canLock(menuDocument)){
+      <ion-item button (click)="lockDocument(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="lock-closed" color="warning"></ion-icon>
+        <ion-label>{{'Lock' | translate}}</ion-label>
+      </ion-item>
+      }
+      @if(mayUnlock(menuDocument)){
+      <ion-item button (click)="unlockDocument(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="lock-open" color="warning"></ion-icon>
+        <ion-label>{{'Unlock' | translate}}</ion-label>
+      </ion-item>
+      }
+      @if(scope=='my'){
+      <ion-item button (click)="openEdit(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="create" color="success"></ion-icon>
+        <ion-label>{{'Edit document' | translate}}</ion-label>
+      </ion-item>
+      <ion-item button (click)="openMove(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="git-branch" color="tertiary"></ion-icon>
+        <ion-label>{{'Move to folder' | translate}}</ion-label>
+      </ion-item>
+      <ion-item button (click)="openRights(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="key" color="secondary"></ion-icon>
+        <ion-label>{{'Set ACL' | translate}}</ion-label>
+      </ion-item>
+      }
+      <ion-item button (click)="openVersions(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="archive" color="medium"></ion-icon>
+        <ion-label>{{'Manage versions' | translate}}</ion-label>
+      </ion-item>
+      }
+      @if(menuDocument && authService.isAllowed('documents.delete') && scope=='my'){
+      <ion-item button (click)="deleteDocument(menuDocument); isDocumentMenuOpen = false">
+        <ion-icon slot="start" name="trash" color="danger"></ion-icon>
+        <ion-label>{{'Delete' | translate}}</ion-label>
+      </ion-item>
+      }
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover [isOpen]="isFolderMenuOpen" [event]="menuEvent" (didDismiss)="isFolderMenuOpen = false">
+  <ng-template>
+    <ion-list lines="none">
+      @if(menuFolder && authService.isAllowed('documents.delete')){
+      <ion-item button (click)="deleteFolder(menuFolder); isFolderMenuOpen = false">
+        <ion-icon slot="start" name="trash" color="danger"></ion-icon>
+        <ion-label>{{'Delete' | translate}}</ion-label>
+      </ion-item>
+      }
+    </ion-list>
+  </ng-template>
+</ion-popover>
 
 <ion-modal #documentForm [isOpen]="isDocumentFormOpen" (didDismiss)="isDocumentFormOpen = false">
   <ng-template>
@@ -225,6 +308,7 @@
         </ion-item>
         <ion-item>
           <ion-note>{{'Only the creator can set the current version.' | translate}}</ion-note>
+          <ion-note>{{'Every one has access only to the owned version.' | translate}}</ion-note>
         </ion-item>
         }
       </ion-list>
@@ -283,6 +367,7 @@
     <ion-content>
       <ion-list>
         @for(version of versions; track version.id){
+        @if(ownDocument(selectedDocument) || isVersionOwner(version) || !selectedDocument.isVersionProtected){
         <div class="crx-list-item">
           <div class="crx-text">
             <b>{{'Version' | translate}} {{version.versionNumber}} {{'Creator' | translate}}: {{ version.creator.fullName }} @if(version.isCurrent){ ({{'current' | translate}})}</b><br>
@@ -292,22 +377,29 @@
             }
           </div>
           <div class="crx-text-end">
-            <ion-button fill="clear" (click)="downloadVersion(version)">
-              <ion-icon slot="icon-only" name="download" color="primary"></ion-icon>
+            @if(authService.isMD()){
+            <ion-button fill="clear" (click)="openVersionMenu($event, version)">
+              <ion-icon slot="icon-only" name="ellipsis-vertical-sharp"></ion-icon>
             </ion-button>
+            }@else{
             @if(authService.isAllowed('documents.modify') && !version.isCurrent
                  && (!selectedDocument.isVersionProtected || ownDocument(selectedDocument))){
             <ion-button fill="clear" (click)="restoreVersion(version)" matTooltip="{{'Set this as current version'|translate}}">
               <ion-icon slot="icon-only" name="refresh" color="tertiary"></ion-icon>
             </ion-button>
             }
+            <ion-button fill="clear" (click)="downloadVersion(version)">
+              <ion-icon slot="icon-only" name="download" color="primary"></ion-icon>
+            </ion-button>
             @if(authService.isAllowed('documents.modify') && (ownDocument(selectedDocument) || isVersionOwner(version))){
             <ion-button fill="clear" color="danger" (click)="deleteVersion(version)">
               <ion-icon slot="icon-only" name="trash"></ion-icon>
             </ion-button>
             }
+            }
           </div>
         </div>
+        }
         }
       </ion-list>
       @if(selectedDocument.locked && selectedDocument.lockedBy){
@@ -338,6 +430,31 @@
       </ion-footer>
       }
     </ion-content>
+    <ion-popover [isOpen]="isVersionMenuOpen" [event]="menuEvent" (didDismiss)="isVersionMenuOpen = false">
+      <ng-template>
+        <ion-list lines="none">
+          @if(menuVersion && authService.isAllowed('documents.modify') && !menuVersion.isCurrent
+               && (!selectedDocument.isVersionProtected || ownDocument(selectedDocument))){
+          <ion-item button (click)="restoreVersion(menuVersion); isVersionMenuOpen = false">
+            <ion-icon slot="start" name="refresh" color="tertiary"></ion-icon>
+            <ion-label>{{'Set this as current version'|translate}}</ion-label>
+          </ion-item>
+          }
+          @if(menuVersion){
+          <ion-item button (click)="downloadVersion(menuVersion); isVersionMenuOpen = false">
+            <ion-icon slot="start" name="download" color="primary"></ion-icon>
+            <ion-label>{{'Download' | translate}}</ion-label>
+          </ion-item>
+          }
+          @if(menuVersion && authService.isAllowed('documents.modify') && (ownDocument(selectedDocument) || isVersionOwner(menuVersion))){
+          <ion-item button (click)="deleteVersion(menuVersion); isVersionMenuOpen = false">
+            <ion-icon slot="start" name="trash" color="danger"></ion-icon>
+            <ion-label>{{'Delete' | translate}}</ion-label>
+          </ion-item>
+          }
+        </ion-list>
+      </ng-template>
+    </ion-popover>
   </ng-template>
 </ion-modal>
 

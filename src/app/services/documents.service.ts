@@ -132,7 +132,7 @@ export class DocumentsService {
         return this.http.delete<ServerResponse>(this.url + `/${id}/lock`, { headers: this.authService.headers });
     }
 
-    download(resp: HttpResponse<Blob>, fallbackName: string) {
+    download(resp: HttpResponse<Blob>, fallbackName: string, forceFallbacName: boolean = false) {
         const contentType = resp.headers.get('Content-Type') || 'application/octet-stream';
         const blob: Blob = new Blob([resp.body!], { type: contentType });
         const url = window.URL.createObjectURL(blob);
@@ -140,7 +140,7 @@ export class DocumentsService {
         a.href = url;
         const contentDisposition = resp.headers.get('Content-Disposition');
         let fileName = fallbackName;
-        if (contentDisposition) {
+        if (contentDisposition && !forceFallbacName ) {
             const match = /filename[^;=\n]*=\s*(\"?)([^\";\n]+)\1/ig.exec(contentDisposition);
             if (match && match[2]) { fileName = match[2].trim().replace(/"/g, ''); }
         }
