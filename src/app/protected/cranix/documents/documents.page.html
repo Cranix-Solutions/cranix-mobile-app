@@ -21,7 +21,7 @@
     </ion-button>
     }
     @if(scope=='my' && !showAllFiles && (currentFolder || folderPath.length > 0)){
-    <ion-button fill="clear" (click)="goToRoot()" matTooltip="{{'Root folder' | translate}}">
+    <ion-button fill="clear" (click)="goToRoot()" matTooltip="{{'Home Directory' | translate}}">
       <ion-icon slot="icon-only" name="home"></ion-icon>
     </ion-button>
     }
@@ -525,7 +525,7 @@
       <ion-radio-group [(ngModel)]="moveTarget">
         <ion-list>
           <ion-item>
-            <ion-label [position]="authService.settings.labelPlacement">{{'Root folder' | translate}}</ion-label>
+            <ion-label [position]="authService.settings.labelPlacement">{{'Home Directory' | translate}}</ion-label>
             <ion-radio slot="start" [value]="0"></ion-radio>
           </ion-item>
           @for(folder of moveFolders; track folder.id){

@@ -1,4 +1,9 @@
 {
+    "Home Directory":"Homeverzeichnis",
+    "Move to folder":"Bewegen",
+    "Set ACL":"Teilen/ACL setzen",
+    "Manage versions":"Versionen verwalten",
+    "Set this as current version":"Diese als aktuelle Version setzen",
     "ticketType":"Art der Anfrage",
     "assignee":"zugewiesen an",
     "assigneeId":"zugewiesen an",
