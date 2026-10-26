@@ -16,6 +16,7 @@ import { SoftwaresPageModule } from './softwares/softwares.module';
 import { SystemPageModule }    from './system/system.module';
 import { ProfileModule }       from './profile/profile.module';
 import { UsersListsPageModule } from './users/lists/users-lists.module';
+import { WebmailModule }        from './webmail/webmail.module';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { UsersListsPageModule } from './users/lists/users-lists.module';
     SoftwaresPageModule,
     SystemPageModule,
     UsersListsPageModule,
-    ProfileModule
+    ProfileModule,
+    WebmailModule
   ]
 })
 export class CranixModule { }

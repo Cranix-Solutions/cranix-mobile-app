@@ -925,5 +925,20 @@
     "Ticket": "Ticket",
     "Tickets": "Tickets",
     "not assigned": "nicht zugewiesen",
-    "Assign the ticket to me.": "Ticket mir zuweisen."
+    "Assign the ticket to me.": "Ticket mir zuweisen.",
+    "Webmail": "Webmail",
+    "Inbox": "Posteingang",
+    "Compose": "Verfassen",
+    "Compose mail": "Neue Nachricht",
+    "Message": "Nachricht",
+    "Sender": "Absender",
+    "To": "An",
+    "Subject": "Betreff",
+    "Attachments": "Anhänge",
+    "Reply": "Antworten",
+    "Send": "Senden",
+    "No messages": "Keine Nachrichten",
+    "Load more": "Mehr laden",
+    "Reload": "Neu laden",
+    "mail@example.com": "mail@example.com"
 }

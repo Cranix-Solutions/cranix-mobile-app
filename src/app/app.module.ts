@@ -31,6 +31,7 @@ import { GroupsService } from './services/groups.service';
 import { HwconfsService } from './services/hwconfs.service';
 import { InformationsService } from './services/informations.services';
 import { LanguageService } from './services/language.service';
+import { MailService } from './services/mail.service';
 import { PrintersService } from './services/printers.service';
 import { ParentsService } from './services/parents.service';
 import { RoomsService } from './services/rooms.service';
@@ -89,6 +90,7 @@ export function createTranslateLoader(http: HttpClient) {
     HwconfsService,
     InformationsService,
     LanguageService,
+    MailService,
     PrintersService,
     ParentsService,
     RoomsService,

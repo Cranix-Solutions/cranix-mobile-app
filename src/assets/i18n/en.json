@@ -696,5 +696,20 @@
     "Tickets": "Tickets",
     "Title": "Title",
     "not assigned": "not assigned",
-    "Assign the ticket to me.": "Assign the ticket to me."
+    "Assign the ticket to me.": "Assign the ticket to me.",
+    "Webmail": "Webmail",
+    "Inbox": "Inbox",
+    "Compose": "Compose",
+    "Compose mail": "Compose mail",
+    "Message": "Message",
+    "Sender": "Sender",
+    "To": "To",
+    "Subject": "Subject",
+    "Attachments": "Attachments",
+    "Reply": "Reply",
+    "Send": "Send",
+    "No messages": "No messages",
+    "Load more": "Load more",
+    "Reload": "Reload",
+    "mail@example.com": "mail@example.com"
 }

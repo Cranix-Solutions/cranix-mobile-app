@@ -1,0 +1,53 @@
+<cranix-toolbar title="{{'Webmail' | translate}}"></cranix-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-item lines="none">
+    <ion-select [(ngModel)]="selectedFolder" (ionChange)="folderChanged()" interface="popover">
+      @for (folder of folders; track folder.fullName) {
+      <ion-select-option [value]="folder.fullName">
+        {{ folder.name }} ({{ folder.unreadCount }})
+      </ion-select-option>
+      }
+    </ion-select>
+  </ion-item>
+  <ion-buttons slot="end">
+    <ion-button size="small" fill="solid" (click)="compose()" matTooltip="{{'Compose' | translate }}">
+      <ion-icon slot="icon-only" name="create"></ion-icon>
+    </ion-button>
+    <ion-button size="small" fill="solid" (click)="loadMessages()" matTooltip="{{'Reload' | translate }}">
+      <ion-icon slot="icon-only" name="refresh" color="success"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content>
+  @if(loading){
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  }
+  <ion-list>
+    @for (message of messages; track message.uid) {
+    <ion-item button (click)="open(message)" [class.mail-unread]="!message.seen">
+      <ion-icon slot="start" name="mail" [color]="message.seen ? 'medium' : 'primary'"></ion-icon>
+      <ion-label>
+        <h2>{{ message.from }}</h2>
+        <h3>{{ message.subject }}</h3>
+        <p>{{ message.date | date:'short' }}</p>
+      </ion-label>
+      @if(message.hasAttachments){
+      <ion-icon slot="end" name="attach" color="medium"></ion-icon>
+      }
+    </ion-item>
+    }
+    @if(messages.length === 0 && !loading){
+    <ion-item lines="none">
+      <ion-label>{{ 'No messages' | translate }}</ion-label>
+    </ion-item>
+    }
+  </ion-list>
+  @if(hasMore()){
+  <ion-list lines="none">
+    <ion-item button (click)="loadMore()">
+      <ion-icon slot="start" name="chevron-down"></ion-icon>
+      <ion-label>{{ 'Load more' | translate }}</ion-label>
+    </ion-item>
+  </ion-list>
+  }
+</ion-content>

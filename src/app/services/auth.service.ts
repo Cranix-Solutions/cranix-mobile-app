@@ -140,6 +140,11 @@ export class AuthenticationService {
         title: "Informations",
         url: '/pages/cranix/informations',
         icon: 'library'
+      },
+      {
+        title: 'Webmail',
+        url: '/pages/cranix/webmail',
+        icon: 'mail'
       }
     ];
     
@@ -451,6 +456,9 @@ export class AuthenticationService {
         if (route.startsWith('/pages/cranix/helpdesk')) {
             return this.isAllowed('crxticket.use') &&
                 !this.isOneOfAllowed(['crxticket.worker', 'crxticket.manager'])
+        }
+        if (route.startsWith('/pages/cranix/webmail')) {
+            return this.isAllowed('mail.use')
         }
         switch (route) {
             case '/logout': { return true }

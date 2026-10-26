@@ -1,0 +1,40 @@
+<cranix-toolbar title="{{'Compose mail' | translate}}"></cranix-toolbar>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">{{ 'To' | translate }} *</ion-label>
+      <ion-input type="text" [(ngModel)]="to" placeholder="{{'mail@example.com' | translate}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">CC</ion-label>
+      <ion-input type="text" [(ngModel)]="cc"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">BCC</ion-label>
+      <ion-input type="text" [(ngModel)]="bcc"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'Subject' | translate }}</ion-label>
+      <ion-input type="text" [(ngModel)]="subject"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'Message' | translate }}</ion-label>
+      <ion-textarea autoGrow="true" rows="10" [(ngModel)]="body"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'Attachments' | translate }}</ion-label>
+      <input type="file" multiple (change)="onFilesAdded($event)">
+    </ion-item>
+  </ion-list>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" (click)="send()" [disabled]="sending || !to">
+        <ion-icon slot="start" name="send"></ion-icon>
+        {{ 'Send' | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  @if(sending){
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  }
+</ion-content>
