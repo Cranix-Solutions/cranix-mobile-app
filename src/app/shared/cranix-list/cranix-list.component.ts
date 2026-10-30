@@ -374,6 +374,7 @@ export class CranixListComponent implements OnInit, OnChanges {
           col['resizable'] = false
           col['maxWidth'] = 60
           col['minWidth'] = 60
+          break;
         }
         case 'runningKernel': {
           col['width'] = 60
