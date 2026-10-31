@@ -96,10 +96,12 @@ export class MyGroupsPage implements OnInit {
     switch (this.segment) {
       case 'education/user': {
         if (!anyObject) { anyObject = new User() }
+        break;
       }
       case 'education/group': {
         if (!anyObject) { anyObject = new Group() }
         delete anyObject.groupType
+        break;
       }
       case 'education/guestUser': {
         return this.addEditGuest(anyObject)

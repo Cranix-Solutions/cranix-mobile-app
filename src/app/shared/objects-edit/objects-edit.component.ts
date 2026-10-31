@@ -149,6 +149,9 @@ export class ObjectsEditComponent implements OnInit {
         this.object['softwareVersions'] = [{ 'version': this.object.version, 'status': 'C' }]
         this.object['softwareFullNames'] = [{ 'fullName': this.object.name }]
         console.log("new software", this.object)
+        // gleiche Aktion wie im Standardfall (vorher Fall-Through, jetzt explizit)
+        this.defaultAction(this.object);
+        break;
       }
       default: {
         this.defaultAction(this.object);
