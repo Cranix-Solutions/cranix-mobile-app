@@ -598,9 +598,9 @@ export class GenericObjectService {
   getDefaultSearchFields(objectType: string) {
     switch (objectType) {
       case 'acl': return ['acl']
-      case 'announcement': ['issue', 'keywords', 'title']
+      case 'announcement': return ['issue', 'keywords', 'title']
       case 'category': return ['name', 'description', 'categoryType']
-      case 'contact': ['issue', 'name', 'email', 'phone', 'title']
+      case 'contact': return ['issue', 'name', 'email', 'phone', 'title']
       case 'customer': return ['name', 'name2', 'uuid', 'locality', 'address1', 'address2', 'description', 'contact']
       case 'device': return ['name', 'IP', 'MAC', 'wlanIp', 'wlanMac', 'serial', 'inventary']
       case 'education/group':

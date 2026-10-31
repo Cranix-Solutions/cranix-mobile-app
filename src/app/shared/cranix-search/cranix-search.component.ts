@@ -151,9 +151,9 @@ export class CranixSearchComponent implements ControlValueAccessor, OnInit, OnCh
   getDefaultTextFields(){
     switch(this.objectType){
       case 'acl': return ['acl']
-      case 'announcement': ['issue','keywords','title']
+      case 'announcement': return ['issue','keywords','title']
       case 'category': return ['name', 'description', 'categoryType']
-      case 'contact': ['issue','name','email','phone','title']
+      case 'contact': return ['issue','name','email','phone','title']
       case 'customer': return ['name', 'locality', 'description']
       case 'device': return ['name', 'IP']
       case 'group': return ['name', 'description','groupType']
