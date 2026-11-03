@@ -47,7 +47,7 @@ export class InstituteActionCellRenderer implements ICellRendererAngularComp, On
 
     public openAction(event) {
         event.stopPropagation();
-        this.params.context.componentParent.openActions(event, this.data.id)
+        this.params.context.componentParent.openActions(event, this.data)
     }
     public openNote(event) {
         event.stopPropagation();

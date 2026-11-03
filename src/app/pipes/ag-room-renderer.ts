@@ -54,7 +54,7 @@ export class RoomActionBTNRenderer implements ICellRendererAngularComp {
     }
     public openAction(event){
         event.stopPropagation();
-        this.params.context.componentParent.openActions(event, this.params.data.id )
+        this.params.context.componentParent.openActions(event, this.params.data);
     }
     public delete(event) {
         event.stopPropagation();
