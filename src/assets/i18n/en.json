@@ -716,5 +716,14 @@
     "Delete": "Delete",
     "System folders can not be deleted.": "System folders can not be deleted.",
     "Write your message ...": "Write your message ...",
+    "Select all": "Select all",
+    "Selected messages": "Selected messages",
+    "Forward": "Forward",
+    "Move to folder": "Move to folder",
+    "No other folder available.": "No other folder available.",
+    "Delete selected messages?": "Delete selected messages?",
+    "Forwarding is only possible for one message.": "Forwarding is only possible for one message.",
+    "Please select a folder!": "Please select a folder!",
+    "Forwarded message": "Forwarded message",
     "mail@example.com": "mail@example.com"
 }

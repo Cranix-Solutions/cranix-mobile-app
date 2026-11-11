@@ -18,6 +18,7 @@ export class MailListComponent implements OnInit {
 
   folders: MailFolder[] = [];
   messages: MailMessage[] = [];
+  selected: MailMessage[] = [];
   selectedFolder: string = "INBOX";
   limit: number = 50;
   loading: boolean = false;
@@ -50,6 +51,7 @@ export class MailListComponent implements OnInit {
 
   loadMessages() {
     this.loading = true;
+    this.selected = [];
     this.mailService.getMessages(this.selectedFolder, this.limit, 0).subscribe({
       next: (messages) => {
         this.messages = messages;
@@ -86,6 +88,129 @@ export class MailListComponent implements OnInit {
 
   folderChanged() {
     this.loadMessages();
+  }
+
+  isSelected(message: MailMessage): boolean {
+    return this.selected.some(m => m.uid === message.uid);
+  }
+
+  toggleSelect(message: MailMessage, event) {
+    if (event.detail.checked) {
+      if (!this.isSelected(message)) {
+        this.selected.push(message);
+      }
+    } else {
+      this.selected = this.selected.filter(m => m.uid !== message.uid);
+    }
+  }
+
+  allSelected(): boolean {
+    return this.messages.length > 0 && this.selected.length === this.messages.length;
+  }
+
+  someSelected(): boolean {
+    return this.selected.length > 0 && !this.allSelected();
+  }
+
+  toggleAll(event) {
+    this.selected = event.detail.checked ? this.messages.slice() : [];
+  }
+
+  async openActions() {
+    const alert = await this.alertCtrl.create({
+      header: this.languageS.trans('Selected messages') + ": " + this.selected.length,
+      buttons: [
+        { text: this.languageS.trans('Cancel'), role: 'cancel' },
+        { text: this.languageS.trans('Forward'), handler: () => { this.forwardSelected(); } },
+        { text: this.languageS.trans('Move to folder'), handler: () => { this.moveSelected(); } },
+        { text: this.languageS.trans('Delete'), role: 'destructive', handler: () => { this.deleteSelected(); } }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deleteSelected() {
+    const count = this.selected.length;
+    const alert = await this.alertCtrl.create({
+      header: this.languageS.trans('Confirm!'),
+      message: this.languageS.trans('Delete selected messages?') + " (" + count + ")",
+      buttons: [
+        { text: this.languageS.trans('Cancel'), role: 'cancel' },
+        {
+          text: this.languageS.trans('Delete'),
+          role: 'destructive',
+          handler: () => {
+            const uids = this.selected.map(m => m.uid);
+            this.mailService.deleteMessages(this.selectedFolder, uids).subscribe({
+              next: (resp) => {
+                this.objectService.responseMessage(resp);
+                this.selected = [];
+                this.loadFolders();
+                this.loadMessages();
+              },
+              error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async moveSelected() {
+    const targets = this.folders.filter(f => f.fullName !== this.selectedFolder);
+    if (targets.length === 0) {
+      this.objectService.warningMessage(this.languageS.trans('No other folder available.'));
+      return;
+    }
+    const alert = await this.alertCtrl.create({
+      header: this.languageS.trans('Move to folder'),
+      inputs: targets.map(f => ({
+        name: 'target',
+        type: 'radio',
+        label: f.fullName,
+        value: f.fullName
+      })),
+      buttons: [
+        { text: this.languageS.trans('Cancel'), role: 'cancel' },
+        {
+          text: this.languageS.trans('Move'),
+          handler: (target) => {
+            if (!target) {
+              this.objectService.warningMessage(this.languageS.trans('Please select a folder!'));
+              return false;
+            }
+            const uids = this.selected.map(m => m.uid);
+            this.mailService.moveMessages(this.selectedFolder, uids, target).subscribe({
+              next: (resp) => {
+                this.objectService.responseMessage(resp);
+                this.selected = [];
+                this.loadFolders();
+                this.loadMessages();
+              },
+              error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  forwardSelected() {
+    if (this.selected.length !== 1) {
+      this.objectService.warningMessage(this.languageS.trans('Forwarding is only possible for one message.'));
+      return;
+    }
+    const message = this.selected[0];
+    this.selected = [];
+    this.router.navigate(['/pages/cranix/webmail/compose'], {
+      queryParams: {
+        forwardFolder: message.folder,
+        forwardUid: message.uid,
+        subject: message.subject && message.subject.startsWith("Fwd:") ? message.subject : "Fwd: " + (message.subject || "")
+      }
+    });
   }
 
   async createFolder() {

@@ -944,5 +944,13 @@
     "Folder name": "Ordnername",
     "System folders can not be deleted.": "Systemordner können nicht gelöscht werden.",
     "Write your message ...": "Nachricht schreiben ...",
+    "Select all": "Alle auswählen",
+    "Selected messages": "Ausgewählte Nachrichten",
+    "Forward": "Weiterleiten",
+    "No other folder available.": "Kein weiterer Ordner verfügbar.",
+    "Delete selected messages?": "Ausgewählte Nachrichten löschen?",
+    "Forwarding is only possible for one message.": "Weiterleiten ist nur für eine Nachricht möglich.",
+    "Please select a folder!": "Bitte wählen Sie einen Ordner aus!",
+    "Forwarded message": "Weitergeleitete Nachricht",
     "mail@example.com": "mail@example.com"
 }

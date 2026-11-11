@@ -54,6 +54,17 @@ export class MailService {
 		return this.http.delete<ServerResponse>(this.url, { headers: this.authService.headers });
 	}
 
+	deleteMessages(folder: string, uids: number[]) {
+		this.url = this.hostname + '/mail/messages?folder=' + encodeURIComponent(folder) + '&uids=' + uids.join(',');
+		return this.http.delete<ServerResponse>(this.url, { headers: this.authService.headers });
+	}
+
+	moveMessages(folder: string, uids: number[], target: string) {
+		this.url = this.hostname + '/mail/move?folder=' + encodeURIComponent(folder)
+			+ '&uids=' + uids.join(',') + '&target=' + encodeURIComponent(target);
+		return this.http.post<ServerResponse>(this.url, null, { headers: this.authService.headers });
+	}
+
 	setSeen(folder: string, uid: number, seen: boolean) {
 		this.url = this.hostname + '/mail/message/' + encodeURIComponent(folder) + '/' + uid + '/seen/' + seen;
 		return this.http.put<ServerResponse>(this.url, null, { headers: this.authService.headers });

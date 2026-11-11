@@ -1,15 +1,24 @@
 <cranix-toolbar title="{{'Webmail' | translate}}"></cranix-toolbar>
 <ion-toolbar class="page-toolbar">
   <ion-item lines="none">
+    <ion-checkbox slot="start" [checked]="allSelected()" [indeterminate]="someSelected()"
+      (ionChange)="toggleAll($event)" matTooltip="{{ 'Select all' | translate }}"></ion-checkbox>
     <ion-select [(ngModel)]="selectedFolder" (ionChange)="folderChanged()" interface="popover">
       @for (folder of folders; track folder.fullName) {
       <ion-select-option [value]="folder.fullName">
-        {{ folder.name }} ({{ folder.unreadCount }})
+        {{ folder.fullName }} ({{ folder.unreadCount }})
       </ion-select-option>
       }
     </ion-select>
   </ion-item>
   <ion-buttons slot="end">
+    @if(selected.length > 0){
+    <ion-button size="small" fill="solid" color="medium" (click)="openActions()"
+      matTooltip="{{ 'Selected messages' | translate }}">
+      <ion-icon slot="start" name="ellipsis-vertical"></ion-icon>
+      {{ selected.length }}
+    </ion-button>
+    }
     <ion-button size="small" fill="solid" (click)="createFolder()" matTooltip="{{'New folder' | translate }}">
       <ion-icon slot="icon-only" name="folder"></ion-icon>
     </ion-button>
@@ -31,7 +40,9 @@
   <ion-list>
     @for (message of messages; track message.uid) {
     <ion-item button (click)="open(message)" [class.mail-unread]="!message.seen">
-      <ion-icon slot="start" name="mail" [color]="message.seen ? 'medium' : 'primary'"></ion-icon>
+      <ion-checkbox slot="start" (click)="$event.stopPropagation()"
+        [checked]="isSelected(message)" [color]="message.seen ? 'medium' : 'primary'"
+        (ionChange)="toggleSelect(message, $event)"></ion-checkbox>
       <ion-label>
         <h2>{{ message.from }}</h2>
         <h3>{{ message.subject }}</h3>
