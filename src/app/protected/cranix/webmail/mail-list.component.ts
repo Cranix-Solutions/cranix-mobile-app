@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 //Own stuff
 import { MailService } from 'src/app/services/mail.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
+import { LanguageService } from 'src/app/services/language.service';
 import { MailFolder, MailMessage } from 'src/app/shared/models/mail-model';
 import { MailViewComponent } from './mail-view.component';
 
@@ -25,6 +26,8 @@ export class MailListComponent implements OnInit {
     public mailService: MailService,
     public modalController: ModalController,
     public objectService: GenericObjectService,
+    public languageS: LanguageService,
+    public alertCtrl: AlertController,
     private router: Router
   ) { }
 
@@ -41,7 +44,7 @@ export class MailListComponent implements OnInit {
           this.selectedFolder = this.folders[0].fullName;
         }
       },
-      error: (err) => { this.objectService.errorMessage(err) }
+      error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
     });
   }
 
@@ -54,7 +57,7 @@ export class MailListComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.objectService.errorMessage(err)
+        this.objectService.errorMessage(this.serverMessage(err))
       }
     });
   }
@@ -68,7 +71,7 @@ export class MailListComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.objectService.errorMessage(err)
+        this.objectService.errorMessage(this.serverMessage(err))
       }
     });
   }
@@ -83,6 +86,75 @@ export class MailListComponent implements OnInit {
 
   folderChanged() {
     this.loadMessages();
+  }
+
+  async createFolder() {
+    const alert = await this.alertCtrl.create({
+      header: this.languageS.trans('New folder'),
+      message: this.languageS.trans('Folder name'),
+      inputs: [
+        {
+          name: 'name',
+          type: 'text',
+          placeholder: this.languageS.trans('Folder name')
+        }
+      ],
+      buttons: [
+        { text: this.languageS.trans('Cancel'), role: 'cancel' },
+        {
+          text: this.languageS.trans('Create'),
+          handler: (data) => {
+            const name = (data.name || "").trim();
+            if (name.length === 0) {
+              this.objectService.warningMessage(this.languageS.trans('A folder name must be set!'));
+              return false;
+            }
+            this.mailService.createFolder(name, this.selectedFolder).subscribe({
+              next: (resp) => {
+                this.objectService.responseMessage(resp);
+                this.loadFolders();
+                this.loadMessages();
+              },
+              error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deleteFolder() {
+    const folder = this.folders.find(f => f.fullName === this.selectedFolder);
+    if (!folder) {
+      return;
+    }
+    if (folder.type !== 'folder') {
+      this.objectService.warningMessage(this.languageS.trans('System folders can not be deleted.'));
+      return;
+    }
+    const alert = await this.alertCtrl.create({
+      header: this.languageS.trans('Confirm!'),
+      message: this.languageS.trans('Do you realy want to delete?') + " " + folder.name,
+      buttons: [
+        { text: this.languageS.trans('Cancel'), role: 'cancel' },
+        {
+          text: this.languageS.trans('Delete'),
+          handler: () => {
+            this.mailService.deleteFolder(folder.fullName).subscribe({
+              next: (resp) => {
+                this.objectService.responseMessage(resp);
+                this.selectedFolder = "INBOX";
+                this.loadFolders();
+                this.loadMessages();
+              },
+              error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async open(message: MailMessage) {
@@ -108,5 +180,23 @@ export class MailListComponent implements OnInit {
 
   compose() {
     this.router.navigate(['/pages/cranix/webmail/compose']);
+  }
+
+  private serverMessage(err): string {
+    if (!err) {
+      return "";
+    }
+    if (typeof err === 'string') {
+      return err;
+    }
+    if (err.error) {
+      if (typeof err.error === 'string') {
+        return err.error;
+      }
+      if (err.error.value) {
+        return this.languageS.trans(err.error.value);
+      }
+    }
+    return err.message || err.statusText || "Error";
   }
 }

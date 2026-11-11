@@ -10,6 +10,12 @@
     </ion-select>
   </ion-item>
   <ion-buttons slot="end">
+    <ion-button size="small" fill="solid" (click)="createFolder()" matTooltip="{{'New folder' | translate }}">
+      <ion-icon slot="icon-only" name="folder"></ion-icon>
+    </ion-button>
+    <ion-button size="small" fill="solid" color="danger" (click)="deleteFolder()" matTooltip="{{'Delete folder' | translate }}">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-button>
     <ion-button size="small" fill="solid" (click)="compose()" matTooltip="{{'Compose' | translate }}">
       <ion-icon slot="icon-only" name="create"></ion-icon>
     </ion-button>

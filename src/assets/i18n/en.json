@@ -711,5 +711,9 @@
     "No messages": "No messages",
     "Load more": "Load more",
     "Reload": "Reload",
+    "Delete folder": "Delete folder",
+    "Folder name": "Folder name",
+    "Delete": "Delete",
+    "System folders can not be deleted.": "System folders can not be deleted.",
     "mail@example.com": "mail@example.com"
 }

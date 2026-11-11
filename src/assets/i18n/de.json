@@ -940,5 +940,8 @@
     "No messages": "Keine Nachrichten",
     "Load more": "Mehr laden",
     "Reload": "Neu laden",
+    "Delete folder": "Ordner löschen",
+    "Folder name": "Ordnername",
+    "System folders can not be deleted.": "Systemordner können nicht gelöscht werden.",
     "mail@example.com": "mail@example.com"
 }

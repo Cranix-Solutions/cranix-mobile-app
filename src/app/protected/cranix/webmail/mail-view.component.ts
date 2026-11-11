@@ -35,7 +35,7 @@ export class MailViewComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.objectService.errorMessage(err);
+        this.objectService.errorMessage(this.serverMessage(err));
       }
     });
   }
@@ -56,7 +56,7 @@ export class MailViewComponent implements OnInit {
           this.modalController.dismiss(true);
         }
       },
-      error: (err) => { this.objectService.errorMessage(err) }
+      error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
     });
   }
 
@@ -73,7 +73,25 @@ export class MailViewComponent implements OnInit {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       },
-      error: (err) => { this.objectService.errorMessage(err) }
+      error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
     });
+  }
+
+  private serverMessage(err): string {
+    if (!err) {
+      return "";
+    }
+    if (typeof err === 'string') {
+      return err;
+    }
+    if (err.error) {
+      if (typeof err.error === 'string') {
+        return err.error;
+      }
+      if (err.error.value) {
+        return err.error.value;
+      }
+    }
+    return err.message || err.statusText || "Error";
   }
 }

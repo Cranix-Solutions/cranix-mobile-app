@@ -58,4 +58,17 @@ export class MailService {
 		this.url = this.hostname + '/mail/message/' + encodeURIComponent(folder) + '/' + uid + '/seen/' + seen;
 		return this.http.put<ServerResponse>(this.url, null, { headers: this.authService.headers });
 	}
+
+	createFolder(name: string, parent?: string) {
+		this.url = this.hostname + '/mail/folder?name=' + encodeURIComponent(name);
+		if (parent && parent.length > 0) {
+			this.url += '&parent=' + encodeURIComponent(parent);
+		}
+		return this.http.post<ServerResponse>(this.url, null, { headers: this.authService.headers });
+	}
+
+	deleteFolder(name: string) {
+		this.url = this.hostname + '/mail/folder?name=' + encodeURIComponent(name);
+		return this.http.delete<ServerResponse>(this.url, { headers: this.authService.headers });
+	}
 }

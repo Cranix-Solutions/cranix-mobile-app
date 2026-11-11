@@ -39,10 +39,10 @@ export class UtilsService {
                 //Local development (dev-test): talk to the dev server itself,
                 ///api is proxied to a real CRANIX server by proxy.conf.js
                 //See: proxy.conf.js, ng serve --proxy-config proxy.conf.js
-                return window.location.origin + "/api";
+                //return window.location.origin + "/api";
                 //return "https://192.168.178.199:444/api"
                 //return "https://cranix-test:444/api"
-                return "https://admin.cephalix.eu/api"
+                return "https://test.cephalix.eu:444/api"
                 //return "https://remscheid.cephalix.eu/api"
                 //return "https://gif1.bbs1-gifhorn.de:444/api"
                 //return "https://admin.test-cephalix.cephalix.eu/api"

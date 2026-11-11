@@ -64,7 +64,7 @@ export class MailComposeComponent implements OnInit {
       },
       error: (err) => {
         this.sending = false;
-        this.objectService.errorMessage(err);
+        this.objectService.errorMessage(this.serverMessage(err));
       }
     });
   }
@@ -76,5 +76,23 @@ export class MailComposeComponent implements OnInit {
     this.subject = "";
     this.body = "";
     this.files = undefined;
+  }
+
+  private serverMessage(err): string {
+    if (!err) {
+      return "";
+    }
+    if (typeof err === 'string') {
+      return err;
+    }
+    if (err.error) {
+      if (typeof err.error === 'string') {
+        return err.error;
+      }
+      if (err.error.value) {
+        return err.error.value;
+      }
+    }
+    return err.message || err.statusText || "Error";
   }
 }
