@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Routes } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 
 //own modules
 import { CranixSharedModule } from 'src/app/shared/cranix-shared.module';
@@ -40,6 +41,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     CranixSharedModule,
+    QuillModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   declarations: [

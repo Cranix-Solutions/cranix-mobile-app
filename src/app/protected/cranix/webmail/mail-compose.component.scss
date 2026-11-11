@@ -1,0 +1,16 @@
+.mail-compose-body {
+  padding: 8px 10px;
+
+  .mail-compose-label {
+    font-size: 0.9em;
+    color: var(--ion-color-medium);
+    margin-bottom: 4px;
+  }
+
+  quill-editor {
+    display: block;
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+  }
+}

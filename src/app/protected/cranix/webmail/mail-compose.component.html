@@ -17,10 +17,12 @@
       <ion-label position="stacked">{{ 'Subject' | translate }}</ion-label>
       <ion-input type="text" [(ngModel)]="subject"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label position="stacked">{{ 'Message' | translate }}</ion-label>
-      <ion-textarea autoGrow="true" rows="10" [(ngModel)]="body"></ion-textarea>
-    </ion-item>
+    <div class="mail-compose-body">
+      <div class="mail-compose-label">{{ 'Message' | translate }}</div>
+      <quill-editor [(ngModel)]="body" [styles]="{height: '300px'}"
+        placeholder="{{ 'Write your message ...' | translate }}">
+      </quill-editor>
+    </div>
     <ion-item>
       <ion-label position="stacked">{{ 'Attachments' | translate }}</ion-label>
       <input type="file" multiple (change)="onFilesAdded($event)">
