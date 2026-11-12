@@ -28,10 +28,20 @@
     <ion-button size="small" fill="solid" (click)="compose()" matTooltip="{{'Compose' | translate }}">
       <ion-icon slot="icon-only" name="create"></ion-icon>
     </ion-button>
-    <ion-button size="small" fill="solid" (click)="loadMessages()" matTooltip="{{'Reload' | translate }}">
+    <ion-button size="small" fill="solid" (click)="reload()" matTooltip="{{'Reload' | translate }}">
       <ion-icon slot="icon-only" name="refresh" color="success"></ion-icon>
     </ion-button>
   </ion-buttons>
+</ion-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-searchbar [(ngModel)]="searchQuery" placeholder="{{ 'Search mail' | translate }}"
+    (ionInput)="onSearch()" (ionClear)="onSearch()" [debounce]="500"></ion-searchbar>
+</ion-toolbar>
+<ion-toolbar class="page-toolbar">
+  <ion-item lines="none">
+    <ion-checkbox slot="start" [(ngModel)]="searchAllFolders" (ionChange)="onSearch()"></ion-checkbox>
+    <ion-label>{{ 'Search all folders' | translate }}</ion-label>
+  </ion-item>
 </ion-toolbar>
 <ion-content>
   @if(loading){
@@ -46,7 +56,7 @@
       <ion-label>
         <h2>{{ message.from }}</h2>
         <h3>{{ message.subject }}</h3>
-        <p>{{ message.date | date:'short' }}</p>
+        <p>{{ message.date | date:'short' }}@if(searchActive){ <span>· {{ message.folder }}</span> }</p>
       </ion-label>
       @if(message.hasAttachments){
       <ion-icon slot="end" name="attach" color="medium"></ion-icon>
@@ -55,7 +65,7 @@
     }
     @if(messages.length === 0 && !loading){
     <ion-item lines="none">
-      <ion-label>{{ 'No messages' | translate }}</ion-label>
+      <ion-label>{{ searchActive ? ('No results found' | translate) : ('No messages' | translate) }}</ion-label>
     </ion-item>
     }
   </ion-list>

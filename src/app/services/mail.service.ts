@@ -34,6 +34,14 @@ export class MailService {
 		return this.http.get<MailMessage[]>(this.url, { headers: this.authService.headers });
 	}
 
+	searchMessages(query: string, folder: string = "", limit: number = 50, offset: number = 0) {
+		this.url = this.hostname + '/mail/search?query=' + encodeURIComponent(query) + `&limit=${limit}&offset=${offset}`;
+		if (folder && folder.length > 0) {
+			this.url += '&folder=' + encodeURIComponent(folder);
+		}
+		return this.http.get<MailMessage[]>(this.url, { headers: this.authService.headers });
+	}
+
 	getMessage(folder: string, uid: number) {
 		this.url = this.hostname + '/mail/message/' + encodeURIComponent(folder) + '/' + uid;
 		return this.http.get<MailMessage>(this.url, { headers: this.authService.headers });

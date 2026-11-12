@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 //Own stuff
 import { MailService } from 'src/app/services/mail.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
@@ -22,6 +23,10 @@ export class MailListComponent implements OnInit {
   selectedFolder: string = "INBOX";
   limit: number = 50;
   loading: boolean = false;
+  searchQuery: string = "";
+  searchAllFolders: boolean = true;
+  searchActive: boolean = false;
+  searchExhausted: boolean = false;
 
   constructor(
     public mailService: MailService,
@@ -50,6 +55,8 @@ export class MailListComponent implements OnInit {
   }
 
   loadMessages() {
+    this.searchActive = false;
+    this.searchExhausted = false;
     this.loading = true;
     this.selected = [];
     this.mailService.getMessages(this.selectedFolder, this.limit, 0).subscribe({
@@ -64,8 +71,61 @@ export class MailListComponent implements OnInit {
     });
   }
 
-  loadMore() {
+  onSearch() {
+    const query = this.searchQuery.trim();
+    if (query.length === 0) {
+      this.loadMessages();
+      return;
+    }
+    this.searchActive = true;
+    this.searchExhausted = false;
     this.loading = true;
+    this.selected = [];
+    this.messages = [];
+    this.mailService.searchMessages(query, this.searchAllFolders ? "" : this.selectedFolder, this.limit, 0).subscribe({
+      next: (messages) => {
+        this.messages = messages;
+        this.searchExhausted = messages.length < this.limit;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.objectService.errorMessage(this.serverMessage(err))
+      }
+    });
+  }
+
+  reload() {
+    if (this.searchActive) {
+      this.onSearch();
+    } else {
+      this.loadMessages();
+    }
+  }
+
+  loadMore() {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    if (this.searchActive) {
+      if (this.searchExhausted) {
+        this.loading = false;
+        return;
+      }
+      this.mailService.searchMessages(this.searchQuery.trim(), this.searchAllFolders ? "" : this.selectedFolder, this.limit, this.messages.length).subscribe({
+        next: (messages) => {
+          this.messages = this.messages.concat(messages);
+          this.searchExhausted = messages.length < this.limit;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.loading = false;
+          this.objectService.errorMessage(this.serverMessage(err))
+        }
+      });
+      return;
+    }
     this.mailService.getMessages(this.selectedFolder, this.limit, this.messages.length).subscribe({
       next: (messages) => {
         this.messages = this.messages.concat(messages);
@@ -79,6 +139,9 @@ export class MailListComponent implements OnInit {
   }
 
   hasMore(): boolean {
+    if (this.searchActive) {
+      return !this.searchExhausted && this.messages.length >= this.limit;
+    }
     let folder = this.folders.find(f => f.fullName === this.selectedFolder);
     if (!folder) {
       return false;
@@ -87,11 +150,11 @@ export class MailListComponent implements OnInit {
   }
 
   folderChanged() {
-    this.loadMessages();
+    this.reload();
   }
 
   isSelected(message: MailMessage): boolean {
-    return this.selected.some(m => m.uid === message.uid);
+    return this.selected.some(m => m.folder === message.folder && m.uid === message.uid);
   }
 
   toggleSelect(message: MailMessage, event) {
@@ -100,7 +163,7 @@ export class MailListComponent implements OnInit {
         this.selected.push(message);
       }
     } else {
-      this.selected = this.selected.filter(m => m.uid !== message.uid);
+      this.selected = this.selected.filter(m => !(m.folder === message.folder && m.uid === message.uid));
     }
   }
 
@@ -114,6 +177,18 @@ export class MailListComponent implements OnInit {
 
   toggleAll(event) {
     this.selected = event.detail.checked ? this.messages.slice() : [];
+  }
+
+  private selectedByFolder(): { [folder: string]: number[] } {
+    const groups: { [folder: string]: number[] } = {};
+    this.selected.forEach(message => {
+      const folder = message.folder || this.selectedFolder;
+      if (!groups[folder]) {
+        groups[folder] = [];
+      }
+      groups[folder].push(message.uid);
+    });
+    return groups;
   }
 
   async openActions() {
@@ -140,13 +215,14 @@ export class MailListComponent implements OnInit {
           text: this.languageS.trans('Delete'),
           role: 'destructive',
           handler: () => {
-            const uids = this.selected.map(m => m.uid);
-            this.mailService.deleteMessages(this.selectedFolder, uids).subscribe({
-              next: (resp) => {
-                this.objectService.responseMessage(resp);
+            const groups = this.selectedByFolder();
+            const requests = Object.keys(groups).map(folder => this.mailService.deleteMessages(folder, groups[folder]));
+            forkJoin(requests).subscribe({
+              next: (responses) => {
+                responses.forEach(resp => this.objectService.responseMessage(resp));
                 this.selected = [];
                 this.loadFolders();
-                this.loadMessages();
+                this.reload();
               },
               error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
             });
@@ -180,13 +256,14 @@ export class MailListComponent implements OnInit {
               this.objectService.warningMessage(this.languageS.trans('Please select a folder!'));
               return false;
             }
-            const uids = this.selected.map(m => m.uid);
-            this.mailService.moveMessages(this.selectedFolder, uids, target).subscribe({
-              next: (resp) => {
-                this.objectService.responseMessage(resp);
+            const groups = this.selectedByFolder();
+            const requests = Object.keys(groups).map(folder => this.mailService.moveMessages(folder, groups[folder], target));
+            forkJoin(requests).subscribe({
+              next: (responses) => {
+                responses.forEach(resp => this.objectService.responseMessage(resp));
                 this.selected = [];
                 this.loadFolders();
-                this.loadMessages();
+                this.reload();
               },
               error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
             });
@@ -238,7 +315,7 @@ export class MailListComponent implements OnInit {
               next: (resp) => {
                 this.objectService.responseMessage(resp);
                 this.loadFolders();
-                this.loadMessages();
+                this.reload();
               },
               error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
             });
@@ -271,7 +348,7 @@ export class MailListComponent implements OnInit {
                 this.objectService.responseMessage(resp);
                 this.selectedFolder = "INBOX";
                 this.loadFolders();
-                this.loadMessages();
+                this.reload();
               },
               error: (err) => { this.objectService.errorMessage(this.serverMessage(err)) }
             });
@@ -298,7 +375,7 @@ export class MailListComponent implements OnInit {
           }
         });
       } else {
-        this.loadMessages();
+        this.reload();
       }
     }
   }
