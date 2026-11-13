@@ -267,12 +267,6 @@ export const userMenu = [
   },
   {
     "enabled": true,
-    "icon": "cut",
-    "color": "secondary",
-    "action": "removeProfiles"
-  },
-  {
-    "enabled": true,
     "icon": "log-in",
     "color": "danger",
     "action": "disableLogin"
@@ -294,6 +288,12 @@ export const userMenu = [
     "icon": "cloud-done",
     "color": "success",
     "action": "enableInternet"
+  },
+  {
+    "enabled": true,
+    "icon": "cut",
+    "color": "secondary",
+    "action": "removeProfiles"
   },
   {
     "enabled": true,
