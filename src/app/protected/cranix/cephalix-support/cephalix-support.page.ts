@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonContent, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { SupportService } from 'src/app/services/support.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { CreateSupport } from 'src/app/shared/actions/create-support/create-support-page';
 import { Article, Ticket } from 'src/app/shared/models/cephalix-data-model';
 import { SupportRequest } from 'src/app/shared/models/data-model';
@@ -13,7 +14,7 @@ import { SupportRequest } from 'src/app/shared/models/data-model';
   templateUrl: './cephalix-support.page.html',
   styleUrls: ['./cephalix-support.page.scss'],
 })
-export class CephalixSupportPage implements OnInit {
+export class CephalixSupportPage implements OnInit, OnDestroy {
 
   articleOpen = {};
   articles: Article[];
@@ -34,7 +35,8 @@ export class CephalixSupportPage implements OnInit {
     public authService: AuthenticationService,
     private modalCtrl: ModalController,
     private objectService: GenericObjectService,
-    private supportSrvice: SupportService
+    private supportSrvice: SupportService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -118,14 +120,18 @@ export class CephalixSupportPage implements OnInit {
     }
   }
 
-  sendArticle() {
+  async sendArticle() {
+    if (!await this.loadingService.show()) {
+      return;
+    }
     var article = new Article();
     article.articleType = 'I'
     article.text = this.newText
     article.attachment = this.answerAttachment;
     article.attachmentName = this.answerAttachmentName;
-    this.supportSrvice.addArticle(this.selectedTicket.id, article).subscribe(
-      (val) => {
+    this.supportSrvice.addArticle(this.selectedTicket.id, article).subscribe({
+      next: async (val) => {
+        await this.loadingService.hide();
         this.objectService.responseMessage(val);
         if (val.code == "OK") {
           this.answerAttachment = "";
@@ -134,8 +140,16 @@ export class CephalixSupportPage implements OnInit {
           this.prefillAnswer();
           this.refreshArticles();
         }
+      },
+      error: async (err) => {
+        await this.loadingService.hide();
+        this.objectService.errorMessage(err);
       }
-    )
+    })
+  }
+
+  ngOnDestroy() {
+    this.loadingService.hide();
   }
   isHTML(s: string) {
     //var htmlRegex = new RegExp("<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)</\1>");

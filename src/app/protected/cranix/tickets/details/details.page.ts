@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonContent } from '@ionic/angular';
 
@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/services/auth.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { CrxTicketService } from 'src/app/services/crxticket.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { CrxTicket, CrxTicketArticle } from 'src/app/shared/models/data-model';
 
 @Component({
@@ -15,7 +16,7 @@ import { CrxTicket, CrxTicketArticle } from 'src/app/shared/models/data-model';
   templateUrl: './details.page.html',
   styleUrls: ['./details.page.scss'],
 })
-export class DetailsPage implements OnInit {
+export class DetailsPage implements OnInit, OnDestroy {
   ticketId: number;
   ticket: CrxTicket;
   articles: CrxTicketArticle[] = [];
@@ -34,7 +35,8 @@ export class DetailsPage implements OnInit {
     private alertController: AlertController,
     private languageService: LanguageService,
     private route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    private loadingService: LoadingService
   ) {
     this.ticketId = Number(this.route.snapshot.params.id);
   }
@@ -178,13 +180,17 @@ export class DetailsPage implements OnInit {
     await alert.present();
   }
 
-  sendArticle() {
+  async sendArticle() {
+    if (!await this.loadingService.show()) {
+      return;
+    }
     let article = new CrxTicketArticle();
     article.text = this.newText;
     article.attachment = this.answerAttachment;
     article.attachmentName = this.answerAttachmentName;
     this.crxTicketService.addArticle(this.ticketId, article).subscribe({
-      next: (val) => {
+      next: async (val) => {
+        await this.loadingService.hide();
         this.objectService.responseMessage(val);
         if (val.code == "OK") {
           this.answerAttachment = "";
@@ -193,8 +199,15 @@ export class DetailsPage implements OnInit {
           this.readTicket();
         }
       },
-      error: (err) => this.objectService.errorMessage(err)
+      error: async (err) => {
+        await this.loadingService.hide();
+        this.objectService.errorMessage(err);
+      }
     });
+  }
+
+  ngOnDestroy() {
+    this.loadingService.hide();
   }
 
   isHTML(s: string) {

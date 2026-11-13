@@ -43,7 +43,7 @@ export class CrxTicketService {
   }
 
   addArticle(id: number, article: CrxTicketArticle) {
-    return this.http.post<ServerResponse>(`${this.url}/${id}`, article, { headers: this.authService.headers });
+    return this.http.post<ServerResponse>(`${this.url}/${id}`, article, { headers: this.authService.longTimeHeader });
   }
 
   close(id: number) {

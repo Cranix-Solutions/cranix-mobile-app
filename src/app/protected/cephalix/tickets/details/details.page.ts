@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 //own
 import { Ticket, Article, Institute, Customer } from 'src/app/shared/models/cephalix-data-model';
@@ -9,6 +9,7 @@ import { User } from 'src/app/shared/models/data-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { WindowRef } from 'src/app/shared/models/ohters';
 import { LanguageService } from 'src/app/services/language.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   standalone: false,
@@ -16,7 +17,7 @@ import { LanguageService } from 'src/app/services/language.service';
   templateUrl: './details.page.html',
   styleUrls: ['./details.page.scss'],
 })
-export class DetailsPage implements OnInit {
+export class DetailsPage implements OnInit, OnDestroy {
   ticketId: number;
   ticket: Ticket;
   articles: Article[] = [new Article()];
@@ -44,7 +45,8 @@ export class DetailsPage implements OnInit {
     private cephalixService: CephalixService,
     private languageS: LanguageService,
     private route: ActivatedRoute,
-    private win: WindowRef
+    private win: WindowRef,
+    private loadingService: LoadingService
   ) {
     this.nativeWindow = win.getNativeWindow();
     this.ticketId = this.route.snapshot.params.id;
@@ -113,7 +115,10 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  sendArticle() {
+  async sendArticle() {
+    if (!await this.loadingService.show()) {
+      return;
+    }
     let article = new Article();
     article.recipient = this.recipient;
     article.title = this.ticket.firstname + " " + this.ticket.lastname;
@@ -121,8 +126,9 @@ export class DetailsPage implements OnInit {
     article.text = this.newText;
     article.attachment = this.answerAttachment;
     article.attachmentName = this.answerAttachmentName;
-    this.cephalixService.addArticleToTicket(article, this.ticket.id).subscribe(
-      (val) => {
+    this.cephalixService.addArticleToTicket(article, this.ticket.id).subscribe({
+      next: async (val) => {
+        await this.loadingService.hide();
         this.objectService.responseMessage(val);
         if (val.code == "OK") {
           this.answerAttachment = "";
@@ -131,8 +137,16 @@ export class DetailsPage implements OnInit {
           this.prefillAnswer();
           this.readArcticles();
         }
+      },
+      error: async (err) => {
+        await this.loadingService.hide();
+        this.objectService.errorMessage(err);
       }
-    )
+    })
+  }
+
+  ngOnDestroy() {
+    this.loadingService.hide();
   }
 
   public assigneTicketToMe() {

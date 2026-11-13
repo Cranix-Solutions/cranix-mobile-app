@@ -28,6 +28,6 @@ export class SupportService {
   }
 
   addArticle(id: number, article: Article){
-    return this.http.post<ServerResponse>(`${this.url}/tickets/${id}`, article, { headers: this.authService.headers })
+    return this.http.post<ServerResponse>(`${this.url}/tickets/${id}`, article, { headers: this.authService.longTimeHeader })
   }
 }

@@ -142,7 +142,7 @@ export class CephalixService {
 	addArticleToTicket(article: Article, ticketId: number) {
 		this.url = this.hostname + '/tickets/' + ticketId + '/articles';
 		console.log(this.url);
-		return this.http.post<ServerResponse>(this.url, article, { headers: this.authService.headers });
+		return this.http.post<ServerResponse>(this.url, article, { headers: this.authService.longTimeHeader });
 	}
 
 	setInstituteForTicket(ticketId: number, instituteId: number) {

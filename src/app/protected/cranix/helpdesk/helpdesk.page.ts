@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonContent, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { CrxTicketService } from 'src/app/services/crxticket.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { CreateCrxTicket } from 'src/app/shared/actions/create-crxticket/create-crxticket-page';
 import { CrxTicket, CrxTicketArticle } from 'src/app/shared/models/data-model';
 
@@ -13,7 +14,7 @@ import { CrxTicket, CrxTicketArticle } from 'src/app/shared/models/data-model';
   templateUrl: './helpdesk.page.html',
   styleUrls: ['./helpdesk.page.scss'],
 })
-export class HelpdeskPage implements OnInit {
+export class HelpdeskPage implements OnInit, OnDestroy {
 
   articleOpen = {};
   articles: CrxTicketArticle[] = [];
@@ -35,7 +36,8 @@ export class HelpdeskPage implements OnInit {
     private modalCtrl: ModalController,
     private languageService: LanguageService,
     private objectService: GenericObjectService,
-    private crxTicketService: CrxTicketService
+    private crxTicketService: CrxTicketService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -128,13 +130,17 @@ export class HelpdeskPage implements OnInit {
     }
   }
 
-  sendArticle() {
+  async sendArticle() {
+    if (!await this.loadingService.show()) {
+      return;
+    }
     let article = new CrxTicketArticle();
     article.text = this.newText;
     article.attachment = this.answerAttachment;
     article.attachmentName = this.answerAttachmentName;
     this.crxTicketService.addArticle(this.selectedTicket.id, article).subscribe({
-      next: (val) => {
+      next: async (val) => {
+        await this.loadingService.hide();
         this.objectService.responseMessage(val);
         if (val.code == "OK") {
           this.answerAttachment = "";
@@ -144,8 +150,15 @@ export class HelpdeskPage implements OnInit {
           this.readArticles();
         }
       },
-      error: (err) => this.objectService.errorMessage(err)
+      error: async (err) => {
+        await this.loadingService.hide();
+        this.objectService.errorMessage(err);
+      }
     });
+  }
+
+  ngOnDestroy() {
+    this.loadingService.hide();
   }
 
   async closeTicket(ticket: CrxTicket) {
