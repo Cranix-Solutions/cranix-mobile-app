@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular'
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CrxObjectService } from 'src/app/services/crx-object-service';
@@ -14,7 +14,7 @@ import { ActionsComponent } from '../actions/actions.component';
   templateUrl: './cranix-md-list.component.html',
   styleUrls: ['./cranix-md-list.component.scss'],
 })
-export class CranixMdListComponent implements OnInit, OnChanges {
+export class CranixMdListComponent implements OnInit, OnChanges, OnDestroy {
 
   min: number;
   step: number;
@@ -22,6 +22,7 @@ export class CranixMdListComponent implements OnInit, OnChanges {
   left1: string;
   left2: string;
   left3: string;
+  ownsRowData: boolean = false;
   noteUse: boolean = false;
   @Input() objectType: string;
   @Input() context;
@@ -98,6 +99,7 @@ export class CranixMdListComponent implements OnInit, OnChanges {
       }
     }
     if (!this.rowData) {
+      this.ownsRowData = true;
       while (!this.objectService.allObjects[this.objectType]) {
         await new Promise(f => setTimeout(f, 1000));
       }
@@ -248,9 +250,25 @@ export class CranixMdListComponent implements OnInit, OnChanges {
     }
 
     reloadObjects(){
-      this.objectService.allObjects[this.objectType] = null
       this.objectService.getAllObject(this.objectType)
-      this.rowData = null
-      this.ngOnInit()
+    }
+
+    /**
+     * Rebuilds the rows from the already loaded objects, without fetching again.
+     * Called by GenericObjectService whenever the objects were reloaded.
+     * Lists whose rows are provided by the parent are left untouched.
+     */
+    refresh() {
+      if (!this.ownsRowData) {
+        return;
+      }
+      this.rowData = null;
+      this.ngOnInit();
+    }
+
+    ngOnDestroy(): void {
+      if (this.utilsService.actMdList === this) {
+        this.utilsService.actMdList = null;
+      }
     }
 }

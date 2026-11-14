@@ -167,6 +167,7 @@ export class DetailsPage implements OnInit, OnDestroy {
           this.answerFiles = [];
           this.prefillAnswer();
           this.readArcticles();
+          this.objectService.getAllObject('ticket');
         }
       },
       error: async (err) => {
@@ -268,6 +269,7 @@ export class DetailsPage implements OnInit, OnDestroy {
         this.objectService.responseMessage(val)
         modal.dismiss();
         this.isOpenMergeTicketModal = true
+        this.objectService.getAllObject('ticket');
         this.router.navigate([`/pages/cephalix/tickets/${toTicketId}`])
       }
     )

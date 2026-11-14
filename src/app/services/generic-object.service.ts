@@ -164,6 +164,7 @@ export class GenericObjectService {
         selects[objectType + 'Id'].push(obj.id);
       }
       this.authService.log("GenericObjectService: ", objectType + "s were read", this.allObjects[objectType]);
+      this.notifyListRefresh(objectType);
       this.initialized++;
     } catch (error) {
       if (!this.allObjects[objectType]) {
@@ -178,6 +179,19 @@ export class GenericObjectService {
   getSubscribe(path) {
     let url = this.utilsService.hostName() + path
     return this.http.get<any[]>(url, { headers: this.authService.headers })
+  }
+
+  /**
+   * Notifies the currently active list component that the objects of the given
+   * type changed, so it can refresh its view. The ag-grid based cranix-list binds
+   * allObjects directly and updates on its own, but the cranix-md-list keeps its
+   * own copy of the rows and must be told to rebuild it.
+   */
+  private notifyListRefresh(objectType: string) {
+    const activeList: any = this.utilsService.actMdList;
+    if (activeList && activeList.objectType === objectType && typeof activeList.refresh === 'function') {
+      activeList.refresh();
+    }
   }
 
   isInitialized() {

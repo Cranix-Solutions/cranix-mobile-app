@@ -53,7 +53,7 @@ export class TicketsPage {
         showBackdrop: true
       });
       (await modal).present().then(
-        (val) => this.objectService.getAllObject('ticekt')
+        (val) => this.objectService.getAllObject('ticket')
       );
     }
   }
