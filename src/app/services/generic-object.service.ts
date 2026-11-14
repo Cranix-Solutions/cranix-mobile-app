@@ -10,7 +10,16 @@ import { UtilsService } from './utils.service';
 import { AuthenticationService } from './auth.service';
 import { LanguageService } from './language.service';
 import { Router } from '@angular/router';
-import { objectsTemlate, enumerates, selects, hiddenAttributes, readOnlyAttributes, required, multivalued } from 'src/app/shared/models/constants';
+import {
+	objectsTemlate,
+       	enumerates,
+       	selects,
+       	hiddenAttributes,
+       	multivalued,
+       	readOnlyAttributes,
+       	required,
+	setOnlyAttributes
+} from 'src/app/shared/models/constants';
 @Injectable({
   providedIn: 'root'
 })
@@ -493,6 +502,11 @@ export class GenericObjectService {
    */
   typeOf(key: string, object, action: string) {
     let obj = object[key];
+    console.log(key)
+    if ( action == 'add' && ( readOnlyAttributes.indexOf(key) != -1 && setOnlyAttributes.indexOf(key) == -1 )) {
+      console.log("Not for add")
+      return '';
+    }
     if (key == 'id') {
       return 'numberRO'
     }

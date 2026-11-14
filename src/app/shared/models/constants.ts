@@ -99,6 +99,20 @@ export const multivalued: string[] = [
 ]
 
 /**
+ * Attributes which can not be set but not modified
+ */
+export const setOnlyAttributes: string[] = [
+	'ip',
+	'devCount',
+	'name',
+	'network',
+	'netMask',
+	'role',
+	'roomId',
+	'uid',
+	'wlanIp'
+]
+/**
  * Attributes which can not be modified
  */
 export const readOnlyAttributes: string[] = [
