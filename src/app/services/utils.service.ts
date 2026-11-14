@@ -42,6 +42,7 @@ export class UtilsService {
                 //return window.location.origin + "/api";
                 //return "https://192.168.178.199:444/api"
                 //return "https://cranix-test:444/api"
+                return "https://admin.cephalix.eu/api"
                 return "https://test.cephalix.eu:444/api"
                 //return "https://remscheid.cephalix.eu/api"
                 //return "https://gif1.bbs1-gifhorn.de:444/api"

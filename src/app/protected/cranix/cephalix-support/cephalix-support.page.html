@@ -4,7 +4,6 @@
   <ion-toolbar class="page-toolbar">
     <ion-title>
       #{{selectedTicket.id}} {{selectedTicket.title}}<br>
-      <small>{{selectedTicket.ticketStatus}}</small>
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="getTickets()" matTooltip="{{'Back to the ticket list.' | translate}}">
