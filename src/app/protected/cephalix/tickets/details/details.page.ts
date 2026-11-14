@@ -26,6 +26,8 @@ export class DetailsPage implements OnInit, OnDestroy {
   articleOpen = {};
   ticketCreator: User;
   workers: User[];
+  devices: string[] = [];
+  rooms: string[] = [];
   nativeWindow: any
   isOpenMergeTicketModal: boolean = false;
   tickets: Ticket[];
@@ -65,6 +67,7 @@ export class DetailsPage implements OnInit, OnDestroy {
         this.ticketCreator = this.objectService.getObjectById('user', this.ticket.creatorId);
         this.institute = this.objectService.getObjectById('institute', this.ticket.cephalixInstituteId);
         this.customer = this.objectService.getObjectById('customer', this.ticket.cephalixCustomerId);
+        this.readCranixObjects();
         this.readArcticles();
       },
       error: (err) => { console.log(err) },
@@ -98,6 +101,34 @@ export class DetailsPage implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * The ticket only stores the ids of the CRANIX devices and rooms.
+   * The human readable names are resolved from the institute.
+   */
+  public readCranixObjects() {
+    if (!this.ticket || !this.institute || !this.institute.id) {
+      return;
+    }
+    let deviceIds = this.ticket.cranixDeviceIds || [];
+    let roomIds = this.ticket.cranixRoomIds || [];
+    if (deviceIds.length > 0) {
+      this.cephalixService.getObjectsFromInstitute(this.institute.id, 'device').subscribe({
+        next: (val) => {
+          this.devices = (val || []).filter(d => deviceIds.indexOf(d.id) > -1).map(d => d.name);
+        },
+        error: (err) => { console.log(err) }
+      })
+    }
+    if (roomIds.length > 0) {
+      this.cephalixService.getObjectsFromInstitute(this.institute.id, 'room').subscribe({
+        next: (val) => {
+          this.rooms = (val || []).filter(r => roomIds.indexOf(r.id) > -1).map(r => r.name);
+        },
+        error: (err) => { console.log(err) }
+      })
+    }
+  }
+
   onFilesAdded(event, modal) {
     this.answerFiles = event.target.files;
     modal.dismiss();
@@ -121,7 +152,7 @@ export class DetailsPage implements OnInit, OnDestroy {
     }
     let article = new Article();
     article.recipient = this.recipient;
-    article.title = this.ticket.firstname + " " + this.ticket.lastname;
+    article.title = this.ticket.fullName;
     article.articleType = 'O';
     article.text = this.newText;
     article.attachment = this.answerAttachment;
@@ -191,7 +222,7 @@ export class DetailsPage implements OnInit, OnDestroy {
       }
       found = true
       for(let f of myFilter){
-        if(! ( ticket.title.toLowerCase().indexOf(f) > -1 || ticket.lastname.toLowerCase().indexOf(f) > -1 || ticket.lastname.toLowerCase().indexOf(f) > -1 )){
+        if(! ( ticket.title.toLowerCase().indexOf(f) > -1 || ticket.fullName.toLowerCase().indexOf(f) > -1 || ticket.email.toLowerCase().indexOf(f) > -1 )){
           found = false
           break
         }

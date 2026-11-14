@@ -86,8 +86,8 @@ export class CranixMdListComponent implements OnInit, OnChanges {
       }
       case 'ticket': {
         this.left1 = "title"
-        this.left2 = "lastname"
-        this.left3 = "firstname"
+        this.left2 = "fullName"
+        this.left3 = "email"
         break
       }
       case 'crxticket': {

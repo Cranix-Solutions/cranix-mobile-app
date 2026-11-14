@@ -43,7 +43,17 @@
             }
             <ion-item>
                 <ion-label [position]="authService.settings.labelPlacement">{{'name' | translate}}*</ion-label>
-                <ion-input [(ngModel)]="support.lastname" name="lastname" required></ion-input>
+                <ion-input [(ngModel)]="support.fullName" name="fullName" required></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Devices' | translate}}</ion-label>
+                <cranix-search objectType="device" [multiple]="true" [items]="devices" [(ngModel)]="selectedDevices"
+                    name="selectedDevices" [emptyLabel]="'Select devices'|translate"></cranix-search>
+            </ion-item>
+            <ion-item>
+                <ion-label [position]="authService.settings.labelPlacement">{{'Rooms' | translate}}</ion-label>
+                <cranix-search objectType="room" [multiple]="true" [items]="rooms" [(ngModel)]="selectedRooms"
+                    name="selectedRooms" [emptyLabel]="'Select rooms'|translate"></cranix-search>
             </ion-item>
             <ion-item>
                 <ion-label [position]="authService.settings.labelPlacement">{{'subject' | translate}}*</ion-label>

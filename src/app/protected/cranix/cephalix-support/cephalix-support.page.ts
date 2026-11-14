@@ -171,7 +171,7 @@ export class CephalixSupportPage implements OnInit, OnDestroy {
       this.selectedTicket = ticket;
     } else {
       var mySupport = new SupportRequest();
-      mySupport.lastname = this.authService.session.user.givenName + " " + this.authService.session.user.surName
+      mySupport.fullName = this.authService.session.user.givenName + " " + this.authService.session.user.surName
       const modal = await this.modalCtrl.create({
         component: CreateSupport,
         cssClass: 'big-modal',

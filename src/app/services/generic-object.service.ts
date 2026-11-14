@@ -610,7 +610,7 @@ export class GenericObjectService {
       case 'room': return ['name', 'description', 'roomType', 'startIP']
       case 'education/user':
       case 'user': return ['uid', 'givenName', 'surName', 'role']
-      case 'ticket': return ['title', 'email', 'firstname', 'lastname']
+      case 'ticket': return ['title', 'email', 'fullName']
       case 'crxticket': return ['title']
       default: return ['name', 'description']
     }

@@ -62,11 +62,11 @@ export class Ticket {
     cephalixInstituteId: number = 0;
     cephalixCustomerId: number = 0;
     cranixUserId: number = 0;
-    cranixDeviceId: number = 0;
+    cranixDeviceIds: number[] = [];
+    cranixRoomIds: number[] = [];
     creatorId: number = 0;
     ticketType: string = "";
-    firstname: string = "";
-    lastname: string = "";
+    fullName: string = "";
     email: string = "";
     priority: number = 0;
     constructor() {}

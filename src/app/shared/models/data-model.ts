@@ -328,8 +328,7 @@ export class AdHocRoom extends Room {
 }
 
 export class SupportRequest {
-	firstname: string = "";
-	lastname: string = "";
+	fullName: string = "";
 	email: string = "";
 	supporttype: string = "Error";
 	subject: string = "";
@@ -343,6 +342,9 @@ export class SupportRequest {
 	requestDate?: number = 0;
 	ticketno?: number = 0;
 	ticketResponseInfo?: string = "";
+	cranixUserId?: number = 0;
+	cranixDeviceIds: number[] = [];
+	cranixRoomIds: number[] = [];
         attachment?: any = "";
         attachmentName?: string = "";
 	constructor() { }

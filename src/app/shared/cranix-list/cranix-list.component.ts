@@ -111,7 +111,6 @@ export class CranixListComponent implements OnInit, OnChanges {
       this.hiddenColumns.push('address')
     }
     if (this.objectType == 'ticket') {
-      this.hiddenColumns.push('firstname')
       if (!this.authService.isAllowed('customer.manage')) {
         this.hiddenColumns.push('cephalixCustomerId')
       }
