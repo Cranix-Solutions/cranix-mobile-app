@@ -1,8 +1,8 @@
-= CRANIX Mobile App Adds a Secure, Email-Free Support Channel to CEPHALIX =
+= CRANIX  Adds a Secure, Email-Free Support Channel to CEPHALIX =
 
-'''Cranix-Solutions announces a new CEPHALIX support area in the CRANIX Mobile App: schools open support tickets to the CEPHALIX provider directly from the app, with all traffic carried over a secure, encrypted VPN tunnel between the CRANIX and CEPHALIX servers — no e-mail account required, and no request lost in a mailbox.'''
+'''Cranix-Solutions announces a new CEPHALIX support area in the CRANIX : schools open support tickets to the CEPHALIX provider directly from the app, with all traffic carried over a secure, encrypted VPN tunnel between the CRANIX and CEPHALIX servers — no e-mail account required, and no request lost in a mailbox.'''
 
-<code>[CITY], [DATE]</code> — Cranix-Solutions today announced the release of the '''CEPHALIX support area''' in the CRANIX Mobile App (version <code>[VERSION]</code>). It connects each CRANIX server with the CEPHALIX service in a single, secure conversation inside the app that schools already use every day.
+<code>[CITY], [DATE]</code> — Cranix-Solutions today announced the release of the '''CEPHALIX support area''' in the CRANIX  (version <code>[VERSION]</code>). It connects each CRANIX server with the CEPHALIX service in a single, secure conversation inside the app that schools already use every day.
 
 == Secure communication between CEPHALIX and CRANIX ==
 
@@ -30,11 +30,11 @@ For IT staff, reporting a problem or following up on a CEPHALIX request takes se
 
 == Availability ==
 
-The CEPHALIX support area is available now in the CRANIX Mobile App. It appears for users whose roles include the <code>cephalix.support</code> permission; no separate installation or mail account is required.
+The CEPHALIX support area is available now in the CRANIX . It appears for users whose roles include the <code>cephalix.support</code> permission; no separate installation or mail account is required.
 
 == About Cranix-Solutions ==
 
-Cranix-Solutions develops CRANIX, a comprehensive open platform for the administration of schools and educational institutions — covering users, devices, rooms, software and much more. The CRANIX Mobile App extends this platform to smartphones and tablets as a Progressive Web App.
+Cranix-Solutions develops CRANIX, a comprehensive open platform for the administration of schools and educational institutions — covering users, devices, rooms, software and much more. The CRANIX  extends this platform to smartphones and tablets as a Progressive Web App.
 
 == Press contact ==
 
@@ -44,11 +44,11 @@ Cranix-Solutions develops CRANIX, a comprehensive open platform for the administ
 
 ----
 
-= CRANIX Mobile App erhält einen sicheren, E-Mail-freien Supportkanal zu CEPHALIX =
+= CRANIX  erhält einen sicheren, E-Mail-freien Supportkanal zu CEPHALIX =
 
-'''Cranix-Solutions stellt einen neuen CEPHALIX-Supportbereich in der CRANIX Mobile App vor: Schulen eröffnen Support-Tickets an den CEPHALIX-Anbieter direkt aus der App heraus, wobei der gesamte Datenverkehr über einen sicheren, verschlüsselten VPN-Tunnel zwischen den CRANIX- und CEPHALIX-Servern läuft — ohne E-Mail-Konto und ohne dass eine Anfrage im Postfach verloren geht.'''
+'''Cranix-Solutions stellt einen neuen CEPHALIX-Supportbereich in der CRANIX  vor: Schulen eröffnen Support-Tickets an den CEPHALIX-Anbieter direkt aus der App heraus, wobei der gesamte Datenverkehr über einen sicheren, verschlüsselten VPN-Tunnel zwischen den CRANIX- und CEPHALIX-Servern läuft — ohne E-Mail-Konto und ohne dass eine Anfrage im Postfach verloren geht.'''
 
-<code>[ORT], [DATUM]</code> — Cranix-Solutions gibt die Veröffentlichung des '''CEPHALIX-Supportbereichs''' in der CRANIX Mobile App (Version <code>[VERSION]</code>) bekannt. Er verbindet jeden CRANIX-Server mit dem CEPHALIX-Dienst in einem einzigen, sicheren Gespräch innerhalb der App, die Schulen ohnehin täglich nutzen.
+<code>[ORT], [DATUM]</code> — Cranix-Solutions gibt die Veröffentlichung des '''CEPHALIX-Supportbereichs''' in der CRANIX  (Version <code>[VERSION]</code>) bekannt. Er verbindet jeden CRANIX-Server mit dem CEPHALIX-Dienst in einem einzigen, sicheren Gespräch innerhalb der App, die Schulen ohnehin täglich nutzen.
 
 == Sichere Kommunikation zwischen CEPHALIX und CRANIX ==
 
@@ -76,11 +76,11 @@ Für die IT dauert die Meldung eines Problems oder die Nachverfolgung einer CEPH
 
 == Verfügbarkeit ==
 
-Der CEPHALIX-Supportbereich ist ab sofort in der CRANIX Mobile App verfügbar. Er erscheint für Nutzerinnen und Nutzer, deren Rollen die Berechtigung <code>cephalix.support</code> enthalten; eine separate Installation oder ein Mail-Konto ist nicht erforderlich.
+Der CEPHALIX-Supportbereich ist ab sofort in der CRANIX  verfügbar. Er erscheint für Nutzerinnen und Nutzer, deren Rollen die Berechtigung <code>cephalix.support</code> enthalten; eine separate Installation oder ein Mail-Konto ist nicht erforderlich.
 
 == Über Cranix-Solutions ==
 
-Cranix-Solutions entwickelt CRANIX, eine umfassende offene Plattform für die Verwaltung von Schulen und Bildungseinrichtungen — von Benutzern über Geräte und Räume bis hin zu Software. Die CRANIX Mobile App erweitert diese Plattform als Progressive Web App auf Smartphones und Tablets.
+Cranix-Solutions entwickelt CRANIX, eine umfassende offene Plattform für die Verwaltung von Schulen und Bildungseinrichtungen — von Benutzern über Geräte und Räume bis hin zu Software. Die CRANIX  erweitert diese Plattform als Progressive Web App auf Smartphones und Tablets.
 
 == Pressekontakt ==
 
