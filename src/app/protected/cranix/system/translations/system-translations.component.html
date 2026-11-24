@@ -1,0 +1,56 @@
+<cranix-toolbar title="{{ 'Custom translations' | translate }}"></cranix-toolbar>
+<ion-toolbar>
+  <ion-item lines="none">
+    <ion-select [(ngModel)]="language" (ionChange)="onLanguageChange()" interface="popover"
+      [label]="'Language' | translate" labelPlacement="fixed">
+      <ion-select-option *ngFor="let lang of languages" [value]="lang.value">{{ lang.text }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-searchbar [(ngModel)]="filter" (ionInput)="applyFilter()" [placeholder]="'Search' | translate">
+    </ion-searchbar>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label>{{ 'Show only overwritten' | translate }}</ion-label>
+    <ion-toggle slot="end" [(ngModel)]="onlyOverridden" (ionChange)="applyFilter()"></ion-toggle>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label>{{ 'Overwritten keys:' | translate }} {{ overrideCount }}</ion-label>
+    <ion-buttons slot="end">
+      <ion-button fill="outline" size="small" (click)="exportFile()">
+        <ion-icon slot="start" name="download"></ion-icon>{{ 'Export' | translate }}
+      </ion-button>
+      <ion-button fill="outline" size="small" (click)="fileInput.click()">
+        <ion-icon slot="start" name="cloud-upload"></ion-icon>{{ 'Import' | translate }}
+      </ion-button>
+      <ion-button fill="outline" size="small" color="danger" (click)="clearAll()">
+        <ion-icon slot="start" name="trash"></ion-icon>{{ 'Clear all' | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+  <input #fileInput type="file" accept="application/json,.json" hidden (change)="importFile($event)">
+  <ion-note class="ion-padding-horizontal ion-padding-bottom ion-text-wrap">
+    {{ 'Place the exported file into the assets/i18n/custom folder on the server to apply the translations for all users. Changes made here are stored in this browser only.' | translate }}
+  </ion-note>
+</ion-toolbar>
+<ion-content>
+
+  <ion-list>
+    <ion-item *ngFor="let row of filtered; trackBy: trackByKey" [class.overwritten]="!!row.override">
+      <ion-label class="ion-text-wrap">
+        <h3>{{ row.base }}</h3>
+        <p>{{ row.key }}</p>
+      </ion-label>
+      <ion-input slot="end" class="translation-input" fill="outline" [value]="row.override"
+        (ionInput)="onOverride(row, $event.detail.value)"
+        [placeholder]="'Overwrite' | translate"></ion-input>
+      <ion-button *ngIf="row.override" slot="end" fill="clear" color="danger" (click)="reset(row)">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="filtered.length == 0" class="ion-padding">
+    {{ 'No results found' | translate }}
+  </ion-text>
+</ion-content>

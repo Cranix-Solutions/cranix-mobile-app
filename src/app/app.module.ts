@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CrxTranslateLoader } from './services/custom-translate-loader';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QuillConfigModule } from 'ngx-quill/config';
 
@@ -44,7 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { quillTextToolbar } from './shared/models/constants';
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+  return new CrxTranslateLoader(http);
 }
 
 @NgModule({

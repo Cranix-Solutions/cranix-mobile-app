@@ -11,7 +11,6 @@ const LNG_KEY = 'SELECTED_LANGUAGE';
 })
 export class LanguageService {
   language: string = 'de';
-  translations = {};
   constructor(
     private translate: TranslateService,
     private storage: StorageService,
@@ -20,9 +19,8 @@ export class LanguageService {
   }
 
   initializeAppLanguage() {
-    this.setLanguage(this.translate.getBrowserLang());
+    this.setLanguage(this.translate.getBrowserLang() || this.language);
     console.log('language is', this.language);
-    this.translations = this.translate.translations;
   }
 
   getLanguages() {
@@ -46,8 +44,8 @@ export class LanguageService {
     this.setLanguage(this.storage.get(LNG_KEY, this.language));
   }
 
-  trans(val: string) {
-    return this.translations[this.language][val] ? this.translations[this.language][val] : val;
+  trans(val: string): string {
+    return this.translate.instant(val) as string;
   }
 
   transResponse(resp: ServerResponse) {

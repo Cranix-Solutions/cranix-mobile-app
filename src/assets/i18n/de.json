@@ -955,5 +955,17 @@
     "Forwarding is only possible for one message.": "Weiterleiten ist nur für eine Nachricht möglich.",
     "Please select a folder!": "Bitte wählen Sie einen Ordner aus!",
     "Forwarded message": "Weitergeleitete Nachricht",
-    "mail@example.com": "mail@example.com"
+    "mail@example.com": "mail@example.com",
+    "Custom translations": "Eigene Übersetzungen",
+    "Language": "Sprache",
+    "Search": "Suchen",
+    "Show only overwritten": "Nur überschriebene anzeigen",
+    "Overwritten keys:": "Überschriebene Schlüssel:",
+    "Export": "Exportieren",
+    "Import": "Importieren",
+    "Clear all": "Alle löschen",
+    "Overwrite": "Überschreiben",
+    "The file was downloaded.": "Die Datei wurde heruntergeladen.",
+    "The import was done successfully.": "Der Import war erfolgreich.",
+    "Place the exported file into the assets/i18n/custom folder on the server to apply the translations for all users. Changes made here are stored in this browser only.": "Legen Sie die exportierte Datei im Ordner assets/i18n/custom auf dem Server ab, um die Übersetzungen für alle Benutzer anzuwenden. Hier vorgenommene Änderungen werden nur in diesem Browser gespeichert."
 }

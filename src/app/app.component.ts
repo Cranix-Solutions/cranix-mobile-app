@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage-angular';
 import { AuthenticationService } from './services/auth.service';
 import { GenericObjectService } from './services/generic-object.service';
 import { LanguageService } from './services/language.service';
+import { CustomTranslationService } from './services/custom-translation.service';
 import { CrxObjectService } from './services/crx-object-service';
 
 @Component({
@@ -25,6 +26,7 @@ export class AppComponent {
     private crxObjectService: CrxObjectService,
     private genericObjectS: GenericObjectService,
     private languageService: LanguageService,
+    private customTranslationService: CustomTranslationService,
     private platform: Platform,
     private router: Router,
     private storage: Storage

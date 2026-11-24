@@ -728,5 +728,17 @@
     "Forwarding is only possible for one message.": "Forwarding is only possible for one message.",
     "Please select a folder!": "Please select a folder!",
     "Forwarded message": "Forwarded message",
-    "mail@example.com": "mail@example.com"
+    "mail@example.com": "mail@example.com",
+    "Custom translations": "Custom translations",
+    "Language": "Language",
+    "Search": "Search",
+    "Show only overwritten": "Show only overwritten",
+    "Overwritten keys:": "Overwritten keys:",
+    "Export": "Export",
+    "Import": "Import",
+    "Clear all": "Clear all",
+    "Overwrite": "Overwrite",
+    "The file was downloaded.": "The file was downloaded.",
+    "The import was done successfully.": "The import was done successfully.",
+    "Place the exported file into the assets/i18n/custom folder on the server to apply the translations for all users. Changes made here are stored in this browser only.": "Place the exported file into the assets/i18n/custom folder on the server to apply the translations for all users. Changes made here are stored in this browser only."
 }

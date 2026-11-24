@@ -14,6 +14,7 @@ import { SystemAclsComponent } from './acls/system-acls.component';
 import { SystemServicesComponent } from './services/system-services.component';
 import { ManageAclsComponent } from 'src/app/protected/cranix/system/acls/manage-acls/manage-acls.component';
 import { MailserverComponent } from './mailserver/mailserver.component'
+import { SystemTranslationsComponent } from './translations/system-translations.component'
 
 
 const routes: Routes = [
@@ -46,6 +47,10 @@ const routes: Routes = [
         component: MailserverComponent
       },
       {
+        path: 'translations',
+        component: SystemTranslationsComponent
+      },
+      {
         path: '', pathMatch: 'full',
         redirectTo: 'status'
       }
@@ -70,6 +75,7 @@ const routes: Routes = [
     SystemServicesComponent,
     SystemConfigComponent,
     SystemAddonsComponent,
+    SystemTranslationsComponent,
     SystemAclsComponent]
 })
 export class SystemPageModule { }

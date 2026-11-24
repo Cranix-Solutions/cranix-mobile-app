@@ -1,0 +1,31 @@
+.translation-input {
+  --padding-start: 8px;
+}
+
+/*
+ * Width of the override input (40% of the row width).
+ *
+ * Ionic ships a global rule
+ *   ion-item [slot=end].sc-ion-input-md-h { width: auto; }
+ * (specificity 0,2,1). A plain `.translation-input` class only reaches
+ * 0,2,0 and is therefore ignored. Repeating the "ion-item [slot=end]" part
+ * gives this rule a higher specificity so it actually wins.
+ */
+ion-item .translation-input[slot="end"] {
+  width: 40%;
+  max-width: 40%;
+}
+
+/*
+ * Highlight for overridden rows.
+ *
+ * The theme sets a global
+ *   ion-item::part(native) { background: inherit; }
+ * (src/theme/cranix-custom.scss) which paints the background directly on the
+ * native part. Because of that, setting `--background` on the ion-item has no
+ * visible effect. The background must be applied to the native part instead.
+ */
+ion-item.overwritten::part(native) {
+  background: var(--crx-translation-overwritten-bg, #D2E3D5);
+  box-shadow: inset 4px 0 0 0 var(--ion-color-secondary);
+}
