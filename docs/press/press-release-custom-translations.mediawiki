@@ -1,12 +1,12 @@
-= CRANIX Mobile App Lets Schools Customise Every Translation =
+= CRANIX Lets Schools Customise Every Translation =
 
-'''Cranix-Solutions introduces customisable translations in the CRANIX Mobile App: administrators can adapt any text of the interface to their own terminology — either from a simple file on the server or directly in the app — without rebuilding or reinstalling anything.'''
+'''Cranix-Solutions introduces customisable translations in the CRANIX  administrators can adapt any text of the interface to their own terminology — either from a simple file on the server or directly in the app — without rebuilding or reinstalling anything.'''
 
-<code>[CITY], [DATE]</code> — Cranix-Solutions today announced the release of '''customisable translations''' in the CRANIX Mobile App (version <code>[VERSION]</code>). Schools that prefer their own wording, for example "Rechner" instead of "Devices" or "Klassenzimmer" instead of "Rooms", can now change it themselves — for a single installation and for all of its users.
+<code>[CITY], [DATE]</code> — Cranix-Solutions today announced the release of '''customisable translations''' in the CRANIX (version <code>[VERSION]</code>). Schools that prefer their own wording, for example "Rechner" instead of "Devices" or "Klassenzimmer" instead of "Rooms", can now change it themselves — for a single installation and for all of its users.
 
 == One interface, many vocabularies ==
 
-Schools are not all alike. A grammar school, a vocational college and a primary school describe the same things with different words: a ''device'' may be a ''computer'', a ''workstation'' or a ''client''; a ''room'' may be a ''classroom'' or a ''lab''. Until now, adapting the CRANIX Mobile App to this vocabulary meant changing the application itself.
+Schools are not all alike. A grammar school, a vocational college and a primary school describe the same things with different words: a ''device'' may be a ''computer'', a ''workstation'' or a ''client''; a ''room'' may be a ''classroom'' or a ''lab''. Until now, adapting the CRANIX to this vocabulary meant changing the application itself.
 
 Customisable translations remove that obstacle. Any text used in the app can be replaced, and the remainder keeps the wording delivered with CRANIX. The feature covers every screen — menus, lists, forms, messages — in both English and German.
 
@@ -33,11 +33,11 @@ For administrators, the app finally speaks the same language as the school: sign
 
 == Availability ==
 
-Customisable translations are available now in the CRANIX Mobile App. The editor appears under '''System → Custom translations''' for users with the corresponding system permission; no separate installation is required.
+Customisable translations are available now in the CRANIX  The editor appears under '''System → Custom translations''' for users with the corresponding system permission; no separate installation is required.
 
 == About Cranix-Solutions ==
 
-Cranix-Solutions develops CRANIX, a comprehensive open platform for the administration of schools and educational institutions — covering users, devices, rooms, software and much more. The CRANIX Mobile App extends this platform to smartphones and tablets as a Progressive Web App.
+Cranix-Solutions develops CRANIX, a comprehensive open platform for the administration of schools and educational institutions — covering users, devices, rooms, software and much more. The CRANIX extends this platform to smartphones and tablets as a Progressive Web App.
 
 == Press contact ==
 
@@ -47,15 +47,15 @@ Cranix-Solutions develops CRANIX, a comprehensive open platform for the administ
 
 ----
 
-= CRANIX Mobile App lässt Schulen jede Übersetzung anpassen =
+= CRANIX lässt Schulen jede Übersetzung anpassen =
 
-'''Cranix-Solutions stellt anpassbare Übersetzungen in der CRANIX Mobile App vor: Administratoren können jeden Text der Oberfläche an ihre eigene Begrifflichkeit anpassen — entweder über eine einfache Datei auf dem Server oder direkt in der App — ganz ohne Neubau oder Neuinstallation.'''
+'''Cranix-Solutions stellt anpassbare Übersetzungen in der CRANIX vor: Administratoren können jeden Text der Oberfläche an ihre eigene Begrifflichkeit anpassen — entweder über eine einfache Datei auf dem Server oder direkt in der App — ganz ohne Neubau oder Neuinstallation.'''
 
-<code>[ORT], [DATUM]</code> — Cranix-Solutions gibt die Veröffentlichung '''anpassbarer Übersetzungen''' in der CRANIX Mobile App (Version <code>[VERSION]</code>) bekannt. Schulen, die ihre eigene Sprache bevorzugen, etwa „Rechner" statt „Devices" oder „Klassenzimmer" statt „Rooms", können dies nun selbst ändern — für eine Installation und für alle ihre Nutzerinnen und Nutzer.
+<code>[ORT], [DATUM]</code> — Cranix-Solutions gibt die Veröffentlichung '''anpassbarer Übersetzungen''' in der CRANIX (Version <code>[VERSION]</code>) bekannt. Schulen, die ihre eigene Sprache bevorzugen, etwa „Rechner" statt „Devices" oder „Klassenzimmer" statt „Rooms", können dies nun selbst ändern — für eine Installation und für alle ihre Nutzerinnen und Nutzer.
 
 == Eine Oberfläche, viele Begriffe ==
 
-Schulen sind nicht gleich. Gymnasium, Berufsschule und Grundschule beschreiben dieselben Dinge mit unterschiedlichen Worten: Ein ''Gerät'' kann ein ''Rechner'', eine ''Workstation'' oder ein ''Client'' sein; ein ''Raum'' ein ''Klassenzimmer'' oder ein ''Labor''. Die CRANIX Mobile App an diese Begrifflichkeit anzupassen, bedeutete bisher, die Anwendung selbst zu verändern.
+Schulen sind nicht gleich. Gymnasium, Berufsschule und Grundschule beschreiben dieselben Dinge mit unterschiedlichen Worten: Ein ''Gerät'' kann ein ''Rechner'', eine ''Workstation'' oder ein ''Client'' sein; ein ''Raum'' ein ''Klassenzimmer'' oder ein ''Labor''. Die CRANIX an diese Begrifflichkeit anzupassen, bedeutete bisher, die Anwendung selbst zu verändern.
 
 Anpassbare Übersetzungen beseitigen dieses Hindernis. Jeder in der App verwendete Text lässt sich ersetzen, der Rest behält die mit CRANIX ausgelieferte Formulierung. Die Funktion umfasst alle Ansichten — Menüs, Listen, Formulare, Meldungen — in Englisch und Deutsch.
 
@@ -82,11 +82,11 @@ Für die Verwaltung spricht die App endlich dieselbe Sprache wie die Schule: Bes
 
 == Verfügbarkeit ==
 
-Anpassbare Übersetzungen sind ab sofort in der CRANIX Mobile App verfügbar. Der Editor erscheint unter '''System → Custom translations''' für Nutzerinnen und Nutzer mit der entsprechenden Systemberechtigung; eine separate Installation ist nicht erforderlich.
+Anpassbare Übersetzungen sind ab sofort in der CRANIX verfügbar. Der Editor erscheint unter '''System → Custom translations''' für Nutzerinnen und Nutzer mit der entsprechenden Systemberechtigung; eine separate Installation ist nicht erforderlich.
 
 == Über Cranix-Solutions ==
 
-Cranix-Solutions entwickelt CRANIX, eine umfassende offene Plattform für die Verwaltung von Schulen und Bildungseinrichtungen — von Benutzern über Geräte und Räume bis hin zu Software. Die CRANIX Mobile App erweitert diese Plattform als Progressive Web App auf Smartphones und Tablets.
+Cranix-Solutions entwickelt CRANIX, eine umfassende offene Plattform für die Verwaltung von Schulen und Bildungseinrichtungen — von Benutzern über Geräte und Räume bis hin zu Software. Die CRANIX erweitert diese Plattform als Progressive Web App auf Smartphones und Tablets.
 
 == Pressekontakt ==
 
