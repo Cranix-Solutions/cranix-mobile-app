@@ -60,12 +60,12 @@ export class DevicesComponent implements OnInit {
       this.selectedRoom = this.objectService.selectedRoom;
       this.rowData = [];
       for (let dev of this.objectService.allObjects['device']) {
-        if (dev.roomId == this.selectedRoom.id && dev.hwconfId != 2) {
+        if (dev.roomId == this.selectedRoom.id) {
           this.rowData.push(dev);
         }
       }
     } else {
-      this.rowData = this.objectService.allObjects['device'].filter(obj => obj.hwconfId != 2);
+      this.rowData = this.objectService.allObjects['device'];
       delete this.selectedRoom;
     }
     delete this.objectService.selectedObject;
