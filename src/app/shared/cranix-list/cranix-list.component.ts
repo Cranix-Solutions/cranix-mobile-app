@@ -55,9 +55,6 @@ export class CranixListComponent implements OnInit, OnChanges {
       checkboxes: true,
       selectAll: 'filtered',
       headerCheckbox: true
-    },
-    onFirstDataRendered: params => {
-      params.api.autoSizeColumns(['actions']);
     }
   }
   selectionColumnDef: SelectionColumnDef = {
