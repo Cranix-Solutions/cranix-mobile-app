@@ -44,8 +44,9 @@ export class LanguageService {
     this.setLanguage(this.storage.get(LNG_KEY, this.language));
   }
 
-  trans(val: string): string {
-    return this.translate.instant(val) as string;
+  trans(val: string = ""): string {
+    if (val) return this.translate.instant(val) as string;
+    return "";
   }
 
   transResponse(resp: ServerResponse) {
