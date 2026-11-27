@@ -17,15 +17,12 @@
         <ion-content class="ion-padding">
           @if(institute) { {{ institute.name }}<br>{{ institute.ipVPN }}<br>}
           {{ticket.email}} {{ticket.fullName}}<br>
-          @if(devices.length > 0){ {{'Devices'|translate}}: {{devices.join(', ')}}<br> }
-          @if(rooms.length > 0){ {{'Rooms'|translate}}: {{rooms.join(', ')}}<br> }
         </ion-content>
       </ng-template>
     </ion-popover>
     }@else{
     <ion-title>#{{ticket.id}}, {{ticket.created | date:'yyyy-MM-dd HH:mm'}}, {{ticket.title}}<br>
-      @if(institute) { {{ institute.name }} {{ institute.regCode }} {{ institute.ipVPN }}<br> }
-      {{ticket.fullName}},{{ticket.email}}
+      {{ticket.fullName}},{{ticket.email}} @if(institute) { {{ institute.ipVPN }} }
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="router.navigate(['/pages/cephalix/tickets'])">
@@ -52,31 +49,41 @@
   <ion-grid style="padding: 0px;">
     <ion-row>
       <ion-col style="padding: 0px;">
-        <ion-item lines="none">
-          <ion-label [position]="authService.settings.labelPlacement">{{'Ticket Owner'| translate}}</ion-label>
+        <div class="crx-item">
+          {{'Ticket Owner'| translate}}
           <cranix-search objectType="user" [items]="workers" [(ngModel)]="ticketCreator" name="selecteWorker"
             (onChange)="setCreator()" itemTextField="fullName"></cranix-search>
-        </ion-item>
+        </div>
       </ion-col>
       <ion-col style="padding: 0px;">
-        <ion-item lines="none">
-          <ion-label [position]="authService.settings.labelPlacement">{{'Institute'| translate}}</ion-label>
+        <div class="crx-item">
+          {{'Institute'| translate}}
           <cranix-search objectType="institute" [(ngModel)]="institute" name="selecteInstitue"
             (onChange)="setInstitute()" [itemTextField]="['name','locality']"></cranix-search>
-        </ion-item>
+        </div>
       </ion-col>
       @if(authService.isAllowed('customer.manage')){
       <ion-col style="padding: 0px;">
-        <ion-item lines="none">
-          <ion-label [position]="authService.settings.labelPlacement">{{'Customer'| translate}}</ion-label>
+        <div class="crx-item">
+          {{'Customer'| translate}}
           <cranix-search objectType="customer" [(ngModel)]="customer" name="selectedCustomer" (onChange)="setCustomer()"
             [itemTextField]="['name','locality']">
           </cranix-search>
-        </ion-item>
+        </div>
       </ion-col>
       }
     </ion-row>
   </ion-grid>
+  @if(devices.length > 0){
+  <div class="crx-item">
+    {{'Devices'|translate}}: {{devices.join(', ')}}
+  </div>
+  }
+  @if(rooms.length > 0){
+  <div class="crx-item">
+    {{'Rooms'|translate}}: {{rooms.join(', ')}}
+  </div>
+  }
 </ion-card>
 <ion-content>
   @if(authService.isMD()){
